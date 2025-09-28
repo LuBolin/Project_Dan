@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"player_radius_simple",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"player_radius_simple",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

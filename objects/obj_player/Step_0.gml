@@ -17,3 +17,14 @@ if (input_dirn_x != 0 || input_dirn_y != 0) {
 } else {
     speed = 0; // Stop when no keys pressed
 }
+
+// Flip sprite based on last direction moved
+if (input_dirn_x != 0) {
+    var scale = abs(image_xscale);
+    image_xscale = (input_dirn_x > 0) ? scale : -scale;
+}
+
+// Shoot projectile cooldown tick
+if (shoot_cooldown > 0) shoot_cooldown--;
+
+

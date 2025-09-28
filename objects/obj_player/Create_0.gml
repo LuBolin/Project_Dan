@@ -16,3 +16,7 @@ cam_inst.follow = id;
 // tweak camera settings
 cam_inst.smooth = 0.12;
 cam_inst.preferred_ratio = 0.2; // e.g. 20% of screen height
+
+// shooting
+shoot_delay   = 15;       // frames between shots (~8/game_speed seconds)
+shoot_cooldown = 0;

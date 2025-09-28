@@ -42,7 +42,6 @@
     {"id":{"name":"obj_zombie","path":"objects/obj_zombie/obj_zombie.yy",},},
     {"id":{"name":"GameSandbox","path":"rooms/GameSandbox/GameSandbox.yy",},},
     {"id":{"name":"MainMenu","path":"rooms/MainMenu/MainMenu.yy",},},
-    {"id":{"name":"rTestLevel","path":"rooms/rTestLevel/rTestLevel.yy",},},
     {"id":{"name":"player_radius_simple","path":"scripts/player_radius_simple/player_radius_simple.yy",},},
     {"id":{"name":"print_to_screen","path":"scripts/print_to_screen/print_to_screen.yy",},},
     {"id":{"name":"print","path":"scripts/print/print.yy",},},
@@ -60,7 +59,6 @@
   "RoomOrderNodes":[
     {"roomId":{"name":"GameSandbox","path":"rooms/GameSandbox/GameSandbox.yy",},},
     {"roomId":{"name":"MainMenu","path":"rooms/MainMenu/MainMenu.yy",},},
-    {"roomId":{"name":"rTestLevel","path":"rooms/rTestLevel/rTestLevel.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

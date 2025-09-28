@@ -22,7 +22,6 @@
     {"name":"obj_fire_projectile","order":3,"path":"objects/obj_fire_projectile/obj_fire_projectile.yy",},
     {"name":"obj_zombie","order":4,"path":"objects/obj_zombie/obj_zombie.yy",},
     {"name":"GameSandbox","order":1,"path":"rooms/GameSandbox/GameSandbox.yy",},
-    {"name":"rTestLevel","order":2,"path":"rooms/rTestLevel/rTestLevel.yy",},
     {"name":"player_radius_simple","order":2,"path":"scripts/player_radius_simple/player_radius_simple.yy",},
     {"name":"print_to_screen","order":1,"path":"scripts/print_to_screen/print_to_screen.yy",},
     {"name":"shoot_projectile","order":3,"path":"scripts/shoot_projectile/shoot_projectile.yy",},
@@ -31,6 +30,5 @@
     {"name":"fire_projectile","order":5,"path":"sprites/fire_projectile/fire_projectile.yy",},
     {"name":"taoist","order":1,"path":"sprites/taoist/taoist.yy",},
     {"name":"zombie","order":2,"path":"sprites/zombie/zombie.yy",},
-    {"name":"dummy_tileset","order":16,"path":"tilesets/dummy_tileset/dummy_tileset.yy",},
   ],
 }

@@ -18,8 +18,8 @@
   "resourceType":"GMTileSet",
   "resourceVersion":"2.0",
   "spriteId":{
-    "name":"dummy_spritesheet",
-    "path":"sprites/dummy_spritesheet/dummy_spritesheet.yy",
+    "name":"spr_dummy_spritesheet",
+    "path":"sprites/spr_dummy_spritesheet/spr_dummy_spritesheet.yy",
   },
   "spriteNoExport":false,
   "textureGroupId":{

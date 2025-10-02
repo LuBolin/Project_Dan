@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"print_to_screen",
+  "%Name":"gourd_types",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"print_to_screen",
+  "name":"gourd_types",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

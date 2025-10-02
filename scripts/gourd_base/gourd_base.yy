@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"print",
+  "%Name":"gourd_base",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"print",
+  "name":"gourd_base",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

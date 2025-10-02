@@ -32,8 +32,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"arrow",
-    "path":"sprites/arrow/arrow.yy",
+    "name":"spr_aim_arrow",
+    "path":"sprites/spr_aim_arrow/spr_aim_arrow.yy",
   },
   "spriteMaskId":null,
   "visible":true,

@@ -11,12 +11,17 @@ if (keyboard_check(ord("S"))) input_dirn_y += 1;
 // If there’s movement input
 if (input_dirn_x != 0 || input_dirn_y != 0) {
     // Get direction in degrees
-    direction = point_direction(0, 0, input_dirn_x, input_dirn_y);
+    //direction = point_direction(0, 0, input_dirn_x, input_dirn_y);
     // Apply movement speed
-    speed = move_speed;
-} else {
-    speed = 0; // Stop when no keys pressed
-}
+    // speed = move_speed;
+    
+    var magnitude = sqrt(input_dirn_x * input_dirn_x + input_dirn_y * input_dirn_y)
+	var vel_hori = (input_dirn_x / magnitude) * move_speed
+    var vel_vert = (input_dirn_y / magnitude) * move_speed
+    
+	move_and_collide(vel_hori, vel_vert, colliders, undefined, undefined, undefined, move_speed, move_speed);
+    
+}  
 
 // Flip sprite based on last direction moved
 if (input_dirn_x != 0) {

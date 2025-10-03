@@ -37,6 +37,7 @@
   "resources":[
     {"id":{"name":"obj_aim_arrow","path":"objects/obj_aim_arrow/obj_aim_arrow.yy",},},
     {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},},
+    {"id":{"name":"obj_enemy","path":"objects/obj_enemy/obj_enemy.yy",},},
     {"id":{"name":"obj_fire_projectile","path":"objects/obj_fire_projectile/obj_fire_projectile.yy",},},
     {"id":{"name":"obj_level_hud","path":"objects/obj_level_hud/obj_level_hud.yy",},},
     {"id":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},},
@@ -46,6 +47,7 @@
     {"id":{"name":"gourd_base","path":"scripts/gourd_base/gourd_base.yy",},},
     {"id":{"name":"gourd_types","path":"scripts/gourd_types/gourd_types.yy",},},
     {"id":{"name":"player_radius_simple","path":"scripts/player_radius_simple/player_radius_simple.yy",},},
+    {"id":{"name":"scr_DeltaTime","path":"scripts/scr_DeltaTime/scr_DeltaTime.yy",},},
     {"id":{"name":"shoot_projectile","path":"scripts/shoot_projectile/shoot_projectile.yy",},},
     {"id":{"name":"spr_aim_arrow","path":"sprites/spr_aim_arrow/spr_aim_arrow.yy",},},
     {"id":{"name":"spr_dummy_spritesheet","path":"sprites/spr_dummy_spritesheet/spr_dummy_spritesheet.yy",},},

@@ -1,14 +1,16 @@
 global.player = id;
 
-self.move_speed = 3;
-self.health = 10;
-self.max_health = 20;
+invuln = false
+
+knockback_x = 0;
+knockback_y = 0;
 
 self.inv = [
     gourd_create(GourdEarth),
     gourd_create(GourdWater),
     gourd_create(GourdWind)
 ];
+
 self.sel_slot = 0;
 
 var aim_arrow = instance_create_layer(x, y, layer, obj_aim_arrow);
@@ -31,8 +33,5 @@ cam_inst.preferred_ratio = 0.2; // e.g. 20% of screen height
 self.shoot_delay   = 15;       // frames between shots (~8/game_speed seconds)
 self.shoot_cooldown = 0;
 
-//collision_tilemap = layer_tilemap_get_id("Tile_Collision")
-
-//collision_objs = obj_enemy
 
 colliders = [layer_tilemap_get_id("Tile_Collision")]

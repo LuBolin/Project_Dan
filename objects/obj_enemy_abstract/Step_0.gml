@@ -10,10 +10,11 @@ if (!pause) {
     var magnitude = sqrt(_hor * _hor + _vert * _vert)
     
     if (magnitude != 0) {
-        var _norm_hor = (_hor / magnitude) * move_speed
-        var _norm_vert = (_vert / magnitude) * move_speed
+        var _norm_hor = (_hor / magnitude) * move_speed + knockback_x;
+        var _norm_vert = (_vert / magnitude) * move_speed + knockback_y;
     
         move_and_collide(_norm_hor, _norm_vert, colliders)
     }
+    
 }
 

@@ -3,10 +3,10 @@ if (!instance_exists(global.player)) exit;
 var p = global.player;
 
 // guard health vars
-if (!variable_instance_exists(p, "health") || !variable_instance_exists(p, "max_health")) exit;
+if (!variable_instance_exists(p, "hp") || !variable_instance_exists(p, "max_hp")) exit;
 
-var hp     = p.health;
-var hp_max = max(1, p.max_health);
+var hp     = p.hp;
+var hp_max = max(1, p.max_hp);
 var ratio  = clamp(hp / hp_max, 0, 1);
 
 // GUI size

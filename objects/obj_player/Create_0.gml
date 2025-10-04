@@ -1,7 +1,12 @@
 global.player = id;
 
-invuln = false
+// NOTE: Some of the variables are defined in the Variable Definitions of the Inspector
 
+// Refer to damage_entity script
+// For invuln frames when hit
+invuln      = false
+
+// Knockback when hit by attacks
 knockback_x = 0;
 knockback_y = 0;
 

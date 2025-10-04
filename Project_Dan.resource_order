@@ -19,10 +19,10 @@
   "ResourceOrderSettings":[
     {"name":"obj_aim_arrow","order":1,"path":"objects/obj_aim_arrow/obj_aim_arrow.yy",},
     {"name":"obj_camera","order":2,"path":"objects/obj_camera/obj_camera.yy",},
-    {"name":"obj_enemy_abstract","order":6,"path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},
+    {"name":"obj_enemy_abstract","order":5,"path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},
     {"name":"obj_fire_projectile","order":3,"path":"objects/obj_fire_projectile/obj_fire_projectile.yy",},
-    {"name":"obj_level_hud","order":5,"path":"objects/obj_level_hud/obj_level_hud.yy",},
-    {"name":"obj_zombie","order":4,"path":"objects/obj_zombie/obj_zombie.yy",},
+    {"name":"obj_level_hud","order":4,"path":"objects/obj_level_hud/obj_level_hud.yy",},
+    {"name":"obj_zombie","order":6,"path":"objects/obj_zombie/obj_zombie.yy",},
     {"name":"AlchemyRoom","order":2,"path":"rooms/AlchemyRoom/AlchemyRoom.yy",},
     {"name":"GameSandbox","order":1,"path":"rooms/GameSandbox/GameSandbox.yy",},
     {"name":"damage_entity","order":7,"path":"scripts/damage_entity/damage_entity.yy",},

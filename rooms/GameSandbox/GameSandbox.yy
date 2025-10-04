@@ -12,6 +12,7 @@
     {"name":"inst_7F937950","path":"rooms/GameSandbox/GameSandbox.yy",},
     {"name":"inst_2D65E884","path":"rooms/GameSandbox/GameSandbox.yy",},
     {"name":"inst_exit_door","path":"rooms/GameSandbox/GameSandbox.yy",},
+    {"name":"inst_pause_menu_sandbox","path":"rooms/GameSandbox/GameSandbox.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -25,6 +26,7 @@
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_dungeon_door","path":"objects/obj_dungeon_door/obj_dungeon_door.yy",},"propertyId":{"name":"door_type","path":"objects/obj_dungeon_door/obj_dungeon_door.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"\"exit\"",},
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_dungeon_door","path":"objects/obj_dungeon_door/obj_dungeon_door.yy",},"propertyId":{"name":"target_room","path":"objects/obj_dungeon_door/obj_dungeon_door.yy",},"resource":{"name":"AlchemyRoom","path":"rooms/AlchemyRoom/AlchemyRoom.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"AlchemyRoom",},
           ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":0.5,"scaleY":0.5,"x":224.0,"y":32.0,},
+        {"$GMRInstance":"v2","%Name":"inst_pause_menu_sandbox","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_pause_menu_sandbox","objectId":{"name":"obj_pause_menu","path":"objects/obj_pause_menu/obj_pause_menu.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"1.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":0.0,"y":0.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRLayer":"","%Name":"Terrain","depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[
         {"$GMRTileLayer":"","%Name":"Tile_Collision","depth":200,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Tile_Collision","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":24,"SerialiseWidth":43,"TileCompressedData":[

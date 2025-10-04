@@ -25,6 +25,7 @@
     {"name":"obj_fire_projectile","order":3,"path":"objects/obj_fire_projectile/obj_fire_projectile.yy",},
     {"name":"obj_level_hud","order":5,"path":"objects/obj_level_hud/obj_level_hud.yy",},
     {"name":"obj_main_menu","order":9,"path":"objects/obj_main_menu/obj_main_menu.yy",},
+    {"name":"obj_pause_menu","order":10,"path":"objects/obj_pause_menu/obj_pause_menu.yy",},
     {"name":"obj_zombie","order":4,"path":"objects/obj_zombie/obj_zombie.yy",},
     {"name":"AlchemyRoom","order":2,"path":"rooms/AlchemyRoom/AlchemyRoom.yy",},
     {"name":"GameSandbox","order":1,"path":"rooms/GameSandbox/GameSandbox.yy",},

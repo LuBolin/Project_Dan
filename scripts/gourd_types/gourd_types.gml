@@ -27,12 +27,34 @@ function GourdWater() : GourdBase() constructor
     };
 }
 
-function GourdWind() : GourdBase() constructor 
+function GourdWind() : GourdBase() constructor
 {
     name = "Wind";
 	color = c_gray;
     cooldown = 5;
-    
+
+    use = function(p) {
+        show_debug_message("Using " + name);
+    };
+}
+
+function GourdMud() : GourdBase() constructor
+{
+    name = "Mud";
+	color = make_color_rgb(101, 67, 33); // muddy brown
+    cooldown = 4;
+
+    use = function(p) {
+        show_debug_message("Using " + name);
+    };
+}
+
+function GourdHurricane() : GourdBase() constructor
+{
+    name = "Hurricane";
+	color = make_color_rgb(70, 130, 180); // stormy blue-gray
+    cooldown = 6;
+
     use = function(p) {
         show_debug_message("Using " + name);
     };

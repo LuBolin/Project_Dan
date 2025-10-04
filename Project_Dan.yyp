@@ -33,7 +33,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.8.0.0",
+    "IDEVersion":"2024.13.1.193",
   },
   "name":"Project_Dan",
   "resources":[
@@ -45,6 +45,7 @@
     {"id":{"name":"obj_fire_projectile","path":"objects/obj_fire_projectile/obj_fire_projectile.yy",},},
     {"id":{"name":"obj_level_hud","path":"objects/obj_level_hud/obj_level_hud.yy",},},
     {"id":{"name":"obj_main_menu","path":"objects/obj_main_menu/obj_main_menu.yy",},},
+    {"id":{"name":"obj_pause_menu","path":"objects/obj_pause_menu/obj_pause_menu.yy",},},
     {"id":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},},
     {"id":{"name":"obj_zombie","path":"objects/obj_zombie/obj_zombie.yy",},},
     {"id":{"name":"AlchemyRoom","path":"rooms/AlchemyRoom/AlchemyRoom.yy",},},

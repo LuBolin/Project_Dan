@@ -1,14 +1,24 @@
-target_x = x
-target_y = y
+//*Damage Effects*//
+// Refer to damage_entity script
+// Knockback when hit by an attack
+knockback_x  = 0;
+knockback_y  = 0;
 
-chase = false
-pause = false
+
+
+//*Enemy Chase-related Behaviour*//
+// Target X and Y
+target_x     = x;
+target_y     = y;
+
+chase        = false;
+pause        = false;
 
 hp = 0;
 
-alarm[0] = 60
+alarm[0]     = 1;
 
-colliders = [layer_tilemap_get_id("Tile_Collision"), obj_enemy_abstract]
+colliders    = [layer_tilemap_get_id("Tile_Collision"), obj_enemy_abstract]
 
 toString = function()
 {

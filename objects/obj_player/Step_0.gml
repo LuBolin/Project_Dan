@@ -14,9 +14,6 @@ var vel_vert = (magnitude == 0 ? 0 : (input_dirn_y / magnitude)) * move_speed + 
     
 move_and_collide(vel_hori, vel_vert, colliders, undefined, undefined, undefined, move_speed, move_speed);
 
-knockback_x = 0;
-knockback_y = 0;
-
 // If there’s movement input
 //if (input_dirn_x != 0 || input_dirn_y != 0) {
     // Get direction in degrees

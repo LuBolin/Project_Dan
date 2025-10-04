@@ -1,20 +1,12 @@
 global.player = id;
 
-// Spawn at entry door if present
-var entry_door = noone;
-with (obj_dungeon_door) {
-    if (door_type == "entry") {
-        entry_door = id;
-        break;
-    }
-}
-if (instance_exists(entry_door)) {
-    x = entry_door.x;
-    y = entry_door.y;
-}
+// NOTE: Some of the variables are defined in the Variable Definitions of the Inspector
 
-invuln = false
+// Refer to damage_entity script
+// For invuln frames when hit
+invuln      = false
 
+// Knockback when hit by attacks
 knockback_x = 0;
 knockback_y = 0;
 

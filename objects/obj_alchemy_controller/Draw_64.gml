@@ -61,6 +61,84 @@ if (dragging && drag_item != noone) {
 
 draw_set_alpha(1);
 
+// === DRAW CRAFT ZONES ===
+// Zone 1
+var zone1_col = (craft_zone_1.item != noone) ? make_color_rgb(60, 100, 60) : make_color_rgb(50, 50, 60);
+draw_set_color(zone1_col);
+draw_rectangle(craft_zone_1.x, craft_zone_1.y, craft_zone_1.x + craft_zone_1.w, craft_zone_1.y + craft_zone_1.h, false);
+draw_set_color(col_border);
+draw_rectangle(craft_zone_1.x, craft_zone_1.y, craft_zone_1.x + craft_zone_1.w, craft_zone_1.y + craft_zone_1.h, true);
+
+// Draw item name if zone has item
+if (craft_zone_1.item != noone) {
+    draw_set_color(col_text);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(craft_zone_1.x + craft_zone_1.w/2, craft_zone_1.y + craft_zone_1.h/2, craft_zone_1.item);
+}
+
+// Zone 2
+var zone2_col = (craft_zone_2.item != noone) ? make_color_rgb(60, 100, 60) : make_color_rgb(50, 50, 60);
+draw_set_color(zone2_col);
+draw_rectangle(craft_zone_2.x, craft_zone_2.y, craft_zone_2.x + craft_zone_2.w, craft_zone_2.y + craft_zone_2.h, false);
+draw_set_color(col_border);
+draw_rectangle(craft_zone_2.x, craft_zone_2.y, craft_zone_2.x + craft_zone_2.w, craft_zone_2.y + craft_zone_2.h, true);
+
+// Draw item name if zone has item
+if (craft_zone_2.item != noone) {
+    draw_set_color(col_text);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(craft_zone_2.x + craft_zone_2.w/2, craft_zone_2.y + craft_zone_2.h/2, craft_zone_2.item);
+}
+
+// Draw "+" between zones
+draw_set_color(col_text);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+var plus_x = (craft_zone_1.x + craft_zone_1.w + craft_zone_2.x) / 2;
+var plus_y = craft_zone_1.y + craft_zone_1.h / 2;
+draw_text(plus_x, plus_y, "+");
+
+// === DRAW CRAFT FEEDBACK ===
+if (craft_feedback != "none" && craft_feedback_timer > 0) {
+    var center_x = plus_x;
+    var center_y = plus_y;
+
+    if (craft_feedback == "success") {
+        // Big green circle
+        var radius = 60;
+        draw_set_color(c_green);
+        draw_set_alpha(0.7);
+        draw_circle(center_x, center_y, radius, false);
+        draw_set_alpha(1);
+        draw_set_color(c_lime);
+        draw_circle(center_x, center_y, radius, true);
+        draw_circle(center_x, center_y, radius - 2, true);
+    } else if (craft_feedback == "fail") {
+        // Big red X
+        var size = 60;
+        draw_set_color(c_red);
+        draw_set_alpha(0.7);
+        // Draw thick X
+        for (var i = -2; i <= 2; i++) {
+            draw_line(center_x - size + i, center_y - size, center_x + size + i, center_y + size);
+            draw_line(center_x - size + i, center_y + size, center_x + size + i, center_y - size);
+        }
+        draw_set_alpha(1);
+    } else if (craft_feedback == "already_unlocked") {
+        // Small red X
+        var size = 30;
+        draw_set_color(c_red);
+        // Draw thinner X
+        for (var i = -1; i <= 1; i++) {
+            draw_line(center_x - size + i, center_y - size, center_x + size + i, center_y + size);
+            draw_line(center_x - size + i, center_y + size, center_x + size + i, center_y - size);
+        }
+    }
+    draw_set_alpha(1);
+}
+
 // === DRAW SIDE PANEL (25% RIGHT) ===
 // Draw side panel but leave space for button at bottom
 draw_set_color(col_side_bg);

@@ -57,3 +57,8 @@ button_h = 40;
 button_x = side_panel_x + side_panel_w - button_w - 20;
 button_y = gui_height - button_h - 20;
 button_hover = false;
+
+// === CRAFT FEEDBACK ===
+craft_feedback = "none"; // "none", "success", "fail", "already_unlocked"
+craft_feedback_timer = 0;
+craft_feedback_duration = 60; // frames

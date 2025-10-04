@@ -155,3 +155,14 @@ function get_discovered_recipes(_nodes) {
 
     return result;
 }
+
+// ===== TRY TO CRAFT RECIPE =====
+function try_craft(_ing1, _ing2, _nodes) {
+    var recipe = find_recipe_by_ingredients(_nodes, _ing1, _ing2);
+
+    if (recipe != noone && !recipe.discovered) {
+        return recipe;
+    }
+
+    return noone;
+}

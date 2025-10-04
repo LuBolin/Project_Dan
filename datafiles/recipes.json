@@ -1,0 +1,24 @@
+{
+  "elements": {
+    "basic": ["Water", "Earth", "Wind"],
+    "tier1": ["Hurricane", "Mud"]
+  },
+  "recipes": [
+    {
+      "id": "hurricane",
+      "name": "Hurricane",
+      "ingredients": ["Water", "Wind"],
+      "result": "Hurricane",
+      "tier": 1,
+      "description": "Water and wind create a hurricane"
+    },
+    {
+      "id": "mud",
+      "name": "Mud",
+      "ingredients": ["Water", "Earth"],
+      "result": "Mud",
+      "tier": 1,
+      "description": "Wet earth creates mud"
+    }
+  ]
+}

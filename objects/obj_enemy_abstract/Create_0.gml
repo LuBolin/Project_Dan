@@ -4,6 +4,7 @@ target_y = y
 chase = false
 pause = false
 
+hp = 0;
 
 alarm[0] = 60
 

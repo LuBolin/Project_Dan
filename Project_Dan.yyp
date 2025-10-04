@@ -42,6 +42,7 @@
     {"id":{"name":"obj_level_hud","path":"objects/obj_level_hud/obj_level_hud.yy",},},
     {"id":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},},
     {"id":{"name":"obj_zombie","path":"objects/obj_zombie/obj_zombie.yy",},},
+    {"id":{"name":"AlchemyRoom","path":"rooms/AlchemyRoom/AlchemyRoom.yy",},},
     {"id":{"name":"GameSandbox","path":"rooms/GameSandbox/GameSandbox.yy",},},
     {"id":{"name":"MainMenu","path":"rooms/MainMenu/MainMenu.yy",},},
     {"id":{"name":"damage_entity","path":"scripts/damage_entity/damage_entity.yy",},},
@@ -51,6 +52,7 @@
     {"id":{"name":"scr_DeltaTime","path":"scripts/scr_DeltaTime/scr_DeltaTime.yy",},},
     {"id":{"name":"shoot_projectile","path":"scripts/shoot_projectile/shoot_projectile.yy",},},
     {"id":{"name":"spr_aim_arrow","path":"sprites/spr_aim_arrow/spr_aim_arrow.yy",},},
+    {"id":{"name":"spr_alchemy_backdrop","path":"sprites/spr_alchemy_backdrop/spr_alchemy_backdrop.yy",},},
     {"id":{"name":"spr_dummy_spritesheet","path":"sprites/spr_dummy_spritesheet/spr_dummy_spritesheet.yy",},},
     {"id":{"name":"spr_fire_projectile","path":"sprites/spr_fire_projectile/spr_fire_projectile.yy",},},
     {"id":{"name":"spr_gourd","path":"sprites/spr_gourd/spr_gourd.yy",},},
@@ -63,6 +65,7 @@
   "RoomOrderNodes":[
     {"roomId":{"name":"GameSandbox","path":"rooms/GameSandbox/GameSandbox.yy",},},
     {"roomId":{"name":"MainMenu","path":"rooms/MainMenu/MainMenu.yy",},},
+    {"roomId":{"name":"AlchemyRoom","path":"rooms/AlchemyRoom/AlchemyRoom.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

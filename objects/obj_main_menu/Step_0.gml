@@ -8,10 +8,12 @@ var my = device_mouse_y_to_gui(0);
 hovered_button = -1;
 for (var i = 0; i < array_length(buttons); i++) {
     var btn = buttons[i];
-    var btn_x = center_x - button_width / 2;
-    var btn_y = center_y + btn.y_offset - button_height / 2;
+    var btn_w = btn.width;
+    var btn_h = btn.height;
+    var btn_x = center_x + btn.x_offset - btn_w / 2;
+    var btn_y = center_y + btn.y_offset - btn_h / 2;
 
-    if (point_in_rectangle(mx, my, btn_x, btn_y, btn_x + button_width, btn_y + button_height)) {
+    if (point_in_rectangle(mx, my, btn_x, btn_y, btn_x + btn_w, btn_y + btn_h)) {
         hovered_button = i;
 
         // Check for click

@@ -6,20 +6,17 @@ if (!is_paused || room == MainMenu) exit;
 // Update instructions based on current room
 var current_instructions = "";
 if (room == AlchemyRoom) {
-    current_instructions = @"Drag and drop elements to craft new gourds.
-Combine different elements to discover recipes.
-Press ESC to pause.";
+    current_instructions = @"Drag and drop elements to combine.
+Combine different elements to discover recipes to synthesize new elements.";
 } else if (room == GameSandbox) {
     current_instructions = @"WASD - Move
 Mouse - Aim
 Left Click - Activate active element
 Q/E - Cycle active element
-Enter door to access Alchemy Room
-Press ESC to pause.";
+Enter door to access Alchemy Room";
 } else {
     current_instructions = @"Use arrow keys or WASD to move.
-Click to attack.
-Press ESC to pause.";
+Click to attack.";
 }
 
 // Draw semi-transparent overlay

@@ -19,6 +19,7 @@ for (var i = 0; i < array_length(buttons); i++) {
         // Check for click
         if (mouse_check_button_pressed(mb_left)) {
             btn.action();
+            mouse_clear(mb_left);
         }
         break;
     }

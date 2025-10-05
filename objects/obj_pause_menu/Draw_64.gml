@@ -3,6 +3,25 @@
 // Don't draw in main menu or if not paused
 if (!is_paused || room == MainMenu) exit;
 
+// Update instructions based on current room
+var current_instructions = "";
+if (room == AlchemyRoom) {
+    current_instructions = @"Drag and drop elements to craft new gourds.
+Combine different elements to discover recipes.
+Press ESC to pause.";
+} else if (room == GameSandbox) {
+    current_instructions = @"WASD - Move
+Mouse - Aim
+Left Click - Activate active element
+Q/E - Cycle active element
+Enter door to access Alchemy Room
+Press ESC to pause.";
+} else {
+    current_instructions = @"Use arrow keys or WASD to move.
+Click to attack.
+Press ESC to pause.";
+}
+
 // Draw semi-transparent overlay
 draw_set_alpha(0.7);
 draw_set_color(col_overlay);
@@ -28,7 +47,7 @@ draw_text_transformed(center_x, panel_y + 30, "PAUSED", 2, 2, 0);
 draw_set_color(col_text);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
-draw_text_ext(panel_x + 40, panel_y + 100, "Instructions:\n\n" + instructions_text, 20, panel_width - 80);
+draw_text_ext(panel_x + 40, panel_y + 100, "Instructions:\n\n" + current_instructions, 20, panel_width - 80);
 
 // Draw buttons
 for (var i = 0; i < array_length(buttons); i++) {

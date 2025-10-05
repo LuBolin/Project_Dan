@@ -10,9 +10,11 @@ close_button_hovered = point_in_rectangle(mx, my, close_button_x, close_button_y
 // Check for close button click
 if (close_button_hovered && mouse_check_button_pressed(mb_left)) {
     instance_destroy();
+    mouse_clear(mb_left);
 }
 
 // Also close with Escape key
 if (keyboard_check_pressed(vk_escape)) {
     instance_destroy();
+    keyboard_clear(vk_escape);
 }

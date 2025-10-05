@@ -1,5 +1,11 @@
 /// Pause Menu Controller - Create Event
 
+// Destroy duplicate instances (only one pause menu should exist)
+if (instance_number(obj_pause_menu) > 1) {
+    instance_destroy();
+    exit;
+}
+
 // Pause state
 is_paused = false;
 

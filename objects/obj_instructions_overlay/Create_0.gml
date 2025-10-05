@@ -28,9 +28,14 @@ col_close_hover = make_color_rgb(120, 80, 60);
 // Instructions content
 instructions_text = @"How to Play:
 
+Dungeon:
 WASD - Move your character
 Mouse - Aim
-Left Click - Shoot
+Left Click - Activate active element
+Q/E - Cycle active element
+
+Alchemy:
+Drag to combine elements in the crafting area
 
 Venture through dungeons and biomes and survive waves of enemies.
 Discover new elements along the way and synthesize higher tier elements.

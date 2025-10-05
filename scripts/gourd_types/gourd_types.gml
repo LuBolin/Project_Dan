@@ -1,4 +1,4 @@
- function GourdNone()  : GourdBase() constructor {
+function GourdNone()  : GourdBase() constructor {
 	name = "(Empty)";
 	cooldown = 0;
 	use=function(_p){};

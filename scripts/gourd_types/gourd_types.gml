@@ -5,25 +5,23 @@ function GourdNone()  : GourdBase() constructor {
 }
 
 
-function GourdEarth() : GourdBase() constructor 
+function GourdEarth() : GourdBase() constructor
 {
     name = "Earth";
-	color = make_color_rgb(25, 50, 0); // brown-ish
+	color = make_color_rgb(25, 50, 0);
     cooldown = 2;
-    
+
     use = function(p) {
-        show_debug_message("Using " + name);
     };
 }
 
-function GourdWater() : GourdBase() constructor 
+function GourdWater() : GourdBase() constructor
 {
     name = "Water";
 	color = c_blue;
     cooldown = 3;
-    
+
     use = function(p) {
-        show_debug_message("Using " + name);
     };
 }
 
@@ -34,28 +32,25 @@ function GourdWind() : GourdBase() constructor
     cooldown = 5;
 
     use = function(p) {
-        show_debug_message("Using " + name);
     };
 }
 
 function GourdMud() : GourdBase() constructor
 {
     name = "Mud";
-	color = make_color_rgb(101, 67, 33); // muddy brown
+	color = make_color_rgb(101, 67, 33);
     cooldown = 4;
 
     use = function(p) {
-        show_debug_message("Using " + name);
     };
 }
 
 function GourdHurricane() : GourdBase() constructor
 {
     name = "Hurricane";
-	color = make_color_rgb(70, 130, 180); // stormy blue-gray
+	color = make_color_rgb(70, 130, 180);
     cooldown = 6;
 
     use = function(p) {
-        show_debug_message("Using " + name);
     };
 }

@@ -9,10 +9,8 @@ function shoot_projectile(_p, _projectile) {
     var sx = _p.x + lengthdir_x(r + gap, ang);
     var sy = _p.y + lengthdir_y(r + gap, ang);
 
-    var b = instance_create_layer(sx, sy, layer, _projectile); // is spawning on player layer fine?
+    var b = instance_create_layer(sx, sy, layer, _projectile);
     b.direction   = ang;
     b.image_angle = ang;
-    b.creator     = id;     // can use to ignore hitting yourself if needed
-	// b.speed    = 16;    // uncomment to override default speed
-	// b.damage   = 12;    // uncomment to override default damage
+    b.creator     = id;
 }

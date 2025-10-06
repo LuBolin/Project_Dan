@@ -35,12 +35,6 @@ vh = camera_get_view_height(cam);
 var tx = follow.x - vw * 0.5;
 var ty = follow.y - vh * 0.5;
 
-// safe clamp to room
-//var max_x = room_width  - vw;
-//var max_y = room_height - vh;
-//if (max_x > 0) tx = clamp(tx, 0, max_x); else tx = (room_width - vw) * 0.5;
-//if (max_y > 0) ty = clamp(ty, 0, max_y); else ty = (room_height - vh) * 0.5;
-
 // smooth movement
 var k = clamp(smooth, 0, 1);
 tx = lerp(cx, tx, k);

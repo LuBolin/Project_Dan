@@ -2,10 +2,7 @@
 /// @param {object} _target The target being attacked
 /// @param {int} _dmg The amount of damage dealt
 /// @param {int} _knockback The knockback dealt
-// This function assumes the target being attacked is something with a health
 function damage_entity(_target, _dmg, _knockback) {
-    // Apologies for the bad code, I really dont know how to OOP this well in GM
-
     if (!variable_instance_exists(_target, "invuln") || !_target.invuln) {
         _target.hp -= _dmg;
         _target.image_blend = c_red;
@@ -20,8 +17,7 @@ function damage_entity(_target, _dmg, _knockback) {
     
     kb_x = sign(_target.x - self.x);
     kb_y = sign(_target.y - self.y);
-        
-    //show_debug_message(_taself.x)
+
     _target.knockback_x = kb_x * _knockback
     _target.knockback_y = kb_y * _knockback
 }

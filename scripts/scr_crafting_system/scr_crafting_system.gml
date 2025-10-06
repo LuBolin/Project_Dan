@@ -52,7 +52,6 @@ function load_recipes_from_json(_filename) {
 
     // Check if file exists
     if (!file_exists(filepath)) {
-        show_debug_message("ERROR: Recipe file not found: " + filepath);
         return undefined;
     }
 

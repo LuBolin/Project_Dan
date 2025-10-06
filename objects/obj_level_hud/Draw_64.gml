@@ -77,37 +77,13 @@ for (var i = 0; i < 3; i++) {
         node_col = g.color;
     }
 
-	/*
-	// modify alpha if on cooldown
-    if (is_struct(g) && !is_undefined(g.cooldown) && !is_undefined(g.cooldown_timer) && g.cooldown > 0) {
-        var cd_ratio = clamp(g.cooldown_timer / max(1, g.cooldown), 0, 1);
-        dim_alpha = 1 - 0.5 * cd_ratio;
-    }
-    draw_set_alpha(dim_alpha);
-	*/
-	
-	/*
-	draw_set_color(node_col);
-    draw_circle(nx, ny, is_sel ? node_r_select : node_r, false);
-
-    draw_set_color(col_outline);
-    draw_circle(nx, ny, is_sel ? node_r_select : node_r, true);
-	*/
-	
-
-
-	// --- compute scale for target pixel size
+	// compute scale for target pixel size
     var sw = max(1, sprite_get_width(spr_gourd_icon));
     var sh = max(1, sprite_get_height(spr_gourd_icon));
     var target_d = is_sel ? node_px_sel : node_px;     // desired diameter in px
     var scale = target_d / max(sw, sh); // keep aspect
     var rot = 0;
 
-	// draw outline
-    // draw_set_alpha(0.15);
-    // draw_sprite_ext(spr_gourd_icon, 0, nx, ny, scale*1.15, scale*1.15, rot, c_white, 1);
-    
-	
     // draw tinted icon
     draw_set_alpha(dim_alpha);
     draw_sprite_ext(spr_gourd_icon, 0, nx, ny, scale, scale, rot, node_col, 1);

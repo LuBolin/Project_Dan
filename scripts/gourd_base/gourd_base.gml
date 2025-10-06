@@ -17,9 +17,7 @@ function GourdBase() constructor {
         if (cd_timer > 0) cd_timer -= 1;
     }
 
-    // Virtual method — override in children
     use = function (player) {
-        show_debug_message("Using " + name);
     }
 }
 

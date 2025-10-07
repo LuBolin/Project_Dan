@@ -215,6 +215,9 @@ button_hover = point_in_rectangle(mx, my, button_x, button_y, button_x + button_
 
 // Check click
 if (button_hover && mouse_check_button_pressed(mb_left)) {
+    // Reactivate player
+    instance_activate_object(obj_player);
+
     // Update player's inventory
     if (instance_exists(obj_player)) {
         obj_player.inv[0] = equipped_gourds[0];
@@ -224,5 +227,8 @@ if (button_hover && mouse_check_button_pressed(mb_left)) {
 
     // Clear mouse button state to prevent click carrying over to next room
     io_clear();
-    room_goto(GameSandbox);
+
+    // Return to previous room (default to GameSandbox if not set)
+    var return_room = variable_global_exists("previous_room") ? global.previous_room : GameSandbox;
+    room_goto(return_room);
 }

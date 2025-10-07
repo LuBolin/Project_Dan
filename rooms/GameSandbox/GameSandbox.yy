@@ -6,7 +6,7 @@
   "inheritCreationOrder":false,
   "inheritLayers":false,
   "instanceCreationOrder":[
-    {"name":"inst_1AA4BBC9","path":"rooms/GameSandbox/GameSandbox.yy",},
+    {"name":"inst_entry_door","path":"rooms/GameSandbox/GameSandbox.yy",},
     {"name":"inst_56990CC0","path":"rooms/GameSandbox/GameSandbox.yy",},
     {"name":"inst_65CC4EDF","path":"rooms/GameSandbox/GameSandbox.yy",},
     {"name":"inst_7F937950","path":"rooms/GameSandbox/GameSandbox.yy",},
@@ -18,7 +18,9 @@
   "isDnd":false,
   "layers":[
     {"$GMRInstanceLayer":"","%Name":"Instances","depth":0,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
-        {"$GMRInstance":"v2","%Name":"inst_1AA4BBC9","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_1AA4BBC9","objectId":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":0.25,"scaleY":0.25,"x":128.0,"y":128.0,},
+        {"$GMRInstance":"v2","%Name":"inst_entry_door","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_entry_door","objectId":{"name":"obj_dungeon_door","path":"objects/obj_dungeon_door/obj_dungeon_door.yy",},"properties":[
+            {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_dungeon_door","path":"objects/obj_dungeon_door/obj_dungeon_door.yy",},"propertyId":{"name":"door_type","path":"objects/obj_dungeon_door/obj_dungeon_door.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"\"entry\"",},
+          ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":0.5,"scaleY":0.5,"x":128.0,"y":128.0,},
         {"$GMRInstance":"v2","%Name":"inst_56990CC0","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_56990CC0","objectId":{"name":"obj_level_hud","path":"objects/obj_level_hud/obj_level_hud.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":-32.0,"y":0.0,},
         {"$GMRInstance":"v2","%Name":"inst_65CC4EDF","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_65CC4EDF","objectId":{"name":"obj_zombie","path":"objects/obj_zombie/obj_zombie.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":0.2,"scaleY":0.2,"x":352.0,"y":160.0,},
         {"$GMRInstance":"v2","%Name":"inst_7F937950","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_7F937950","objectId":{"name":"obj_zombie","path":"objects/obj_zombie/obj_zombie.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":0.2,"scaleY":0.2,"x":64.0,"y":352.0,},

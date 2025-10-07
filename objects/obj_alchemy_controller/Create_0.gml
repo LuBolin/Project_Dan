@@ -34,7 +34,7 @@ equipped_slot_spacing = 20;
 equipped_x = 100;
 equipped_start_y = gui_height / 2 - (3 * equipped_slot_size + 2 * equipped_slot_spacing) / 2;
 
-// Get player's equipped gourds
+// Get player's equipped gourds BEFORE deactivating player
 if (instance_exists(obj_player)) {
     equipped_gourds = [
         obj_player.inv[0],
@@ -48,6 +48,11 @@ if (instance_exists(obj_player)) {
         gourd_create(GourdWater),
         gourd_create(GourdWind)
     ];
+}
+
+// Deactivate player to prevent input while in alchemy room (after reading inventory)
+if (instance_exists(obj_player)) {
+    instance_deactivate_object(obj_player);
 }
 
 // === CRAFTING EQUATIONS (Center) ===

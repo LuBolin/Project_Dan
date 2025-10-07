@@ -1,6 +1,12 @@
 update_status_effects(self);
 
-if (hp <= 0) exit;
+if (hp <= 0) {
+    // Player died - make non-persistent and return to main menu
+    persistent = false;
+    instance_destroy();
+    room_goto(MainMenu);
+    exit;
+}
 
 var input_dirn_x = 0;
 var input_dirn_y = 0;

@@ -1,7 +1,7 @@
 /// @function shoot_projectile(projectile)
 /// @param {object} _player The player the projectile was fired from
 /// @param {object} projectile The type of projectile fired
-function shoot_projectile(_player, projectile) {
+function spawn_and_set_projectile(_player, projectile) {
     var ang  = point_direction(_player.x, _player.y, mouse_x, mouse_y);
     var r    = player_radius_simple(_player);
     var gap  = 3;

@@ -22,7 +22,7 @@ function GourdBase() constructor {
     use = function(_p) {
         if (can_use()) {
             var proj = new projectile();   // make a fresh projectile
-			shoot_projectile(_p, proj);
+			spawn_and_set_projectile(_p, proj);
             trigger_cd();
         }
     };

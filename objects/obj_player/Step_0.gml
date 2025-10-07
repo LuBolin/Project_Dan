@@ -22,3 +22,8 @@ if (input_dirn_x != 0) {
 
 // Shoot projectile cooldown tick
 if (shoot_cooldown > 0) shoot_cooldown--;
+
+// Update all gourd cooldowns
+for (var i = 0; i < array_length(self.inv); i++) {
+    self.inv[i].step();
+}

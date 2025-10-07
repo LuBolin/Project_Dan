@@ -1,7 +1,7 @@
 /// @function deal_damage(_target, _dmg, _knockback)
-/// @param {object} _target The target being attacked
-/// @param {int} _dmg The amount of damage dealt
-/// @param {int} _knockback The knockback dealt
+/// @param {Id.Instance} _target The target being attacked
+/// @param {Real} _dmg The amount of damage dealt
+/// @param {Real} _knockback The knockback dealt
 function damage_entity(_target, _dmg, _knockback) {
     if (!variable_instance_exists(_target, "invuln") || !_target.invuln) {
         _target.hp -= _dmg;

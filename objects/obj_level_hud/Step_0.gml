@@ -10,9 +10,11 @@ if (!variable_instance_exists(p, "sel_slot")) exit;
 // --- Cycle active gourd slot ---
 if (keyboard_check_pressed(ord("Q"))) {
     p.sel_slot = (p.sel_slot + 1) mod 3;
+	p.equipped_element = p.inv[p.sel_slot] // update the equipped element
 }
 if (keyboard_check_pressed(ord("E"))) {
     p.sel_slot = (p.sel_slot + 2) mod 3;
+	p.equipped_element = p.inv[p.sel_slot] // update the equipped element
 }
 
 // compute desired offset so selected slot appears at 270°

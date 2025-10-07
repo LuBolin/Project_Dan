@@ -1,0 +1,9 @@
+speed       = 3;           // pixels per step
+direction   = 0;            // set at spawn
+image_angle = direction;    // rotate sprite to flight dir
+image_xscale = 0.5;         // scale down to 50%
+image_yscale = 0.5;
+damage      = 3;
+lifetime = 2;				// 2s lifetime
+life_steps  = game_get_speed(gamespeed_fps) * lifetime;
+creator     = noone;        // set to the player when spawning

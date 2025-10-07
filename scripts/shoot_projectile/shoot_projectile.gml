@@ -9,8 +9,8 @@ function shoot_projectile(_p, _projectile) {
     var sx = _p.x + lengthdir_x(r + gap, ang);
     var sy = _p.y + lengthdir_y(r + gap, ang);
 
-    var b = instance_create_layer(sx, sy, layer, _projectile);
+    var b = instance_create_layer(sx, sy, _p.layer, _projectile);
     b.direction   = ang;
     b.image_angle = ang;
-    b.creator     = id;
+    b.creator     = _p.id;
 }

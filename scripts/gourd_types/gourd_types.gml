@@ -12,6 +12,7 @@ function GourdEarth() : GourdBase() constructor
     cooldown = 2;
 
     use = function(p) {
+        shoot_projectile(p, obj_rock_bullet);
     };
 }
 
@@ -19,9 +20,10 @@ function GourdWater() : GourdBase() constructor
 {
     name = "Water";
 	color = c_blue;
-    cooldown = 3;
+    cooldown = 5;
 
     use = function(p) {
+        shoot_projectile(p, obj_water_bullet);
     };
 }
 

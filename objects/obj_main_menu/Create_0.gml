@@ -22,7 +22,7 @@ buttons = [
         name: "Play",
         x_offset: 0,
         y_offset: -80,
-        width: button_width,
+        width: button_width + button_spacing,
         height: button_height * 2,
         action: function() {
             room_goto(GameSandbox);

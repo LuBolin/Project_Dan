@@ -1,9 +1,11 @@
 function GourdBase() constructor {
     name = "";
 	color = c_black;
-
+    
 	cooldown = 0;
 	cooldown_timer = 0;
+	
+	projectile = noone;
 
     can_use = function () {
         return (cooldown_timer <= 0);
@@ -17,8 +19,13 @@ function GourdBase() constructor {
         if (cooldown_timer > 0) cooldown_timer -= 1;
     }
 
-    use = function (player) {
-    }
+    use = function(_p) {
+        if (can_use()) {
+            var proj = new projectile();   // make a fresh projectile
+			shoot_projectile(_p, proj);
+            trigger_cd();
+        }
+    };
 }
 
 function gourd_create(_constructor) {

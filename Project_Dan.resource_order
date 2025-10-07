@@ -47,6 +47,8 @@
     {"name":"gourd_base","order":4,"path":"scripts/gourd_base/gourd_base.yy",},
     {"name":"gourd_types","order":5,"path":"scripts/gourd_types/gourd_types.yy",},
     {"name":"player_radius_simple","order":2,"path":"scripts/player_radius_simple/player_radius_simple.yy",},
+    {"name":"projectile_base","order":9,"path":"scripts/projectile_base/projectile_base.yy",},
+    {"name":"projectile_types","order":10,"path":"scripts/projectile_types/projectile_types.yy",},
     {"name":"scr_crafting_system","order":8,"path":"scripts/scr_crafting_system/scr_crafting_system.yy",},
     {"name":"scr_delta_time","order":6,"path":"scripts/scr_delta_time/scr_delta_time.yy",},
     {"name":"shoot_projectile","order":3,"path":"scripts/shoot_projectile/shoot_projectile.yy",},

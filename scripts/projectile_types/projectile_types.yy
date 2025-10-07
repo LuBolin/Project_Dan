@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"projectile_types",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"projectile_types",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

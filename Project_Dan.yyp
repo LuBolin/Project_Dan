@@ -70,6 +70,8 @@
     {"id":{"name":"gourd_base","path":"scripts/gourd_base/gourd_base.yy",},},
     {"id":{"name":"gourd_types","path":"scripts/gourd_types/gourd_types.yy",},},
     {"id":{"name":"player_radius_simple","path":"scripts/player_radius_simple/player_radius_simple.yy",},},
+    {"id":{"name":"projectile_base","path":"scripts/projectile_base/projectile_base.yy",},},
+    {"id":{"name":"projectile_types","path":"scripts/projectile_types/projectile_types.yy",},},
     {"id":{"name":"scr_crafting_system","path":"scripts/scr_crafting_system/scr_crafting_system.yy",},},
     {"id":{"name":"scr_delta_time","path":"scripts/scr_delta_time/scr_delta_time.yy",},},
     {"id":{"name":"shoot_projectile","path":"scripts/shoot_projectile/shoot_projectile.yy",},},

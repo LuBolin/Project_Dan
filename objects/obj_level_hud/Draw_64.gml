@@ -37,6 +37,8 @@ draw_rectangle(bar_x, bar_y, bar_x + (bar_w * ratio), bar_y + bar_h, false);
 draw_set_color(border_col);
 draw_rectangle(bar_x, bar_y, bar_x + bar_w, bar_y + bar_h, true);
 draw_set_color(c_white);
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);
 draw_text(bar_x + bar_w + 10, bar_y - 2, string(hp) + " / " + string(hp_max));
 
 
@@ -89,7 +91,29 @@ for (var i = 0; i < 3; i++) {
     draw_sprite_ext(spr_gourd_icon, 0, nx, ny, scale, scale, rot, node_col, 1);
 
 	draw_set_alpha(1);
-    
+
+    // draw cooldown overlay
+    if (is_struct(g) && variable_struct_exists(g, "cooldown_timer") && variable_struct_exists(g, "cooldown")) {
+        if (g.cooldown_timer > 0 && g.cooldown > 0) {
+            var cd_ratio = g.cooldown_timer / g.cooldown;
+            var overlay_radius = target_d / 2;
+
+            // draw semi-transparent dark overlay
+            draw_set_alpha(0.7);
+            draw_set_color(c_black);
+            draw_circle(nx, ny, overlay_radius, false);
+
+            // draw cooldown text
+            draw_set_alpha(1);
+            draw_set_color(c_white);
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_middle);
+            draw_text(nx, ny, string(ceil(g.cooldown_timer / game_get_speed(gamespeed_fps))));
+            draw_set_halign(fa_left);
+            draw_set_valign(fa_top);
+        }
+    }
+
 }
 draw_set_alpha(1);
 

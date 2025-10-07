@@ -1,20 +1,20 @@
 function GourdBase() constructor {
     name = "";
 	color = c_black;
-    
+
 	cooldown = 0;
 	cooldown_timer = 0;
 
     can_use = function () {
-        return (cd_timer <= 0);
+        return (cooldown_timer <= 0);
     }
 
     trigger_cd = function () {
-        cd_timer = cooldown;
+        cooldown_timer = cooldown * game_get_speed(gamespeed_fps);
     }
 
     step = function () {
-        if (cd_timer > 0) cd_timer -= 1;
+        if (cooldown_timer > 0) cooldown_timer -= 1;
     }
 
     use = function (player) {

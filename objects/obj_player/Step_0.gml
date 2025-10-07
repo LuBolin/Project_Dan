@@ -27,8 +27,6 @@ if (input_dirn_x != 0) {
     image_xscale = (input_dirn_x > 0) ? scale : -scale;
 }
 
-if (shoot_cooldown > 0) shoot_cooldown--;
-
 for (var i = 0; i < array_length(self.inv); i++) {
     self.inv[i].step();
 }

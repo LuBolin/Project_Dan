@@ -75,5 +75,3 @@ function ProjectileHurricane() constructor {
 	sprite_index = spr_hurricane;
 	projectile_type = ProjectileHurricane;
 }
-
-}

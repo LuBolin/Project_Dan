@@ -59,6 +59,7 @@
     {"id":{"name":"obj_main_menu","path":"objects/obj_main_menu/obj_main_menu.yy",},},
     {"id":{"name":"obj_pause_menu","path":"objects/obj_pause_menu/obj_pause_menu.yy",},},
     {"id":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},},
+    {"id":{"name":"obj_projectile","path":"objects/obj_projectile/obj_projectile.yy",},},
     {"id":{"name":"obj_rock_bullet","path":"objects/obj_rock_bullet/obj_rock_bullet.yy",},},
     {"id":{"name":"obj_settings_overlay","path":"objects/obj_settings_overlay/obj_settings_overlay.yy",},},
     {"id":{"name":"obj_water_bullet","path":"objects/obj_water_bullet/obj_water_bullet.yy",},},

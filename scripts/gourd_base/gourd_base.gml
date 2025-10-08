@@ -1,11 +1,11 @@
 function GourdBase() constructor {
     name = "";
 	color = c_black;
-    
+
 	cooldown = 0;
 	cooldown_timer = 0;
-	
-	projectile = noone;
+
+	projectile = ProjectileBase;
 
     can_use = function () {
         return (cooldown_timer <= 0);
@@ -21,7 +21,8 @@ function GourdBase() constructor {
 
     use = function(_p) {
         if (can_use()) {
-			show_debug_message("GourdBase.use() called - no projectile assigned");
+			var proj = new projectile();
+			spawn_and_set_projectile(_p, proj);
             trigger_cd();
         }
     };

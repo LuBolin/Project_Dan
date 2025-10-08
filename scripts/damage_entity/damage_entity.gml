@@ -15,18 +15,25 @@ function damage_entity(_target, _dmg) {
     }
 }
 
-/// @function apply_knockback(_source, _target, _knockback_speed, _apply_stun)
+/// @function apply_knockback(_source, _target, _kb_speed, _kb_distance, _kb_direction, _apply_stun)
 /// @param {Id.Instance} _source The source of the knockback
 /// @param {Id.Instance} _target The target being knocked back
-/// @param {Real} _knockback_speed The knockback speed/strength
+/// @param {Real} _kb_speed Speed of knockback (pixels per frame)
+/// @param {Real} _kb_distance Total distance to push (in pixels)
+/// @param {Real} _kb_direction Direction of knockback in degrees (if undefined, calculated from source to target)
 /// @param {Bool} _apply_stun Whether to also stun the target (default: true)
-function apply_knockback(_source, _target, _knockback_speed, _apply_stun = true) {
-    if (_knockback_speed <= 0) return;
+function apply_knockback(_source, _target, _kb_speed, _kb_distance, _kb_direction = undefined, _apply_stun = true) {
+    if (_kb_distance <= 0 || _kb_speed <= 0) return;
 
-    // Calculate knockback direction (from source to target)
-    var kb_direction = point_direction(_source.x, _source.y, _target.x, _target.y);
+    // Calculate knockback direction (from source to target if not provided)
+    var kb_direction = _kb_direction;
+    if (is_undefined(_kb_direction)) {
+        kb_direction = point_direction(_source.x, _source.y, _target.x, _target.y);
+    }
+
+    // Calculate duration from distance and speed
+    var kb_duration = _kb_distance / _kb_speed;
 
     // Apply knockback as a status effect
-    var kb_duration = max(10, _knockback_speed * 2); // Duration scales with speed
-    add_status_effect(_target, new KnockbackEffect(kb_direction, _knockback_speed, kb_duration, _apply_stun));
+    add_status_effect(_target, new KnockbackEffect(kb_direction, _kb_speed, kb_duration, _apply_stun));
 }

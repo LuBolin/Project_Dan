@@ -44,6 +44,13 @@ buttons = [
         action: function() {
             instance_activate_all();
             other.is_paused = false;
+            // Destroy player and related objects before returning to menu
+            if (instance_exists(obj_player)) {
+                instance_destroy(obj_player);
+            }
+            if (instance_exists(obj_aim_arrow)) {
+                instance_destroy(obj_aim_arrow);
+            }
             room_goto(MainMenu);
         }
     }

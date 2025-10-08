@@ -223,6 +223,7 @@ if (button_hover && mouse_check_button_pressed(mb_left)) {
         obj_player.inv[0] = equipped_gourds[0];
         obj_player.inv[1] = equipped_gourds[1];
         obj_player.inv[2] = equipped_gourds[2];
+        obj_player.equipped_element = obj_player.inv[obj_player.sel_slot];
     }
 
     // Clear mouse button state to prevent click carrying over to next room

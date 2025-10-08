@@ -1,8 +1,4 @@
-damage_entity(other, damage)
-apply_knockback(self, other, knockback)
-if (projectile_type == ProjectileRock) {
-    add_status_effect(other, new StunEffect(game_get_speed(gamespeed_fps) * 0.5));
-}
-if (projectile_type != ProjectileWindGust) {
-	instance_destroy(); // bullet disappears on hit
+// Call the on_hit function from the projectile's struct data
+if (variable_struct_exists(proj_data, "on_hit")) {
+	proj_data.on_hit(self, other);
 }

@@ -106,26 +106,22 @@ function StunEffect(_duration) : StatusEffect() constructor {
 function KnockbackEffect(_direction, _speed, _duration, _apply_stun = true) : StatusEffect() constructor {
     duration = _duration;
     kb_direction = _direction;  // Angle in degrees
-    kb_speed = _speed;          // Initial speed
+    kb_speed = _speed;          // Constant speed
     apply_stun = _apply_stun;   // Should this knockback also stun?
-    decay_rate = 0.9;           // Speed decay per frame
-    current_speed = _speed;
     stack_behavior = "stack";   // Multiple knockbacks stack
 
     on_apply = function() {
-        current_speed = kb_speed;
-
         // Apply stun if requested
         if (apply_stun) {
-            var stun_duration = min(kb_speed * 2, 30); // Scale with speed
+            var stun_duration = duration; // Match knockback duration
             add_status_effect(target, new StunEffect(stun_duration));
         }
     }
 
     on_step = function() {
-        // Apply knockback movement
-        var kb_x = lengthdir_x(current_speed, kb_direction);
-        var kb_y = lengthdir_y(current_speed, kb_direction);
+        // Apply knockback movement at constant speed
+        var kb_x = lengthdir_x(kb_speed, kb_direction);
+        var kb_y = lengthdir_y(kb_speed, kb_direction);
 
         // Move the target with collision if it has the necessary properties
         if (variable_instance_exists(target, "colliders")) {
@@ -136,14 +132,6 @@ function KnockbackEffect(_direction, _speed, _duration, _apply_stun = true) : St
             // Fallback: move without collision if no colliders defined
             target.x += kb_x;
             target.y += kb_y;
-        }
-
-        // Decay the knockback speed
-        current_speed *= decay_rate;
-
-        // End early if speed is very low
-        if (current_speed < 0.1) {
-            remaining_time = 0;
         }
     }
 
@@ -177,6 +165,34 @@ function DamageOverTimeEffect(_duration, _damage_per_tick, _tick_rate = 30) : St
 
     get_type = function() {
         return "DamageOverTime";
+    }
+}
+
+/// @function HurricaneDotEffect(_duration, _damage_per_tick, _tick_rate)
+/// @description Hurricane-specific DoT that refreshes instead of stacking
+function HurricaneDotEffect(_duration, _damage_per_tick, _tick_rate = 60) : StatusEffect() constructor {
+    duration = _duration;
+    damage_per_tick = _damage_per_tick;
+    tick_rate = _tick_rate;
+    tick_counter = 0;
+    stack_behavior = "refresh"; // Refresh duration instead of stacking
+
+    on_step = function() {
+        tick_counter++;
+        if (tick_counter >= tick_rate) {
+            tick_counter = 0;
+            if (variable_instance_exists(target, "hp")) {
+                target.hp -= damage_per_tick;
+                // Visual feedback
+                if (variable_instance_exists(target, "image_blend")) {
+                    target.image_blend = c_red;
+                }
+            }
+        }
+    }
+
+    get_type = function() {
+        return "HurricaneDot";
     }
 }
 

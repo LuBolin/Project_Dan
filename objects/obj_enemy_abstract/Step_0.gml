@@ -1,6 +1,12 @@
 // Update status effects
 update_status_effects(self);
 
+// Check for death
+if (hp <= 0) {
+    instance_destroy();
+    exit;
+}
+
 if (!pause) {
     if (chase && instance_exists(obj_player)) {
         target_x = obj_player.x

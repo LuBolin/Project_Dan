@@ -10,23 +10,33 @@ function spawn_and_set_projectile(_player, projectile) {
     var sy = _player.y + lengthdir_y(r + gap, ang);
 
 	var inst = instance_create_layer(sx, sy, "Instances", obj_projectile);
-	
+
 	if (inst != noone) {
-        // attach prototype struct so obj_projectile can read proj_data if it expects it
         if (is_struct(projectile)) {
+            // Store the projectile struct for behavior callbacks
             inst.proj_data = projectile;
-            // copy commonly used fields so Create/Step can rely on them directly
+
+            // Copy properties from projectile struct to instance
             if (!is_undefined(projectile.damage))     inst.damage     = projectile.damage;
             if (!is_undefined(projectile.speed))      inst.speed      = projectile.speed;
             if (!is_undefined(projectile.life_steps)) inst.life_steps = projectile.life_steps;
             if (!is_undefined(projectile.sprite_index)) inst.sprite_index = projectile.sprite_index;
-            if (!is_undefined(projectile.knockback)) inst.knockback  = projectile.knockback;
-			if (!is_undefined(projectile.projectile_type)) inst.projectile_type  = projectile.projectile_type;
+            if (!is_undefined(projectile.kb_speed)) inst.kb_speed  = projectile.kb_speed;
+            if (!is_undefined(projectile.kb_distance)) inst.kb_distance  = projectile.kb_distance;
+			if (!is_undefined(projectile.scale)) {
+				inst.image_xscale = projectile.scale;
+				inst.image_yscale = projectile.scale;
+			}
         }
 
         inst.creator = _player;
         inst.direction = ang;
         inst.image_angle = ang;
+
+        // Call on_launch callback if it exists
+        if (is_struct(projectile) && variable_struct_exists(projectile, "on_launch")) {
+            projectile.on_launch(inst);
+        }
     }
 }
 

@@ -21,8 +21,7 @@ function GourdBase() constructor {
 
     use = function(_p) {
         if (can_use()) {
-            var proj = new projectile();   // make a fresh projectile
-			spawn_and_set_projectile(_p, proj);
+			show_debug_message("GourdBase.use() called - no projectile assigned");
             trigger_cd();
         }
     };

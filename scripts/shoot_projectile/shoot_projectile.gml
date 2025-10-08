@@ -1,6 +1,6 @@
 /// @function shoot_projectile(projectile)
-/// @param {object} _player The player the projectile was fired from
-/// @param {object} projectile The type of projectile fired
+/// @param {Id.Instance} _player The player the projectile was fired from
+/// @param {Struct} projectile The type of projectile fired
 function spawn_and_set_projectile(_player, projectile) {
     var ang  = point_direction(_player.x, _player.y, mouse_x, mouse_y);
     var r    = player_radius_simple(_player);

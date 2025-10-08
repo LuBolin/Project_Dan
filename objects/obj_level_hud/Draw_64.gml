@@ -121,4 +121,5 @@ draw_set_alpha(1);
 var sel_g = p.inv[p.sel_slot];
 var sel_name = (is_struct(sel_g) && !is_undefined(sel_g.name)) ? sel_g.name : "Empty";
 draw_set_color(col_text);
-draw_text(ui_x + ring_R + 16, ui_y - 6, sel_name);
+//draw_text(ui_x + ring_R + 16, ui_y - 6, sel_name);
+draw_text(ui_x - 15 , ui_y + 100, sel_name);

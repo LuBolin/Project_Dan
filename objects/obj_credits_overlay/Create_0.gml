@@ -26,7 +26,7 @@ col_close_normal = make_color_rgb(80, 50, 40);
 col_close_hover = make_color_rgb(120, 80, 60);
 
 // Credits content
-credits_text = @"Dan（丹）
+credits_text = @"Dan 丹
 
 Designer:
 Bolin, Ashley, James

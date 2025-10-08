@@ -46,6 +46,7 @@
   },
   "name":"Project_Dan",
   "resources":[
+    {"id":{"name":"fnt_chinese","path":"fonts/fnt_chinese/fnt_chinese.yy",},},
     {"id":{"name":"obj_aim_arrow","path":"objects/obj_aim_arrow/obj_aim_arrow.yy",},},
     {"id":{"name":"obj_alchemy_controller","path":"objects/obj_alchemy_controller/obj_alchemy_controller.yy",},},
     {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},},

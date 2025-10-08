@@ -1,14 +1,17 @@
 /// Main Menu Controller - Draw GUI
 
 // Draw title "Dan（丹）"
-draw_set_font(-1);
+draw_set_font(fnt_chinese);
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 draw_set_color(col_title);
 
-// Title position (upper third of screen)
-var title_y = gui_height * 0.25;
-draw_text_transformed(center_x, title_y, "Dan（丹）", 3, 3, 0);
+// Title position (move up to give more space)
+var title_y = gui_height * 0.2;
+draw_text_transformed(center_x, title_y, "Dan 丹", 2, 2, 0);
+
+// Reset to default font for buttons
+draw_set_font(-1);
 
 // Draw buttons
 for (var i = 0; i < array_length(buttons); i++) {

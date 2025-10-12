@@ -1,24 +1,143 @@
 {
   "elements": {
-    "basic": ["Water", "Earth", "Wind"],
-    "tier1": ["Hurricane", "Mud"]
+    "basic": ["Fire", "Earth", "Water", "Air"]
+  },
+  "display_tiers": {
+    "base": {
+      "tier": 0,
+      "elements": ["Fire", "Earth", "Water", "Air"],
+      "row_y": 0
+    },
+    "tier2": {
+      "tier": 1,
+      "elements": ["Lava", "Steam", "Mud", "Wind"],
+      "row_y": 1
+    },
+    "tier3": {
+      "tier": 2,
+      "elements": ["Obsidian", "Fog", "Clay", "Hurricane"],
+      "row_y": 2
+    },
+    "tier4": {
+      "tier": 3,
+      "elements": ["Golem", "Soul-Mist"],
+      "row_y": 3
+    },
+    "final": {
+      "tier": 4,
+      "elements": ["Elixir"],
+      "row_y": 4
+    }
   },
   "recipes": [
+    {
+      "id": "lava",
+      "name": "Lava",
+      "ingredients": ["Fire", "Earth"],
+      "result": "Lava",
+      "tier": 1,
+      "display_position": {"row": 1, "column": 0},
+      "description": "Fire and earth create lava",
+      "unlocks": ["obsidian"]
+    },
+    {
+      "id": "steam",
+      "name": "Steam",
+      "ingredients": ["Fire", "Water"],
+      "result": "Steam",
+      "tier": 1,
+      "display_position": {"row": 1, "column": 1},
+      "description": "Fire and water create steam",
+      "unlocks": ["fog"]
+    },
+    {
+      "id": "mud",
+      "name": "Mud",
+      "ingredients": ["Earth", "Water"],
+      "result": "Mud",
+      "tier": 1,
+      "display_position": {"row": 1, "column": 2},
+      "description": "Earth and water create mud",
+      "unlocks": ["clay"]
+    },
+    {
+      "id": "wind",
+      "name": "Wind",
+      "ingredients": ["Air", "Air"],
+      "result": "Wind",
+      "tier": 1,
+      "display_position": {"row": 1, "column": 3},
+      "description": "Air and air create wind",
+      "unlocks": ["fog", "clay", "hurricane"]
+    },
+    {
+      "id": "obsidian",
+      "name": "Obsidian",
+      "ingredients": ["Lava", "Water"],
+      "result": "Obsidian",
+      "tier": 2,
+      "display_position": {"row": 2, "column": 0},
+      "description": "Lava cooled by water creates obsidian",
+      "unlocks": ["golem"]
+    },
+    {
+      "id": "fog",
+      "name": "Fog",
+      "ingredients": ["Steam", "Wind"],
+      "result": "Fog",
+      "tier": 2,
+      "display_position": {"row": 2, "column": 1},
+      "description": "Steam and wind create fog",
+      "unlocks": ["soul-mist"]
+    },
+    {
+      "id": "clay",
+      "name": "Clay",
+      "ingredients": ["Mud", "Air"],
+      "result": "Clay",
+      "tier": 2,
+      "display_position": {"row": 2, "column": 2},
+      "description": "Mud dried by air creates clay",
+      "unlocks": ["golem"]
+    },
     {
       "id": "hurricane",
       "name": "Hurricane",
       "ingredients": ["Water", "Wind"],
       "result": "Hurricane",
-      "tier": 1,
-      "description": "Water and wind create a hurricane"
+      "tier": 2,
+      "display_position": {"row": 2, "column": 3},
+      "description": "Water and wind create a hurricane",
+      "unlocks": ["soul-mist"]
     },
     {
-      "id": "mud",
-      "name": "Mud",
-      "ingredients": ["Water", "Earth"],
-      "result": "Mud",
-      "tier": 1,
-      "description": "Wet earth creates mud"
+      "id": "golem",
+      "name": "Golem",
+      "ingredients": ["Obsidian", "Clay"],
+      "result": "Golem",
+      "tier": 3,
+      "display_position": {"row": 3, "column": 0},
+      "description": "Obsidian and clay form a golem",
+      "unlocks": ["elixir"]
+    },
+    {
+      "id": "soul-mist",
+      "name": "Soul-Mist",
+      "ingredients": ["Fog", "Hurricane"],
+      "result": "Soul-Mist",
+      "tier": 3,
+      "display_position": {"row": 3, "column": 1},
+      "description": "Fog and hurricane create soul-mist",
+      "unlocks": ["elixir"]
+    },
+    {
+      "id": "elixir",
+      "name": "Elixir",
+      "ingredients": ["Golem", "Soul-Mist"],
+      "result": "Elixir",
+      "tier": 4,
+      "display_position": {"row": 4, "column": 0},
+      "description": "Golem and soul-mist create the ultimate elixir"
     }
   ]
 }

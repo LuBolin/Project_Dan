@@ -2,10 +2,22 @@ global.player = id;
 
 invuln = false
 
+// Randomly select 3 of the 4 base elements (Fire, Earth, Water, Air)
+var base_elements = [GourdFire, GourdEarth, GourdWater, GourdAir];
+
+// Shuffle the array using Fisher-Yates algorithm
+for (var i = array_length(base_elements) - 1; i > 0; i--) {
+    var j = irandom(i);
+    var temp = base_elements[i];
+    base_elements[i] = base_elements[j];
+    base_elements[j] = temp;
+}
+
+// Take the first 3 elements after shuffling
 self.inv = [
-    gourd_create(GourdEarth),
-    gourd_create(GourdWater),
-    gourd_create(GourdWind)
+    gourd_create(base_elements[0]),
+    gourd_create(base_elements[1]),
+    gourd_create(base_elements[2])
 ];
 
 self.sel_slot = 0;

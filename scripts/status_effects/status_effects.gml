@@ -222,6 +222,39 @@ function SlowEffect(_duration, _slow_percent) : StatusEffect() constructor {
     }
 }
 
+/// @function BurnEffect(_duration, _damage_per_tick)
+/// @description Fire-based DoT that deals damage once per second
+function BurnEffect(_duration, _damage_per_tick) : StatusEffect() constructor {
+    duration = _duration;
+    damage_per_tick = _damage_per_tick;
+    tick_rate = game_get_speed(gamespeed_fps); // Tick every second (60 frames)
+    tick_counter = 0;
+    stack_behavior = "refresh"; // Refreshes duration instead of stacking
+
+    on_step = function() {
+        tick_counter++;
+        if (tick_counter >= tick_rate) {
+            tick_counter = 0;
+            if (variable_instance_exists(target, "hp")) {
+                target.hp -= damage_per_tick;
+                // Visual feedback - orange/red flash for burn
+                if (variable_instance_exists(target, "image_blend")) {
+                    target.image_blend = make_color_rgb(255, 100, 0); // Orange
+                }
+            }
+        }
+
+        // Fade back to white between ticks
+        if (tick_counter > 5 && variable_instance_exists(target, "image_blend")) {
+            target.image_blend = c_white;
+        }
+    }
+
+    get_type = function() {
+        return "Burn";
+    }
+}
+
 /// @function add_status_effect(_target, _effect)
 /// @description Add a status effect to an entity
 function add_status_effect(_target, _effect) {

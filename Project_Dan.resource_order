@@ -51,6 +51,7 @@
     {"name":"shoot_projectile","order":3,"path":"scripts/shoot_projectile/shoot_projectile.yy",},
     {"name":"spr_dungeon_entry_door","order":2,"path":"sprites/spr_dungeon_entry_door/spr_dungeon_entry_door.yy",},
     {"name":"spr_dungeon_exit_door","order":1,"path":"sprites/spr_dungeon_exit_door/spr_dungeon_exit_door.yy",},
+    {"name":"spr_fire_ball","order":6,"path":"sprites/spr_fire_ball/spr_fire_ball.yy",},
     {"name":"spr_fire_projectile","order":1,"path":"sprites/spr_fire_projectile/spr_fire_projectile.yy",},
     {"name":"spr_gourd","order":2,"path":"sprites/spr_gourd/spr_gourd.yy",},
     {"name":"spr_heart","order":6,"path":"sprites/spr_heart/spr_heart.yy",},

@@ -1,5 +1,21 @@
 /// Alchemy Controller - Draw GUI
 
+// Helper function to draw text with black outline
+function draw_text_outlined(_x, _y, _text) {
+    // Draw black outline
+    draw_set_color(c_black);
+    for (var ox = -1; ox <= 1; ox++) {
+        for (var oy = -1; oy <= 1; oy++) {
+            if (ox != 0 || oy != 0) {
+                draw_text(_x + ox, _y + oy, _text);
+            }
+        }
+    }
+    // Draw white text on top
+    draw_set_color(c_white);
+    draw_text(_x, _y, _text);
+}
+
 // === DRAW BACKGROUND ===
 draw_set_color(col_bg);
 draw_rectangle(0, 0, gui_width, gui_height, false);
@@ -31,11 +47,10 @@ for (var i = 0; i < 3; i++) {
     draw_set_color(col_border);
     draw_rectangle(slot_x, slot_y, slot_x + equipped_slot_size, slot_y + equipped_slot_size, true);
 
-    // Draw gourd name
-    draw_set_color(col_text);
+    // Draw gourd name with outline
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
-    draw_text(slot_x + equipped_slot_size / 2, slot_y + equipped_slot_size / 2, gourd.name);
+    draw_text_outlined(slot_x + equipped_slot_size / 2, slot_y + equipped_slot_size / 2, gourd.name);
 }
 
 // === DRAW CRAFTING EQUATIONS ===
@@ -65,10 +80,9 @@ for (var eq = 0; eq < 2; eq++) {
                 draw_set_color(col_border);
                 draw_rectangle(result_x, result_y, result_x + equation_slot_size, result_y + equation_slot_size, true);
 
-                draw_set_color(col_text);
                 draw_set_halign(fa_center);
                 draw_set_valign(fa_middle);
-                draw_text(result_x + equation_slot_size / 2, result_y + equation_slot_size / 2, equation.result.name);
+                draw_text_outlined(result_x + equation_slot_size / 2, result_y + equation_slot_size / 2, equation.result.name);
             }
         } else {
             // Draw failed craft indicator (red X)
@@ -105,10 +119,9 @@ for (var eq = 0; eq < 2; eq++) {
         draw_rectangle(input1_x, input1_y, input1_x + equation_slot_size, input1_y + equation_slot_size, true);
 
         if (equation.input1 != noone) {
-            draw_set_color(col_text);
             draw_set_halign(fa_center);
             draw_set_valign(fa_middle);
-            draw_text(input1_x + equation_slot_size / 2, input1_y + equation_slot_size / 2, equation.input1.name);
+            draw_text_outlined(input1_x + equation_slot_size / 2, input1_y + equation_slot_size / 2, equation.input1.name);
         }
 
         // Draw "+" symbol
@@ -128,10 +141,9 @@ for (var eq = 0; eq < 2; eq++) {
         draw_rectangle(input2_x, input2_y, input2_x + equation_slot_size, input2_y + equation_slot_size, true);
 
         if (equation.input2 != noone) {
-            draw_set_color(col_text);
             draw_set_halign(fa_center);
             draw_set_valign(fa_middle);
-            draw_text(input2_x + equation_slot_size / 2, input2_y + equation_slot_size / 2, equation.input2.name);
+            draw_text_outlined(input2_x + equation_slot_size / 2, input2_y + equation_slot_size / 2, equation.input2.name);
         }
 
         // Draw "=" symbol
@@ -203,57 +215,111 @@ if (dragging) {
         draw_set_color(col_border);
         draw_rectangle(draw_x, draw_y, draw_x + draw_size, draw_y + draw_size, true);
 
-        draw_set_color(col_text);
         draw_set_halign(fa_center);
         draw_set_valign(fa_middle);
-        draw_text(draw_x + draw_size / 2, draw_y + draw_size / 2, dragged_gourd.name);
+        draw_text_outlined(draw_x + draw_size / 2, draw_y + draw_size / 2, dragged_gourd.name);
     }
 }
 
 draw_set_alpha(1);
 
-// === DRAW RECIPE PANEL (Right side) ===
-var panel_x = gui_width - 250;
-var panel_y = 80;
-var panel_w = 230;
-var panel_h = gui_height - 200;
-
-// Draw panel background
+// === DRAW RECIPE TREE (Right side) ===
+// Draw tree panel background
 draw_set_color(make_color_rgb(20, 20, 30));
-draw_rectangle(panel_x, panel_y, panel_x + panel_w, panel_y + panel_h, false);
+draw_rectangle(tree_panel_x, tree_panel_y, tree_panel_x + tree_panel_w, tree_panel_y + tree_panel_h, false);
 
 // Draw panel border
 draw_set_color(col_border);
-draw_rectangle(panel_x, panel_y, panel_x + panel_w, panel_y + panel_h, true);
-
-// Draw panel title
-draw_set_color(col_text);
-draw_set_halign(fa_left);
-draw_set_valign(fa_top);
-draw_text(panel_x + 10, panel_y + 10, "Discovered Recipes:");
+draw_rectangle(tree_panel_x, tree_panel_y, tree_panel_x + tree_panel_w, tree_panel_y + tree_panel_h, true);
 
 // Get all discovered recipes
-var discovered = get_discovered_recipes(global.recipe_tree);
-var line_height = 35;
-var content_start_y = panel_y + 40;
+var discovered_map = {};
+var discovered_array = get_discovered_recipes(global.recipe_tree);
+for (var i = 0; i < array_length(discovered_array); i++) {
+    discovered_map[$ discovered_array[i].name] = true;
+}
 
-// Draw discovered recipes
-for (var i = 0; i < array_length(discovered); i++) {
-    var recipe = discovered[i];
-    var item_y = content_start_y + (i * line_height);
+// Load JSON to get recipe connections
+var json_data = load_recipes_from_json("recipes.json");
 
-    // Only draw if visible in panel
-    if (item_y + line_height >= panel_y && item_y <= panel_y + panel_h) {
-        // Draw recipe name
-        draw_set_color(recipe.tier == 0 ? c_yellow : c_lime);
-        draw_text(panel_x + 15, item_y, recipe.name);
+// Draw connectors first (so they appear behind nodes)
+for (var i = 0; i < array_length(json_data.recipes); i++) {
+    var recipe = json_data.recipes[i];
+    var result_name = recipe.result;
 
-        // Draw ingredients if not basic element
-        if (recipe.tier > 0) {
-            draw_set_color(c_gray);
-            var ingredients_text = recipe.ingredients[0] + " + " + recipe.ingredients[1];
-            draw_text(panel_x + 20, item_y + 15, ingredients_text);
+    // Only draw connectors if result is discovered
+    if (variable_struct_exists(discovered_map, result_name)) {
+        var result_pos = tree_positions[$ result_name];
+        var result_x = tree_start_x + result_pos.x;
+        var result_y = tree_start_y + result_pos.y;
+
+        // Draw lines to each ingredient
+        for (var j = 0; j < array_length(recipe.ingredients); j++) {
+            var ingredient_name = recipe.ingredients[j];
+
+            // Only draw connector if ingredient is discovered
+            if (variable_struct_exists(discovered_map, ingredient_name)) {
+                var ingredient_pos = tree_positions[$ ingredient_name];
+                var ingredient_x = tree_start_x + ingredient_pos.x;
+                var ingredient_y = tree_start_y + ingredient_pos.y;
+
+                // Draw line from ingredient to result
+                draw_set_color(make_color_rgb(100, 150, 200));
+                draw_line_width(ingredient_x, ingredient_y + tree_node_size / 2,
+                              result_x, result_y + tree_node_size / 2, 2);
+            }
         }
+    }
+}
+
+// Draw all nodes
+var element_names = variable_struct_get_names(tree_positions);
+for (var i = 0; i < array_length(element_names); i++) {
+    var elem_name = element_names[i];
+    var pos = tree_positions[$ elem_name];
+    var node_x = tree_start_x + pos.x - tree_node_size / 2;
+    var node_y = tree_start_y + pos.y - tree_node_size / 2;
+
+    var is_discovered = variable_struct_exists(discovered_map, elem_name);
+
+    // Get element color (find matching gourd type)
+    var elem_color = c_gray;
+    var gourd_type = get_gourd_type_by_name(elem_name);
+    if (gourd_type != undefined) {
+        var temp_gourd = gourd_create(gourd_type);
+        elem_color = temp_gourd.color;
+    }
+
+    // Draw node background
+    if (is_discovered) {
+        // Special glow effect for Elixir
+        if (elem_name == "Elixir") {
+            var glow_alpha = 0.3 + sin(elixir_glow_timer * 0.1) * 0.2;
+            draw_set_alpha(glow_alpha);
+            draw_set_color(c_yellow);
+            draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size * 0.7, false);
+            draw_set_alpha(1);
+        }
+
+        draw_set_color(elem_color);
+    } else {
+        // Greyed out for undiscovered
+        draw_set_color(make_color_rgb(40, 40, 50));
+    }
+    draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, false);
+
+    // Draw node border
+    draw_set_color(is_discovered ? col_border : make_color_rgb(60, 60, 70));
+    draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, true);
+
+    // Draw element name with outline (for discovered elements) or grey (for undiscovered)
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    if (is_discovered) {
+        draw_text_outlined(node_x + tree_node_size / 2, node_y + tree_node_size / 2, elem_name);
+    } else {
+        draw_set_color(make_color_rgb(80, 80, 90));
+        draw_text(node_x + tree_node_size / 2, node_y + tree_node_size / 2, "?");
     }
 }
 

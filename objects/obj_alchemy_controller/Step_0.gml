@@ -46,11 +46,21 @@ function try_craft_equation(eq_index) {
 // === HELPER FUNCTION: Get gourd constructor by name ===
 function get_gourd_constructor_by_name(name) {
     switch(name) {
+        case "Fire": return gourd_create(GourdFire);
         case "Earth": return gourd_create(GourdEarth);
         case "Water": return gourd_create(GourdWater);
+        case "Air": return gourd_create(GourdAir);
         case "Wind": return gourd_create(GourdWind);
         case "Mud": return gourd_create(GourdMud);
+        case "Lava": return gourd_create(GourdLava);
+        case "Steam": return gourd_create(GourdSteam);
         case "Hurricane": return gourd_create(GourdHurricane);
+        case "Obsidian": return gourd_create(GourdObsidian);
+        case "Fog": return gourd_create(GourdFog);
+        case "Clay": return gourd_create(GourdClay);
+        case "Golem": return gourd_create(GourdGolem);
+        case "Soul-Mist": return gourd_create(GourdSoulMist);
+        case "Elixir": return gourd_create(GourdElixir);
         default: return noone;
     }
 }
@@ -233,3 +243,6 @@ if (button_hover && mouse_check_button_pressed(mb_left)) {
     var return_room = variable_global_exists("previous_room") ? global.previous_room : GameSandbox;
     room_goto(return_room);
 }
+
+// === ELIXIR GLOW ANIMATION ===
+elixir_glow_timer++;

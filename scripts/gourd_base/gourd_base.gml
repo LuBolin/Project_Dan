@@ -22,8 +22,14 @@ function GourdBase() constructor {
     use = function(_p) {
         if (can_use()) {
 			var proj = new projectile();
-			spawn_and_set_projectile(_p, proj);
-            trigger_cd();
+			// Check if projectile is implemented (has speed property)
+			if (variable_struct_exists(proj, "speed")) {
+				spawn_and_set_projectile(_p, proj);
+				trigger_cd();
+			} else {
+				// Unimplemented projectile - show message on screen
+				show_debug_message(name + " is unimplemented");
+			}
         }
     };
 }

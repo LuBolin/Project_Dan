@@ -1,3 +1,26 @@
+// ========================================
+// TIER 0 - BASE ELEMENTS
+// ========================================
+
+function ProjectileFire() constructor {
+	name = "Fire";
+	speed = 12.0;  // units per second
+	damage = 1;  // Initial hit damage
+	life_steps = game_get_speed(gamespeed_fps) * 0.8;
+	kb_speed = 0;
+	kb_distance = 0;
+	sprite_index = spr_fire_ball;
+	scale = 0.5;
+
+	on_hit = function(projectile_inst, target) {
+		// Initial damage
+		damage_entity(target, projectile_inst.damage);
+		// Apply burn effect: 1 damage per second for 3 seconds
+		add_status_effect(target, new BurnEffect(game_get_speed(gamespeed_fps) * 3, 1));
+		instance_destroy(projectile_inst);
+	}
+}
+
 function ProjectileRock() constructor {
 	name = "Rock";
 	speed       = 18.75;  // units per second (1200 / 64)
@@ -32,20 +55,73 @@ function ProjectileWaterBall() constructor {
 	}
 }
 
-function ProjectileWindGust() constructor {
-	name = "Wind Gust";
-	speed       = 9.375;  // units per second (600 / 64)
-	damage      = 0;
-	life_steps  = game_get_speed(gamespeed_fps) * 0.2;
-	kb_speed = 4;  // pixels per frame (knockback still frame-based)
-	kb_distance = 30;
+function ProjectileAir() constructor {
+	name = "Air";
+	speed = 0;  // Doesn't move
+	damage = 0;
+	life_steps = 1;  // Destroy immediately after dash
+	kb_speed = 12;  // Dash speed (pixels per frame) - slower for smoother dash
+	kb_distance = 96;  // Total dash distance (1.5 units)
+	dash_duration = 8;  // 0.133 seconds at 60 FPS (96 / 12 = 8 frames)
 	sprite_index = spr_wind_gust;
-	scale = 0.7;
+	scale = 0.2;  // Small visual effect
 
-	on_hit = function(projectile_inst, target) {
-		apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
-		// Wind gust doesn't destroy on hit - passes through enemies
+	on_launch = function(projectile_inst) {
+		// Spawn projectile on player
+		projectile_inst.x = projectile_inst.creator.x;
+		projectile_inst.y = projectile_inst.creator.y;
+		projectile_inst.speed = 0;
+		projectile_inst.image_alpha = 0.5;  // Semi-transparent
+
+		// Immediately dash the player towards mouse
+		if (instance_exists(projectile_inst.creator)) {
+			var player = projectile_inst.creator;
+			var dash_dir = point_direction(player.x, player.y, mouse_x, mouse_y);
+
+			// Apply knockback effect to dash player (false = no stun)
+			add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
+
+			// Create particle effect trail behind player
+			var trail_length = 5;  // Number of particles
+			for (var i = 0; i < trail_length; i++) {
+				var offset = i * 10;  // Space particles along the trail
+				var trail_x = player.x - lengthdir_x(offset, dash_dir);
+				var trail_y = player.y - lengthdir_y(offset, dash_dir);
+
+				// Create a wind particle at this position
+				var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
+				if (particle != noone) {
+					particle.sprite_index = spr_wind_gust;
+					particle.image_alpha = 0.4 - (i * 0.06);  // Fade out
+					particle.image_xscale = 0.3;
+					particle.image_yscale = 0.3;
+					particle.image_angle = dash_dir;
+					particle.speed = 0;
+					particle.life_steps = 15 - (i * 2);  // Particles fade quickly
+					particle.proj_data = {};  // Empty data, no collision
+				}
+			}
+		}
+
+		// Destroy projectile immediately
+		instance_destroy(projectile_inst);
 	}
+}
+
+// ========================================
+// TIER 1 - BASIC COMBINATIONS
+// ========================================
+
+function ProjectileLava() constructor {
+	name = "Lava";
+	// UNIMPLEMENTED - Print message instead of shooting
+	show_debug_message("Lava is unimplemented");
+}
+
+function ProjectileSteam() constructor {
+	name = "Steam";
+	// UNIMPLEMENTED - Print message instead of shooting
+	show_debug_message("Steam is unimplemented");
 }
 
 function ProjectileMudBall() constructor {
@@ -63,6 +139,44 @@ function ProjectileMudBall() constructor {
 		apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
 		instance_destroy(projectile_inst);
 	}
+}
+
+function ProjectileWindGust() constructor {
+	name = "Wind Gust";
+	speed       = 9.375;  // units per second (600 / 64)
+	damage      = 0;
+	life_steps  = game_get_speed(gamespeed_fps) * 0.2;
+	kb_speed = 4;  // pixels per frame (knockback still frame-based)
+	kb_distance = 30;
+	sprite_index = spr_wind_gust;
+	scale = 0.7;
+
+	on_hit = function(projectile_inst, target) {
+		apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
+		// Wind gust doesn't destroy on hit - passes through enemies
+	}
+}
+
+// ========================================
+// TIER 2 - ADVANCED COMBINATIONS
+// ========================================
+
+function ProjectileObsidian() constructor {
+	name = "Obsidian";
+	// UNIMPLEMENTED - Print message instead of shooting
+	show_debug_message("Obsidian is unimplemented");
+}
+
+function ProjectileFog() constructor {
+	name = "Fog";
+	// UNIMPLEMENTED - Print message instead of shooting
+	show_debug_message("Fog is unimplemented");
+}
+
+function ProjectileClay() constructor {
+	name = "Clay";
+	// UNIMPLEMENTED - Print message instead of shooting
+	show_debug_message("Clay is unimplemented");
 }
 
 function ProjectileHurricane() constructor {
@@ -124,4 +238,20 @@ function ProjectileHurricane() constructor {
 			instance_destroy(projectile_inst);
 		}
 	}
+}
+
+// ========================================
+// TIER 3 - POWERFUL ELEMENTS
+// ========================================
+
+function ProjectileGolem() constructor {
+	name = "Golem";
+	// UNIMPLEMENTED - Print message instead of shooting
+	show_debug_message("Golem is unimplemented");
+}
+
+function ProjectileSoulMist() constructor {
+	name = "Soul-Mist";
+	// UNIMPLEMENTED - Print message instead of shooting
+	show_debug_message("Soul-Mist is unimplemented");
 }

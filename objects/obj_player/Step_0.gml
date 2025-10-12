@@ -19,10 +19,15 @@ if (!variable_instance_exists(self, "is_stunned") || !is_stunned) {
     if (keyboard_check(ord("S"))) input_dirn_y += 1;
 
     var magnitude = sqrt(input_dirn_x * input_dirn_x + input_dirn_y * input_dirn_y);
-    var vel_hori = (magnitude == 0 ? 0 : (input_dirn_x / magnitude)) * move_speed;
-    var vel_vert = (magnitude == 0 ? 0 : (input_dirn_y / magnitude)) * move_speed;
 
-    move_and_collide(vel_hori, vel_vert, colliders, undefined, undefined, undefined, move_speed, move_speed);
+    // Convert units per second to pixels per frame
+    // units/sec * pixels/unit / frames/sec = pixels/frame
+    var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
+
+    var vel_hori = (magnitude == 0 ? 0 : (input_dirn_x / magnitude)) * move_speed_this_frame;
+    var vel_vert = (magnitude == 0 ? 0 : (input_dirn_y / magnitude)) * move_speed_this_frame;
+
+    move_and_collide(vel_hori, vel_vert, colliders, undefined, undefined, undefined, move_speed_this_frame, move_speed_this_frame);
 
     if (input_dirn_x != 0) {
         var scale = abs(image_xscale);

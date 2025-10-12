@@ -1,3 +1,6 @@
+// Global constant: One unit = 64 pixels (player size is 64x64, which is 1 unit)
+global.UNIT_LENGTH = 64;
+
 function ProjectileBase() constructor {
 	name = "";
 	speed       = 0;

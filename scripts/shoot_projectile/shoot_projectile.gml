@@ -18,7 +18,11 @@ function spawn_and_set_projectile(_player, projectile) {
 
             // Copy properties from projectile struct to instance
             if (!is_undefined(projectile.damage))     inst.damage     = projectile.damage;
-            if (!is_undefined(projectile.speed))      inst.speed      = projectile.speed;
+            if (!is_undefined(projectile.speed)) {
+                // Convert speed from units per second to pixels per frame
+                // units/sec * pixels/unit / frames/sec = pixels/frame
+                inst.speed = (projectile.speed * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
+            }
             if (!is_undefined(projectile.life_steps)) inst.life_steps = projectile.life_steps;
             if (!is_undefined(projectile.sprite_index)) inst.sprite_index = projectile.sprite_index;
             if (!is_undefined(projectile.kb_speed)) inst.kb_speed  = projectile.kb_speed;

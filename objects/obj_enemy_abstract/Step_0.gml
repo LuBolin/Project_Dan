@@ -19,8 +19,12 @@ if (!pause) {
     var magnitude = sqrt(_hor * _hor + _vert * _vert)
 
     if (magnitude != 0) {
-        var _norm_hor = (_hor / magnitude) * move_speed;
-        var _norm_vert = (_vert / magnitude) * move_speed;
+        // Convert units per second to pixels per frame
+        // units/sec * pixels/unit / frames/sec = pixels/frame
+        var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
+
+        var _norm_hor = (_hor / magnitude) * move_speed_this_frame;
+        var _norm_vert = (_vert / magnitude) * move_speed_this_frame;
 
         move_and_collide(_norm_hor, _norm_vert, colliders)
     }

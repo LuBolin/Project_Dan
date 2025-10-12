@@ -1,6 +1,6 @@
 function ProjectileRock() constructor {
 	name = "Rock";
-	speed       = 20;
+	speed       = 18.75;  // units per second (1200 / 64)
 	damage      = 1;
 	life_steps  = game_get_speed(gamespeed_fps) * 0.5;
 	kb_speed = 0;
@@ -17,10 +17,10 @@ function ProjectileRock() constructor {
 
 function ProjectileWaterBall() constructor {
 	name = "Water Ball";
-	speed       = 15;
+	speed       = 14.0625;  // units per second (900 / 64)
 	damage      = 2;
 	life_steps  = game_get_speed(gamespeed_fps) * 1.0;
-	kb_speed = 5;        // 2 pixels per frame
+	kb_speed = 5;        // pixels per frame (knockback still frame-based)
 	kb_distance = 30;    // 30 pixels total
 	sprite_index = spr_water_ball;
 	scale = 0.5;
@@ -34,10 +34,10 @@ function ProjectileWaterBall() constructor {
 
 function ProjectileWindGust() constructor {
 	name = "Wind Gust";
-	speed       = 10;
+	speed       = 9.375;  // units per second (600 / 64)
 	damage      = 0;
 	life_steps  = game_get_speed(gamespeed_fps) * 0.2;
-	kb_speed = 4;
+	kb_speed = 4;  // pixels per frame (knockback still frame-based)
 	kb_distance = 30;
 	sprite_index = spr_wind_gust;
 	scale = 0.7;
@@ -50,10 +50,10 @@ function ProjectileWindGust() constructor {
 
 function ProjectileMudBall() constructor {
 	name = "Mud Ball";
-	speed       = 8;
+	speed       = 7.5;  // units per second (480 / 64)
 	damage      = 0;
 	life_steps  = game_get_speed(gamespeed_fps) * 1.2;
-	kb_speed = 2;
+	kb_speed = 2;  // pixels per frame (knockback still frame-based)
 	kb_distance = 40;
 	sprite_index = spr_mud_ball;
 	scale = 1.0;
@@ -67,7 +67,7 @@ function ProjectileMudBall() constructor {
 
 function ProjectileHurricane() constructor {
 	name = "Hurricane";
-	speed       = 5;  // Slow moving
+	speed       = 4.6875;  // units per second (300 / 64) - slow moving
 	damage      = 1;  // Used for DoT tick damage
 	life_steps  = game_get_speed(gamespeed_fps) * 5;  // 5 second max lifetime
 	kb_speed = 0;

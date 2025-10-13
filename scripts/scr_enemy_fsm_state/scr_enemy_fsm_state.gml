@@ -1,20 +1,36 @@
 /// @description Chase State 
 /// Chase State used Enemy's FSM
 
+enum STATES {
+    IDLE,
+    ROAM,
+    ALERT,
+    CHASE,
+    ATTACK
+}
+
+function changeState(next_state) {
+    with entity {
+        curr_state.leave()
+        curr_state = states_array[next_state]
+        curr_state.enter()
+    }
+}
+
 /// @function ChaseState()
 /// @description Base Chase State constructor
-function State(_entity, _duration = undefined, _is_timed = false) constructor {
-    entity = _entity;
-    name = "base";
+function State(_entity, _duration, _is_timed) constructor {
+    entity = _entity
+    id = STATES.IDLE;
     duration = _duration
     remaining_time = _duration
     is_timed = _is_timed
 
     enter = function() {
-        on_enter(_target)
+        on_enter()
     }
     
-    on_enter = function(_target) {
+    on_enter = function() {
         // Override in child classes
     }
     
@@ -22,7 +38,7 @@ function State(_entity, _duration = undefined, _is_timed = false) constructor {
     /// @description Called every frame while active
     step = function() {
         remaining_time--;
-        if (is_timed or remaining_time) {
+        if (is_timed and remaining_time <= 0) {
             on_timeout()
         }
         on_step();
@@ -61,73 +77,30 @@ function State(_entity, _duration = undefined, _is_timed = false) constructor {
     
 }
 
-function AlertState(_entity, _duration = undefined, _is_timed = false) : State(_entity, _duration = undefined, _is_timed = false) constructor {
-    name = "alert"
+function RoamState(_entity, _duration = 20, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
+    id = STATES.ROAM;
+    _target_x = _entity.x
+    _target_y = _entity.y
+    remaining_time = 1;
     
     on_step = function() {
-        // Was plannning on inserting a '!' pop up here to indicate the enemy has detected the player   
-    }
-    
-    on_player_interact = function() {
-        entity.state = "chase";
-    }
-    
-}
+        with entity {
+     
+            var _hor = clamp(other._target_x - x, -1, 1)
+            var _vert = clamp(other._target_y - y, -1, 1)
+            
+            var magnitude = sqrt(_hor * _hor + _vert * _vert)
+            
+            if (magnitude != 0) {
+                // Convert units per second to pixels per frame
+                // units/sec * pixels/unit / frames/sec = pixels/frame
+                var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
+            
+                var _norm_hor = (_hor / magnitude) * move_speed_this_frame;
+                var _norm_vert = (_vert / magnitude) * move_speed_this_frame;
 
-
-function ChaseState(_entity, _duration = 15, _is_timed = true) : State(_entity, _duration = undefined, _is_timed = false) constructor {    
-    name = "chase"
-    
-    on_step = function() {
-
-        var _hor = clamp(entity.player_last_known_x - entity.x, -1, 1)
-        var _vert = clamp(entity.player_last_known_y - entity.y, -1, 1)
-        
-        var magnitude = sqrt(_hor * _hor + _vert * _vert);
-        
-        if (magnitude != 0) {
-            // Convert units per second to pixels per frame
-            // units/sec * pixels/unit / frames/sec = pixels/frame
-            var move_speed_this_frame = (entity.move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
-        
-            var _norm_hor = (_hor / magnitude) * move_speed_this_frame;
-            var _norm_vert = (_vert / magnitude) * move_speed_this_frame;
-        
-            move_and_collide(_norm_hor, _norm_vert, entity.colliders);
-        }
-        
-    }
-    
-    on_timeout = function() {
-        entity.state = "roam"
-    }
-    
-    on_player_interact = function() {
-        remaining_time = duration;
-    }
-}
-
-function RoamState(_entity, _duration = 20, _is_timed = true) : State(_entity, _duration = undefined, _is_timed = false) constructor {
-    name = "roam"
-    var _target_x
-    var _target_y
-    
-    on_step = function() {
-
-        var _hor = clamp(entity.target - entity.x, -1, 1)
-        var _vert = clamp(entity.player_last_known_y - entity.y, -1, 1)
-        
-        var magnitude = sqrt(_hor * _hor + _vert * _vert)
-        
-        if (magnitude != 0) {
-            // Convert units per second to pixels per frame
-            // units/sec * pixels/unit / frames/sec = pixels/frame
-            var move_speed_this_frame = (entity.move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
-        
-            var _norm_hor = (_hor / magnitude) * move_speed_this_frame;
-            var _norm_vert = (_vert / magnitude) * move_speed_this_frame;
-        
-            move_and_collide(_norm_hor, _norm_vert, entity.colliders)
+                move_and_collide(_norm_hor, _norm_vert, colliders)
+            }
         }
     }
     
@@ -139,6 +112,62 @@ function RoamState(_entity, _duration = 20, _is_timed = true) : State(_entity, _
     }
     
     on_player_interact = function() {
-        entity.state = "chase"
+        changeState(STATES.CHASE);
     }
+}
+
+function AlertState(_entity, _duration = undefined, _is_timed = false) : State(_entity, _duration, _is_timed) constructor {
+    id = STATES.ALERT;
+    
+    on_step = function() {
+        // Was plannning on inserting a '!' pop up here to indicate the enemy has detected the player   
+    }
+    
+    on_player_interact = function() {
+        changeState(STATES.CHASE);
+    }
+    
+}
+
+
+function ChaseState(_entity, _duration = 15, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {    
+    id = STATES.CHASE;
+    
+    on_step = function() {
+        with entity {
+            var _hor = clamp(player_last_known_x - x, -1, 1)
+            var _vert = clamp(player_last_known_y - y, -1, 1)
+            
+            var magnitude = sqrt(_hor * _hor + _vert * _vert);
+            
+            if (magnitude != 0) {
+                // Convert units per second to pixels per frame
+                // units/sec * pixels/unit / frames/sec = pixels/frame
+                var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
+            
+                var _norm_hor = (_hor / magnitude) * move_speed_this_frame;
+                var _norm_vert = (_vert / magnitude) * move_speed_this_frame;
+            
+                
+                move_and_collide(_norm_hor, _norm_vert, colliders); 
+            }
+        }
+        
+    }
+    
+    on_timeout = function() {
+        remaining_time = duration
+        changeState(STATES.ROAM);
+    }
+    
+    on_player_interact = function() {
+        remaining_time = duration;
+    }
+}
+
+
+function AttackState(_entity, _duration = undefined, _is_timed = false) : State(_entity, _duration, _is_timed) constructor {
+    id = STATES.ATTACK;
+    
+    
 }

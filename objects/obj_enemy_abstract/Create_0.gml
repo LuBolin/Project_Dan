@@ -1,3 +1,10 @@
+enum states {
+    roam,
+    alert,
+    chase,
+    attack
+}
+
 target_x = x;
 target_y = y;
 

@@ -8,9 +8,14 @@ if (hp <= 0) {
 }
 
 if (!pause) {
-    if (chase && instance_exists(obj_player)) {
+    
+    // Chase Behaviour
+    if (instance_exists(obj_player) && distance_to_object(obj_player) < distance_to_chase) {
         target_x = obj_player.x
         target_y = obj_player.y
+        chase = true
+    } else {
+        chase = false
     }
 
     var _hor = clamp(target_x - x, -1, 1)

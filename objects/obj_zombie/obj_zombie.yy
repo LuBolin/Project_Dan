@@ -10,7 +10,7 @@
   "name":"obj_zombie",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"hp","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"10",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"damage","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"2",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"base_damage","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"2",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"move_speed_ups","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.9375",},
   ],
   "parent":{

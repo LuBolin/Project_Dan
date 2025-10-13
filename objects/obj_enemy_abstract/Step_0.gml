@@ -9,6 +9,5 @@ if (hp <= 0) {
 
 if (!pause) {
     curr_state.step()
-    
 }
 

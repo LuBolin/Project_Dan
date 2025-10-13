@@ -1,7 +1,7 @@
 target_x = x;
 target_y = y;
 
-alarm[0] = 0;
+alarm[0] = 1;
 
 colliders = [layer_tilemap_get_id("Tile_Collision"), obj_enemy_abstract]
 

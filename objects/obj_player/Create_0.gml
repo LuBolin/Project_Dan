@@ -1,5 +1,6 @@
 global.player = id;
 
+// Invuln timer for player to escape if they get hit
 invuln = false
 
 // Randomly select 3 of the 4 base elements (Fire, Earth, Water, Air)
@@ -22,7 +23,7 @@ self.inv = [
 
 self.sel_slot = 0;
 self.equipped_element = inv[sel_slot]
-
+alarm[0] = 10
 //var aim_arrow = instance_create_layer(x, y, layer, obj_aim_arrow);
 //aim_arrow.player = id;
 //aim_arrow.depth = self.depth + 1;
@@ -33,4 +34,5 @@ self.equipped_element = inv[sel_slot]
 //cam_inst.smooth = 0.12;
 //cam_inst.preferred_ratio = 0.2;
 
+// Entities that the player will physically collide with, such as walls
 colliders = [layer_tilemap_get_id("Tile_Collision")]

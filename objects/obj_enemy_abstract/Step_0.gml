@@ -10,12 +10,12 @@ if (hp <= 0) {
 if (!pause) {
     
     // Chase Behaviour
-    if (instance_exists(obj_player) && distance_to_object(obj_player) < distance_to_chase) {
-        target_x = obj_player.x
-        target_y = obj_player.y
-        chase = true
+    if (instance_exists(obj_player) && is_player_detected) {
+        target_x = player_last_known_x
+        target_y = player_last_known_y
+        state = "chase"
     } else {
-        chase = false
+        state = "roam"
     }
 
     var _hor = clamp(target_x - x, -1, 1)

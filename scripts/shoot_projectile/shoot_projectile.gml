@@ -1,13 +1,13 @@
 /// @function shoot_projectile(projectile)
-/// @param {Id.Instance} _player The player the projectile was fired from
+/// @param {Id.Instance} _entity The entity the projectile was fired from
 /// @param {Struct} projectile The type of projectile fired
-function spawn_and_set_projectile(_player, projectile) {
-    var ang  = point_direction(_player.x, _player.y, mouse_x, mouse_y);
-    var r    = player_radius_simple(_player);
+function spawn_and_set_projectile(_entity, projectile, target_x, target_y) {
+    var ang  = point_direction(_entity.x, _entity.y, mouse_x, mouse_y);
+    var r    = player_radius_simple(_entity);
     var gap  = 3;
 
-    var sx = _player.x + lengthdir_x(r + gap, ang);
-    var sy = _player.y + lengthdir_y(r + gap, ang);
+    var sx = _entity.x + lengthdir_x(r + gap, ang);
+    var sy = _entity.y + lengthdir_y(r + gap, ang);
 
 	var inst = instance_create_layer(sx, sy, "Instances", obj_projectile);
 
@@ -33,7 +33,7 @@ function spawn_and_set_projectile(_player, projectile) {
 			}
         }
 
-        inst.creator = _player;
+        inst.creator = _entity;
         inst.direction = ang;
         inst.image_angle = ang;
 

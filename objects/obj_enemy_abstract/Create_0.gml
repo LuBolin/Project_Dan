@@ -4,15 +4,14 @@ target_y = random_range(ystart - 100, ystart + 100);
 colliders = [layer_tilemap_get_id("Tile_Collision"), obj_enemy_abstract]
 
 // FSM related variables
-player_last_known_x = false;
-player_last_known_y = false;
+player_last_known_x = undefined;
+player_last_known_y = undefined;
  
 // Pauses all activity for the enemy
 pause = false;
 
 // Please check scr_enemy_fsm_state
 states_array[STATES.ROAM] = new RoamState(self, 20, true)
-states_array[STATES.ALERT] = new AlertState(self, 8, true)
 states_array[STATES.CHASE] = new ChaseState(self, 15, true)
 //states_array[STATES.ATTACK] = new AttackState(self, -1, false)
 

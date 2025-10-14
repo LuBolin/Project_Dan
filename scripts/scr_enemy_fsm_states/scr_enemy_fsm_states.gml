@@ -179,6 +179,7 @@ function ChaseState(_entity, _duration = 15, _is_timed = true) : State(_entity, 
 }
 
 
+// Dummy Attack State for zombie
 function AttackState(_entity, _duration = undefined, _is_timed = false) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.ATTACK;
     

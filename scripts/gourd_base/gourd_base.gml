@@ -24,7 +24,7 @@ function GourdBase() constructor {
 			var proj = new projectile();
 			// Check if projectile is implemented (has speed property)
 			if (variable_struct_exists(proj, "speed")) {
-				spawn_and_set_projectile(_p, proj);
+				spawn_and_set_projectile(_p, proj, mouse_x, mouse_y);
 				trigger_cd();
 			} else {
 				// Unimplemented projectile - show message on screen

@@ -1,7 +1,7 @@
 /// Dungeon Door - Step
 
 // Handle entry door fade-out
-if (door_type == "entry" && should_fade) {
+if (should_fade) {
     fade_timer++;
 
     // Fade out over time

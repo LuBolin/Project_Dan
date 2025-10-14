@@ -66,6 +66,7 @@
     {"name":"spr_heart","order":6,"path":"sprites/spr_heart/spr_heart.yy",},
     {"name":"spr_hurricane","order":3,"path":"sprites/spr_hurricane/spr_hurricane.yy",},
     {"name":"spr_lock","order":1,"path":"sprites/spr_lock/spr_lock.yy",},
+    {"name":"spr_move_instructions","order":1,"path":"sprites/spr_move_instructions/spr_move_instructions.yy",},
     {"name":"spr_mud_ball","order":4,"path":"sprites/spr_mud_ball/spr_mud_ball.yy",},
     {"name":"spr_mud_puddle","order":5,"path":"sprites/spr_mud_puddle/spr_mud_puddle.yy",},
     {"name":"spr_taoist","order":3,"path":"sprites/spr_taoist/spr_taoist.yy",},

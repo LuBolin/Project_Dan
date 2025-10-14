@@ -1,5 +1,5 @@
-/// @description Chase State 
-/// Chase State used Enemy's FSM
+/// @description FSM States
+/// States to be used in Enemy's FSM
 
 enum STATES {
     IDLE,
@@ -9,6 +9,7 @@ enum STATES {
     ATTACK
 }
 
+
 function changeState(next_state) {
     with entity {
         curr_state.leave()
@@ -17,8 +18,8 @@ function changeState(next_state) {
     }
 }
 
-/// @function ChaseState()
-/// @description Base Chase State constructor
+/// @function State()
+/// @description Base State constructor
 function State(_entity, _duration, _is_timed) constructor {
     entity = _entity
     id = STATES.IDLE;
@@ -26,10 +27,14 @@ function State(_entity, _duration, _is_timed) constructor {
     remaining_time = _duration
     is_timed = _is_timed
 
+    /// @function enter()
+    /// @description Called when the state is activated
     enter = function() {
         on_enter()
     }
     
+    /// @function on_step()
+    /// @description Override this - called at the start
     on_enter = function() {
         // Override in child classes
     }
@@ -51,26 +56,31 @@ function State(_entity, _duration, _is_timed) constructor {
     }
     
     /// @function leave()
-    /// @description Called when the effect expires or is removed
+    /// @description Called when the state expires or is removed
     leave = function() {
         on_leave();
     }
 
     /// @function on_leave()
-    /// @description Override this - called when effect is removed
+    /// @description Override this - called when state is removed
     on_leave = function() {
         // Override in child classes
     }
     
-    // This is mostly for the Chase, basically any interaction from the player
+    /// @function on_leave()
+    /// @description When the enemy interacts in any way with the player
     player_interact = function() {
         on_player_interact()
     }
     
+    /// @function on_player_interact()
+    /// @description Override this - called when there's player interaction
     on_player_interact = function() {
         // Override in child classes
     }
     
+    /// @function on_player_interact()
+    /// @description Override this - called when there's player interaction
     on_timeout = function() {
         
     }
@@ -112,18 +122,21 @@ function RoamState(_entity, _duration = 20, _is_timed = true) : State(_entity, _
     }
     
     on_player_interact = function() {
-        changeState(STATES.CHASE);
+        changeState(STATES.ALERT);
     }
 }
 
 function AlertState(_entity, _duration = undefined, _is_timed = false) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.ALERT;
     
-    on_step = function() {
-        // Was plannning on inserting a '!' pop up here to indicate the enemy has detected the player   
+    on_enter = function() {
+        // Was plannning on inserting a '!' pop up here to indicate the enemy has detected the player
+        with entity {
+            instance_create_layer(x, y - sprite_height / 2 - 10, "Effects", obj_enemy_alert_popup);
+        }
     }
     
-    on_player_interact = function() {
+    on_timeout = function() {
         changeState(STATES.CHASE);
     }
     
@@ -169,5 +182,8 @@ function ChaseState(_entity, _duration = 15, _is_timed = true) : State(_entity, 
 function AttackState(_entity, _duration = undefined, _is_timed = false) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.ATTACK;
     
-    
+    on_enter = function() {
+        changeState(STATES.ROAM);
+    }
+
 }

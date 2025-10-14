@@ -26,8 +26,11 @@ function damage_entity(_target, _dmg) {
 function apply_knockback(_source, _target, _kb_speed, _kb_distance, _kb_direction = undefined, _kb_duration = undefined, _apply_stun = true) {
     if (_kb_distance <= 0 || _kb_speed <= 0) return;
 
+
     // Prevent player in invuln state from being "ping-ponged" between different enemies
-    if (_target == obj_player.id and obj_player.invuln == true) return;
+    if (_target.object_index == obj_player and obj_player.invuln) {
+        return
+    }
     
     // Calculate knockback direction (from source to target if not provided)
     var kb_direction = _kb_direction;

@@ -2,7 +2,7 @@
 /// @param {Id.Instance} _entity The entity the projectile was fired from
 /// @param {Struct} projectile The type of projectile fired
 function spawn_and_set_projectile(_entity, projectile, target_x, target_y) {
-    var ang  = point_direction(_entity.x, _entity.y, mouse_x, mouse_y);
+    var ang  = point_direction(_entity.x, _entity.y, target_x, target_y);
     var r    = player_radius_simple(_entity);
     var gap  = 3;
 

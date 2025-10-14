@@ -27,10 +27,6 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"door_type","filters":[],"listItems":[
-        "\"entry\"",
-        "\"exit\"",
-      ],"multiselect":false,"name":"door_type","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"exit\"","varType":6,},
     {"$GMObjectProperty":"v1","%Name":"target_room","filters":[
         "GMRoom",
       ],"listItems":[],"multiselect":false,"name":"target_room","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},

@@ -8,8 +8,7 @@ draw_self()
 var sw = max(1, sprite_get_width(spr_gourd_icon));
 var sh = max(1, sprite_get_height(spr_gourd_icon));
 var scale = 20 / max(sw, sh); // keep aspect
-var rot = 0;
 
 // draw tinted icon
 draw_set_alpha(1);
-draw_sprite_ext(spr_gourd_icon, 0, x - 10 * image_xscale, y + 20, scale, scale, rot, inv[sel_slot].color , 1);
+draw_sprite_ext(spr_gourd_icon, 0, x - 10 * image_xscale, y + 20, scale, scale, 0, inv[sel_slot].color , 1);

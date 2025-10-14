@@ -31,6 +31,7 @@
     {"name":"obj_boar","order":2,"path":"objects/obj_boar/obj_boar.yy",},
     {"name":"obj_credits_overlay","order":2,"path":"objects/obj_credits_overlay/obj_credits_overlay.yy",},
     {"name":"obj_dungeon_door","order":3,"path":"objects/obj_dungeon_door/obj_dungeon_door.yy",},
+    {"name":"obj_enemy_alert_popup","order":3,"path":"objects/obj_enemy_alert_popup/obj_enemy_alert_popup.yy",},
     {"name":"obj_instructions_overlay","order":4,"path":"objects/obj_instructions_overlay/obj_instructions_overlay.yy",},
     {"name":"obj_level_hud","order":5,"path":"objects/obj_level_hud/obj_level_hud.yy",},
     {"name":"obj_main_menu","order":6,"path":"objects/obj_main_menu/obj_main_menu.yy",},

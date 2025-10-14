@@ -41,6 +41,32 @@ draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 draw_text(bar_x + bar_w + 10, bar_y - 2, string(hp) + " / " + string(hp_max));
 
+// ======== ENEMY KILL COUNTER ========
+// Check if level manager exists and display kill requirements
+if (instance_exists(obj_level_manager)) {
+    var lm = instance_find(obj_level_manager, 0);
+    if (lm.enemy_count_complete) {
+        // Position at center-left of screen
+        var text_x = pad;
+        var text_y = gui_h / 2;
+
+        draw_set_color(c_white);
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_middle);
+
+        // First line: Kill requirement
+        var kills_needed = lm.required_kills;
+        var total = lm.total_enemies;
+        draw_text(text_x, text_y, "Kill " + string(kills_needed) + "/" + string(total) + " monsters to unlock the exit door!");
+
+        // Second line: Current progress
+        draw_text(text_x, text_y + 20, "Current Kills: " + string(lm.current_kills));
+
+        // Reset alignment
+        draw_set_valign(fa_top);
+    }
+}
+
 
 
 

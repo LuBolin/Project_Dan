@@ -1,5 +1,8 @@
 global.player = id;
 
+// Set depth so player renders in front of doors and other objects
+depth = -10;
+
 // Invuln timer for player to escape if they get hit
 invuln = false
 

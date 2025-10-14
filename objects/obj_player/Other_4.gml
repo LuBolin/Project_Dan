@@ -1,4 +1,5 @@
 var aim_arrow = instance_create_layer(x, y, layer, obj_aim_arrow);
+
 aim_arrow.player = id;
 aim_arrow.depth = self.depth + 1;
 

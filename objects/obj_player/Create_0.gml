@@ -23,6 +23,7 @@ self.inv = [
 
 self.sel_slot = 0;
 self.equipped_element = inv[sel_slot]
+
 alarm[0] = 10
 //var aim_arrow = instance_create_layer(x, y, layer, obj_aim_arrow);
 //aim_arrow.player = id;

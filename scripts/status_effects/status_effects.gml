@@ -143,9 +143,10 @@ function KnockbackEffect(_direction, _speed, _duration, _apply_stun = true) : St
 /// @function DamageOverTimeEffect(_duration, _damage_per_tick, _tick_rate)
 /// @description Deals damage over time
 function DamageOverTimeEffect(_duration, _damage_per_tick, _tick_rate = 30) : StatusEffect() constructor {
-    duration = _duration;
-    damage_per_tick = _damage_per_tick;
     tick_rate = _tick_rate;
+    damage_color_duration = 5; // How long the damage flash lasts (must be < tick_rate)
+    duration = _duration + damage_color_duration; // Extend duration to show final damage flash
+    damage_per_tick = _damage_per_tick;
     tick_counter = 0;
     stack_behavior = "stack"; // Multiple DoTs can stack
 
@@ -161,6 +162,18 @@ function DamageOverTimeEffect(_duration, _damage_per_tick, _tick_rate = 30) : St
                 }
             }
         }
+
+        // Fade back to white after damage_color_duration frames
+        if (tick_counter > damage_color_duration && variable_instance_exists(target, "image_blend")) {
+            target.image_blend = c_white;
+        }
+    }
+
+    on_remove = function() {
+        // Ensure color is reset when effect ends
+        if (variable_instance_exists(target, "image_blend")) {
+            target.image_blend = c_white;
+        }
     }
 
     get_type = function() {
@@ -171,9 +184,10 @@ function DamageOverTimeEffect(_duration, _damage_per_tick, _tick_rate = 30) : St
 /// @function HurricaneDotEffect(_duration, _damage_per_tick, _tick_rate)
 /// @description Hurricane-specific DoT that refreshes instead of stacking
 function HurricaneDotEffect(_duration, _damage_per_tick, _tick_rate = 60) : StatusEffect() constructor {
-    duration = _duration;
-    damage_per_tick = _damage_per_tick;
     tick_rate = _tick_rate;
+    damage_color_duration = 10; // How long the damage flash lasts (must be < tick_rate)
+    duration = _duration + damage_color_duration; // Extend duration to show final damage flash
+    damage_per_tick = _damage_per_tick;
     tick_counter = 0;
     stack_behavior = "refresh"; // Refresh duration instead of stacking
 
@@ -188,6 +202,18 @@ function HurricaneDotEffect(_duration, _damage_per_tick, _tick_rate = 60) : Stat
                     target.image_blend = c_red;
                 }
             }
+        }
+
+        // Fade back to white after damage_color_duration frames
+        if (tick_counter > damage_color_duration && variable_instance_exists(target, "image_blend")) {
+            target.image_blend = c_white;
+        }
+    }
+
+    on_remove = function() {
+        // Ensure color is reset when effect ends
+        if (variable_instance_exists(target, "image_blend")) {
+            target.image_blend = c_white;
         }
     }
 
@@ -225,9 +251,10 @@ function SlowEffect(_duration, _slow_percent) : StatusEffect() constructor {
 /// @function BurnEffect(_duration, _damage_per_tick)
 /// @description Fire-based DoT that deals damage once per second
 function BurnEffect(_duration, _damage_per_tick) : StatusEffect() constructor {
-    duration = _duration;
-    damage_per_tick = _damage_per_tick;
     tick_rate = game_get_speed(gamespeed_fps); // Tick every second (60 frames)
+    damage_color_duration = 10; // How long the damage flash lasts (must be < tick_rate)
+    duration = _duration + damage_color_duration; // Extend duration to show final damage flash
+    damage_per_tick = _damage_per_tick;
     tick_counter = 0;
     stack_behavior = "refresh"; // Refreshes duration instead of stacking
 
@@ -244,8 +271,15 @@ function BurnEffect(_duration, _damage_per_tick) : StatusEffect() constructor {
             }
         }
 
-        // Fade back to white between ticks
-        if (tick_counter > 5 && variable_instance_exists(target, "image_blend")) {
+        // Fade back to white after damage_color_duration frames
+        if (tick_counter > damage_color_duration && variable_instance_exists(target, "image_blend")) {
+            target.image_blend = c_white;
+        }
+    }
+
+    on_remove = function() {
+        // Ensure color is reset when burn effect ends
+        if (variable_instance_exists(target, "image_blend")) {
             target.image_blend = c_white;
         }
     }

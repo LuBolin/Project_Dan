@@ -255,3 +255,25 @@ function ProjectileSoulMist() constructor {
 	// UNIMPLEMENTED - Print message instead of shooting
 	show_debug_message("Soul-Mist is unimplemented");
 }
+
+// ========================================
+// ENEMY PROJECTILE
+// ========================================
+
+function ProjectileGhost() constructor {
+    name = "Ghost";
+    speed = 9.0;                             // units per second
+    damage = 1;
+    life_steps = game_get_speed(gamespeed_fps) * 0.8; // ~0.8s lifetime
+    kb_speed = 12.0;                         // units per second for knockback motion
+    kb_distance = 2 * global.UNIT_LENGTH;    // 2 units of knockback
+    sprite_index = spr_ghost_projectile;     // replace with your sprite; or -1 if none
+    scale = 0.6;
+
+    on_hit = function(projectile_inst, target) {
+        // Simple: 1 damage, no status effects; knockback handled by your hit system via kb_* fields
+        damage_entity(target, projectile_inst.damage);
+        instance_destroy(projectile_inst);
+    }
+}
+

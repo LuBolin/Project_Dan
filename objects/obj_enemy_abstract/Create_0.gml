@@ -11,8 +11,9 @@ player_last_known_y = undefined;
 pause = false;
 
 // Please check scr_enemy_fsm_state
-states_array[STATES.ROAM] = new RoamState(self, 20, true)
-states_array[STATES.CHASE] = new ChaseState(self, 15, true)
-//states_array[STATES.ATTACK] = new AttackState(self, -1, false)
+states_array[STATES.ROAM] = new RoamState(self, 20, true);
+states_array[STATES.CHASE] = new ChaseState(self, 15, true);
+//states_array[STATES.ATTACK] = new AttackState(self, -1, false);
 
-curr_state = states_array[STATES.ROAM]
+curr_state = states_array[STATES.ROAM];
+curr_state.enter();

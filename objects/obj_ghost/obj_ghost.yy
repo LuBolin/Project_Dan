@@ -1,7 +1,9 @@
 {
   "$GMObject":"",
   "%Name":"obj_ghost",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"obj_ghost",
   "overriddenProperties":[],
@@ -9,7 +11,10 @@
     "name":"Enemies",
     "path":"folders/Objects/Enemies.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_enemy_abstract",
+    "path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -27,7 +32,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_ghost",
+    "path":"sprites/spr_ghost/spr_ghost.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

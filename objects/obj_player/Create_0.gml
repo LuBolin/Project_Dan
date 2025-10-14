@@ -36,3 +36,6 @@ alarm[0] = 10
 
 // Entities that the player will physically collide with, such as walls
 colliders = [layer_tilemap_get_id("Tile_Collision")]
+
+// gourd icon
+spr_gourd_icon = spr_gourd;

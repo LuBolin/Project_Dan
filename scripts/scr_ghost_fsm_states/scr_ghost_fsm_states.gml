@@ -28,22 +28,21 @@ function GhostChaseState(_entity, _duration = 8, _is_timed = true) : State(_enti
             var dist = point_distance(x, y, player_last_known_x, player_last_known_y);
 
             // If close enough, attack
-            if (dist <= other._shoot_range_px) {
-                other.go_attack = true;
-                exit;
-            }
+            if (dist <= other._shoot_range_px && attack_cd_timer <= 0) {
+                go_attack = true;
+            } else {
+				// Otherwise, keep chasing
+				var _hor = clamp(dx, -1, 1);
+				var _vert = clamp(dy, -1, 1);
+				var mag = sqrt(_hor * _hor + _vert * _vert);
 
-            // Otherwise, keep chasing
-            var _hor = clamp(dx, -1, 1);
-            var _vert = clamp(dy, -1, 1);
-            var mag = sqrt(_hor * _hor + _vert * _vert);
-
-            if (mag != 0) {
-                var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
-                var _nx = (_hor / mag) * move_speed_this_frame;
-                var _ny = (_vert / mag) * move_speed_this_frame;
-                move_and_collide(_nx, _ny, colliders);
-            }
+				if (mag != 0) {
+					var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
+					var _nx = (_hor / mag) * move_speed_this_frame;
+					var _ny = (_vert / mag) * move_speed_this_frame;
+					move_and_collide(_nx, _ny, colliders);
+				}
+			}
         }
 		
 		if (go_attack) {
@@ -66,11 +65,19 @@ function GhostChaseState(_entity, _duration = 8, _is_timed = true) : State(_enti
 function GhostAttackState(_entity, _duration = 18, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.ATTACK;
 
-    _tx = _entity.player_last_known_x;
-    _ty = _entity.player_last_known_y;
+    _tx = undefined;
+    _ty = undefined;
 
     on_enter = function() {
         remaining_time = duration; // wind-up
+        _tx = entity.player_last_known_x;
+        _ty = entity.player_last_known_y;
+
+        // Fallback: if last-known is undefined, don't crash
+        if (!is_real(_tx) || !is_real(_ty)) {
+            _tx = entity.x;
+            _ty = entity.y; // or skip shooting entirely; your call
+        }
     }
 
     on_step = function() {
@@ -78,7 +85,9 @@ function GhostAttackState(_entity, _duration = 18, _is_timed = true) : State(_en
     }
 
     on_timeout = function() {
-        spawn_and_set_projectile(entity, new ProjectileGhost(), _tx, _ty);
+		// pass the ghost instance and player coords so spawn_and_set_projectile computes angle correctly
+		spawn_and_set_projectile(entity, new ProjectileGhost(), _tx, _ty);
+		entity.attack_cd_timer = entity.attack_cooldown_sec * game_get_speed(gamespeed_fps);
         changeState(STATES.CHASE);
     }
 }

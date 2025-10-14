@@ -4,7 +4,7 @@
 function spawn_and_set_projectile(_entity, projectile, target_x, target_y) {
     var ang  = point_direction(_entity.x, _entity.y, target_x, target_y);
     var r    = player_radius_simple(_entity);
-    var gap  = 3;
+    var gap  = 8;
 
     var sx = _entity.x + lengthdir_x(r + gap, ang);
     var sy = _entity.y + lengthdir_y(r + gap, ang);

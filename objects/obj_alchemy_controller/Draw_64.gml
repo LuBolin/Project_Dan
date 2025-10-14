@@ -233,8 +233,8 @@ draw_set_color(col_border);
 draw_rectangle(tree_panel_x, tree_panel_y, tree_panel_x + tree_panel_w, tree_panel_y + tree_panel_h, true);
 
 // Get all discovered recipes
-var discovered_map = {};
 var discovered_array = get_discovered_recipes(global.recipe_tree);
+var discovered_map = {};
 for (var i = 0; i < array_length(discovered_array); i++) {
     discovered_map[$ discovered_array[i].name] = true;
 }

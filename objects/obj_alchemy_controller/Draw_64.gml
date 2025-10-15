@@ -16,10 +16,6 @@ function draw_text_outlined(_x, _y, _text) {
     draw_text(_x, _y, _text);
 }
 
-// === DRAW BACKGROUND ===
-draw_set_color(col_bg);
-draw_rectangle(0, 0, gui_width, gui_height, false);
-
 // === DRAW TITLE ===
 draw_set_color(col_text);
 draw_set_halign(fa_center);

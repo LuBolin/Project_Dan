@@ -50,19 +50,65 @@ if (instance_exists(obj_level_manager)) {
         var text_x = pad;
         var text_y = gui_h / 2;
 
-        draw_set_color(c_white);
-        draw_set_halign(fa_left);
-        draw_set_valign(fa_middle);
-
-        // First line: Kill requirement
         var kills_needed = lm.required_kills;
         var total = lm.total_enemies;
-        draw_text(text_x, text_y, "Kill " + string(kills_needed) + "/" + string(total) + " monsters to unlock the exit door!");
+        var current = lm.current_kills;
 
-        // Second line: Current progress
-        draw_text(text_x, text_y + 20, "Current Kills: " + string(lm.current_kills));
+        // Prepare text lines (wrapped)
+        var kills_text = string(kills_needed) + "/" + string(total);
+        var line1 = "Kill ";
+        var line2 = "enemies to ";
+        var line3 = "the exit door!";
+        var line4 = "Current: " + string(current);
 
-        // Reset alignment
+        // Calculate text dimensions for background
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+        draw_set_font(-1); // Use default font for measurement
+        var line_height = 20;
+        var max_width = max(
+            string_width(line1) + string_width_ext(kills_text, -1, -1),
+            string_width(line2) + string_width("unlock"),
+            string_width(line3),
+            string_width(line4)
+        );
+        var bg_padding = 8;
+        var bg_x1 = text_x - bg_padding;
+        var bg_y1 = text_y - bg_padding;
+        var bg_x2 = text_x + max_width + bg_padding;
+        var bg_y2 = text_y + (line_height * 4) + bg_padding;
+
+        // Draw translucent gray background
+        draw_set_alpha(0.7);
+        draw_set_color(make_color_rgb(50, 50, 50));
+        draw_rectangle(bg_x1, bg_y1, bg_x2, bg_y2, false);
+        draw_set_alpha(1);
+
+        // Draw text lines
+        draw_set_color(c_white);
+
+        // Line 1: "Kill" + underlined "X/Y"
+        draw_text(text_x, text_y, line1);
+        var x_offset = string_width(line1);
+        draw_text(text_x + x_offset, text_y, kills_text);
+        // Draw underline for X/Y
+        var underline_y = text_y + string_height(kills_text) - 2;
+        draw_line(text_x + x_offset, underline_y, text_x + x_offset + string_width(kills_text), underline_y);
+
+        // Line 2: "enemies to unlock"
+        draw_text(text_x, text_y + line_height, line2 + "unlock");
+
+        // Line 3: "the exit door!"
+        draw_text(text_x, text_y + line_height * 2, line3);
+
+        // Draw current kills with color coding (red if not enough, green if enough)
+        var kill_color = (current >= kills_needed) ? c_lime : c_red;
+        draw_text(text_x, text_y + line_height * 3, "Current: ");
+        draw_set_color(kill_color);
+        draw_text(text_x + string_width("Current: "), text_y + line_height * 3, string(current));
+
+        // Reset drawing state
+        draw_set_color(c_white);
         draw_set_valign(fa_top);
     }
 }

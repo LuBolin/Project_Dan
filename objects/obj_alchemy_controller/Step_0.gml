@@ -119,7 +119,7 @@ if (mouse_check_button_released(mb_left) && dragging) {
     }
 
     // Check if dropped on equation slots
-    for (var eq = 0; eq < 2; eq++) {
+    for (var eq = 0; eq < num_equations; eq++) {
         if (equations[eq].used) continue; // Skip used equations
 
         var base_y = equation_y + eq * (equation_slot_size + equation_spacing);

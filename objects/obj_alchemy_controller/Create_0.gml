@@ -56,27 +56,23 @@ if (instance_exists(obj_player)) {
 }
 
 // === CRAFTING EQUATIONS (Center) ===
+num_equations = 2; // CHANGE THIS to adjust number of crafting slots (e.g., 3 for three rows)
 equation_slot_size = 70;
 equation_spacing = 20; // Space between slots
 equation_symbol_spacing = 30; // Space for + and = symbols
 equation_x = gui_width / 2;
-equation_y = gui_height / 2 - (2 * equation_slot_size + equation_spacing) / 2;
+equation_y = gui_height / 2 - (num_equations * equation_slot_size + (num_equations - 1) * equation_spacing) / 2;
 
-// Each equation: [input1, input2, result, used]
-equations = [
-    {
+// Create equations array dynamically based on num_equations
+equations = [];
+for (var i = 0; i < num_equations; i++) {
+    equations[i] = {
         input1: noone,
         input2: noone,
         result: noone,
         used: false
-    },
-    {
-        input1: noone,
-        input2: noone,
-        result: noone,
-        used: false
-    }
-];
+    };
+}
 
 // === CRAFTED ELEMENTS (temporary storage) ===
 // Array of crafted gourd instances that can be used in equations
@@ -96,15 +92,15 @@ craft_feedback_duration = 60; // frames
 craft_feedback_equation = -1;
 
 // === RECIPE TREE LAYOUT (Right side) ===
-tree_panel_x = gui_width - 400;
+tree_panel_x = gui_width - 250; // Further reduced for narrower panel
 tree_panel_y = 50;
-tree_panel_w = 380;
-tree_panel_h = gui_height - 100;
+tree_panel_w = 230; // Further reduced (about 12% smaller than 260)
+tree_panel_h = 520; // Reduced from gui_height - 100 to fit content better
 
 // Tree node layout
-tree_node_size = 60;
-tree_node_spacing_x = 80;
-tree_node_spacing_y = 100;
+tree_node_size = 40; // Reduced from 60 to fit narrower panel
+tree_node_spacing_x = 50; // Reduced from 80 for tighter horizontal packing
+tree_node_spacing_y = 90; // Reduced slightly from 100
 tree_start_x = tree_panel_x + tree_panel_w / 2;
 tree_start_y = tree_panel_y + 50; // Start at top for Elixir
 

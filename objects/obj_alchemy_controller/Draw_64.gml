@@ -25,7 +25,7 @@ draw_text(gui_width / 2, 30, "Alchemy Workshop");
 // === DRAW EQUIPPED GOURDS (Left side - vertical row) ===
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
-draw_text(equipped_x, equipped_start_y - 40, "Equipped:");
+draw_text(equipped_x, equipped_start_y - 40, "Inventory:");
 
 for (var i = 0; i < 3; i++) {
     // Skip if being dragged
@@ -49,8 +49,13 @@ for (var i = 0; i < 3; i++) {
     draw_text_outlined(slot_x + equipped_slot_size / 2, slot_y + equipped_slot_size / 2, gourd.name);
 }
 
+// === DRAW SEPARATOR LINE (Between left inventory and center crafting) ===
+var separator_x = equipped_x + equipped_slot_size + 60;
+draw_set_color(col_border);
+draw_line_width(separator_x, 60, separator_x, gui_height - 60, 3);
+
 // === DRAW CRAFTING EQUATIONS ===
-for (var eq = 0; eq < 2; eq++) {
+for (var eq = 0; eq < num_equations; eq++) {
     var equation = equations[eq];
     var base_y = equation_y + eq * (equation_slot_size + equation_spacing);
 

@@ -230,7 +230,10 @@ draw_rectangle(tree_panel_x, tree_panel_y, tree_panel_x + tree_panel_w, tree_pan
 
 // Get all discovered recipes
 var discovered_array = get_discovered_recipes(global.recipe_tree);
-var discovered_map = {};
+// GML bugs out here and gives warning about discovered_map
+// separate declaration and initialization into 2 lines fixes it, idk why -- Bolin
+var discovered_map = pointer_null;
+discovered_map = {};
 for (var i = 0; i < array_length(discovered_array); i++) {
     discovered_map[$ discovered_array[i].name] = true;
 }

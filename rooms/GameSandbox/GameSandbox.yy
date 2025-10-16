@@ -14,8 +14,6 @@
     {"name":"inst_65CC4EDF","path":"rooms/GameSandbox/GameSandbox.yy",},
     {"name":"inst_7F937950","path":"rooms/GameSandbox/GameSandbox.yy",},
     {"name":"inst_7B974FDC","path":"rooms/GameSandbox/GameSandbox.yy",},
-    {"name":"inst_430E02FA","path":"rooms/GameSandbox/GameSandbox.yy",},
-    {"name":"inst_799AD720","path":"rooms/GameSandbox/GameSandbox.yy",},
   ],
   "isDnd":false,
   "layers":[

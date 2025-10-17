@@ -240,7 +240,7 @@ if (button_hover && mouse_check_button_pressed(mb_left)) {
     io_clear();
 
     // Return to previous room (default to GameSandbox if not set)
-    var return_room = variable_global_exists("previous_room") ? global.previous_room : GameSandbox;
+    var return_room = variable_global_exists("previous_room") ? global.previous_room : Level0;
     room_goto(return_room);
 }
 

@@ -11,6 +11,7 @@
     {"name":"Particle Systems","order":15,"path":"folders/Particle Systems.yy",},
     {"name":"Paths","order":4,"path":"folders/Paths.yy",},
     {"name":"Rooms","order":10,"path":"folders/Rooms.yy",},
+    {"name":"Maps","order":4,"path":"folders/Rooms/Maps.yy",},
     {"name":"Scripts","order":5,"path":"folders/Scripts.yy",},
     {"name":"Enemy States","order":11,"path":"folders/Scripts/Enemy States.yy",},
     {"name":"Sequences","order":11,"path":"folders/Sequences.yy",},
@@ -44,7 +45,6 @@
     {"name":"obj_settings_overlay","order":8,"path":"objects/obj_settings_overlay/obj_settings_overlay.yy",},
     {"name":"obj_zombie","order":1,"path":"objects/obj_zombie/obj_zombie.yy",},
     {"name":"AlchemyRoom","order":2,"path":"rooms/AlchemyRoom/AlchemyRoom.yy",},
-    {"name":"GameSandbox","order":1,"path":"rooms/GameSandbox/GameSandbox.yy",},
     {"name":"MainMenu","order":3,"path":"rooms/MainMenu/MainMenu.yy",},
     {"name":"damage_entity","order":7,"path":"scripts/damage_entity/damage_entity.yy",},
     {"name":"gourd_base","order":4,"path":"scripts/gourd_base/gourd_base.yy",},
@@ -77,5 +77,6 @@
     {"name":"spr_taoist","order":3,"path":"sprites/spr_taoist/spr_taoist.yy",},
     {"name":"spr_water_ball","order":1,"path":"sprites/spr_water_ball/spr_water_ball.yy",},
     {"name":"spr_wind_gust","order":2,"path":"sprites/spr_wind_gust/spr_wind_gust.yy",},
+    {"name":"Sprite28","order":16,"path":"sprites/Sprite28/Sprite28.yy",},
   ],
 }

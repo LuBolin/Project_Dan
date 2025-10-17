@@ -8,7 +8,7 @@ var current_instructions = "";
 if (room == AlchemyRoom) {
     current_instructions = @"Drag and drop elements to combine.
 Combine different elements to discover recipes to synthesize new elements.";
-} else if (room == GameSandbox) {
+} else if (room == Level0) {
     current_instructions = @"WASD - Move
 Mouse - Aim
 Left Click - Activate active element

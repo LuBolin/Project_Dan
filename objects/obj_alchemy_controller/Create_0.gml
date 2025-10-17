@@ -56,7 +56,7 @@ if (instance_exists(obj_player)) {
 }
 
 // === CRAFTING EQUATIONS (Center) ===
-num_equations = 2; // CHANGE THIS to adjust number of crafting slots (e.g., 3 for three rows)
+num_equations = 3; // CHANGE THIS to adjust number of crafting slots (e.g., 3 for three rows)
 equation_slot_size = 70;
 equation_spacing = 20; // Space between slots
 equation_symbol_spacing = 30; // Space for + and = symbols

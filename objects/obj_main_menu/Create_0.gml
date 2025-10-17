@@ -25,7 +25,7 @@ buttons = [
         width: button_width + button_spacing,
         height: button_height * 2,
         action: function() {
-            room_goto(TemplateLevel);
+            goto_level(TemplateLevel, 1); // Start at difficulty level 1
         }
     },
     {

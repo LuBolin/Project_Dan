@@ -41,6 +41,14 @@ draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 draw_text(bar_x + bar_w + 10, bar_y - 2, string(hp) + " / " + string(hp_max));
 
+// ======== DIFFICULTY LEVEL DISPLAY ========
+// Show current difficulty level
+var difficulty = get_current_difficulty();
+var diff_text = "Level: " + string(difficulty);
+draw_set_color(c_yellow);
+draw_text(bar_x, bar_y + bar_h + 8, diff_text);
+draw_set_color(c_white);
+
 // ======== ENEMY KILL COUNTER ========
 // Check if level manager exists and display kill requirements
 if (instance_exists(obj_level_manager)) {

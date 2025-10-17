@@ -11,4 +11,5 @@ var scale = 20 / max(sw, sh); // keep aspect
 
 // draw tinted icon
 draw_set_alpha(1);
-draw_sprite_ext(spr_gourd_icon, 0, x - 10 * image_xscale, y + 20, scale, scale, 0, inv[sel_slot].color , 1);
+var gourd_color = (is_struct(inv[sel_slot]) && variable_struct_exists(inv[sel_slot], "color")) ? inv[sel_slot].color : c_white;
+draw_sprite_ext(spr_gourd_icon, 0, x - 10 * image_xscale, y + 20, scale, scale, 0, gourd_color, 1);

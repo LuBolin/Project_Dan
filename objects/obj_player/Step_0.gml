@@ -27,7 +27,37 @@ if (!variable_instance_exists(self, "is_stunned") || !is_stunned) {
     var vel_hori = (magnitude == 0 ? 0 : (input_dirn_x / magnitude)) * move_speed_this_frame;
     var vel_vert = (magnitude == 0 ? 0 : (input_dirn_y / magnitude)) * move_speed_this_frame;
 
-    move_and_collide(vel_hori, vel_vert, colliders, undefined, undefined, undefined, move_speed_this_frame, move_speed_this_frame);
+    
+    // Horizontal movement
+    if (place_meeting(x + vel_hori, y, colliders)) {
+        
+        // Allows the players to smoothly slide past corners
+        if (!place_meeting(x + vel_hori, y + move_speed_this_frame, colliders)) {
+            y += move_speed_this_frame
+        } else if (!place_meeting(x + vel_hori, y - move_speed_this_frame, colliders)) {
+            y -= move_speed_this_frame
+        } else {
+            vel_hori = 0;   
+        }
+        
+    }
+    
+    x += vel_hori;
+    
+    if (place_meeting(x, y + vel_vert, colliders)) {
+        
+        // Allows the players to smoothly slide past corners
+        if (!place_meeting(x + move_speed_this_frame, y + vel_vert , colliders)) {
+            x += move_speed_this_frame
+        } else if (!place_meeting(x - move_speed_this_frame, y + vel_vert, colliders)) {
+            x -= move_speed_this_frame
+        } else {
+            vel_vert = 0;   
+        }
+    }
+    
+    y += vel_vert;
+    
 
     if (input_dirn_x != 0) {
         var scale = abs(image_xscale);

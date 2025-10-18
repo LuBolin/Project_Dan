@@ -76,8 +76,8 @@ function ProjectileAir() constructor {
 		// Immediately dash the player towards mouse
 		if (instance_exists(projectile_inst.creator)) {
 			var player = projectile_inst.creator;
-			var dash_dir = point_direction(player.x, player.y, mouse_x, mouse_y);
-
+			//var dash_dir = point_direction(player.x, player.y, projectile_inst, mouse_y);
+            dash_dir = projectile_inst.image_angle
 			// Apply knockback effect to dash player (false = no stun)
 			add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
 
@@ -262,13 +262,13 @@ function ProjectileSoulMist() constructor {
 
 function ProjectileGhost() constructor {
     name = "Ghost";
-    speed = 1.0;                             // units per second
+    speed = 4.0;                             // units per second
     damage = 1;
     life_steps = game_get_speed(gamespeed_fps) * 5; // ~5s lifetime
     kb_speed = 12.0;                         // units per second for knockback motion
     kb_distance = 2 * global.UNIT_LENGTH;    // 2 units of knockback
     sprite_index = spr_ghost_projectile;     // replace with your sprite; or -1 if none
-    scale = 1.0;
+    scale = 1.5;
 
     on_hit = function(projectile_inst, target) {
         // Simple: 1 damage, no status effects; knockback handled by your hit system via kb_* fields

@@ -95,22 +95,9 @@ function RoamState(_entity, _duration = 20, _is_timed = true) : State(_entity, _
     
     on_step = function() {
         with entity {
-     
             var _hor = clamp(other._target_x - x, -1, 1)
             var _vert = clamp(other._target_y - y, -1, 1)
-            
-            var magnitude = sqrt(_hor * _hor + _vert * _vert)
-            
-            if (magnitude != 0) {
-                // Convert units per second to pixels per frame
-                // units/sec * pixels/unit / frames/sec = pixels/frame
-                var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
-            
-                var _norm_hor = (_hor / magnitude) * move_speed_this_frame;
-                var _norm_vert = (_vert / magnitude) * move_speed_this_frame;
-
-                move_and_collide(_norm_hor, _norm_vert, colliders)
-            }
+            move(other.entity, _hor, _vert)
         }
     }
     
@@ -143,27 +130,27 @@ function AlertState(_entity, _duration = undefined, _is_timed = false) : State(_
 }
 
 
-function ChaseState(_entity, _duration = 15, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {    
+function ChaseState(_entity, _duration = 120, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {    
     id = STATES.CHASE;
     
     on_step = function() {
         with entity {
             var _hor = clamp(player_last_known_x - x, -1, 1)
             var _vert = clamp(player_last_known_y - y, -1, 1)
-            
-            var magnitude = sqrt(_hor * _hor + _vert * _vert);
-            
-            if (magnitude != 0) {
-                // Convert units per second to pixels per frame
-                // units/sec * pixels/unit / frames/sec = pixels/frame
-                var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
-            
-                var _norm_hor = (_hor / magnitude) * move_speed_this_frame;
-                var _norm_vert = (_vert / magnitude) * move_speed_this_frame;
-            
-                
-                move_and_collide(_norm_hor, _norm_vert, colliders); 
-            }
+            move(other.entity, _hor, _vert)   
+            //var magnitude = sqrt(_hor * _hor + _vert * _vert);
+            //
+            //if (magnitude != 0) {
+                //// Convert units per second to pixels per frame
+                //// units/sec * pixels/unit / frames/sec = pixels/frame
+                //var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
+            //
+                //var _norm_hor = (_hor / magnitude) * move_speed_this_frame;
+                //var _norm_vert = (_vert / magnitude) * move_speed_this_frame;
+            //
+                //
+                //move_and_collide(_norm_hor, _norm_vert, colliders); 
+            //}
         }
         
     }
@@ -185,6 +172,52 @@ function AttackState(_entity, _duration = undefined, _is_timed = false) : State(
     
     on_enter = function() {
         changeState(STATES.ROAM);
+    }
+
+}
+
+function move(entity, _hor, _vert) {
+    
+    with entity {
+        var magnitude = sqrt(_hor * _hor + _vert * _vert)
+        
+        if (magnitude != 0) {
+            // Convert units per second to pixels per frame
+            // units/sec * pixels/unit / frames/sec = pixels/frame
+            var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
+        
+            var _norm_hor = (_hor / magnitude) * move_speed_this_frame;
+            var _norm_vert = (_vert / magnitude) * move_speed_this_frame;
+    
+            if (place_meeting(x + _norm_hor, y, colliders)) {
+        
+                // Allows the players to smoothly slide past corners
+                if (!place_meeting(x + _norm_hor, y + move_speed_this_frame, colliders)) {
+                    y += move_speed_this_frame
+                } else if (!place_meeting(x + _norm_hor, y - move_speed_this_frame, colliders)) {
+                    y -= move_speed_this_frame
+                } else {
+                    _norm_hor = 0;   
+                }
+                
+            }
+            
+            x += _norm_hor;
+            
+            if (place_meeting(x, y + _norm_vert, colliders)) {
+                
+                // Allows the players to smoothly slide past corners
+                if (!place_meeting(x + move_speed_this_frame, y + _norm_vert , colliders)) {
+                    x += move_speed_this_frame
+                } else if (!place_meeting(x - move_speed_this_frame, y + _norm_vert, colliders)) {
+                    x -= move_speed_this_frame
+                } else {
+                    _norm_vert = 0;   
+                }
+            }
+            
+            y += _norm_vert;
+        }        
     }
 
 }

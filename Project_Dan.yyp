@@ -124,9 +124,9 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"MainMenu","path":"rooms/MainMenu/MainMenu.yy",},},
-    {"roomId":{"name":"Level0","path":"rooms/Level0/Level0.yy",},},
     {"roomId":{"name":"TemplateLevel","path":"rooms/TemplateLevel/TemplateLevel.yy",},},
     {"roomId":{"name":"AlchemyRoom","path":"rooms/AlchemyRoom/AlchemyRoom.yy",},},
+    {"roomId":{"name":"Level0","path":"rooms/Level0/Level0.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

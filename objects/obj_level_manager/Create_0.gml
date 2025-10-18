@@ -100,10 +100,8 @@ function spawn_enemies_from_points() {
         // Spawn enemy at spawn point
         var enemy = instance_create_depth(spawn_point.x, spawn_point.y, 0, enemy_type);
 
-        // Apply difficulty multipliers and scale
+        // Apply difficulty multipliers
         if (instance_exists(enemy)) {
-            enemy.image_xscale = 0.25;  // 256 * 0.25 = 64 pixels
-            enemy.image_yscale = 0.25;
             enemy.max_hp *= stat_multipliers.hp_multiplier;
             enemy.hp = enemy.max_hp;
             enemy.base_damage *= stat_multipliers.damage_multiplier;

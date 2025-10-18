@@ -72,6 +72,9 @@
     {"id":{"name":"obj_zombie","path":"objects/obj_zombie/obj_zombie.yy",},},
     {"id":{"name":"AlchemyRoom","path":"rooms/AlchemyRoom/AlchemyRoom.yy",},},
     {"id":{"name":"Level0","path":"rooms/Level0/Level0.yy",},},
+    {"id":{"name":"Level1","path":"rooms/Level1/Level1.yy",},},
+    {"id":{"name":"Level2","path":"rooms/Level2/Level2.yy",},},
+    {"id":{"name":"Level3","path":"rooms/Level3/Level3.yy",},},
     {"id":{"name":"MainMenu","path":"rooms/MainMenu/MainMenu.yy",},},
     {"id":{"name":"TemplateLevel","path":"rooms/TemplateLevel/TemplateLevel.yy",},},
     {"id":{"name":"damage_entity","path":"scripts/damage_entity/damage_entity.yy",},},
@@ -125,8 +128,11 @@
   "RoomOrderNodes":[
     {"roomId":{"name":"MainMenu","path":"rooms/MainMenu/MainMenu.yy",},},
     {"roomId":{"name":"TemplateLevel","path":"rooms/TemplateLevel/TemplateLevel.yy",},},
+    {"roomId":{"name":"Level1","path":"rooms/Level1/Level1.yy",},},
     {"roomId":{"name":"AlchemyRoom","path":"rooms/AlchemyRoom/AlchemyRoom.yy",},},
     {"roomId":{"name":"Level0","path":"rooms/Level0/Level0.yy",},},
+    {"roomId":{"name":"Level2","path":"rooms/Level2/Level2.yy",},},
+    {"roomId":{"name":"Level3","path":"rooms/Level3/Level3.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

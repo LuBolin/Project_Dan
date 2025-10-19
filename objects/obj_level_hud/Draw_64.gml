@@ -183,12 +183,14 @@ for (var i = 0; i < 3; i++) {
             draw_set_color(c_black);
             draw_circle(nx, ny, overlay_radius, false);
 
-            // draw cooldown text
+            // draw cooldown text (with 1 decimal place)
             draw_set_alpha(1);
             draw_set_color(c_white);
             draw_set_halign(fa_center);
             draw_set_valign(fa_middle);
-            draw_text(nx, ny, string(ceil(g.cooldown_timer / game_get_speed(gamespeed_fps))));
+            var cd_seconds = g.cooldown_timer / game_get_speed(gamespeed_fps);
+            var cd_text = string_format(cd_seconds, 0, 1); // Show 1 decimal place
+            draw_text(nx, ny, cd_text);
             draw_set_halign(fa_left);
             draw_set_valign(fa_top);
         }

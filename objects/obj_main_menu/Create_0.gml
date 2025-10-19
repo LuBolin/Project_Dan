@@ -1,8 +1,9 @@
 /// Main Menu Controller - Create Event
 
-// Play BGM for main menu (looping)
+// Play BGM for main menu (looping) at 50% volume
 if (!audio_is_playing(snd_dungeon_bgm)) {
-    audio_play_sound(snd_dungeon_bgm, 1, true);
+    var bgm_instance = audio_play_sound(snd_dungeon_bgm, 1, true);
+    audio_sound_gain(bgm_instance, 0.5, 0); // Set volume to 50%
 }
 
 // Get GUI dimensions

@@ -23,6 +23,19 @@ draw_set_valign(fa_top);
 draw_set_color(col_title);
 draw_text_transformed(gui_width / 2, overlay_y + 30, "Credits", 2, 2, 0);
 
+// Draw close button (X)
+var close_color = close_button_hovered ? col_close_hover : col_close_normal;
+draw_set_color(close_color);
+draw_rectangle(close_button_x, close_button_y, close_button_x + close_button_size, close_button_y + close_button_size, false);
+draw_set_color(col_panel_border);
+draw_rectangle(close_button_x, close_button_y, close_button_x + close_button_size, close_button_y + close_button_size, true);
+
+// Draw X
+draw_set_color(col_text);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+draw_text_transformed(close_button_x + close_button_size / 2, close_button_y + close_button_size / 2, "X", 1.5, 1.5, 0);
+
 // Set up clipping rectangle for scrollable text area
 gpu_set_scissor(overlay_x + 40, text_start_y, overlay_width - 80, text_area_height);
 
@@ -64,19 +77,6 @@ if (max_scroll > 0) {
     draw_set_color(col_panel_border);
     draw_rectangle(scrollbar_x + 2, handle_y, scrollbar_x + scrollbar_width - 2, handle_y + handle_height, true);
 }
-
-// Draw close button (X)
-var close_color = close_button_hovered ? col_close_hover : col_close_normal;
-draw_set_color(close_color);
-draw_rectangle(close_button_x, close_button_y, close_button_x + close_button_size, close_button_y + close_button_size, false);
-draw_set_color(col_panel_border);
-draw_rectangle(close_button_x, close_button_y, close_button_x + close_button_size, close_button_y + close_button_size, true);
-
-// Draw X
-draw_set_color(col_text);
-draw_set_halign(fa_center);
-draw_set_valign(fa_middle);
-draw_text_transformed(close_button_x + close_button_size / 2, close_button_y + close_button_size / 2, "X", 1.5, 1.5, 0);
 
 // Reset draw settings
 draw_set_alpha(1);

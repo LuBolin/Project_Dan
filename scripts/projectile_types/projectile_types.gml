@@ -133,9 +133,10 @@ function ProjectileLava() constructor {
 }
 
 function ProjectileSteam() constructor {
-	name = "Steam";
-	// UNIMPLEMENTED - Print message instead of shooting
-	show_debug_message("Steam is unimplemented");
+    name = "Steam";
+    // Steam is now implemented as obj_steam area-of-effect
+    // This constructor is kept for compatibility but not used
+    show_debug_message("Steam uses obj_steam AoE instead of projectile");
 }
 
 function ProjectileMudBall() constructor {

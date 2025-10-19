@@ -56,8 +56,26 @@ function GourdSteam() : GourdBase() constructor
 {
     name = "Steam";
 	color = make_color_rgb(200, 220, 255);
-    cooldown = 4;
-	projectile = ProjectileSteam;
+    cooldown = 8;
+	projectile = undefined; // Steam doesn't use projectiles
+    
+    use = function(_p) {
+        if (can_use()) {
+            // Check if steam cloud already exists
+            if (!instance_exists(obj_steam)) {
+                // Create steam cloud at player position
+                var steam = instance_create_layer(_p.x, _p.y, "Instances", obj_steam);
+                steam.owner = _p;
+                trigger_cd();
+            } else {
+                // Refresh existing steam cloud duration
+                with (obj_steam) {
+                    life_timer = life_duration;
+                }
+                trigger_cd();
+            }
+        }
+    }
 }
 
 function GourdMud() : GourdBase() constructor

@@ -30,6 +30,7 @@
   "ResourceOrderSettings":[
     {"name":"obj_alchemy_controller","order":1,"path":"objects/obj_alchemy_controller/obj_alchemy_controller.yy",},
     {"name":"obj_boar","order":2,"path":"objects/obj_boar/obj_boar.yy",},
+    {"name":"obj_chi","order":12,"path":"objects/obj_chi/obj_chi.yy",},
     {"name":"obj_credits_overlay","order":2,"path":"objects/obj_credits_overlay/obj_credits_overlay.yy",},
     {"name":"obj_enemy_alert_popup","order":3,"path":"objects/obj_enemy_alert_popup/obj_enemy_alert_popup.yy",},
     {"name":"obj_enemy_spawn_point","order":11,"path":"objects/obj_enemy_spawn_point/obj_enemy_spawn_point.yy",},
@@ -69,6 +70,7 @@
     {"name":"snd_dungeon_bgm","order":1,"path":"sounds/snd_dungeon_bgm/snd_dungeon_bgm.yy",},
     {"name":"snd_unlock","order":4,"path":"sounds/snd_unlock/snd_unlock.yy",},
     {"name":"spr_boar","order":5,"path":"sprites/spr_boar/spr_boar.yy",},
+    {"name":"spr_chi","order":2,"path":"sprites/spr_chi/spr_chi.yy",},
     {"name":"spr_dungeon_entry_door","order":2,"path":"sprites/spr_dungeon_entry_door/spr_dungeon_entry_door.yy",},
     {"name":"spr_dungeon_exit_door","order":1,"path":"sprites/spr_dungeon_exit_door/spr_dungeon_exit_door.yy",},
     {"name":"spr_enemy_notice","order":2,"path":"sprites/spr_enemy_notice/spr_enemy_notice.yy",},

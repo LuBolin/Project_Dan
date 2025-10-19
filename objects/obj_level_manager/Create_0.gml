@@ -116,5 +116,14 @@ function spawn_enemies_from_points() {
     show_debug_message("Spawned " + string(spawned) + " enemies at difficulty level " + string(difficulty));
 }
 
+
+function collect_chi() {
+    current_kills += 1;
+    
+    if (instance_exists(obj_exit_dungeon_door)) {
+        obj_exit_dungeon_door.update_exit_kills(max(0, required_kills - current_kills));
+    }
+}
+
 // Call the spawn function now that it's defined
 spawn_enemies_from_points();

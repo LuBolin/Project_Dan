@@ -127,9 +127,96 @@ function ProjectileAir() constructor {
 // ========================================
 
 function ProjectileLava() constructor {
-	name = "Lava";
-	// UNIMPLEMENTED - Print message instead of shooting
-	show_debug_message("Lava is unimplemented");
+    name = "Lava";
+    speed       = 6.25;  // units per second (400 / 64) - moderate speed
+    damage      = 1;
+    life_steps  = game_get_speed(gamespeed_fps) * 2.0; // 2 second max flight time
+    kb_speed = 3;  // pixels per frame
+    kb_distance = 50; // knockback distance
+    sprite_index = spr_lava_ball;
+    scale = 0.6;
+    sfx_fire = undefined;
+    sfx_hit = undefined;
+
+    // Target position for homing
+    target_x = 0;
+    target_y = 0;
+    homing_enabled = false;
+
+    on_launch = function(projectile_inst) {
+        // Store target position (mouse position at launch)
+        projectile_inst.target_x = mouse_x;
+        projectile_inst.target_y = mouse_y;
+        projectile_inst.homing_enabled = true;
+        
+        // Calculate initial direction towards target
+        var dir = point_direction(projectile_inst.x, projectile_inst.y, mouse_x, mouse_y);
+        projectile_inst.direction = dir;
+        projectile_inst.image_angle = dir;
+    }
+
+    on_step = function(projectile_inst) {
+        // Home towards target position
+        if (projectile_inst.homing_enabled) {
+            var dist_to_target = point_distance(projectile_inst.x, projectile_inst.y, 
+                                                projectile_inst.target_x, projectile_inst.target_y);
+            
+            // Stop homing if very close to target (within 10 pixels)
+            if (dist_to_target < 10) {
+                projectile_inst.homing_enabled = false;
+                projectile_inst.speed = 0; // Stop moving
+                // Spawn lava pool at target location
+                projectile_inst.spawned_pool = true;
+                instance_create_layer(projectile_inst.target_x, projectile_inst.target_y, "Instances", obj_lava_pool);
+                instance_destroy(projectile_inst);
+            } else {
+                // Adjust direction towards target with smooth homing
+                var target_dir = point_direction(projectile_inst.x, projectile_inst.y, 
+                                                 projectile_inst.target_x, projectile_inst.target_y);
+                
+                // Smooth turning (adjust turn_speed for more/less agile homing)
+                var turn_speed = 5; // degrees per frame
+                var angle_diff = angle_difference(target_dir, projectile_inst.direction);
+                
+                if (abs(angle_diff) > turn_speed) {
+                    projectile_inst.direction += sign(angle_diff) * turn_speed;
+                } else {
+                    projectile_inst.direction = target_dir;
+                }
+                
+                projectile_inst.image_angle = projectile_inst.direction;
+            }
+        }
+    }
+
+    on_hit = function(projectile_inst, target) {
+        // Apply damage and knockback
+        damage_entity(target, projectile_inst.damage);
+        apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
+        
+        // Mark that we're spawning a pool
+        projectile_inst.spawned_pool = true;
+        
+        // Spawn lava pool at impact location
+        instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+        instance_destroy(projectile_inst);
+    }
+
+    on_wall_hit = function(projectile_inst) {
+        // Mark that we're spawning a pool
+        projectile_inst.spawned_pool = true;
+        
+        // Spawn lava pool at wall impact location
+        instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+        instance_destroy(projectile_inst);
+    }
+
+    on_destroy = function(projectile_inst) {
+        // Only spawn pool if we haven't already spawned one (from hit or wall)
+        if (instance_exists(projectile_inst) && !variable_instance_exists(projectile_inst, "spawned_pool")) {
+            instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+        }
+    }
 }
 
 function ProjectileSteam() constructor {

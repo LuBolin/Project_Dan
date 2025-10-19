@@ -47,9 +47,9 @@ function GourdAir() : GourdBase() constructor
 function GourdLava() : GourdBase() constructor
 {
     name = "Lava";
-	color = c_orange;
-    cooldown = 5;
-	projectile = ProjectileLava;
+    color = c_orange;
+    cooldown = 6;
+    projectile = ProjectileLava;
 }
 
 function GourdSteam() : GourdBase() constructor

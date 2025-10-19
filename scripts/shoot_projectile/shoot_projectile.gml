@@ -31,8 +31,10 @@ function spawn_and_set_projectile(_entity, projectile, target_x, target_y) {
 				inst.image_xscale = projectile.scale;
 				inst.image_yscale = projectile.scale;
 			}
-        }
 
+            if (!is_undefined(projectile.sfx_fire)) obj_sfx_manager.play_sound(projectile.sfx_fire, false);
+        }
+        
         inst.creator = _entity;
         inst.direction = ang;
         inst.image_angle = ang;

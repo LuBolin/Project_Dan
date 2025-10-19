@@ -10,6 +10,8 @@ function ProjectileBase() constructor {
 	kb_distance = 0;
 	sprite_index = -1;
 	scale = 1.0;
+    sfx_fire = undefined;
+    sfx_hit = undefined;
 
 	on_hit = function(projectile_inst, target) {
 		// Default: do nothing

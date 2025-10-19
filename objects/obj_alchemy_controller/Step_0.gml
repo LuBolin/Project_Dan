@@ -69,12 +69,14 @@ function get_gourd_constructor_by_name(name) {
 
 // Start dragging
 if (mouse_check_button_pressed(mb_left) && !dragging) {
+    
     // Check equipped gourds
     for (var i = 0; i < 3; i++) {
         var slot_x = equipped_x;
         var slot_y = equipped_start_y + i * (equipped_slot_size + equipped_slot_spacing);
 
         if (point_in_rectangle(mx, my, slot_x, slot_y, slot_x + equipped_slot_size, slot_y + equipped_slot_size)) {
+            obj_sfx_manager.play_sound(snd_alchemy, true)
             dragging = true;
             drag_source_type = "equipped";
             drag_source_index = i;
@@ -95,6 +97,7 @@ if (mouse_check_button_pressed(mb_left) && !dragging) {
             var result_y = base_y;
 
             if (point_in_rectangle(mx, my, result_x, result_y, result_x + equation_slot_size, result_y + equation_slot_size)) {
+                obj_sfx_manager.play_sound(snd_alchemy, true)
                 dragging = true;
                 drag_source_type = "crafted";
                 drag_source_index = i;

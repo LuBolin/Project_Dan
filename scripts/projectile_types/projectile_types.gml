@@ -11,6 +11,8 @@ function ProjectileFire() constructor {
 	kb_distance = 0;
 	sprite_index = spr_fire_ball;
 	scale = 0.5;
+    sfx_fire = undefined;
+    sfx_hit = undefined;
 
 	on_hit = function(projectile_inst, target) {
 		// Initial damage
@@ -30,7 +32,9 @@ function ProjectileRock() constructor {
 	kb_distance = 0;
 	sprite_index = spr_rock;
 	scale = 0.25;
-
+    sfx_fire = undefined;
+    sfx_hit = undefined;
+    
 	on_hit = function(projectile_inst, target) {
 		damage_entity(target, projectile_inst.damage);
 		add_status_effect(target, new StunEffect(game_get_speed(gamespeed_fps) * 0.5));
@@ -47,7 +51,9 @@ function ProjectileWaterBall() constructor {
 	kb_distance = 30;    // 30 pixels total
 	sprite_index = spr_water_ball;
 	scale = 0.5;
-
+    sfx_fire = undefined;
+    sfx_hit = undefined;
+    
 	on_hit = function(projectile_inst, target) {
 		damage_entity(target, projectile_inst.damage);
 		apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
@@ -65,6 +71,8 @@ function ProjectileAir() constructor {
 	dash_duration = 8;  // 0.133 seconds at 60 FPS (96 / 12 = 8 frames)
 	sprite_index = spr_wind_gust;
 	scale = 0.2;  // Small visual effect
+    sfx_fire = snd_air_projectile;
+    sfx_hit = undefined;
 
 	on_launch = function(projectile_inst) {
 		// Spawn projectile on player
@@ -139,6 +147,8 @@ function ProjectileMudBall() constructor {
 	kb_distance = 40;
 	sprite_index = spr_mud_ball;
 	scale = 0.5;
+    sfx_fire = undefined;
+    sfx_hit = undefined;
 
 	on_hit = function(projectile_inst, target) {
 		damage_entity(target, projectile_inst.damage);
@@ -176,7 +186,9 @@ function ProjectileWindGust() constructor {
 	dash_duration = 8;  // Frames for dash
 	sprite_index = spr_wind_gust;
 	scale = 0.2;  // Small visual effect during dash
-
+    sfx_fire = undefined;
+    sfx_hit = undefined;
+    
 	// Knockback gust properties (applied at end of dash)
 	gust_kb_speed = 4;
 	gust_kb_distance = 30;
@@ -279,7 +291,9 @@ function ProjectileHurricane() constructor {
 	kb_distance = 0;
 	sprite_index = spr_hurricane;
 	scale = 0.5;
-
+    sfx_fire = undefined;
+    sfx_hit = undefined;
+    
 	on_launch = function(projectile_inst) {
 		// Keep hurricane vertically aligned regardless of shoot direction
 		projectile_inst.image_angle = 0;
@@ -352,7 +366,9 @@ function ProjectileGhost() constructor {
     kb_distance = 2 * global.UNIT_LENGTH;    // 2 units of knockback
     sprite_index = spr_ghost_projectile;     // replace with your sprite; or -1 if none
     scale = 1.5;
-
+    sfx_fire = undefined;
+    sfx_hit = undefined;
+    
     on_hit = function(projectile_inst, target) {
         // Simple: 1 damage, no status effects; knockback handled by your hit system via kb_* fields
         damage_entity(target, projectile_inst.damage);

@@ -4,6 +4,7 @@
 function BoarAlertState(_entity, _duration = undefined, _is_timed = false) : AlertState(_entity, _duration, _is_timed) constructor {
     id = STATES.ALERT;
     
+    
     on_timeout = function() {
         changeState(STATES.ATTACK)
     }
@@ -11,6 +12,10 @@ function BoarAlertState(_entity, _duration = undefined, _is_timed = false) : Ale
 
 function BoarAttackState(_entity, _duration = undefined, _is_timed = false) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.ATTACK;
+    
+    on_enter = function() {
+        obj_sfx_manager.play_sound(snd_boar, true)
+    }
     
     on_timeout = function() {
         spawn_and_set_projectile(entity, new ProjectileAir(), entity.player_last_known_x, entity.player_last_known_y) 

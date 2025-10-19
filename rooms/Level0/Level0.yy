@@ -12,7 +12,7 @@
     {"name":"inst_game_controller","path":"rooms/Level0/Level0.yy",},
     {"name":"inst_level_manager","path":"rooms/Level0/Level0.yy",},
     {"name":"inst_7B974FDC","path":"rooms/Level0/Level0.yy",},
-    {"name":"inst_4DBEB83E","path":"rooms/Level0/Level0.yy",},
+    {"name":"inst_9FF2A4A","path":"rooms/Level0/Level0.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -27,7 +27,7 @@
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_exit_dungeon_door","path":"objects/obj_exit_dungeon_door/obj_exit_dungeon_door.yy",},"propertyId":{"name":"target_room","path":"objects/obj_exit_dungeon_door/obj_exit_dungeon_door.yy",},"resource":{"name":"AlchemyRoom","path":"rooms/AlchemyRoom/AlchemyRoom.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"AlchemyRoom",},
           ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":0.5,"scaleY":0.5,"x":1184.0,"y":544.0,},
         {"$GMRInstance":"v2","%Name":"inst_7B974FDC","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_7B974FDC","objectId":{"name":"obj_enter_dungeon_door","path":"objects/obj_enter_dungeon_door/obj_enter_dungeon_door.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":0.49999994,"scaleY":0.49999994,"x":128.0,"y":128.0,},
-        {"$GMRInstance":"v2","%Name":"inst_4DBEB83E","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_4DBEB83E","objectId":{"name":"obj_ghost","path":"objects/obj_ghost/obj_ghost.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":576.0,"y":256.0,},
+        {"$GMRInstance":"v2","%Name":"inst_9FF2A4A","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_9FF2A4A","objectId":{"name":"obj_zombie","path":"objects/obj_zombie/obj_zombie.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":544.0,"y":224.0,},
       ],"layers":[
         {"$GMRAssetLayer":"","%Name":"Instructions","assets":[
             {"$GMRSpriteGraphic":"v1","%Name":"graphic_rotate_instructions","animationSpeed":1.0,"colour":4294967295,"frozen":false,"headPosition":0.0,"ignore":false,"inheritedItemId":null,"inheritItemSettings":false,"name":"graphic_rotate_instructions","resourceType":"GMRSpriteGraphic","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"spriteId":{"name":"spr_rotate_instructions","path":"sprites/spr_rotate_instructions/spr_rotate_instructions.yy",},"x":96.0,"y":192.0,},

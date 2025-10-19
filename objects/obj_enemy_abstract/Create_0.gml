@@ -6,9 +6,12 @@ colliders = [layer_tilemap_get_id("Tile_Collision"), obj_enemy_abstract]
 // FSM related variables
 player_last_known_x = undefined;
 player_last_known_y = undefined;
- 
+
 // Pauses all activity for the enemy
 pause = false;
+
+// Status effects display
+status_texts = []; // Array of status effect strings to display above enemy
 
 // Please check scr_enemy_fsm_state
 states_array[STATES.ROAM] = new RoamState(self, 20, true);

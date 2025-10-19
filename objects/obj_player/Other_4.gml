@@ -1,3 +1,6 @@
+// Reinitialize collision layer for this room (important for persistent player)
+colliders = [layer_tilemap_get_id("Tile_Collision")];
+
 // Use "Instances" layer if it exists, otherwise use any available layer
 var target_layer = layer_exists("Instances") ? layer_get_id("Instances") : layer;
 var aim_arrow = instance_create_layer(x, y, target_layer, obj_aim_arrow);

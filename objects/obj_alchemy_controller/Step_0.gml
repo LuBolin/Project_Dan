@@ -239,9 +239,8 @@ if (button_hover && mouse_check_button_pressed(mb_left)) {
     // Clear mouse button state to prevent click carrying over to next room
     io_clear();
 
-    // Return to previous room (default to GameSandbox if not set)
-    var return_room = variable_global_exists("previous_room") ? global.previous_room : Level0;
-    room_goto(return_room);
+    // Advance to next level or return to menu
+    advance_level_progress();
 }
 
 // === ELIXIR GLOW ANIMATION ===

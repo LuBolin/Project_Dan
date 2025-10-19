@@ -1,5 +1,5 @@
-if (target_room != noone && room_exists(target_room) && to_kill <= 0) {
-    // Store the room we're leaving so we can return to it
+if (to_kill <= 0) {
+    // After completing a level, always go to AlchemyRoom
     global.previous_room = room;
-    room_goto(target_room);
+    room_goto(AlchemyRoom);
 }

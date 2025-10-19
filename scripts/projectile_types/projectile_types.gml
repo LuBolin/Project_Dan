@@ -132,12 +132,31 @@ function ProjectileMudBall() constructor {
 	kb_speed = 2;  // pixels per frame (knockback still frame-based)
 	kb_distance = 40;
 	sprite_index = spr_mud_ball;
-	scale = 1.0;
+	scale = 0.5;
 
 	on_hit = function(projectile_inst, target) {
 		damage_entity(target, projectile_inst.damage);
 		apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
+		// Mark that we're spawning a pool, so on_destroy doesn't spawn another
+		projectile_inst.spawned_pool = true;
+		// Spawn mud pool at projectile location
+		instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_mud_pool);
 		instance_destroy(projectile_inst);
+	}
+
+	on_wall_hit = function(projectile_inst) {
+		// Mark that we're spawning a pool, so on_destroy doesn't spawn another
+		projectile_inst.spawned_pool = true;
+		// Spawn mud pool at wall impact location
+		instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_mud_pool);
+		instance_destroy(projectile_inst);
+	}
+
+	on_destroy = function(projectile_inst) {
+		// Only spawn pool if we haven't already spawned one (from hit or wall)
+		if (instance_exists(projectile_inst) && !variable_instance_exists(projectile_inst, "spawned_pool")) {
+			instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_mud_pool);
+		}
 	}
 }
 
@@ -226,17 +245,9 @@ function ProjectileHurricane() constructor {
 	}
 
 	on_wall_hit = function(projectile_inst) {
-		// Hurricane stops when hitting wall
+		// Hurricane stops when hitting wall but continues to damage enemies
 		projectile_inst.speed = 0;
-		// Increment wall timer
-		if (!variable_instance_exists(projectile_inst, "wall_hit_timer")) {
-			projectile_inst.wall_hit_timer = 0;
-		}
-		projectile_inst.wall_hit_timer++;
-		// Destroy after 1 second (60 frames)
-		if (projectile_inst.wall_hit_timer >= game_get_speed(gamespeed_fps) * 1.0) {
-			instance_destroy(projectile_inst);
-		}
+		// Don't destroy - let it last its full duration
 	}
 }
 

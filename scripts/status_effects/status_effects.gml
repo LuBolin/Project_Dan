@@ -14,6 +14,15 @@ function StatusEffect() constructor {
     apply = function(_target) {
         target = _target;
         remaining_time = duration;
+
+        // Add status text to target if they have the status_texts array
+        if (variable_instance_exists(target, "status_texts")) {
+            var type_name = get_type();
+            if (array_get_index(target.status_texts, type_name) == -1) {
+                array_push(target.status_texts, type_name);
+            }
+        }
+
         on_apply();
     }
 
@@ -40,6 +49,15 @@ function StatusEffect() constructor {
     /// @function remove()
     /// @description Called when the effect expires or is removed
     remove = function() {
+        // Remove status text from target if they have the status_texts array
+        if (instance_exists(target) && variable_instance_exists(target, "status_texts")) {
+            var type_name = get_type();
+            var text_index = array_get_index(target.status_texts, type_name);
+            if (text_index != -1) {
+                array_delete(target.status_texts, text_index, 1);
+            }
+        }
+
         on_remove();
     }
 

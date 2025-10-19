@@ -25,7 +25,9 @@ buttons = [
         width: button_width + button_spacing,
         height: button_height * 2,
         action: function() {
-            goto_level(TemplateLevel, 1); // Start at difficulty level 1
+            // Reset level progress
+            global.level_progress = 1;
+            goto_level(Level0, 1); // Start at Level0 with difficulty level 1
         }
     },
     {

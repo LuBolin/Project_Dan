@@ -41,3 +41,38 @@ function increase_difficulty() {
 
     return global.current_level_difficulty;
 }
+
+function get_random_level() {
+    /// @desc Returns a random level room (Level1, Level2, or Level3)
+    /// @return A random Level room
+
+    var levels = [Level1, Level2, Level3];
+    var random_index = irandom(array_length(levels) - 1);
+    return levels[random_index];
+}
+
+function advance_level_progress() {
+    /// @desc Advances to the next level after exiting AlchemyRoom
+    /// Increases level_progress and picks next level or returns to menu
+
+    // Initialize level progress if it doesn't exist
+    if (!variable_global_exists("level_progress")) {
+        global.level_progress = 1;
+    }
+
+    // Increment level progress
+    global.level_progress++;
+
+    // Check if we've completed 5 levels
+    if (global.level_progress > 5) {
+        // Return to main menu
+        show_debug_message("Completed 5 levels! Returning to main menu.");
+        room_goto(MainMenu);
+    } else {
+        // Go to a random level (Level1, Level2, or Level3)
+        var next_level = get_random_level();
+        var difficulty = global.level_progress;
+        goto_level(next_level, difficulty);
+        show_debug_message("Advancing to level " + string(global.level_progress) + " (difficulty " + string(difficulty) + ")");
+    }
+}

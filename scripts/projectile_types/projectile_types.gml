@@ -45,10 +45,10 @@ function ProjectileRock() constructor {
 function ProjectileWaterBall() constructor {
 	name = "Water Ball";
 	speed       = 14.0625;  // units per second (900 / 64)
-	damage      = 2;
+	damage      = 1; // was 2
 	life_steps  = game_get_speed(gamespeed_fps) * 1.0;
 	kb_speed = 5;        // pixels per frame (knockback still frame-based)
-	kb_distance = 30;    // 30 pixels total
+	kb_distance = 10;    // was 30 pixels total
 	sprite_index = spr_water_ball;
 	scale = 0.5;
     sfx_fire = undefined;

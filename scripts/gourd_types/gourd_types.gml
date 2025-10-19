@@ -28,7 +28,7 @@ function GourdWater() : GourdBase() constructor
 {
     name = "Water";
 	color = c_blue;
-    cooldown = 3;
+    cooldown = 1; // was 3
 	projectile = ProjectileWaterBall;
 }
 

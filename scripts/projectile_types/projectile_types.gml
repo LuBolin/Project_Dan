@@ -61,7 +61,7 @@ function ProjectileAir() constructor {
 	damage = 0;
 	life_steps = 1;  // Destroy immediately after dash
 	kb_speed = 12;  // Dash speed (pixels per frame) - slower for smoother dash
-	kb_distance = 96;  // Total dash distance (1.5 units)
+	kb_distance = 128;  // Total dash distance (2 units)
 	dash_duration = 8;  // 0.133 seconds at 60 FPS (96 / 12 = 8 frames)
 	sprite_index = spr_wind_gust;
 	scale = 0.2;  // Small visual effect
@@ -82,9 +82,9 @@ function ProjectileAir() constructor {
 			// Apply knockback effect to dash player (false = no stun)
 			add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
 
-			// Make player invincible during dash + 0.1 seconds after
-			// Dash duration is 8 frames, 0.1 seconds = 6 frames at 60 FPS
-			var invuln_duration = dash_duration + 6;
+			// Make player invincible during dash + 0.2 seconds after
+			var invuln_time = 0.2; // seconds
+			var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
 			add_status_effect(player, new InvincibilityEffect(invuln_duration));
 
 			// Create particle effect trail behind player
@@ -168,17 +168,83 @@ function ProjectileMudBall() constructor {
 
 function ProjectileWindGust() constructor {
 	name = "Wind Gust";
-	speed       = 9.375;  // units per second (600 / 64)
-	damage      = 0;
-	life_steps  = game_get_speed(gamespeed_fps) * 0.2;
-	kb_speed = 4;  // pixels per frame (knockback still frame-based)
-	kb_distance = 30;
+	speed = 0;  // Doesn't move (player dashes instead)
+	damage = 0;
+	life_steps = 1;  // Destroy immediately after dash
+	kb_speed = 12;  // Dash speed (pixels per frame)
+	kb_distance = 128;  // Total dash distance (2 units) - same as Air
+	dash_duration = 8;  // Frames for dash
 	sprite_index = spr_wind_gust;
-	scale = 0.7;
+	scale = 0.2;  // Small visual effect during dash
 
-	on_hit = function(projectile_inst, target) {
-		apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
-		// Wind gust doesn't destroy on hit - passes through enemies
+	// Knockback gust properties (applied at end of dash)
+	gust_kb_speed = 4;
+	gust_kb_distance = 30;
+	gust_speed = 9.375;  // units per second (600 / 64)
+	gust_lifetime = game_get_speed(gamespeed_fps) * 0.2;
+
+	on_launch = function(projectile_inst) {
+		// Spawn projectile on player
+		projectile_inst.x = projectile_inst.creator.x;
+		projectile_inst.y = projectile_inst.creator.y;
+		projectile_inst.speed = 0;
+		projectile_inst.image_alpha = 0.5;  // Semi-transparent
+
+		// Immediately dash the player towards mouse
+		if (instance_exists(projectile_inst.creator)) {
+			var player = projectile_inst.creator;
+			var dash_dir = projectile_inst.image_angle;
+
+			// Apply knockback effect to dash player (false = no stun)
+			add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
+
+			// Make player invincible during dash + 0.2 seconds after
+			var invuln_time = 0.2; // seconds
+			var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
+			add_status_effect(player, new InvincibilityEffect(invuln_duration));
+
+			// Create particle effect trail behind player
+			var trail_length = 5;  // Number of particles
+			for (var i = 0; i < trail_length; i++) {
+				var offset = i * 10;  // Space particles along the trail
+				var trail_x = player.x - lengthdir_x(offset, dash_dir);
+				var trail_y = player.y - lengthdir_y(offset, dash_dir);
+
+				// Create a wind particle at this position
+				var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
+				if (particle != noone) {
+					particle.sprite_index = spr_wind_gust;
+					particle.image_alpha = 0.4 - (i * 0.06);  // Fade out
+					particle.image_xscale = 0.3;
+					particle.image_yscale = 0.3;
+					particle.image_angle = dash_dir;
+					particle.speed = 0;
+					particle.life_steps = 15 - (i * 2);  // Particles fade quickly
+					particle.proj_data = {};  // Empty data, no collision
+				}
+			}
+
+			// After dash completes, spawn the knockback gust projectile
+			// Schedule it to spawn after dash_duration frames
+			var gust_data = {
+				x: player.x,
+				y: player.y,
+				direction: dash_dir,
+				creator: player,
+				kb_speed: gust_kb_speed,
+				kb_distance: gust_kb_distance,
+				gust_speed: gust_speed,
+				gust_lifetime: gust_lifetime,
+				timer: 0,
+				dash_duration: dash_duration
+			};
+
+			// Store gust data on player to spawn after dash
+			player.wind_gust_pending = gust_data;
+		}
+
+		// Destroy projectile immediately
+		instance_destroy(projectile_inst);
 	}
 }
 

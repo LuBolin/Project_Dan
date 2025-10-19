@@ -86,7 +86,7 @@ function GhostAttackState(_entity, _duration = 18, _is_timed = true) : State(_en
 
     on_timeout = function() {
 		// pass the ghost instance and player coords so spawn_and_set_projectile computes angle correctly
-		spawn_and_set_projectile(entity, new ProjectileGhost(), _tx, _ty);
+		spawn_and_set_projectile(entity, new ProjectileGhost(), _tx, _ty, obj_enemy_projectile);
 		entity.attack_cd_timer = entity.attack_cooldown_sec * game_get_speed(gamespeed_fps);
         
         changeState(STATES.CHASE);

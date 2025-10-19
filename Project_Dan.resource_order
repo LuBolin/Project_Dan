@@ -33,6 +33,7 @@
     {"name":"obj_chi","order":12,"path":"objects/obj_chi/obj_chi.yy",},
     {"name":"obj_credits_overlay","order":2,"path":"objects/obj_credits_overlay/obj_credits_overlay.yy",},
     {"name":"obj_enemy_alert_popup","order":3,"path":"objects/obj_enemy_alert_popup/obj_enemy_alert_popup.yy",},
+    {"name":"obj_enemy_projectile","order":5,"path":"objects/obj_enemy_projectile/obj_enemy_projectile.yy",},
     {"name":"obj_enemy_spawn_point","order":11,"path":"objects/obj_enemy_spawn_point/obj_enemy_spawn_point.yy",},
     {"name":"obj_enter_dungeon_door","order":10,"path":"objects/obj_enter_dungeon_door/obj_enter_dungeon_door.yy",},
     {"name":"obj_exit_dungeon_door","order":3,"path":"objects/obj_exit_dungeon_door/obj_exit_dungeon_door.yy",},

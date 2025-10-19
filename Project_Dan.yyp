@@ -57,6 +57,7 @@
     {"id":{"name":"obj_credits_overlay","path":"objects/obj_credits_overlay/obj_credits_overlay.yy",},},
     {"id":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},},
     {"id":{"name":"obj_enemy_alert_popup","path":"objects/obj_enemy_alert_popup/obj_enemy_alert_popup.yy",},},
+    {"id":{"name":"obj_enemy_projectile","path":"objects/obj_enemy_projectile/obj_enemy_projectile.yy",},},
     {"id":{"name":"obj_enemy_spawn_point","path":"objects/obj_enemy_spawn_point/obj_enemy_spawn_point.yy",},},
     {"id":{"name":"obj_enter_dungeon_door","path":"objects/obj_enter_dungeon_door/obj_enter_dungeon_door.yy",},},
     {"id":{"name":"obj_exit_dungeon_door","path":"objects/obj_exit_dungeon_door/obj_exit_dungeon_door.yy",},},

@@ -16,6 +16,19 @@ close_button_x = overlay_x + overlay_width - close_button_size - 10;
 close_button_y = overlay_y + 10;
 close_button_hovered = false;
 
+// Scrolling properties
+scroll_y = 0;
+scroll_speed = 30;
+text_start_y = overlay_y + 100;
+text_area_height = overlay_height - 120; // Height available for text
+
+// Scroll bar properties
+scrollbar_width = 12;
+scrollbar_x = overlay_x + overlay_width - 50;
+scrollbar_track_y = text_start_y;
+scrollbar_track_height = text_area_height;
+scrollbar_handle_min_height = 30;
+
 // Colors
 col_overlay_bg = c_black;
 col_panel_bg = make_color_rgb(40, 30, 25);
@@ -39,6 +52,11 @@ James, Ashley, Bolin
 
 QA:
 Julia, James
+
+BGM:
+China - Asian China Chinese Music
+by Aliaksei Yukhnevich
+https://pixabay.com/music/china-china-asian-china-chinese-music-390969/
 
 Special Thanks:
 Everyone who played and supported this game!

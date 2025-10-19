@@ -24,12 +24,34 @@ col_text = c_white;
 col_title = make_color_rgb(255, 215, 150);
 col_close_normal = make_color_rgb(80, 50, 40);
 col_close_hover = make_color_rgb(120, 80, 60);
+col_slider = make_color_rgb(100, 80, 60);
+col_slider_handle = make_color_rgb(180, 140, 100);
+col_button = make_color_rgb(80, 60, 50);
+col_button_hover = make_color_rgb(120, 90, 70);
 
-// Settings content
-settings_text = @"Settings:
+// Initialize global settings if they don't exist
+if (!variable_global_exists("master_volume")) {
+    global.master_volume = 1.0; // 0.0 to 1.0
+}
+if (!variable_global_exists("is_fullscreen")) {
+    global.is_fullscreen = window_get_fullscreen();
+}
 
-Volume: 100%
-Fullscreen: Off
-Difficulty: Normal
+// Apply current volume
+audio_master_gain(global.master_volume);
 
-(Settings will be implemented here)";
+// Volume slider properties
+slider_x = overlay_x + 120;
+slider_y = overlay_y + 150;
+slider_width = 300;
+slider_height = 8;
+slider_handle_width = 20;
+slider_handle_height = 30;
+slider_dragging = false;
+
+// Fullscreen button properties
+fullscreen_button_x = overlay_x + 180;
+fullscreen_button_y = overlay_y + 230;
+fullscreen_button_width = 100;
+fullscreen_button_height = 40;
+fullscreen_button_hovered = false;

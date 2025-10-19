@@ -78,8 +78,14 @@ function ProjectileAir() constructor {
 			var player = projectile_inst.creator;
 			//var dash_dir = point_direction(player.x, player.y, projectile_inst, mouse_y);
             dash_dir = projectile_inst.image_angle
+
 			// Apply knockback effect to dash player (false = no stun)
 			add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
+
+			// Make player invincible during dash + 0.1 seconds after
+			// Dash duration is 8 frames, 0.1 seconds = 6 frames at 60 FPS
+			var invuln_duration = dash_duration + 6;
+			add_status_effect(player, new InvincibilityEffect(invuln_duration));
 
 			// Create particle effect trail behind player
 			var trail_length = 5;  // Number of particles

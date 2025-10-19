@@ -18,3 +18,17 @@ if (keyboard_check_pressed(vk_escape)) {
     instance_destroy();
     keyboard_clear(vk_escape);
 }
+
+// Handle scrolling with mouse wheel
+var mouse_wheel = mouse_wheel_up() - mouse_wheel_down();
+if (mouse_wheel != 0) {
+    scroll_y += mouse_wheel * scroll_speed;
+
+    // Calculate total text height
+    var line_height = 25;
+    var text_height = string_height_ext(credits_text, line_height, overlay_width - 80);
+
+    // Clamp scroll position
+    var max_scroll = max(0, text_height - text_area_height);
+    scroll_y = clamp(scroll_y, -max_scroll, 0);
+}

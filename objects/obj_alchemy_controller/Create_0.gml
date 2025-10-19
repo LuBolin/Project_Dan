@@ -1,5 +1,10 @@
 /// Alchemy Controller - Create
 
+// Play BGM for alchemy room (looping)
+if (!audio_is_playing(snd_dungeon_bgm)) {
+    audio_play_sound(snd_dungeon_bgm, 1, true);
+}
+
 // === LAYOUT CONFIG ===
 gui_width = display_get_gui_width();
 gui_height = display_get_gui_height();

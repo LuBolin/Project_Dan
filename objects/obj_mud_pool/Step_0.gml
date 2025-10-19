@@ -24,7 +24,7 @@ if (life_timer <= 0) {
         if (instance_exists(enemy) && variable_instance_exists(enemy, "mud_pool_slow")) {
             // Restore speed
             enemy.move_speed_ups /= (1 - slow_amount);
-            delete enemy.mud_pool_slow;
+            enemy.mud_pool_slow = false;
 
             // Remove "Slowed" status text
             var slowed_index = array_get_index(enemy.status_texts, "Slowed");
@@ -85,7 +85,7 @@ for (var i = ds_list_size(slowed_enemies) - 1; i >= 0; i--) {
         if (instance_exists(enemy) && variable_instance_exists(enemy, "mud_pool_slow")) {
             // Restore speed
             enemy.move_speed_ups /= (1 - slow_amount);
-            delete enemy.mud_pool_slow;
+            enemy.mud_pool_slow = false;
 
             // Remove "Slowed" status text
             var slowed_index = array_get_index(enemy.status_texts, "Slowed");

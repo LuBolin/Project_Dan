@@ -1,5 +1,10 @@
 /// Main Menu Controller - Create Event
 
+// Play BGM for main menu (looping)
+if (!audio_is_playing(snd_dungeon_bgm)) {
+    audio_play_sound(snd_dungeon_bgm, 1, true);
+}
+
 // Get GUI dimensions
 gui_width = display_get_gui_width();
 gui_height = display_get_gui_height();

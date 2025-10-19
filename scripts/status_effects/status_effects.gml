@@ -307,6 +307,41 @@ function BurnEffect(_duration, _damage_per_tick) : StatusEffect() constructor {
     }
 }
 
+/// @function InvincibilityEffect(_duration)
+/// @description Makes the target invincible (immune to damage)
+function InvincibilityEffect(_duration) : StatusEffect() constructor {
+    duration = _duration;
+    stack_behavior = "refresh"; // Refresh duration if invincibility is reapplied
+
+    on_apply = function() {
+        // Set invulnerability flag
+        if (variable_instance_exists(target, "invuln")) {
+            target.invuln = true;
+        }
+
+        // Visual feedback - make player slightly transparent
+        if (variable_instance_exists(target, "image_alpha")) {
+            target.image_alpha = 0.5;
+        }
+    }
+
+    on_remove = function() {
+        // Remove invulnerability flag
+        if (instance_exists(target) && variable_instance_exists(target, "invuln")) {
+            target.invuln = false;
+        }
+
+        // Restore full opacity
+        if (instance_exists(target) && variable_instance_exists(target, "image_alpha")) {
+            target.image_alpha = 1.0;
+        }
+    }
+
+    get_type = function() {
+        return "Invincible";
+    }
+}
+
 /// @function add_status_effect(_target, _effect)
 /// @description Add a status effect to an entity
 function add_status_effect(_target, _effect) {

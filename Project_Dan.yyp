@@ -93,6 +93,7 @@
     {"id":{"name":"scr_level_transitions","path":"scripts/scr_level_transitions/scr_level_transitions.yy",},},
     {"id":{"name":"shoot_projectile","path":"scripts/shoot_projectile/shoot_projectile.yy",},},
     {"id":{"name":"status_effects","path":"scripts/status_effects/status_effects.yy",},},
+    {"id":{"name":"snd_dungeon_bgm","path":"sounds/snd_dungeon_bgm/snd_dungeon_bgm.yy",},},
     {"id":{"name":"spr_aim_arrow","path":"sprites/spr_aim_arrow/spr_aim_arrow.yy",},},
     {"id":{"name":"spr_aim_instructions","path":"sprites/spr_aim_instructions/spr_aim_instructions.yy",},},
     {"id":{"name":"spr_alchemy_backdrop","path":"sprites/spr_alchemy_backdrop/spr_alchemy_backdrop.yy",},},

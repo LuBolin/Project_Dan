@@ -50,16 +50,16 @@ function get_gourd_constructor_by_name(name) {
         case "Earth": return gourd_create(GourdEarth);
         case "Water": return gourd_create(GourdWater);
         case "Air": return gourd_create(GourdAir);
-        case "Wind": return gourd_create(GourdWind);
         case "Mud": return gourd_create(GourdMud);
         case "Lava": return gourd_create(GourdLava);
         case "Steam": return gourd_create(GourdSteam);
+        case "Current": return gourd_create(GourdCurrent);
+        case "Eruption": return gourd_create(GourdEruption);
         case "Hurricane": return gourd_create(GourdHurricane);
-        case "Obsidian": return gourd_create(GourdObsidian);
-        case "Fog": return gourd_create(GourdFog);
         case "Clay": return gourd_create(GourdClay);
-        case "Golem": return gourd_create(GourdGolem);
-        case "Soul-Mist": return gourd_create(GourdSoulMist);
+        case "Plant": return gourd_create(GourdPlant);
+        case "Destruction": return gourd_create(GourdDestruction);
+        case "Creation": return gourd_create(GourdCreation);
         case "Elixir": return gourd_create(GourdElixir);
         default: return noone;
     }

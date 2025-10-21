@@ -17,15 +17,13 @@ function EvilTreeChaseState(_entity, _duration = 120, _is_timed = true) : ChaseS
     _shoot_range_px = _range_units * global.UNIT_LENGTH;
     
     on_step = function() {
-        is_attack = false
         with (entity) {
+            // player_last_known_x and player_last_known_y should be defined before this, ignore gamemaker
             var dist = point_distance(x, y, player_last_known_x, player_last_known_y);
             if (dist <= other._shoot_range_px && attack_cd_timer <= 0) {    
-                other.is_attack = true;
+                changeState(STATES.ATTACK); 
             }            
         }
-        
-        if (is_attack) changeState(STATES.ATTACK); 
     }
     
 }

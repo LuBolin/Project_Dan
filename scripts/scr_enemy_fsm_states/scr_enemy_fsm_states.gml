@@ -9,15 +9,6 @@ enum STATES {
     ATTACK
 }
 
-
-function changeState(next_state) {
-    with entity {
-        curr_state.leave()
-        curr_state = states_array[next_state]
-        curr_state.enter()
-    }
-}
-
 /// @function State()
 /// @description Base State constructor
 function State(_entity, _duration, _is_timed) constructor {
@@ -105,13 +96,17 @@ function RoamState(_entity, _duration = 20, _is_timed = true) : State(_entity, _
     
     on_timeout = function() {
         // Absolutely Basic Roam Behaviour
-        _target_x = random_range(entity.xstart - 100, entity.xstart + 100)
-        _target_y = random_range(entity.ystart - 100, entity.ystart + 100)
+        _target_x = random_range(entity.xstart - global.UNIT_LENGTH , entity.xstart + global.UNIT_LENGTH)
+        _target_y = random_range(entity.ystart - global.UNIT_LENGTH, entity.ystart + global.UNIT_LENGTH)
         remaining_time = duration
     }
     
     on_player_interact = function() {
-        changeState(STATES.ALERT);
+        with (entity) {
+            player_last_known_x = obj_player.x;
+            player_last_known_y = obj_player.y;
+            changeState(STATES.ALERT);
+        }
     }
     
 }
@@ -123,8 +118,9 @@ function AlertState(_entity, _duration = undefined, _is_timed = false) : State(_
         // Creates the '!' pop up to indicate the enemy has detected the player
         with entity {
             instance_create_layer(x, y - sprite_height / 2 - 10, "Effects", obj_enemy_alert_popup);
+            changeState(STATES.CHASE);
         }
-        changeState(STATES.CHASE);
+        
     }
     
 }
@@ -136,14 +132,14 @@ function ChaseState(_entity, _duration = 120, _is_timed = true) : State(_entity,
         with entity {
             var _hor = clamp(player_last_known_x - x, -1, 1)
             var _vert = clamp(player_last_known_y - y, -1, 1)
-            move(other.entity, _hor, _vert)   
+            move(self, _hor, _vert)   
         }
         
     }
     
     on_timeout = function() {
         remaining_time = duration
-        changeState(STATES.ROAM);
+        entity.changeState(STATES.ROAM);
     }
     
     on_player_interact = function() {
@@ -156,7 +152,7 @@ function AttackState(_entity, _duration = undefined, _is_timed = false) : State(
     id = STATES.ATTACK;
     
     on_enter = function() {
-        changeState(STATES.ROAM);
+        entity.changeState(STATES.ROAM);
     }
 
 }

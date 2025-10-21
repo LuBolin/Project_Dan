@@ -26,3 +26,13 @@ function if_death() {
         exit;
     }
 }
+
+function changeState(next_state) {
+    curr_state.leave()
+    curr_state = states_array[next_state]
+    curr_state.enter()
+}
+
+// Effect Sprite for Burn Effect, etc
+// Switch to a Hashmap or sth if needed 
+effect_sprite = undefined

@@ -1,8 +1,11 @@
+randomize()
+
 // Track all enemies and kills
 total_enemies = 0;
 current_kills = 0;
 required_kills = 0;
 kill_percentage = 0.1; // 10% requirement
+fox_spawn_prob = 0.5 
 
 // Level difficulty (1-5) - can be set by entering room
 if (!variable_global_exists("current_level_difficulty")) {
@@ -51,7 +54,7 @@ function spawn_enemies_from_points() {
     for (var j = 0; j < array_length(allowed_enemies); j++) {
         var enemy = allowed_enemies[j];
         var enemy_diff = get_enemy_difficulty(enemy);
-
+        
         if (enemy_diff == ENEMY_DIFFICULTY.EASY) {
             array_push(easy_enemies, enemy);
         } else if (enemy_diff == ENEMY_DIFFICULTY.MEDIUM) {
@@ -64,7 +67,15 @@ function spawn_enemies_from_points() {
     // Build distribution based on ratios
     var total_ratio = ratio.easy + ratio.medium + ratio.hard;
     var easy_count = round((enemy_count * ratio.easy) / total_ratio);
-    var medium_count = round((enemy_count * ratio.medium) / total_ratio);
+    
+    var is_fox_spawned = false;
+    if (random(100) / 100 < fox_spawn_prob) {
+        show_debug_message("FOX SPAWNED")
+        array_push(enemy_list, obj_fox);
+        is_fox_spawned = true;
+    }
+    
+    var medium_count = round((enemy_count * ratio.medium) / total_ratio) - (is_fox_spawned ? 1 : 0);
     var hard_count = enemy_count - easy_count - medium_count; // Remainder goes to hard
 
     // Add enemies to list based on distribution

@@ -5,7 +5,7 @@ function GhostAlertState(_entity, _duration = undefined, _is_timed = false) : Al
     id = STATES.ALERT;
 
     on_timeout = function() {
-        changeState(STATES.CHASE);
+        entity.changeState(STATES.CHASE);
     }
 }
 
@@ -29,7 +29,7 @@ function GhostChaseState(_entity, _duration = 8, _is_timed = true) : State(_enti
 
             // If close enough, attack
             if (dist <= other._shoot_range_px && attack_cd_timer <= 0) {
-                go_attack = true;
+                changeState(STATES.ATTACK);
             } else {
 				// Otherwise, keep chasing
 				var _hor = clamp(dx, -1, 1);
@@ -37,14 +37,11 @@ function GhostChaseState(_entity, _duration = 8, _is_timed = true) : State(_enti
                 move(self, _hor, _vert) 
 			}
         }
-		
-		if (go_attack) {
-			changeState(STATES.ATTACK);
-		}
+
     }
 	
 	on_timeout = function() {
-        changeState(STATES.ROAM);
+        entity.changeState(STATES.ROAM);
     }
 
     // If we “see”/interact with the player again, refresh the chase timer
@@ -82,6 +79,6 @@ function GhostAttackState(_entity, _duration = 18, _is_timed = true) : State(_en
 		spawn_and_set_projectile(entity, new ProjectileGhost(), _tx, _ty, obj_enemy_projectile);
 		entity.attack_cd_timer = entity.attack_cooldown_sec * game_get_speed(gamespeed_fps);
         
-        changeState(STATES.CHASE);
+        entity.changeState(STATES.CHASE);
     }
 }

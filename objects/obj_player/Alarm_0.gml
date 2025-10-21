@@ -23,5 +23,7 @@ if (_num_enemies > 0) {
         }
     }
 }
+
 ds_list_destroy(_list)
+
 alarm[0] = 10

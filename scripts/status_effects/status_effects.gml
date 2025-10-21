@@ -275,7 +275,12 @@ function BurnEffect(_duration, _damage_per_tick) : StatusEffect() constructor {
     damage_per_tick = _damage_per_tick;
     tick_counter = 0;
     stack_behavior = "refresh"; // Refreshes duration instead of stacking
-
+    effect_sprite = spr_effect_fire;
+    
+    on_apply = function() {
+        target.effect_sprite = effect_sprite;
+    }
+    
     on_step = function() {
         tick_counter++;
         if (tick_counter >= tick_rate) {
@@ -299,6 +304,7 @@ function BurnEffect(_duration, _damage_per_tick) : StatusEffect() constructor {
         // Ensure color is reset when burn effect ends
         if (variable_instance_exists(target, "image_blend")) {
             target.image_blend = c_white;
+            target.effect_sprite = undefined;
         }
     }
 

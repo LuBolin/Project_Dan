@@ -56,3 +56,9 @@ if (global.debug_draw_collisions) {
     draw_set_color(c_white);
 }
 
+// For drawing sprite effects if and when we have them (like a fire for BurnEffect)
+// This is a temporary fix
+if !is_undefined(effect_sprite) {
+    draw_sprite_ext(effect_sprite, 0, x, y + 20, 0.05, 0.05, 0, c_white, 1);
+}
+

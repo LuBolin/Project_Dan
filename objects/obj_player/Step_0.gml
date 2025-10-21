@@ -104,6 +104,19 @@ if (variable_instance_exists(self, "wind_gust_pending") && wind_gust_pending != 
     }
 }
 
+// Ranged Vacuum Pickup for Chi
+with (obj_chi) {
+    var dist = point_distance(x, y, other.x, other.y);
+    
+    if (dist < other.pickup_radius) {
+        // Move toward player smoothly
+        var dir = point_direction(x, y, other.x, other.y);
+        x = lerp(x, other.x, 0.1);
+        y = lerp(y, other.y, 0.1);
+    }
+}
+
+
 for (var i = 0; i < array_length(self.inv); i++) {
     self.inv[i].step();
 }

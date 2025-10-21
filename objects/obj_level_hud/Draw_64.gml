@@ -64,8 +64,8 @@ if (instance_exists(obj_level_manager)) {
 
         // Prepare text lines (wrapped)
         var kills_text = string(kills_needed) + "/" + string(total);
-        var line1 = "Kill ";
-        var line2 = "enemies to ";
+        var line1 = "Collect ";
+        var line2 = "chi to ";
         var line3 = "the exit door!";
         var line4 = "Current: " + string(current);
 

@@ -8,22 +8,22 @@
       "elements": ["Fire", "Earth", "Water", "Air"],
       "row_y": 0
     },
-    "tier2": {
+    "tier1": {
       "tier": 1,
-      "elements": ["Lava", "Steam", "Mud", "Wind"],
+      "elements": ["Lava", "Steam", "Mud", "Current"],
       "row_y": 1
     },
-    "tier3": {
+    "tier2": {
       "tier": 2,
-      "elements": ["Obsidian", "Fog", "Clay", "Hurricane"],
+      "elements": ["Eruption", "Hurricane", "Clay", "Plant"],
       "row_y": 2
     },
-    "tier4": {
+    "tier3": {
       "tier": 3,
-      "elements": ["Golem", "Soul-Mist"],
+      "elements": ["Destruction", "Creation"],
       "row_y": 3
     },
-    "final": {
+    "tier4": {
       "tier": 4,
       "elements": ["Elixir"],
       "row_y": 4
@@ -37,8 +37,8 @@
       "result": "Lava",
       "tier": 1,
       "display_position": {"row": 1, "column": 0},
-      "description": "Fire and earth create lava",
-      "unlocks": ["obsidian"]
+      "description": "Fire and earth create molten lava",
+      "unlocks": ["eruption", "clay"]
     },
     {
       "id": "steam",
@@ -48,7 +48,7 @@
       "tier": 1,
       "display_position": {"row": 1, "column": 1},
       "description": "Fire and water create steam",
-      "unlocks": ["fog"]
+      "unlocks": ["eruption", "hurricane"]
     },
     {
       "id": "mud",
@@ -58,86 +58,86 @@
       "tier": 1,
       "display_position": {"row": 1, "column": 2},
       "description": "Earth and water create mud",
-      "unlocks": ["clay"]
+      "unlocks": ["clay", "plant"]
     },
     {
-      "id": "wind",
-      "name": "Wind",
-      "ingredients": ["Air", "Air"],
-      "result": "Wind",
+      "id": "current",
+      "name": "Current",
+      "ingredients": ["Water", "Air"],
+      "result": "Current",
       "tier": 1,
       "display_position": {"row": 1, "column": 3},
-      "description": "Air and air create wind",
-      "unlocks": ["fog", "clay", "hurricane"]
+      "description": "Water and air create flowing current",
+      "unlocks": ["hurricane", "plant"]
     },
     {
-      "id": "obsidian",
-      "name": "Obsidian",
-      "ingredients": ["Lava", "Water"],
-      "result": "Obsidian",
+      "id": "eruption",
+      "name": "Eruption",
+      "ingredients": ["Lava", "Steam"],
+      "result": "Eruption",
       "tier": 2,
       "display_position": {"row": 2, "column": 0},
-      "description": "Lava cooled by water creates obsidian",
-      "unlocks": ["golem"]
-    },
-    {
-      "id": "fog",
-      "name": "Fog",
-      "ingredients": ["Steam", "Wind"],
-      "result": "Fog",
-      "tier": 2,
-      "display_position": {"row": 2, "column": 1},
-      "description": "Steam and wind create fog",
-      "unlocks": ["soul-mist"]
-    },
-    {
-      "id": "clay",
-      "name": "Clay",
-      "ingredients": ["Mud", "Air"],
-      "result": "Clay",
-      "tier": 2,
-      "display_position": {"row": 2, "column": 2},
-      "description": "Mud dried by air creates clay",
-      "unlocks": ["golem"]
+      "description": "Lava and steam create a volcanic eruption",
+      "unlocks": ["destruction"]
     },
     {
       "id": "hurricane",
       "name": "Hurricane",
-      "ingredients": ["Water", "Wind"],
+      "ingredients": ["Steam", "Current"],
       "result": "Hurricane",
       "tier": 2,
-      "display_position": {"row": 2, "column": 3},
-      "description": "Water and wind create a hurricane",
-      "unlocks": ["soul-mist"]
+      "display_position": {"row": 2, "column": 1},
+      "description": "Steam and current create a hurricane",
+      "unlocks": ["destruction"]
     },
     {
-      "id": "golem",
-      "name": "Golem",
-      "ingredients": ["Obsidian", "Clay"],
-      "result": "Golem",
+      "id": "clay",
+      "name": "Clay",
+      "ingredients": ["Lava", "Mud"],
+      "result": "Clay",
+      "tier": 2,
+      "display_position": {"row": 2, "column": 2},
+      "description": "Lava and mud form hardened clay",
+      "unlocks": ["creation"]
+    },
+    {
+      "id": "plant",
+      "name": "Plant",
+      "ingredients": ["Mud", "Current"],
+      "result": "Plant",
+      "tier": 2,
+      "display_position": {"row": 2, "column": 3},
+      "description": "Mud and current nurture plant life",
+      "unlocks": ["creation"]
+    },
+    {
+      "id": "destruction",
+      "name": "Destruction",
+      "ingredients": ["Eruption", "Hurricane"],
+      "result": "Destruction",
       "tier": 3,
       "display_position": {"row": 3, "column": 0},
-      "description": "Obsidian and clay form a golem",
+      "description": "Eruption and hurricane create pure destruction",
       "unlocks": ["elixir"]
     },
     {
-      "id": "soul-mist",
-      "name": "Soul-Mist",
-      "ingredients": ["Fog", "Hurricane"],
-      "result": "Soul-Mist",
+      "id": "creation",
+      "name": "Creation",
+      "ingredients": ["Clay", "Plant"],
+      "result": "Creation",
       "tier": 3,
       "display_position": {"row": 3, "column": 1},
-      "description": "Fog and hurricane create soul-mist",
+      "description": "Clay and plant embody creation",
       "unlocks": ["elixir"]
     },
     {
       "id": "elixir",
       "name": "Elixir",
-      "ingredients": ["Golem", "Soul-Mist"],
+      "ingredients": ["Destruction", "Creation"],
       "result": "Elixir",
       "tier": 4,
       "display_position": {"row": 4, "column": 0},
-      "description": "Golem and soul-mist create the ultimate elixir"
+      "description": "The balance of destruction and creation creates the ultimate elixir"
     }
   ]
 }

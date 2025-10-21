@@ -6,8 +6,7 @@ depth = -10;
 // Invuln timer for player to escape if they get hit
 invuln = false
 
-// Wind gust pending data (set by air dash ability)
-wind_gust_pending = undefined;
+// Removed wind_gust_pending - no longer used after Wind element removal
 
 // Randomly select 3 of the 4 base elements (Fire, Earth, Water, Air)
 var base_elements = [GourdFire, GourdEarth, GourdWater, GourdAir];

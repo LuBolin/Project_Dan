@@ -86,40 +86,24 @@ function GourdMud() : GourdBase() constructor
 	projectile = ProjectileMudBall;
 }
 
-function GourdWind() : GourdBase() constructor
+function GourdCurrent() : GourdBase() constructor
 {
-    name = "Wind";
-	color = c_gray;
+    name = "Current";
+	color = make_color_rgb(100, 150, 200);
     cooldown = 5;
-	projectile = ProjectileWindGust;
+	projectile = ProjectileCurrent;
 }
 
 // ========================================
 // TIER 2 - ADVANCED COMBINATIONS
 // ========================================
 
-function GourdObsidian() : GourdBase() constructor
+function GourdEruption() : GourdBase() constructor
 {
-    name = "Obsidian";
-	color = make_color_rgb(20, 10, 30);
+    name = "Eruption";
+	color = make_color_rgb(255, 50, 0);
     cooldown = 7;
-	projectile = ProjectileObsidian;
-}
-
-function GourdFog() : GourdBase() constructor
-{
-    name = "Fog";
-	color = make_color_rgb(180, 180, 200);
-    cooldown = 6;
-	projectile = ProjectileFog;
-}
-
-function GourdClay() : GourdBase() constructor
-{
-    name = "Clay";
-	color = make_color_rgb(178, 118, 88);
-    cooldown = 5;
-	projectile = ProjectileClay;
+	projectile = ProjectileEruption;
 }
 
 function GourdHurricane() : GourdBase() constructor
@@ -130,24 +114,40 @@ function GourdHurricane() : GourdBase() constructor
 	projectile = ProjectileHurricane;
 }
 
+function GourdClay() : GourdBase() constructor
+{
+    name = "Clay";
+	color = make_color_rgb(178, 118, 88);
+    cooldown = 5;
+	projectile = ProjectileClay;
+}
+
+function GourdPlant() : GourdBase() constructor
+{
+    name = "Plant";
+	color = make_color_rgb(50, 200, 50);
+    cooldown = 4;
+	projectile = ProjectilePlant;
+}
+
 // ========================================
 // TIER 3 - POWERFUL ELEMENTS
 // ========================================
 
-function GourdGolem() : GourdBase() constructor
+function GourdDestruction() : GourdBase() constructor
 {
-    name = "Golem";
-	color = make_color_rgb(139, 137, 137);
+    name = "Destruction";
+	color = make_color_rgb(150, 0, 0);
     cooldown = 8;
-	projectile = ProjectileGolem;
+	projectile = ProjectileDestruction;
 }
 
-function GourdSoulMist() : GourdBase() constructor
+function GourdCreation() : GourdBase() constructor
 {
-    name = "Soul-Mist";
-	color = make_color_rgb(230, 230, 255);
+    name = "Creation";
+	color = make_color_rgb(255, 255, 200);
     cooldown = 8;
-	projectile = ProjectileSoulMist;
+	projectile = ProjectileCreation;
 }
 
 // ========================================
@@ -167,18 +167,18 @@ function get_gourd_type_by_name(element_name) {
     switch (element_name) {
         case "Earth": return GourdEarth;
         case "Water": return GourdWater;
-        case "Wind": return GourdWind;
         case "Fire": return GourdFire;
         case "Air": return GourdAir;
         case "Mud": return GourdMud;
         case "Lava": return GourdLava;
         case "Steam": return GourdSteam;
+        case "Current": return GourdCurrent;
+        case "Eruption": return GourdEruption;
         case "Hurricane": return GourdHurricane;
-        case "Obsidian": return GourdObsidian;
-        case "Fog": return GourdFog;
         case "Clay": return GourdClay;
-        case "Golem": return GourdGolem;
-        case "Soul-Mist": return GourdSoulMist;
+        case "Plant": return GourdPlant;
+        case "Destruction": return GourdDestruction;
+        case "Creation": return GourdCreation;
         case "Elixir": return GourdElixir;
         default: return undefined;
     }

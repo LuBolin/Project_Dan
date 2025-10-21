@@ -34,14 +34,7 @@ function GhostChaseState(_entity, _duration = 8, _is_timed = true) : State(_enti
 				// Otherwise, keep chasing
 				var _hor = clamp(dx, -1, 1);
 				var _vert = clamp(dy, -1, 1);
-				var mag = sqrt(_hor * _hor + _vert * _vert);
-
-				if (mag != 0) {
-					var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
-					var _nx = (_hor / mag) * move_speed_this_frame;
-					var _ny = (_vert / mag) * move_speed_this_frame;
-					move_and_collide(_nx, _ny, colliders);
-				}
+                move(self, _hor, _vert) 
 			}
         }
 		

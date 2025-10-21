@@ -61,18 +61,19 @@ function ProjectileWaterBall() constructor {
 	}
 }
 
-function ProjectileAir() constructor {
+function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration = 8) constructor {
 	name = "Air";
 	speed = 0;  // Doesn't move
 	damage = 0;
 	life_steps = 1;  // Destroy immediately after dash
 	kb_speed = 12;  // Dash speed (pixels per frame) - slower for smoother dash
-	kb_distance = 128;  // Total dash distance (2 units)
-	dash_duration = 8;  // 0.133 seconds at 60 FPS (96 / 12 = 8 frames)
+	kb_distance = _dash_distance;  // Total dash distance (2 units)
+	dash_duration = _dash_duration;  // 0.133 seconds at 60 FPS (96 / 12 = 8 frames)
 	sprite_index = spr_wind_gust;
 	scale = 0.2;  // Small visual effect
     sfx_fire = snd_air_projectile;
     sfx_hit = undefined;
+    is_invuln = _is_invuln;
 
 	on_launch = function(projectile_inst) {
 		// Spawn projectile on player
@@ -90,10 +91,12 @@ function ProjectileAir() constructor {
 			// Apply knockback effect to dash player (false = no stun)
 			add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
 
-			// Make player invincible during dash + 0.2 seconds after
-			var invuln_time = 0.2; // seconds
-			var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
-			add_status_effect(player, new InvincibilityEffect(invuln_duration));
+            if (is_invuln) { 
+                // Make player invincible during dash + 0.2 seconds after
+    			var invuln_time = 0.2; // seconds
+    			var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
+    			add_status_effect(player, new InvincibilityEffect(invuln_duration));
+            }
 
 			// Create particle effect trail behind player
 			var trail_length = 5;  // Number of particles

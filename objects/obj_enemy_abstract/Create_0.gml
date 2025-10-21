@@ -8,7 +8,7 @@ player_last_known_x = undefined;
 player_last_known_y = undefined;
 
 // Pauses all activity for the enemy
-pause = false;
+pause = true;
 
 // Status effects display
 status_texts = []; // Array of status effect strings to display above enemy
@@ -16,7 +16,13 @@ status_texts = []; // Array of status effect strings to display above enemy
 // Please check scr_enemy_fsm_state
 states_array[STATES.ROAM] = new RoamState(self, 20, true);
 states_array[STATES.CHASE] = new ChaseState(self, 120, true);
-//states_array[STATES.ATTACK] = new AttackState(self, -1, false);
+curr_state = undefined
 
-curr_state = states_array[STATES.ROAM];
-curr_state.enter();
+function if_death() {
+    // Check for death
+    if (hp <= 0) {
+        instance_destroy();
+        instance_create_depth(x, y, 0, obj_chi);
+        exit;
+    }
+}

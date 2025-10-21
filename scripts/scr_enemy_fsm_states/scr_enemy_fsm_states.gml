@@ -42,9 +42,11 @@ function State(_entity, _duration, _is_timed) constructor {
     /// @function step()
     /// @description Called every frame while active
     step = function() {
-        remaining_time--;
-        if (is_timed and remaining_time <= 0) {
-            on_timeout()
+        if (is_timed) {
+            remaining_time--;
+            if (remaining_time <= 0) {
+                on_timeout()
+            }
         }
         on_step();
     }
@@ -111,24 +113,21 @@ function RoamState(_entity, _duration = 20, _is_timed = true) : State(_entity, _
     on_player_interact = function() {
         changeState(STATES.ALERT);
     }
+    
 }
 
 function AlertState(_entity, _duration = undefined, _is_timed = false) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.ALERT;
     
     on_enter = function() {
-        // Was plannning on inserting a '!' pop up here to indicate the enemy has detected the player
+        // Creates the '!' pop up to indicate the enemy has detected the player
         with entity {
             instance_create_layer(x, y - sprite_height / 2 - 10, "Effects", obj_enemy_alert_popup);
         }
-    }
-    
-    on_timeout = function() {
         changeState(STATES.CHASE);
     }
     
 }
-
 
 function ChaseState(_entity, _duration = 120, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {    
     id = STATES.CHASE;
@@ -138,19 +137,6 @@ function ChaseState(_entity, _duration = 120, _is_timed = true) : State(_entity,
             var _hor = clamp(player_last_known_x - x, -1, 1)
             var _vert = clamp(player_last_known_y - y, -1, 1)
             move(other.entity, _hor, _vert)   
-            //var magnitude = sqrt(_hor * _hor + _vert * _vert);
-            //
-            //if (magnitude != 0) {
-                //// Convert units per second to pixels per frame
-                //// units/sec * pixels/unit / frames/sec = pixels/frame
-                //var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
-            //
-                //var _norm_hor = (_hor / magnitude) * move_speed_this_frame;
-                //var _norm_vert = (_vert / magnitude) * move_speed_this_frame;
-            //
-                //
-                //move_and_collide(_norm_hor, _norm_vert, colliders); 
-            //}
         }
         
     }
@@ -164,7 +150,6 @@ function ChaseState(_entity, _duration = 120, _is_timed = true) : State(_entity,
         remaining_time = duration;
     }
 }
-
 
 // Dummy Attack State for zombie
 function AttackState(_entity, _duration = undefined, _is_timed = false) : State(_entity, _duration, _is_timed) constructor {

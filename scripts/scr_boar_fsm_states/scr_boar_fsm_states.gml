@@ -18,7 +18,7 @@ function BoarAttackState(_entity, _duration = undefined, _is_timed = false) : St
     }
     
     on_timeout = function() {
-        spawn_and_set_projectile(entity, new ProjectileAir(), entity.player_last_known_x, entity.player_last_known_y) 
+        spawn_and_set_projectile(entity, new ProjectileAir(false, 192, 16), entity.player_last_known_x, entity.player_last_known_y) 
         remaining_time = duration
         changeState(STATES.CHASE)
     }

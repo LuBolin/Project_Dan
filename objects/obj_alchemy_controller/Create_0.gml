@@ -37,8 +37,10 @@ drag_offset_y = 0;
 // === EQUIPPED GOURDS (Left side - vertical row) ===
 equipped_slot_size = 80;
 equipped_slot_spacing = 20;
-equipped_x = 100;
+equipped_x = 80;
 equipped_start_y = gui_height / 2 - (3 * equipped_slot_size + 2 * equipped_slot_spacing) / 2;
+upwards_offset = gui_height / 10; // Move the whole equipped section up a bit
+equipped_start_y -= upwards_offset;
 
 // Get player's equipped gourds BEFORE deactivating player
 if (instance_exists(obj_player)) {

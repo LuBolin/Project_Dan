@@ -65,8 +65,9 @@ if (instance_exists(obj_level_manager)) {
         // Prepare text lines (wrapped)
         var kills_text = string(kills_needed) + "/" + string(total);
         var line1 = "Collect ";
-        var line2 = "chi to ";
-        var line3 = "the exit door!";
+        var line1_part2 = " chi";
+        var line2 = "to unlock the";
+        var line3 = "exit door!";
         var line4 = "Current: " + string(current);
 
         // Calculate text dimensions for background
@@ -75,8 +76,8 @@ if (instance_exists(obj_level_manager)) {
         draw_set_font(-1); // Use default font for measurement
         var line_height = 20;
         var max_width = max(
-            string_width(line1) + string_width_ext(kills_text, -1, -1),
-            string_width(line2) + string_width("unlock"),
+            string_width(line1) + string_width_ext(kills_text, -1, -1) + string_width(line1_part2),
+            string_width(line2),
             string_width(line3),
             string_width(line4)
         );
@@ -95,18 +96,20 @@ if (instance_exists(obj_level_manager)) {
         // Draw text lines
         draw_set_color(c_white);
 
-        // Line 1: "Kill" + underlined "X/Y"
+        // Line 1: "Collect" + underlined "X/Y" + " chi"
         draw_text(text_x, text_y, line1);
         var x_offset = string_width(line1);
         draw_text(text_x + x_offset, text_y, kills_text);
+        var x_offset2 = x_offset + string_width(kills_text);
+        draw_text(text_x + x_offset2, text_y, line1_part2);
         // Draw underline for X/Y
         var underline_y = text_y + string_height(kills_text) - 2;
         draw_line(text_x + x_offset, underline_y, text_x + x_offset + string_width(kills_text), underline_y);
 
-        // Line 2: "enemies to unlock"
-        draw_text(text_x, text_y + line_height, line2 + "unlock");
+        // Line 2: "to unlock the"
+        draw_text(text_x, text_y + line_height, line2);
 
-        // Line 3: "the exit door!"
+        // Line 3: "exit door!"
         draw_text(text_x, text_y + line_height * 2, line3);
 
         // Draw current kills with color coding (red if not enough, green if enough)

@@ -269,21 +269,84 @@ function ProjectileMudBall() constructor {
 
 function ProjectileCurrent() constructor {
 	name = "Current";
-	speed = 10.0;  // units per second - flowing water current
-	damage = 1;
-	life_steps = game_get_speed(gamespeed_fps) * 1.5;  // 1.5 seconds
-	kb_speed = 6;  // Stronger knockback than water
-	kb_distance = 60;  // Push enemies away
-	sprite_index = spr_water_ball;  // Reuse water sprite for now
-	scale = 0.6;
+	speed = 0;  // Doesn't move (player dashes instead)
+	damage = 0;
+	life_steps = 1;  // Destroy immediately after dash
+	kb_speed = 12;  // Dash speed (pixels per frame)
+	kb_distance = 128;  // Total dash distance (2 units)
+	dash_duration = 8;  // Frames for dash
+	sprite_index = spr_wind_gust;
+	scale = 0.2;  // Small visual effect during dash
     sfx_fire = undefined;
     sfx_hit = undefined;
 
-	on_hit = function(projectile_inst, target) {
-		damage_entity(target, projectile_inst.damage);
-		apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
-		// Apply slow effect from the current
-		add_status_effect(target, new SlowEffect(game_get_speed(gamespeed_fps) * 2, 0.5));
+	// Knockback gust properties (applied at end of dash)
+	gust_kb_speed = 4;
+	gust_kb_distance = 30;
+	gust_speed = 9.375;  // units per second (600 / 64)
+	gust_lifetime = game_get_speed(gamespeed_fps) * 0.2;
+
+	on_launch = function(projectile_inst) {
+		// Spawn projectile on player
+		projectile_inst.x = projectile_inst.creator.x;
+		projectile_inst.y = projectile_inst.creator.y;
+		projectile_inst.speed = 0;
+		projectile_inst.image_alpha = 0.5;  // Semi-transparent
+
+		// Immediately dash the player towards mouse
+		if (instance_exists(projectile_inst.creator)) {
+			var player = projectile_inst.creator;
+			var dash_dir = projectile_inst.image_angle;
+
+			// Apply knockback effect to dash player (false = no stun)
+			add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
+
+			// Make player invincible during dash + 0.2 seconds after
+			var invuln_time = 0.2; // seconds
+			var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
+			add_status_effect(player, new InvincibilityEffect(invuln_duration));
+
+			// Create particle effect trail behind player
+			var trail_length = 5;  // Number of particles
+			for (var i = 0; i < trail_length; i++) {
+				var offset = i * 10;  // Space particles along the trail
+				var trail_x = player.x - lengthdir_x(offset, dash_dir);
+				var trail_y = player.y - lengthdir_y(offset, dash_dir);
+
+				// Create a wind particle at this position
+				var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
+				if (particle != noone) {
+					particle.sprite_index = spr_wind_gust;
+					particle.image_alpha = 0.4 - (i * 0.06);  // Fade out
+					particle.image_xscale = 0.3;
+					particle.image_yscale = 0.3;
+					particle.image_angle = dash_dir;
+					particle.speed = 0;
+					particle.life_steps = 15 - (i * 2);  // Particles fade quickly
+					particle.proj_data = {};  // Empty data, no collision
+				}
+			}
+
+			// After dash completes, spawn the knockback gust projectile
+			// Schedule it to spawn after dash_duration frames
+			var gust_data = {
+				x: player.x,
+				y: player.y,
+				direction: dash_dir,
+				creator: player,
+				kb_speed: gust_kb_speed,
+				kb_distance: gust_kb_distance,
+				gust_speed: gust_speed,
+				gust_lifetime: gust_lifetime,
+				timer: 0,
+				dash_duration: dash_duration
+			};
+
+			// Store gust data on player to spawn after dash
+			player.wind_gust_pending = gust_data;
+		}
+
+		// Destroy projectile immediately
 		instance_destroy(projectile_inst);
 	}
 }
@@ -294,119 +357,20 @@ function ProjectileCurrent() constructor {
 
 function ProjectileEruption() constructor {
 	name = "Eruption";
-	speed = 0;  // Stationary eruption
-	damage = 3;  // Heavy damage
-	life_steps = game_get_speed(gamespeed_fps) * 2;  // 2 seconds
-	kb_speed = 10;
-	kb_distance = 100;
-	sprite_index = spr_lava_ball;  // Reuse lava sprite for now
-	scale = 1.5;  // Large eruption
-    sfx_fire = undefined;
-    sfx_hit = undefined;
-
-	on_launch = function(projectile_inst) {
-		// Create eruption at target location
-		projectile_inst.x = mouse_x;
-		projectile_inst.y = mouse_y;
-		projectile_inst.speed = 0;
-		projectile_inst.hit_list = ds_list_create();
-	}
-
-	on_step = function(projectile_inst) {
-		// Damage all enemies in eruption radius
-		with (projectile_inst) {
-			var enemy_list = ds_list_create();
-			var num_colliding = collision_circle_list(x, y, 64, obj_enemy_abstract, false, true, enemy_list, false);
-
-			for (var i = 0; i < num_colliding; i++) {
-				var enemy = enemy_list[| i];
-				// Only hit each enemy once
-				if (ds_list_find_index(hit_list, enemy) == -1) {
-					damage_entity(enemy, damage);
-					apply_knockback(projectile_inst, enemy, kb_speed, kb_distance);
-					add_status_effect(enemy, new BurnEffect(game_get_speed(gamespeed_fps) * 3, 2));
-					ds_list_add(hit_list, enemy);
-				}
-			}
-			ds_list_destroy(enemy_list);
-		}
-	}
-
-	on_destroy = function(projectile_inst) {
-		if (variable_instance_exists(projectile_inst, "hit_list")) {
-			ds_list_destroy(projectile_inst.hit_list);
-		}
-	}
+	// UNIMPLEMENTED - Print message instead of shooting
+	show_debug_message("Eruption is unimplemented");
 }
 
 function ProjectileClay() constructor {
 	name = "Clay";
-	speed = 6.0;  // Slow heavy projectile
-	damage = 2;
-	life_steps = game_get_speed(gamespeed_fps) * 1.0;
-	kb_speed = 2;
-	kb_distance = 20;
-	sprite_index = spr_mud_ball;  // Reuse mud sprite for now
-	scale = 0.7;
-    sfx_fire = undefined;
-    sfx_hit = undefined;
-
-	on_hit = function(projectile_inst, target) {
-		damage_entity(target, projectile_inst.damage);
-		// Clay hardens and slows enemy significantly
-		add_status_effect(target, new SlowEffect(game_get_speed(gamespeed_fps) * 3, 0.3));
-		apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
-		instance_destroy(projectile_inst);
-	}
+	// UNIMPLEMENTED - Print message instead of shooting
+	show_debug_message("Clay is unimplemented");
 }
 
 function ProjectilePlant() constructor {
 	name = "Plant";
-	speed = 0;  // Stationary plant growth
-	damage = 0;
-	life_steps = game_get_speed(gamespeed_fps) * 5;  // 5 seconds
-	kb_speed = 0;
-	kb_distance = 0;
-	sprite_index = spr_mud_ball;  // Temporary sprite
-	scale = 1.0;
-    sfx_fire = undefined;
-    sfx_hit = undefined;
-
-	on_launch = function(projectile_inst) {
-		// Create plant at target location
-		projectile_inst.x = mouse_x;
-		projectile_inst.y = mouse_y;
-		projectile_inst.speed = 0;
-		projectile_inst.heal_timer = 0;
-		projectile_inst.root_timer = 0;
-	}
-
-	on_step = function(projectile_inst) {
-		projectile_inst.heal_timer++;
-		projectile_inst.root_timer++;
-
-		// Heal player every second if nearby
-		if (projectile_inst.heal_timer >= game_get_speed(gamespeed_fps)) {
-			projectile_inst.heal_timer = 0;
-			if (instance_exists(obj_player)) {
-				var dist = point_distance(projectile_inst.x, projectile_inst.y, obj_player.x, obj_player.y);
-				if (dist < 96) {  // Within 1.5 units
-					obj_player.hp = min(obj_player.hp + 1, obj_player.max_hp);
-				}
-			}
-		}
-
-		// Root enemies every 0.5 seconds
-		if (projectile_inst.root_timer >= game_get_speed(gamespeed_fps) * 0.5) {
-			projectile_inst.root_timer = 0;
-			with (obj_enemy_abstract) {
-				var dist = point_distance(x, y, projectile_inst.x, projectile_inst.y);
-				if (dist < 64) {  // Within 1 unit
-					add_status_effect(self, new StunEffect(game_get_speed(gamespeed_fps) * 0.5));
-				}
-			}
-		}
-	}
+	// UNIMPLEMENTED - Print message instead of shooting
+	show_debug_message("Plant is unimplemented");
 }
 
 function ProjectileHurricane() constructor {
@@ -470,90 +434,14 @@ function ProjectileHurricane() constructor {
 
 function ProjectileDestruction() constructor {
 	name = "Destruction";
-	speed = 15.0;  // Fast, devastating
-	damage = 5;
-	life_steps = game_get_speed(gamespeed_fps) * 3;  // 3 seconds
-	kb_speed = 15;
-	kb_distance = 150;
-	sprite_index = spr_fire_ball;  // Temporary sprite
-	scale = 1.2;
-    sfx_fire = undefined;
-    sfx_hit = undefined;
-
-	on_hit = function(projectile_inst, target) {
-		// Massive damage and knockback
-		damage_entity(target, projectile_inst.damage);
-		apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
-
-		// Chain explosion - damage nearby enemies
-		with (obj_enemy_abstract) {
-			if (id != target) {
-				var dist = point_distance(x, y, target.x, target.y);
-				if (dist < 96) {  // Within 1.5 units of original target
-					damage_entity(self, 2);
-					var chain_dir = point_direction(target.x, target.y, x, y);
-					add_status_effect(self, new KnockbackEffect(chain_dir, 8, 10, true));
-				}
-			}
-		}
-		instance_destroy(projectile_inst);
-	}
+	// UNIMPLEMENTED - Print message instead of shooting
+	show_debug_message("Destruction is unimplemented");
 }
 
 function ProjectileCreation() constructor {
 	name = "Creation";
-	speed = 0;  // Stationary creation zone
-	damage = 0;
-	life_steps = game_get_speed(gamespeed_fps) * 8;  // 8 seconds
-	kb_speed = 0;
-	kb_distance = 0;
-	sprite_index = spr_mud_ball;  // Temporary sprite
-	scale = 2.0;  // Large area
-    sfx_fire = undefined;
-    sfx_hit = undefined;
-
-	on_launch = function(projectile_inst) {
-		// Create at player location
-		projectile_inst.x = projectile_inst.creator.x;
-		projectile_inst.y = projectile_inst.creator.y;
-		projectile_inst.speed = 0;
-		projectile_inst.pulse_timer = 0;
-	}
-
-	on_step = function(projectile_inst) {
-		projectile_inst.pulse_timer++;
-
-		// Every 0.5 seconds
-		if (projectile_inst.pulse_timer >= game_get_speed(gamespeed_fps) * 0.5) {
-			projectile_inst.pulse_timer = 0;
-
-			// Heal player if nearby
-			if (instance_exists(obj_player)) {
-				var dist = point_distance(projectile_inst.x, projectile_inst.y, obj_player.x, obj_player.y);
-				if (dist < 128) {  // Within 2 units
-					obj_player.hp = min(obj_player.hp + 2, obj_player.max_hp);
-					// Remove debuffs
-					with (obj_player) {
-						if (variable_instance_exists(id, "status_effects")) {
-							ds_list_clear(status_effects);
-						}
-					}
-				}
-			}
-
-			// Pacify and push away enemies
-			with (obj_enemy_abstract) {
-				var dist = point_distance(x, y, projectile_inst.x, projectile_inst.y);
-				if (dist < 128) {  // Within 2 units
-					// Push enemies away gently
-					var push_dir = point_direction(projectile_inst.x, projectile_inst.y, x, y);
-					add_status_effect(self, new KnockbackEffect(push_dir, 3, 5, false));
-					// Slow them down
-					add_status_effect(self, new SlowEffect(game_get_speed(gamespeed_fps) * 1, 0.4));
-				}
-			}
-		}
-	}
+	// UNIMPLEMENTED - Print message instead of shooting
+	show_debug_message("Creation is unimplemented");
 }
 
 // ========================================

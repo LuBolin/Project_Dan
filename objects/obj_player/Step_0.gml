@@ -65,7 +65,44 @@ if (!variable_instance_exists(self, "is_stunned") || !is_stunned) {
     }
 }
 
-// Removed wind_gust_pending code - no longer used after Wind element removal
+// Handle wind gust spawning after dash (used by Current element)
+if (variable_instance_exists(self, "wind_gust_pending") && wind_gust_pending != undefined) {
+    // Increment timer
+    if (is_struct(wind_gust_pending) && variable_struct_exists(wind_gust_pending, "timer")) {
+        wind_gust_pending.timer++;
+    } else {
+        wind_gust_pending.timer = 1;
+    }
+
+    if (wind_gust_pending.timer >= wind_gust_pending.dash_duration) {
+        // Spawn the knockback gust projectile at player's current position
+        var gust_proj = instance_create_layer(x, y, "Instances", obj_projectile);
+        if (gust_proj != noone) {
+            gust_proj.sprite_index = spr_wind_gust;
+            gust_proj.image_angle = wind_gust_pending.direction;
+            gust_proj.direction = wind_gust_pending.direction;
+            gust_proj.speed = wind_gust_pending.gust_speed;
+            gust_proj.image_xscale = 0.7;
+            gust_proj.image_yscale = 0.7;
+            gust_proj.life_steps = wind_gust_pending.gust_lifetime;
+            gust_proj.damage = 0;
+            gust_proj.kb_speed = wind_gust_pending.kb_speed;
+            gust_proj.kb_distance = wind_gust_pending.kb_distance;
+            gust_proj.creator = wind_gust_pending.creator;
+
+            // Set up on_hit to apply knockback
+            gust_proj.proj_data = {
+                on_hit: function(projectile_inst, target) {
+                    apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
+                    // Wind gust doesn't destroy on hit - passes through enemies
+                }
+            };
+        }
+
+        // Remove the pending gust data
+        wind_gust_pending = undefined;
+    }
+}
 
 // Ranged Vacuum Pickup for Chi
 with (obj_chi) {

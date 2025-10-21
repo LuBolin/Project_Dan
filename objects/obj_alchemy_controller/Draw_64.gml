@@ -25,7 +25,16 @@ draw_text(gui_width / 2, 30, "Alchemy Workshop");
 // === DRAW EQUIPPED GOURDS (Left side - vertical row) ===
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
-draw_text(equipped_x, equipped_start_y - 40, "Inventory:");
+
+var inventory_text = "Inventory:";
+var inventory_y = equipped_start_y - 40;
+draw_set_color(col_text);
+draw_text(equipped_x, inventory_y, inventory_text);
+
+// Draw underline
+var text_width = string_width(inventory_text) - 5; // -5 to not underline the colon
+var underline_y = inventory_y + string_height(inventory_text) - 2;
+draw_line_width(equipped_x, underline_y, equipped_x + text_width, underline_y, 2);
 
 for (var i = 0; i < 3; i++) {
     // Skip if being dragged
@@ -294,27 +303,51 @@ for (var i = 0; i < array_length(element_names); i++) {
         elem_color = temp_gourd.color;
     }
 
+    // Check if this is the Elixir (final goal)
+    var is_elixir = (elem_name == "Elixir");
+
     // Draw node background
     if (is_discovered) {
         // Special glow effect for Elixir
-        if (elem_name == "Elixir") {
+        if (is_elixir) {
             var glow_alpha = 0.3 + sin(elixir_glow_timer * 0.1) * 0.2;
             draw_set_alpha(glow_alpha);
             draw_set_color(c_yellow);
             draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size * 0.7, false);
             draw_set_alpha(1);
-        }
 
-        draw_set_color(elem_color);
+            // Draw gourd sprite for Elixir
+            var gourd_scale = tree_node_size / sprite_get_width(spr_gourd);
+            draw_sprite_ext(spr_gourd, 0,
+                          node_x + tree_node_size / 2,
+                          node_y + tree_node_size / 2,
+                          gourd_scale, gourd_scale, 0, c_black, 1);
+        } else {
+            // Draw circle for other elements
+            draw_set_color(elem_color);
+            draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, false);
+        }
     } else {
         // Greyed out for undiscovered
-        draw_set_color(make_color_rgb(40, 40, 50));
+        if (is_elixir) {
+            // Draw gourd sprite in grey for undiscovered Elixir
+            var gourd_scale = tree_node_size / sprite_get_width(spr_gourd);
+            draw_sprite_ext(spr_gourd, 0,
+                          node_x + tree_node_size / 2,
+                          node_y + tree_node_size / 2,
+                          gourd_scale, gourd_scale, 0, make_color_rgb(40, 40, 50), 1);
+        } else {
+            // Draw circle in grey for undiscovered other elements
+            draw_set_color(make_color_rgb(40, 40, 50));
+            draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, false);
+        }
     }
-    draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, false);
 
-    // Draw node border
-    draw_set_color(is_discovered ? col_border : make_color_rgb(60, 60, 70));
-    draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, true);
+    // Draw node border (only for non-Elixir nodes)
+    if (!is_elixir) {
+        draw_set_color(is_discovered ? col_border : make_color_rgb(60, 60, 70));
+        draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, true);
+    }
 
     // Draw element name with outline (for discovered elements) or grey (for undiscovered)
     draw_set_halign(fa_center);

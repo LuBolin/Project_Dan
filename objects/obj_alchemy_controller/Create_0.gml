@@ -216,23 +216,41 @@ var arr_len = array_length(tier_elements);
 show_debug_message(tier_elements)
 new_element = gourd_create(GourdEarth);
 
-while (arr_len > 0) {
+// Filter out elements that are already equipped
+var available_elements = [];
+for (var t = 0; t < array_length(tier_elements); t++) {
+    var tier_element = tier_elements[t];
+    var is_equipped = false;
     
-    rand_i = irandom(arr_len - 1);
-    for (var i = 0; i < array_length(equipped_gourds); i += 1) { 
-        //show_debug_message(equipped_gourds[i].name)
-        //show_debug_message(tier_elements[rand_i])
-        if (equipped_gourds[i].name == tier_elements[rand_i]) {
-            array_delete(tier_elements, rand_i, 1);
-            arr_len -=1
+    // Check if this element is already equipped
+    for (var i = 0; i < array_length(equipped_gourds); i++) { 
+        if (equipped_gourds[i].name == tier_element) {
+            is_equipped = true;
             break;
         }  
     }
-    show_debug_message(tier_elements)
-    new_element = get_gourd_constructor_by_name(tier_elements[rand_i]);
-    break;
+    
+    // Only add to available list if not equipped
+    if (!is_equipped) {
+        array_push(available_elements, tier_element);
+    }
 }
 
+// Pick random element from available (non-equipped) elements
+if (array_length(available_elements) > 0) {
+    var random_index = irandom(array_length(available_elements) - 1);
+    new_element = get_gourd_constructor_by_name(available_elements[random_index]);
+    show_debug_message("Selected new element: " + available_elements[random_index]);
+} else {
+    // All elements of this tier are equipped, pick any random one
+    if (array_length(tier_elements) > 0) {
+        var random_index = irandom(array_length(tier_elements) - 1);
+        new_element = get_gourd_constructor_by_name(tier_elements[random_index]);
+        show_debug_message("All tier elements equipped, picked: " + tier_elements[random_index]);
+    }
+}
+
+show_debug_message("Final new_element: " + (is_struct(new_element) ? new_element.name : "undefined"));
 
 
 // Glow animation for Elixir

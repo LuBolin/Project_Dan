@@ -4,7 +4,7 @@ randomize()
 total_enemies = 0;
 current_kills = 0;
 required_kills = 0;
-kill_percentage = 0.1; // 10% requirement
+kill_percentage = 0.6; // 10% requirement
 fox_spawn_prob = 0.5 
 
 // Level difficulty (1-5) - can be set by entering room

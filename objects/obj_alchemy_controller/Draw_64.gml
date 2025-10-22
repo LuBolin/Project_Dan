@@ -395,7 +395,7 @@ draw_rectangle(button_x, button_y, button_x + button_w, button_y + button_h, tru
 draw_set_color(col_text);
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
-draw_text(button_x + button_w / 2, button_y + button_h / 2, "Continue");
+draw_text(button_x + button_w / 2, button_y + button_h / 2, "Continue to Next Level");
 
 // === RESET DRAW SETTINGS ===
 draw_set_halign(fa_left);

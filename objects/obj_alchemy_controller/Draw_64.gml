@@ -200,6 +200,28 @@ if (craft_feedback != "none" && craft_feedback_timer > 0 && craft_feedback_equat
     }
 }
 
+// === TODO: DRAW NEW ELEMENT ===
+draw_set_color(col_text);
+draw_text(gui_width / 2, new_ele_separator_y + 20, "New Element!");
+draw_line_width(separator_x, new_ele_separator_y, tree_panel_x, new_ele_separator_y, 2);
+
+var new_slot_x = (gui_width - equipped_slot_size - equipped_slot_spacing) / 2;
+var new_slot_y = new_ele_separator_y + 40;
+
+// Draw slot background
+draw_set_color(new_element.color);
+draw_rectangle(new_slot_x, new_slot_y, new_slot_x + equipped_slot_size, new_slot_y + equipped_slot_size, false);
+
+// Draw slot border
+draw_set_color(col_border);
+draw_rectangle(new_slot_x, new_slot_y, new_slot_x + equipped_slot_size, new_slot_y + equipped_slot_size, true);
+
+// Draw gourd name with outline
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+draw_text_outlined(new_slot_x + equipped_slot_size / 2, new_slot_y + equipped_slot_size / 2, new_element.name);
+
+
 // === DRAW DRAGGED ITEM (on top of everything) ===
 if (dragging) {
     var mx = device_mouse_x_to_gui(0);
@@ -214,6 +236,8 @@ if (dragging) {
     } else if (drag_source_type == "crafted") {
         dragged_gourd = crafted_elements[drag_source_index].gourd;
         draw_size = equation_slot_size;
+    } else if (drag_source_type == "new") {
+        dragged_gourd = new_element;
     }
 
     if (dragged_gourd != noone) {
@@ -359,6 +383,7 @@ for (var i = 0; i < array_length(element_names); i++) {
         draw_text(node_x + tree_node_size / 2, node_y + tree_node_size / 2, "?");
     }
 }
+
 
 // === DRAW CONTINUE BUTTON ===
 draw_set_color(button_hover ? col_button_hover : col_button);

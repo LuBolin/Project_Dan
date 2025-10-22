@@ -43,28 +43,6 @@ function try_craft_equation(eq_index) {
     eq.used = true;
 }
 
-// === HELPER FUNCTION: Get gourd constructor by name ===
-function get_gourd_constructor_by_name(name) {
-    switch(name) {
-        case "Fire": return gourd_create(GourdFire);
-        case "Earth": return gourd_create(GourdEarth);
-        case "Water": return gourd_create(GourdWater);
-        case "Air": return gourd_create(GourdAir);
-        case "Mud": return gourd_create(GourdMud);
-        case "Lava": return gourd_create(GourdLava);
-        case "Steam": return gourd_create(GourdSteam);
-        case "Current": return gourd_create(GourdCurrent);
-        case "Eruption": return gourd_create(GourdEruption);
-        case "Hurricane": return gourd_create(GourdHurricane);
-        case "Clay": return gourd_create(GourdClay);
-        case "Plant": return gourd_create(GourdPlant);
-        case "Destruction": return gourd_create(GourdDestruction);
-        case "Creation": return gourd_create(GourdCreation);
-        case "Elixir": return gourd_create(GourdElixir);
-        default: return noone;
-    }
-}
-
 // === DRAG & DROP SYSTEM ===
 
 // Start dragging
@@ -83,6 +61,22 @@ if (mouse_check_button_pressed(mb_left) && !dragging) {
             drag_offset_x = mx - slot_x;
             drag_offset_y = my - slot_y;
             break;
+        }
+    }
+    
+    
+    // Check new element
+    if (!dragging) {
+        var new_slot_x = (gui_width - equipped_slot_size - equipped_slot_spacing) / 2;
+        var new_slot_y = new_ele_separator_y + 40;
+        
+        if (point_in_rectangle(mx, my, new_slot_x, new_slot_y, new_slot_x + equipped_slot_size, new_slot_y + equipped_slot_size)) {
+            obj_sfx_manager.play_sound(snd_alchemy, true)
+            dragging = true;
+            drag_source_type = "new";
+            drag_source_index = 0;
+            drag_offset_x = mx - new_slot_x;
+            drag_offset_y = my - new_slot_y;
         }
     }
 
@@ -107,6 +101,8 @@ if (mouse_check_button_pressed(mb_left) && !dragging) {
             }
         }
     }
+    
+
 }
 
 // Stop dragging
@@ -119,6 +115,8 @@ if (mouse_check_button_released(mb_left) && dragging) {
         dragged_gourd = equipped_gourds[drag_source_index];
     } else if (drag_source_type == "crafted") {
         dragged_gourd = crafted_elements[drag_source_index].gourd;
+    } else if (drag_source_type == "new") {
+        dragged_gourd = new_element;
     }
 
     // Check if dropped on equation slots
@@ -163,7 +161,7 @@ if (mouse_check_button_released(mb_left) && dragging) {
     }
 
     // Check if dropped on equipped slots (for swapping crafted with equipped)
-    if (!dropped && drag_source_type == "crafted") {
+    if (!dropped && (drag_source_type == "crafted" or drag_source_type == "new")) {
         for (var i = 0; i < 3; i++) {
             var slot_x = equipped_x;
             var slot_y = equipped_start_y + i * (equipped_slot_size + equipped_slot_spacing);
@@ -185,7 +183,7 @@ if (mouse_check_button_released(mb_left) && dragging) {
     }
 
     // Check if dropped on crafted slots (for swapping equipped with crafted)
-    if (!dropped && drag_source_type == "equipped") {
+    if (!dropped && (drag_source_type == "equipped" or drag_source_type == "new")) {
         for (var i = 0; i < array_length(crafted_elements); i++) {
             var eq_idx = crafted_elements[i].equation_index;
             var base_y = equation_y + eq_idx * (equation_slot_size + equation_spacing);

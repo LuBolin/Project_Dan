@@ -20,6 +20,29 @@ col_button = make_color_rgb(80, 160, 220);
 col_button_hover = make_color_rgb(100, 180, 240);
 col_text = c_white;
 
+// === HELPER FUNCTION: Get gourd constructor by name ===
+function get_gourd_constructor_by_name(name) {
+    switch(name) {
+        case "Fire": return gourd_create(GourdFire);
+        case "Earth": return gourd_create(GourdEarth);
+        case "Water": return gourd_create(GourdWater);
+        case "Air": return gourd_create(GourdAir);
+        case "Mud": return gourd_create(GourdMud);
+        case "Lava": return gourd_create(GourdLava);
+        case "Steam": return gourd_create(GourdSteam);
+        case "Current": return gourd_create(GourdCurrent);
+        case "Eruption": return gourd_create(GourdEruption);
+        case "Hurricane": return gourd_create(GourdHurricane);
+        case "Clay": return gourd_create(GourdClay);
+        case "Plant": return gourd_create(GourdPlant);
+        case "Destruction": return gourd_create(GourdDestruction);
+        case "Creation": return gourd_create(GourdCreation);
+        case "Elixir": return gourd_create(GourdElixir);
+        default: return noone;
+    }
+}
+
+
 // === CRAFTING SYSTEM ===
 // Load recipes from JSON and build tree (only if not already loaded)
 if (!variable_global_exists("recipe_tree")) {
@@ -166,6 +189,51 @@ for (var i = 0; i < array_length(json_data.recipes); i++) {
         y: inverted_row * tree_node_spacing_y
     };
 }
+
+// TODO: Get new element for the player
+new_ele_separator_y = tree_panel_y + tree_panel_h
+
+var level = global.level_progress;
+var tier_elements;
+show_debug_message(level)
+switch (level) {
+    case 2:
+    case 3:    
+        tier_elements = json_data.display_tiers.tier1.elements;
+    break;
+    case 4:
+    case 5:    
+        tier_elements = json_data.display_tiers.tier2.elements;
+    break;
+    case 1:
+    default:    
+        tier_elements = json_data.display_tiers.base.elements;
+    break;
+}
+
+var rand_i;
+var arr_len = array_length(tier_elements);
+show_debug_message(tier_elements)
+new_element = gourd_create(GourdEarth);
+
+while (arr_len > 0) {
+    
+    rand_i = irandom(arr_len - 1);
+    for (var i = 0; i < array_length(equipped_gourds); i += 1) { 
+        //show_debug_message(equipped_gourds[i].name)
+        //show_debug_message(tier_elements[rand_i])
+        if (equipped_gourds[i].name == tier_elements[rand_i]) {
+            array_delete(tier_elements, rand_i, 1);
+            arr_len -=1
+            break;
+        }  
+    }
+    show_debug_message(tier_elements)
+    new_element = get_gourd_constructor_by_name(tier_elements[rand_i]);
+    break;
+}
+
+
 
 // Glow animation for Elixir
 elixir_glow_timer = 0;

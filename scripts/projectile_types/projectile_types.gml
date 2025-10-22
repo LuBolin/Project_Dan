@@ -356,9 +356,167 @@ function ProjectileCurrent() constructor {
 // ========================================
 
 function ProjectileEruption() constructor {
-	name = "Eruption";
-	// UNIMPLEMENTED - Print message instead of shooting
-	show_debug_message("Eruption is unimplemented");
+    name = "Eruption";
+    speed       = 7.5;  // units per second (480 / 64) - slightly faster than lava
+    damage      = 1.5;    // 50% higher damage than regular lava
+    life_steps  = game_get_speed(gamespeed_fps) * 2.5; // 2.5 second max flight time
+    kb_speed = 4;  // pixels per frame
+    kb_distance = 50; // Same knockback than lava
+    sprite_index = spr_lava_ball; // Reuse lava ball sprite
+    scale = 0.8; // Slightly larger than regular lava
+    sfx_fire = undefined;
+    sfx_hit = undefined;
+
+    // Target position for homing
+    target_x = 0;
+    target_y = 0;
+    homing_enabled = false;
+
+    // Eruption-specific properties
+    explosion_radius = 96; // Distance between pools (1.5 units)
+    num_secondary_pools = 6; // Number of pools to spawn around center
+
+    on_launch = function(projectile_inst) {
+        // Store target position (mouse position at launch)
+        projectile_inst.target_x = mouse_x;
+        projectile_inst.target_y = mouse_y;
+        projectile_inst.homing_enabled = true;
+        
+        // Calculate initial direction towards target
+        var dir = point_direction(projectile_inst.x, projectile_inst.y, mouse_x, mouse_y);
+        projectile_inst.direction = dir;
+        projectile_inst.image_angle = dir;
+    }
+
+    on_step = function(projectile_inst) {
+        // Home towards target position (same as lava)
+        if (projectile_inst.homing_enabled) {
+            var dist_to_target = point_distance(projectile_inst.x, projectile_inst.y, 
+                                                projectile_inst.target_x, projectile_inst.target_y);
+            
+            // Stop homing if very close to target (within 15 pixels for eruption)
+            if (dist_to_target < 15) {
+                projectile_inst.homing_enabled = false;
+                projectile_inst.speed = 0; // Stop moving
+                // Trigger eruption at target location
+                trigger_eruption(projectile_inst.target_x, projectile_inst.target_y);
+                projectile_inst.spawned_pool = true;
+                instance_destroy(projectile_inst);
+            } else {
+                // Adjust direction towards target with smooth homing
+                var target_dir = point_direction(projectile_inst.x, projectile_inst.y, 
+                                                 projectile_inst.target_x, projectile_inst.target_y);
+                
+                // Smooth turning
+                var turn_speed = 4; // degrees per frame (slightly slower than lava for heavier feel)
+                var angle_diff = angle_difference(target_dir, projectile_inst.direction);
+                
+                if (abs(angle_diff) > turn_speed) {
+                    projectile_inst.direction += sign(angle_diff) * turn_speed;
+                } else {
+                    projectile_inst.direction = target_dir;
+                }
+                
+                projectile_inst.image_angle = projectile_inst.direction;
+            }
+        }
+    }
+
+    on_hit = function(projectile_inst, target) {
+        // Apply damage and knockback
+        damage_entity(target, projectile_inst.damage);
+        apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
+        
+        // Mark that we're spawning pools
+        projectile_inst.spawned_pool = true;
+        
+        // Trigger eruption at impact location
+        trigger_eruption(projectile_inst.x, projectile_inst.y);
+        instance_destroy(projectile_inst);
+    }
+
+    on_wall_hit = function(projectile_inst) {
+        // Mark that we're spawning pools
+        projectile_inst.spawned_pool = true;
+        
+        // Trigger eruption at wall impact location
+        trigger_eruption(projectile_inst.x, projectile_inst.y);
+        instance_destroy(projectile_inst);
+    }
+
+    on_destroy = function(projectile_inst) {
+        // Only spawn eruption if we haven't already spawned one (from hit or wall)
+        if (instance_exists(projectile_inst) && !variable_instance_exists(projectile_inst, "spawned_pool")) {
+            trigger_eruption(projectile_inst.x, projectile_inst.y);
+        }
+    }
+
+    // Helper function to create the eruption pattern
+    trigger_eruption = function(center_x, center_y) {
+        // Spawn center lava pool immediately
+        var center_pool = instance_create_layer(center_x, center_y, "Instances", obj_lava_pool);
+        
+        // Make center pool slightly more powerful AND bigger
+        if (instance_exists(center_pool)) {
+            center_pool.damage_per_tick = 3; // 50% higher damage than lava
+            center_pool.life_timer = game_get_speed(gamespeed_fps) * 10; // Lasts longer
+            // Make center pool bigger
+            center_pool.image_xscale = 1.3;
+            center_pool.image_yscale = 1.3;
+        }
+        
+        // Create eruption controller to spawn secondary pools with delays
+        var eruption_controller = instance_create_layer(center_x, center_y, "Instances", obj_projectile);
+        if (instance_exists(eruption_controller)) {
+            eruption_controller.sprite_index = -1; // Invisible
+            eruption_controller.speed = 0;
+            eruption_controller.life_steps = num_secondary_pools * 3 + 10; // Live long enough to spawn all pools
+            
+            // Store eruption data
+            eruption_controller.proj_data = {
+                center_x: center_x,
+                center_y: center_y,
+                pools_spawned: 0,
+                spawn_timer: 0,
+                explosion_radius: explosion_radius,
+                num_secondary_pools: num_secondary_pools,
+                
+                on_step: function(projectile_inst) {
+                    spawn_timer++;
+                    
+                    // Spawn a pool every 3 frames
+                    if (spawn_timer >= 3 && pools_spawned < num_secondary_pools) {
+                        spawn_timer = 0;
+                        
+                        var angle = (360 / num_secondary_pools) * pools_spawned;
+                        var pool_x = center_x + lengthdir_x(explosion_radius, angle);
+                        var pool_y = center_y + lengthdir_y(explosion_radius, angle);
+                        
+                        // Check if position is valid (not in walls)
+                        if (!place_meeting(pool_x, pool_y, layer_tilemap_get_id("Tile_Collision"))) {
+                            var secondary_pool = instance_create_layer(pool_x, pool_y, "Instances", obj_lava_pool);
+                            if (instance_exists(secondary_pool)) {
+                                secondary_pool.life_timer = game_get_speed(gamespeed_fps) * 6; // 6 seconds
+								secondary_pool.damage_per_tick = 1.4; // 70% of damage of lava
+                                // Make secondary pools smaller
+                                secondary_pool.image_xscale = 0.8;
+                                secondary_pool.image_yscale = 0.8;
+                            }
+                        }
+                        
+                        pools_spawned++;
+                        
+                        // Destroy controller when all pools are spawned
+                        if (pools_spawned >= num_secondary_pools) {
+                            instance_destroy(projectile_inst);
+                        }
+                    }
+                }
+            };
+        }
+        
+        show_debug_message("ERUPTION! Spawning " + string(num_secondary_pools) + " secondary lava pools");
+    }
 }
 
 function ProjectileClay() constructor {

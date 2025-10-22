@@ -9,7 +9,7 @@ invuln = false
 // Removed wind_gust_pending - no longer used after Wind element removal
 
 // Randomly select 3 of the 4 base elements (Fire, Earth, Water, Air)
-var base_elements = [GourdFire, GourdEarth, GourdWater, GourdAir];
+var base_elements = [GourdFire, GourdEarth, GourdWater, GourdAir, GourdEruption];
 
 // Shuffle the array using Fisher-Yates algorithm
 for (var i = array_length(base_elements) - 1; i > 0; i--) {

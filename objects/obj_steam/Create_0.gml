@@ -9,8 +9,11 @@ fade_in_duration = 15;  // frames to fade in
 fade_out_duration = 30; // frames to fade out
 
 // Scale to cover good area around player (adjust as needed)
-image_xscale = 2.0;
-image_yscale = 2.0;
+image_xscale = 2.6;  // increased by 30%
+image_yscale = 2.6;  // increased by 30%
+
+// Collision radius for damage (matches the actual sprite visual size, not oversized)
+collision_radius = 83; // pixels - increased by 30% (was 64)
 
 // Lifespan: 5 seconds total
 life_duration = game_get_speed(gamespeed_fps) * 5;

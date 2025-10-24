@@ -31,7 +31,7 @@ col_button_hover = make_color_rgb(120, 90, 70);
 
 // Initialize global settings if they don't exist
 if (!variable_global_exists("master_volume")) {
-    global.master_volume = 1.0; // 0.0 to 1.0
+    global.master_volume = 0.5; // 0.0 to 1.0 (starts at 50%)
 }
 if (!variable_global_exists("is_fullscreen")) {
     global.is_fullscreen = window_get_fullscreen();

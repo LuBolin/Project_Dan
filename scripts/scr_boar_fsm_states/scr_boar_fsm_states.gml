@@ -41,13 +41,13 @@ function BoarChaseState(_entity, _duration = 120, _is_timed = true) : ChaseState
     }
 }
 
-function BoarAttackState(_entity, _duration = 8, _is_timed = true) : AttackState(_entity, _duration, _is_timed) constructor {
+function BoarAttackState(_entity, _duration = 38, _is_timed = true) : AttackState(_entity, _duration, _is_timed) constructor {
     on_enter = function() {
         obj_sfx_manager.play_sound(snd_boar, true);
     }
-    
+
     on_timeout = function() {
-        spawn_and_set_projectile(entity, new ProjectileAir(false, 128, 12), entity.player_last_known_x, entity.player_last_known_y) 
+        spawn_and_set_projectile(entity, new ProjectileAir(false, 102, 10), entity.player_last_known_x, entity.player_last_known_y)
         remaining_time = duration;
         entity.has_charged = true;
         entity.changeState(STATES.CHASE)

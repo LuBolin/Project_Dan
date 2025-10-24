@@ -65,9 +65,28 @@ col_button_hover = make_color_rgb(100, 70, 50);
 col_button_border = make_color_rgb(150, 120, 90);
 col_text = c_white;
 col_title = make_color_rgb(255, 215, 150);
+col_slider = make_color_rgb(100, 80, 60);
+col_slider_handle = make_color_rgb(180, 140, 100);
 
 // Hover state
 hovered_button = -1;
+
+// Volume control layout - use middle 80% of panel width
+volume_control_usable_width = panel_width * 0.8;
+volume_control_start_x = panel_x + (panel_width - volume_control_usable_width) / 2; // Center the usable area
+volume_label_y = panel_y + 90;
+
+// Volume slider properties
+volume_slider_height = 8;
+volume_slider_handle_width = 20;
+volume_slider_handle_height = 30;
+volume_slider_dragging = false;
+volume_slider_y = volume_label_y; // Same vertical position as label
+
+// Initialize global volume if not already set
+if (!variable_global_exists("master_volume")) {
+    global.master_volume = 0.5; // 50%
+}
 
 // Instructions text (placeholder, can be changed per room)
 instructions_text = "Use arrow keys or WASD to move.\nClick to attack.\nPress ESC to pause.";

@@ -167,14 +167,19 @@ if (mouse_check_button_released(mb_left) && dragging) {
             var slot_y = equipped_start_y + i * (equipped_slot_size + equipped_slot_spacing);
 
             if (point_in_rectangle(mx, my, slot_x, slot_y, slot_x + equipped_slot_size, slot_y + equipped_slot_size)) {
-                // Swap crafted element with equipped
                 var temp_gourd = equipped_gourds[i];
                 equipped_gourds[i] = dragged_gourd;
 
-                // Replace the crafted element with the equipped one
-                var eq_idx = crafted_elements[drag_source_index].equation_index;
-                crafted_elements[drag_source_index].gourd = temp_gourd;
-                equations[eq_idx].result = temp_gourd; // Also update the equation result
+                // Handle swap differently for crafted vs new elements
+                if (drag_source_type == "crafted") {
+                    // Replace the crafted element with the equipped one
+                    var eq_idx = crafted_elements[drag_source_index].equation_index;
+                    crafted_elements[drag_source_index].gourd = temp_gourd;
+                    equations[eq_idx].result = temp_gourd; // Also update the equation result
+                } else if (drag_source_type == "new") {
+                    // Replace the new element with the equipped one
+                    new_element = temp_gourd;
+                }
 
                 dropped = true;
                 break;
@@ -193,13 +198,19 @@ if (mouse_check_button_released(mb_left) && dragging) {
             var result_y = base_y;
 
             if (point_in_rectangle(mx, my, result_x, result_y, result_x + equation_slot_size, result_y + equation_slot_size)) {
-                // Swap equipped element with crafted
+                // Swap element with crafted result
                 var temp_gourd = crafted_elements[i].gourd;
                 crafted_elements[i].gourd = dragged_gourd;
                 equations[eq_idx].result = dragged_gourd; // Also update the equation result
 
-                // Replace the equipped element with the crafted one
-                equipped_gourds[drag_source_index] = temp_gourd;
+                // Handle swap differently for equipped vs new elements
+                if (drag_source_type == "equipped") {
+                    // Replace the equipped element with the crafted one
+                    equipped_gourds[drag_source_index] = temp_gourd;
+                } else if (drag_source_type == "new") {
+                    // Replace the new element with the crafted one
+                    new_element = temp_gourd;
+                }
 
                 dropped = true;
                 break;

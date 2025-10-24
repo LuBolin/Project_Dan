@@ -40,11 +40,51 @@ draw_set_valign(fa_top);
 draw_set_color(col_title);
 draw_text_transformed(center_x, panel_y + 30, "PAUSED", 2, 2, 0);
 
+// === DRAW VOLUME CONTROL ===
+// Draw volume label
+draw_set_color(col_text);
+draw_set_halign(fa_left);
+draw_set_valign(fa_middle);
+draw_set_font(-1);
+var label_text = "Volume:";
+draw_text(volume_control_start_x, volume_label_y, label_text);
+
+// Measure label width and add margin
+var label_width = string_width(label_text);
+var label_margin = 15;
+var slider_start_x = volume_control_start_x + label_width + label_margin;
+
+// Calculate slider width - use remaining space in usable area
+var volume_slider_width = volume_control_usable_width - label_width - label_margin - 40; // 40 for percentage text
+var percentage_text_width = 40;
+
+// Draw volume slider background
+draw_set_color(col_slider);
+draw_rectangle(slider_start_x, volume_slider_y - volume_slider_height / 2, slider_start_x + volume_slider_width, volume_slider_y + volume_slider_height / 2, false);
+
+// Draw volume slider border
+draw_set_color(col_text);
+draw_rectangle(slider_start_x, volume_slider_y - volume_slider_height / 2, slider_start_x + volume_slider_width, volume_slider_y + volume_slider_height / 2, true);
+
+// Draw volume slider handle
+var volume_handle_x = slider_start_x + (global.master_volume * volume_slider_width) - volume_slider_handle_width / 2;
+var volume_handle_y = volume_slider_y - (volume_slider_handle_height - volume_slider_height) / 2;
+draw_set_color(col_slider_handle);
+draw_rectangle(volume_handle_x, volume_handle_y, volume_handle_x + volume_slider_handle_width, volume_handle_y + volume_slider_handle_height, false);
+draw_set_color(col_text);
+draw_rectangle(volume_handle_x, volume_handle_y, volume_handle_x + volume_slider_handle_width, volume_handle_y + volume_slider_handle_height, true);
+
+// Draw volume percentage
+var volume_percent = string(round(global.master_volume * 100));
+draw_set_color(col_text);
+draw_set_halign(fa_left);
+draw_text(slider_start_x + volume_slider_width + 10, volume_slider_y, volume_percent + "%");
+
 // Draw instructions section
 draw_set_color(col_text);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
-draw_text_ext(panel_x + 40, panel_y + 100, "Instructions:\n\n" + current_instructions, 20, panel_width - 80);
+draw_text_ext(panel_x + 40, panel_y + 140, "Instructions:\n\n" + current_instructions, 20, panel_width - 80);
 
 // Draw buttons
 for (var i = 0; i < array_length(buttons); i++) {

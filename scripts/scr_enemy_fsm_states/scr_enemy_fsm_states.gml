@@ -33,8 +33,9 @@ function State(_entity, _duration, _is_timed) constructor {
     /// @function step()
     /// @description Called every frame while active
     step = function() {
-        if (is_timed) {
-            remaining_time--;
+        if (is_timed) { 
+
+            remaining_time -= (delta_time / 1000);
             if (remaining_time <= 0) {
                 on_timeout()
             }
@@ -60,16 +61,22 @@ function State(_entity, _duration, _is_timed) constructor {
         // Override in child classes
     }
     
-    /// @function on_leave()
+    /// @function player_interact()
     /// @description When the enemy interacts in any way with the player
     player_interact = function() {
         on_player_interact()
     }
-    
+
     /// @function on_player_interact()
     /// @description Override this - called when there's player interaction
     on_player_interact = function() {
         // Override in child classes
+    }
+    
+    /// @function draw()
+    /// @description Override this, called on draww step
+    draw = function() {
+        // Override in child classes     
     }
     
     /// @function on_player_interact()
@@ -80,25 +87,24 @@ function State(_entity, _duration, _is_timed) constructor {
     
 }
 
-function RoamState(_entity, _duration = 20, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
+function RoamState(_entity, _duration = 2000, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.ROAM;
     _target_x = _entity.x
     _target_y = _entity.y
     remaining_time = 1;
-    
-    on_step = function() {
-        with entity {
-            var _hor = clamp(other._target_x - x, -1, 1)
-            var _vert = clamp(other._target_y - y, -1, 1)
-            move(other.entity, _hor, _vert)
-        }
-    }
+    path = path_add();
     
     on_timeout = function() {
         // Absolutely Basic Roam Behaviour
-        _target_x = random_range(entity.xstart - global.UNIT_LENGTH , entity.xstart + global.UNIT_LENGTH)
-        _target_y = random_range(entity.ystart - global.UNIT_LENGTH, entity.ystart + global.UNIT_LENGTH)
+        _target_x = random_range(entity.xstart - global.UNIT_LENGTH / 2, entity.xstart + global.UNIT_LENGTH /2)
+        _target_y = random_range(entity.ystart - global.UNIT_LENGTH / 2, entity.ystart + global.UNIT_LENGTH / 2) 
+        set_path(entity, _target_x, _target_y);
         remaining_time = duration
+
+    }
+    
+    draw = function() {
+        draw_path(path, x, y, 1);
     }
     
     on_player_interact = function() {
@@ -125,14 +131,17 @@ function AlertState(_entity, _duration = undefined, _is_timed = false) : State(_
     
 }
 
-function ChaseState(_entity, _duration = 120, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {    
+function ChaseState(_entity, _duration = 3000, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {    
     id = STATES.CHASE;
+    path_reset_timer = 30; // This is a separate timer for pathfinding
+    path_remaining_time = path_reset_timer;
     
     on_step = function() {
-        with entity {
-            var _hor = clamp(player_last_known_x - x, -1, 1)
-            var _vert = clamp(player_last_known_y - y, -1, 1)
-            move(self, _hor, _vert)   
+        path_remaining_time -= 1;
+   
+        if (path_remaining_time <= 0) {
+            path_remaining_time = path_reset_timer;
+            set_path(entity);
         }
         
     }
@@ -157,48 +166,13 @@ function AttackState(_entity, _duration = undefined, _is_timed = false) : State(
 
 }
 
-function move(entity, _hor, _vert) {
-    
-    with entity {
-        var magnitude = sqrt(_hor * _hor + _vert * _vert)
-        
-        if (magnitude != 0) {
-            // Convert units per second to pixels per frame
-            // units/sec * pixels/unit / frames/sec = pixels/frame
-            var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
-        
-            var _norm_hor = (_hor / magnitude) * move_speed_this_frame;
-            var _norm_vert = (_vert / magnitude) * move_speed_this_frame;
-    
-            if (place_meeting(x + _norm_hor, y, colliders)) {
-        
-                // Allows the players to smoothly slide past corners
-                if (!place_meeting(x + _norm_hor, y + move_speed_this_frame, colliders)) {
-                    y += move_speed_this_frame
-                } else if (!place_meeting(x + _norm_hor, y - move_speed_this_frame, colliders)) {
-                    y -= move_speed_this_frame
-                } else {
-                    _norm_hor = 0;   
-                }
-                
-            }
+function set_path(entity, _target_x = entity.player_last_known_x, _target_y = entity.player_last_known_y) {
+    with entity { 
+        path_delete(path);
+        path = path_add();
+        var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
+        mp_grid_path(obj_level_manager.pathfinding_grid, path, x, y, _target_x, _target_y, 1);
             
-            x += _norm_hor;
-            
-            if (place_meeting(x, y + _norm_vert, colliders)) {
-                
-                // Allows the players to smoothly slide past corners
-                if (!place_meeting(x + move_speed_this_frame, y + _norm_vert , colliders)) {
-                    x += move_speed_this_frame
-                } else if (!place_meeting(x - move_speed_this_frame, y + _norm_vert, colliders)) {
-                    x -= move_speed_this_frame
-                } else {
-                    _norm_vert = 0;   
-                }
-            }
-            
-            y += _norm_vert;
-        }        
+        path_start(path, move_speed_this_frame, path_action_stop, true);
     }
-
 }

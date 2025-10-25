@@ -5,8 +5,10 @@ total_enemies = 0;
 current_kills = 0;
 required_kills = 0;
 kill_percentage = 0.6; // 10% requirement
-fox_spawn_prob = 0.5 
+//fox_spawn_prob = 0.5; 
+pathfinding_grid = mp_grid_create(0, 0, room_width/32, room_height/32, 32, 32);
 
+mp_grid_add_instances(pathfinding_grid, obj_pathfinding_coll, true)
 // Level difficulty (1-5) - can be set by entering room
 if (!variable_global_exists("current_level_difficulty")) {
     global.current_level_difficulty = 1; // Default to level 1
@@ -68,14 +70,14 @@ function spawn_enemies_from_points() {
     var total_ratio = ratio.easy + ratio.medium + ratio.hard;
     var easy_count = round((enemy_count * ratio.easy) / total_ratio);
     
-    var is_fox_spawned = false;
-    if (random(100) / 100 < fox_spawn_prob) {
-        show_debug_message("FOX SPAWNED")
-        array_push(enemy_list, obj_fox);
-        is_fox_spawned = true;
-    }
+    //var is_fox_spawned = false;
+    //if (random(100) / 100 < fox_spawn_prob) {
+        //show_debug_message("FOX SPAWNED")
+        //array_push(enemy_list, obj_fox);
+        //is_fox_spawned = true;
+    //}
     
-    var medium_count = round((enemy_count * ratio.medium) / total_ratio) - (is_fox_spawned ? 1 : 0);
+    var medium_count = round((enemy_count * ratio.medium) / total_ratio) //- (is_fox_spawned ? 1 : 0);
     var hard_count = enemy_count - easy_count - medium_count; // Remainder goes to hard
 
     // Add enemies to list based on distribution

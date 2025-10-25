@@ -19,14 +19,12 @@ function BoarAlertState(_entity, _duration = undefined, _is_timed = false) : Ale
 
 }
 
-function BoarChaseState(_entity, _duration = 120, _is_timed = true) : ChaseState(_entity, _duration, _is_timed) constructor {
+function BoarChaseState(_entity, _duration = 3000, _is_timed = true) : ChaseState(_entity, _duration, _is_timed) constructor {
     
     on_step = function() {
+            set_path(entity);
+        
         with (entity) {
-            var _hor = clamp(player_last_known_x - x, -1, 1)
-            var _vert = clamp(player_last_known_y - y, -1, 1)
-            move(self, _hor, _vert)
-               
             if (distance_to_object(obj_player) < global.UNIT_LENGTH * 2 and !has_charged) {
                 changeState(STATES.ATTACK)
             } 
@@ -41,7 +39,7 @@ function BoarChaseState(_entity, _duration = 120, _is_timed = true) : ChaseState
     }
 }
 
-function BoarAttackState(_entity, _duration = 38, _is_timed = true) : AttackState(_entity, _duration, _is_timed) constructor {
+function BoarAttackState(_entity, _duration = 700, _is_timed = true) : AttackState(_entity, _duration, _is_timed) constructor {
     on_enter = function() {
         obj_sfx_manager.play_sound(snd_boar, true);
     }

@@ -10,7 +10,7 @@ function GhostAlertState(_entity, _duration = undefined, _is_timed = false) : Al
 }
 
 /// - Chases until within shooting range, then switches to ATTACK
-function GhostChaseState(_entity, _duration = 8, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
+function GhostChaseState(_entity, _duration = 3000, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.CHASE;
 
     // Range in pixels (units → pixels), can add attack_range_units to ghost
@@ -52,7 +52,7 @@ function GhostChaseState(_entity, _duration = 8, _is_timed = true) : State(_enti
 
 /// Stands still (no movement here), after a brief wind-up (duration frames), 
 /// fires once at player_last_known_ then returns to CHASE
-function GhostAttackState(_entity, _duration = 18, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
+function GhostAttackState(_entity, _duration = 800, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.ATTACK;
 
     _tx = undefined;

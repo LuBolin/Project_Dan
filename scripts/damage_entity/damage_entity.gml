@@ -8,10 +8,10 @@ function damage_entity(_target, _dmg) {
 
 
         if (variable_instance_exists(_target, "invuln")) {
-            _target.invuln = true
+            _target.invuln = true;
         }
 
-        _target.alarm[11] = 30
+        _target.alarm[11] = 30;
     }
 }
 
@@ -25,7 +25,6 @@ function damage_entity(_target, _dmg) {
 /// @param {Bool} _apply_stun Whether to also stun the target (default: true)
 function apply_knockback(_source, _target, _kb_speed, _kb_distance, _kb_direction = undefined, _kb_duration = undefined, _apply_stun = true) {
     if (_kb_distance <= 0 || _kb_speed <= 0) return;
-
 
     // Prevent player in invuln state from being "ping-ponged" between different enemies
     if (_target.object_index == obj_player and obj_player.invuln) {

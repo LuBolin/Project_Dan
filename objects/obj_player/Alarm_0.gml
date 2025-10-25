@@ -16,12 +16,15 @@ if (_num_enemies > 0) {
             _current_enemy.player_last_known_x = x;
             _current_enemy.player_last_known_y = y;
             _current_enemy.curr_state.player_interact()
-            // Assuming the enemy is still combating the player
-            // The current player's last known position should be updated before the alarm resets
             
+            // Assuming the enemy is still combating the player
+            // The current player's last known position should be updated before the alarm resets+    
             _current_enemy.alarm[0] = 15;
+            detection_radius = max_detection_radius;
         }
     }
+} else {
+    detection_radius = default_detection_radius;
 }
 
 ds_list_destroy(_list)

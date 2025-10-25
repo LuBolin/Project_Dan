@@ -13,3 +13,6 @@ if (cam_inst == noone) cam_inst = instance_create_layer(x, y, target_layer, obj_
 cam_inst.follow = id;
 cam_inst.smooth = 0.12;
 cam_inst.preferred_ratio = 0.2;
+
+var third_hp = max_hp / 3;
+hp = hp < third_hp ? third_hp : hp; 

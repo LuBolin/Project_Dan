@@ -6,7 +6,8 @@ depth = -10;
 // Invuln timer for player to escape if they get hit
 invuln = false
 
-// Removed wind_gust_pending - no longer used after Wind element removal
+// Detection radius used to check if enemies can spot player
+detection_radius = default_detection_radius;
 
 // Randomly select 3 of the 4 base elements (Fire, Earth, Water, Air)
 var base_elements = [GourdFire, GourdEarth, GourdWater, GourdAir];

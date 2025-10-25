@@ -22,7 +22,12 @@ function BoarAlertState(_entity, _duration = undefined, _is_timed = false) : Ale
 function BoarChaseState(_entity, _duration = 3000, _is_timed = true) : ChaseState(_entity, _duration, _is_timed) constructor {
     
     on_step = function() {
+        path_remaining_time -= 1;
+   
+        if (path_remaining_time <= 0) {
+            path_remaining_time = path_reset_timer;
             set_path(entity);
+        }
         
         with (entity) {
             if (distance_to_object(obj_player) < global.UNIT_LENGTH * 2 and !has_charged) {

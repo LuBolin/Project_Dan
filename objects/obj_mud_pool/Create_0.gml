@@ -1,8 +1,8 @@
 /// Mud Pool - Create Event
 
 // Scale to reasonable size (128px sprite -> ~128px displayed for good coverage)
-image_xscale = 1.0;
-image_yscale = 1.0;
+image_xscale = 2.0;
+image_yscale = 2.0;
 
 // Lifespan: 5 seconds
 life_timer = game_get_speed(gamespeed_fps) * 5;

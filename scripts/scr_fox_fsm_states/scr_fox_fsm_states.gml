@@ -41,3 +41,48 @@ function FoxChaseState(_entity, _duration = 60, _is_timed = true) : State(_entit
 
 }
 
+function move(entity, _hor, _vert) {
+    
+    with entity {
+        var magnitude = sqrt(_hor * _hor + _vert * _vert)
+        
+        if (magnitude != 0) {
+            // Convert units per second to pixels per frame
+            // units/sec * pixels/unit / frames/sec = pixels/frame
+            var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
+        
+            var _norm_hor = (_hor / magnitude) * move_speed_this_frame;
+            var _norm_vert = (_vert / magnitude) * move_speed_this_frame;
+    
+            if (place_meeting(x + _norm_hor, y, colliders)) {
+        
+                // Allows the players to smoothly slide past corners
+                if (!place_meeting(x + _norm_hor, y + move_speed_this_frame, colliders)) {
+                    y += move_speed_this_frame
+                } else if (!place_meeting(x + _norm_hor, y - move_speed_this_frame, colliders)) {
+                    y -= move_speed_this_frame
+                } else {
+                    _norm_hor = 0;   
+                }
+                
+            }
+            
+            x += _norm_hor;
+            
+            if (place_meeting(x, y + _norm_vert, colliders)) {
+                
+                // Allows the players to smoothly slide past corners
+                if (!place_meeting(x + move_speed_this_frame, y + _norm_vert , colliders)) {
+                    x += move_speed_this_frame
+                } else if (!place_meeting(x - move_speed_this_frame, y + _norm_vert, colliders)) {
+                    x -= move_speed_this_frame
+                } else {
+                    _norm_vert = 0;   
+                }
+            }
+            
+            y += _norm_vert;
+        } 
+    }
+}
+

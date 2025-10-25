@@ -1,10 +1,7 @@
+image_xscale = sign(image_xscale);
+image_yscale = 1;
 draw_self()
-// use gourd's color if present
-    //if (is_struct(g) && !is_undefined(g.color)) {
-        //node_col = g.color;
-    //}
 
-// compute scale for target pixel size
 var sw = max(1, sprite_get_width(spr_gourd_icon));
 var sh = max(1, sprite_get_height(spr_gourd_icon));
 var scale = 20 / max(sw, sh); // keep aspect

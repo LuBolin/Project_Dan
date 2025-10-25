@@ -1,6 +1,6 @@
 // Scale to reasonable size
-image_xscale = 1.0;
-image_yscale = 1.0;
+image_xscale = 2.0;
+image_yscale = 2.0;
 
 // Lifespan: 8 seconds (longer than mud for more damage)
 life_timer = game_get_speed(gamespeed_fps) * 8;

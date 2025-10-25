@@ -167,7 +167,7 @@ function AttackState(_entity, _duration = undefined, _is_timed = false) : State(
 }
 
 function set_path(entity, _target_x = entity.player_last_known_x, _target_y = entity.player_last_known_y) {
-    with entity { 
+    with (entity) { 
         path_delete(path);
         path = path_add();
         var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);

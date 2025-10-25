@@ -10,7 +10,7 @@ function ProjectileFire() constructor {
 	kb_speed = 0;
 	kb_distance = 0;
 	sprite_index = spr_fire_ball;
-	scale = 0.5;
+	scale = 1;
     sfx_fire = undefined;
     sfx_hit = undefined;
 
@@ -31,7 +31,7 @@ function ProjectileRock() constructor {
 	kb_speed = 0;
 	kb_distance = 0;
 	sprite_index = spr_rock;
-	scale = 0.25;
+	scale = 1;
     sfx_fire = undefined;
     sfx_hit = undefined;
     
@@ -50,7 +50,7 @@ function ProjectileWaterBall() constructor {
 	kb_speed = 8;        // pixels per frame (knockback still frame-based) - increased from 5
 	kb_distance = 20;    // was 30 pixels total - increased from 10
 	sprite_index = spr_water_ball;
-	scale = 0.5;
+	scale = 1;
     sfx_fire = undefined;
     sfx_hit = undefined;
     
@@ -237,7 +237,7 @@ function ProjectileMudBall() constructor {
 	kb_speed = 2;  // pixels per frame (knockback still frame-based)
 	kb_distance = 40;
 	sprite_index = spr_mud_ball;
-	scale = 0.5;
+	scale = 1;
     sfx_fire = undefined;
     sfx_hit = undefined;
 
@@ -539,7 +539,7 @@ function ProjectileHurricane() constructor {
 	kb_speed = 0;
 	kb_distance = 0;
 	sprite_index = spr_hurricane;
-	scale = 0.5;
+	scale = 1;
     sfx_fire = undefined;
     sfx_hit = undefined;
     

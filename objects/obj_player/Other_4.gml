@@ -12,4 +12,4 @@ var cam_inst = instance_exists(obj_camera) ? instance_find(obj_camera, 0) : noon
 if (cam_inst == noone) cam_inst = instance_create_layer(x, y, target_layer, obj_camera);
 cam_inst.follow = id;
 cam_inst.smooth = 0.12;
-cam_inst.preferred_ratio = 0.2;
+cam_inst.preferred_ratio = 0.12; // Lower = more zoomed out (player takes less of screen)

@@ -482,16 +482,16 @@ function ProjectileEruption() constructor {
                 num_secondary_pools: num_secondary_pools,
                 
                 on_step: function(projectile_inst) {
-                    spawn_timer++;
-                    
+                    self.spawn_timer++;
+
                     // Spawn a pool every 3 frames
-                    if (spawn_timer >= 3 && pools_spawned < num_secondary_pools) {
-                        spawn_timer = 0;
-                        
-                        var angle = (360 / num_secondary_pools) * pools_spawned;
-                        var pool_x = center_x + lengthdir_x(explosion_radius, angle);
-                        var pool_y = center_y + lengthdir_y(explosion_radius, angle);
-                        
+                    if (self.spawn_timer >= 3 && self.pools_spawned < self.num_secondary_pools) {
+                        self.spawn_timer = 0;
+
+                        var angle = (360 / self.num_secondary_pools) * self.pools_spawned;
+                        var pool_x = self.center_x + lengthdir_x(self.explosion_radius, angle);
+                        var pool_y = self.center_y + lengthdir_y(self.explosion_radius, angle);
+
                         // Check if position is valid (not in walls)
                         if (!place_meeting(pool_x, pool_y, layer_tilemap_get_id("Tile_Collision"))) {
                             var secondary_pool = instance_create_layer(pool_x, pool_y, "Instances", obj_lava_pool);
@@ -503,11 +503,11 @@ function ProjectileEruption() constructor {
                                 secondary_pool.image_yscale = 0.8;
                             }
                         }
-                        
-                        pools_spawned++;
-                        
+
+                        self.pools_spawned++;
+
                         // Destroy controller when all pools are spawned
-                        if (pools_spawned >= num_secondary_pools) {
+                        if (self.pools_spawned >= self.num_secondary_pools) {
                             instance_destroy(projectile_inst);
                         }
                     }

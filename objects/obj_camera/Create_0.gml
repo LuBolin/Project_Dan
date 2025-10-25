@@ -8,7 +8,8 @@ smooth = 0.12;
 
 // desired ratio of player height to camera height
 // e.g. 0.2 = player takes 20% of the camera height
-preferred_ratio = 0.2;
+// Lower value = more zoomed out (player smaller on screen)
+preferred_ratio = 0.15;
 
 // clamp zoom
 min_zoom = 0.5;   // zoom in limit (smaller view)
@@ -20,7 +21,7 @@ if (!view_visible[0]) view_visible[0] = true;
 
 cam = view_camera[0];
 if (cam == -1) {
-    var vw = 640, vh = 360; // default size
+    var vw = 960, vh = 540; // default size - increased by 1.5x for more zoom out
     cam = camera_create_view(0, 0, vw, vh, 0, noone, -1, -1, -1, -1);
     view_camera[0] = cam;
 }

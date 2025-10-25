@@ -209,7 +209,11 @@ var new_slot_x = (gui_width - equipped_slot_size - equipped_slot_spacing) / 2;
 var new_slot_y = new_ele_separator_y + 40;
 
 // Draw slot background
-draw_set_color(new_element.color);
+var new_ele_color = c_gray; // default color
+if (new_element != noone && variable_struct_exists(new_element, "color")) {
+    new_ele_color = new_element.color;
+}
+draw_set_color(new_ele_color);
 draw_rectangle(new_slot_x, new_slot_y, new_slot_x + equipped_slot_size, new_slot_y + equipped_slot_size, false);
 
 // Draw slot border

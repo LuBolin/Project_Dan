@@ -18,11 +18,16 @@ function EvilTreeChaseState(_entity, _duration = 3000, _is_timed = true) : Chase
     
     on_step = function() {
         with (entity) {
-            // player_last_known_x and player_last_known_y should be defined before this, ignore gamemaker
-            var dist = point_distance(x, y, player_last_known_x, player_last_known_y);
-            if (dist <= other._shoot_range_px && attack_cd_timer <= 0) {    
-                changeState(STATES.ATTACK); 
-            }            
+            // Check if player_last_known position is defined before using
+            if (variable_instance_exists(self, "player_last_known_x") &&
+                variable_instance_exists(self, "player_last_known_y")) {
+                var _player_x = player_last_known_x ?? x;
+                var _player_y = player_last_known_y ?? y;
+                var dist = point_distance(x, y, _player_x, _player_y);
+                if (dist <= other._shoot_range_px && attack_cd_timer <= 0) {
+                    changeState(STATES.ATTACK);
+                }
+            }
         }
     }
     

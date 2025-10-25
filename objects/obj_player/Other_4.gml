@@ -16,3 +16,5 @@ cam_inst.preferred_ratio = 0.2;
 
 var third_hp = max_hp / 3;
 hp = hp < third_hp ? third_hp : hp; 
+
+cam_inst.preferred_ratio = 0.12; // Lower = more zoomed out (player takes less of screen)

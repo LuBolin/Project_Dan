@@ -1,10 +1,18 @@
 update_status_effects(self);
 
 if (hp <= 0) {
-    // Player died - make non-persistent and return to main menu
+    // Player died - show death screen with element selection
+    // Store player's current inventory for death screen
+    global.player_death_inventory = [inv[0], inv[1], inv[2]];
+
+    // Create death screen (persistent so it stays across room transitions)
+    if (!instance_exists(obj_death_screen)) {
+        instance_create_depth(0, 0, -9999, obj_death_screen);
+    }
+
+    // Make player non-persistent and destroy
     persistent = false;
     instance_destroy();
-    room_goto(MainMenu);
     exit;
 }
 

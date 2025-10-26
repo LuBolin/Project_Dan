@@ -51,6 +51,15 @@ function get_random_level() {
     return levels[random_index];
 }
 
+function get_random_miniboss_level() {
+    /// @desc Returns a random miniboss room (MiniBoss1, MiniBoss2, or MiniBoss3)
+    /// @return A random MiniBoss room
+
+    var levels = [MiniBoss_Tree, MiniBoss_Boar, MiniBoss3];
+    var random_index = irandom(array_length(levels) - 1);
+    return levels[random_index];
+}
+
 function advance_level_progress() {
     /// @desc Advances to the next level after exiting AlchemyRoom
     /// Increases level_progress and picks next level or returns to menu
@@ -69,8 +78,17 @@ function advance_level_progress() {
         show_debug_message("Completed 5 levels! Returning to main menu.");
         room_goto(MainMenu);
     } else {
-        // Go to a random level (Level1, Level2, or Level3)
-        var next_level = get_random_level();
+        // Choose the appropriate room based on level
+        var next_level;
+        if (global.level_progress == 5) {
+            // Level 5 uses miniboss rooms
+            next_level = get_random_miniboss_level();
+            show_debug_message("Advancing to MINIBOSS level " + string(global.level_progress));
+        } else {
+            // Levels 1-4 use regular level rooms
+            next_level = get_random_level();
+        }
+
         var difficulty = global.level_progress;
         goto_level(next_level, difficulty);
         show_debug_message("Advancing to level " + string(global.level_progress) + " (difficulty " + string(difficulty) + ")");

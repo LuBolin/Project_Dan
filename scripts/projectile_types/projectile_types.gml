@@ -135,7 +135,7 @@ function ProjectileLava() constructor {
     damage      = 1;
     life_steps  = game_get_speed(gamespeed_fps) * 2.0; // 2 second max flight time
     kb_speed = 3;  // pixels per frame
-    kb_distance = 50; // knockback distance
+    kb_distance = 30; // knockback distance
     sprite_index = spr_lava_ball;
     scale = 0.6;
     sfx_fire = undefined;
@@ -361,7 +361,7 @@ function ProjectileEruption() constructor {
     damage      = 1.5;    // 50% higher damage than regular lava
     life_steps  = game_get_speed(gamespeed_fps) * 2.5; // 2.5 second max flight time
     kb_speed = 4;  // pixels per frame
-    kb_distance = 50; // Same knockback than lava
+    kb_distance = 30; // Same knockback than lava
     sprite_index = spr_lava_ball; // Reuse lava ball sprite
     scale = 0.8; // Slightly larger than regular lava
     sfx_fire = undefined;
@@ -373,7 +373,7 @@ function ProjectileEruption() constructor {
     homing_enabled = false;
 
     // Eruption-specific properties
-    explosion_radius = 96; // Distance between pools (1.5 units)
+    explosion_radius = 64 // Distance between pools (1.5 units)
     num_secondary_pools = 6; // Number of pools to spawn around center
 
     on_launch = function(projectile_inst) {
@@ -461,8 +461,8 @@ function ProjectileEruption() constructor {
             center_pool.damage_per_tick = 3; // 50% higher damage than lava
             center_pool.life_timer = game_get_speed(gamespeed_fps) * 10; // Lasts longer
             // Make center pool bigger
-            center_pool.image_xscale = 1.3;
-            center_pool.image_yscale = 1.3;
+            center_pool.image_xscale = 1.5;
+            center_pool.image_yscale = 1.5;
         }
         
         // Create eruption controller to spawn secondary pools with delays

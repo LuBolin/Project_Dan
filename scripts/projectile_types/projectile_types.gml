@@ -520,9 +520,10 @@ function ProjectileEruption() constructor {
 }
 
 function ProjectileClay() constructor {
-	name = "Clay";
-	// UNIMPLEMENTED - Print message instead of shooting
-	show_debug_message("Clay is unimplemented");
+    name = "Clay";
+    // Clay is now implemented as direct wall spawning from gourd
+    // Constructor is kept for compatibility but not used
+    show_debug_message("Clay uses direct wall spawning instead of projectile");
 }
 
 function ProjectilePlant() constructor {

@@ -117,9 +117,83 @@ function GourdHurricane() : GourdBase() constructor
 function GourdClay() : GourdBase() constructor
 {
     name = "Clay";
-	color = make_color_rgb(178, 118, 88);
-    cooldown = 5;
-	projectile = ProjectileClay;
+    color = make_color_rgb(178, 118, 88);
+    cooldown = 6; // 6 second cooldown
+    projectile = undefined; // Clay doesn't use projectiles
+    
+    use = function(_p) {
+        if (can_use()) {
+            // Get direction player is aiming
+            var aim_direction = point_direction(_p.x, _p.y, mouse_x, mouse_y);
+            
+            // Spawn clay wall extending from player in aim direction
+            spawn_clay_wall(_p.x, _p.y, aim_direction);
+            trigger_cd();
+        }
+    }
+    
+    // Helper function to create the clay fissure
+    spawn_clay_wall = function(start_x, start_y, direction) {
+        // Wall properties
+        var wall_segments = 6; // Number of wall pieces
+        var segment_spacing = 45; // Distance between wall segments (0.75 units)
+        var wall_scale = 2.0; // Scale factor for wall size
+        
+        // IMMEDIATELY UPDATE COLLISION ARRAYS BEFORE SPAWNING WALLS
+        with (obj_player) {
+            if (array_get_index(colliders, obj_clay_wall) == -1) {
+                array_push(colliders, obj_clay_wall);
+                show_debug_message("Added clay wall to player collision array");
+            }
+        }
+        
+        with (obj_enemy_abstract) {
+            if (array_get_index(colliders, obj_clay_wall) == -1) {
+                array_push(colliders, obj_clay_wall);
+                show_debug_message("Added clay wall to enemy " + string(id) + " collision array");
+            }
+        }
+        
+        // Start spawning from player position, extending outward in aim direction
+        for (var i = 1; i <= wall_segments; i++) { // Start from 1 to not spawn on player
+            var segment_x = start_x + lengthdir_x(i * segment_spacing, direction);
+            var segment_y = start_y + lengthdir_y(i * segment_spacing, direction);
+            
+            // Check if position is valid (not in existing walls)
+            var can_place = true;
+            
+            // Check collision with terrain
+            if (place_meeting(segment_x, segment_y, layer_tilemap_get_id("Tile_Collision"))) {
+                can_place = false;
+            }
+            
+            // Check collision with existing clay walls (minimum distance check)
+            with (obj_clay_wall) {
+                if (point_distance(x, y, segment_x, segment_y) < 20) {
+                    can_place = false;
+                    break;
+                }
+            }
+            
+            // Only spawn if position is valid
+            if (can_place) {
+                var wall_segment = instance_create_layer(segment_x, segment_y, "Instances", obj_clay_wall);
+                if (instance_exists(wall_segment)) {
+                    // Orient wall segment in the same direction as aim
+                    wall_segment.image_angle = direction;
+                    
+                    // Scale segments
+                    wall_segment.image_xscale = wall_scale;
+                    wall_segment.image_yscale = wall_scale;
+                }
+            } else {
+                // Stop creating wall if we hit an obstacle
+                break;
+            }
+        }
+        
+        show_debug_message("Clay fissure spawned with " + string(wall_segments) + " segments in direction " + string(direction));
+    }
 }
 
 function GourdPlant() : GourdBase() constructor

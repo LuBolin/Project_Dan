@@ -65,7 +65,8 @@ if (carried_element != undefined) {
     self.inv = [
         gourd_create(base_elements[0]),
         gourd_create(base_elements[1]),
-        gourd_create(base_elements[2])
+        //gourd_create(base_elements[2])
+		gourd_create(GourdClay)
     ];
 }
 
@@ -84,7 +85,7 @@ alarm[0] = 10
 //cam_inst.preferred_ratio = 0.2;
 
 // Entities that the player will physically collide with, such as walls
-colliders = [layer_tilemap_get_id("Tile_Collision")]
+colliders = [layer_tilemap_get_id("Tile_Collision"), obj_clay_wall];
 
 // gourd icon
 spr_gourd_icon = spr_gourd;

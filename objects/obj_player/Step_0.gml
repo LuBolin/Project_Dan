@@ -120,12 +120,14 @@ if (variable_instance_exists(self, "plant_healing_pending") && plant_healing_pen
         plant_healing_pending.timer = 1;
     }
 
+    // Check if dash duration has passed
     if (plant_healing_pending.timer >= plant_healing_pending.dash_duration) {
         // Spawn the healing area at player's current position (after dash)
         var healing_area = instance_create_layer(x, y, "Instances", obj_plant);
         if (instance_exists(healing_area)) {
             healing_area.owner = plant_healing_pending.creator;
-            show_debug_message("Plant healing area spawned at player position after dash");
+            show_debug_message("Plant healing area spawned at player position after " + 
+                             string(plant_healing_pending.dash_duration_seconds) + " seconds");
         }
 
         // Remove the pending healing data

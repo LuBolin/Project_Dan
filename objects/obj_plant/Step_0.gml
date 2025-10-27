@@ -55,7 +55,7 @@ if (tick_counter >= tick_rate) {
 
 // Create ambient particles occasionally
 particle_timer++;
-if (particle_timer >= 30) { // Every 0.5 seconds
+if (particle_timer >= particle_interval) {
     particle_timer = 0;
     create_ambient_particles();
 }
@@ -76,15 +76,19 @@ create_healing_particles = function() {
             obj_projectile
         );
         if (instance_exists(particle)) {
-            particle.sprite_index = spr_wind_gust; // Use wind gust or create spr_heal_particle
-            particle.image_alpha = 0.8;
-            particle.image_xscale = 0.2;
-            particle.image_yscale = 0.2;
+            particle.sprite_index = spr_ambient_heal_particle; // Use wind gust or create spr_heal_particle
+            particle.image_alpha = 1;
+            particle.image_xscale = 1;
+            particle.image_yscale = 1;
             particle.image_blend = make_color_rgb(150, 255, 150); // Light green
             particle.speed = 0.5;
             particle.direction = random(360);
-            particle.life_steps = 30;
+            particle.life_steps = 0.5 * game_get_speed(gamespeed_fps); // 0.5 seconds
             particle.proj_data = {}; // No collision
+            
+            // Set depth to render above player (player depth is -10)
+			// Note: Should use the effects layer i think
+            particle.depth = -20; // More negative = renders on top
         }
     }
 }
@@ -99,14 +103,14 @@ create_ambient_particles = function() {
         obj_projectile
     );
     if (instance_exists(particle)) {
-        particle.sprite_index = spr_wind_gust; // Use wind gust or create spr_nature_particle
-        particle.image_alpha = 0.3;
-        particle.image_xscale = 0.15;
-        particle.image_yscale = 0.15;
+        particle.sprite_index = spr_ambient_heal_particle; // Use wind gust or create spr_nature_particle
+        particle.image_alpha = 0.7;
+        particle.image_xscale = 0.8;
+        particle.image_yscale = 0.8;
         particle.image_blend = make_color_rgb(100, 200, 100); // Green
         particle.speed = 0.2;
         particle.direction = random(360);
-        particle.life_steps = 60;
+        particle.life_steps = 1.0 * game_get_speed(gamespeed_fps); // 1 second
         particle.proj_data = {}; // No collision
     }
 }

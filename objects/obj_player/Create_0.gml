@@ -65,7 +65,8 @@ if (carried_element != undefined) {
     self.inv = [
         gourd_create(base_elements[0]),
         gourd_create(base_elements[1]),
-        gourd_create(base_elements[2])
+        //gourd_create(base_elements[2])
+		gourd_create(GourdPlant)
     ];
 }
 

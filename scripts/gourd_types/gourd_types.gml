@@ -199,9 +199,9 @@ function GourdClay() : GourdBase() constructor
 function GourdPlant() : GourdBase() constructor
 {
     name = "Plant";
-	color = make_color_rgb(50, 200, 50);
-    cooldown = 4;
-	projectile = ProjectilePlant;
+    color = make_color_rgb(50, 200, 50);
+    cooldown = 7; // 7 second cooldown (longer than Air/Current due to healing benefit)
+    projectile = ProjectilePlant;
 }
 
 // ========================================

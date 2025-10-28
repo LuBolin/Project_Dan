@@ -1,4 +1,4 @@
-colliders = [layer_tilemap_get_id("Tile_Collision"), obj_enemy_abstract]
+colliders = [layer_tilemap_get_id("Tile_Collision"), obj_enemy_abstract, obj_clay_wall]
 
 // FSM related variables
 player_last_known_x = undefined;

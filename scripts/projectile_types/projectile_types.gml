@@ -62,67 +62,89 @@ function ProjectileWaterBall() constructor {
 }
 
 function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration = 8) constructor {
-	name = "Air";
-	speed = 0;  // Doesn't move
-	damage = 0;
-	life_steps = 1;  // Destroy immediately after dash
-	kb_speed = 12;  // Dash speed (pixels per frame) - slower for smoother dash
-	kb_distance = _dash_distance;  // Total dash distance (2 units)
-	dash_duration = _dash_duration;  // 0.133 seconds at 60 FPS (96 / 12 = 8 frames)
-	sprite_index = spr_wind_gust;
-	scale = 0.2;  // Small visual effect
+    name = "Air";
+    speed = 0;  // Doesn't move
+    damage = 0;
+    life_steps = 1;  // Destroy immediately after dash
+    kb_speed = 12;  // Dash speed (pixels per frame) - slower for smoother dash
+    kb_distance = _dash_distance;  // Total dash distance (2 units)
+    dash_duration = _dash_duration;  // 0.133 seconds at 60 FPS (96 / 12 = 8 frames)
+    sprite_index = spr_wind_gust;
+    scale = 0.2;  // Small visual effect
     sfx_fire = snd_air_projectile;
     sfx_hit = undefined;
     is_invuln = _is_invuln;
 
-	on_launch = function(projectile_inst) {
-		// Spawn projectile on player
-		projectile_inst.x = projectile_inst.creator.x;
-		projectile_inst.y = projectile_inst.creator.y;
-		projectile_inst.speed = 0;
-		projectile_inst.image_alpha = 0.5;  // Semi-transparent
+    on_launch = function(projectile_inst) {
+        // Spawn projectile on player
+        projectile_inst.x = projectile_inst.creator.x;
+        projectile_inst.y = projectile_inst.creator.y;
+        projectile_inst.speed = 0;
+        projectile_inst.image_alpha = 0.5;  // Semi-transparent
 
-		// Immediately dash the player towards mouse
-		if (instance_exists(projectile_inst.creator)) {
-			var player = projectile_inst.creator;
-			//var dash_dir = point_direction(player.x, player.y, projectile_inst, mouse_y);
-            dash_dir = projectile_inst.image_angle
+        // Immediately dash the player
+        if (instance_exists(projectile_inst.creator)) {
+            var player = projectile_inst.creator;
+            
+            // DETERMINE DASH DIRECTION: Player movement takes priority over mouse direction
+            var dash_dir;
+            
+            // Check if player is moving (get current input)
+            var input_x = 0;
+            var input_y = 0;
+            
+            if (keyboard_check(ord("A"))) input_x -= 1;
+            if (keyboard_check(ord("D"))) input_x += 1;
+            if (keyboard_check(ord("W"))) input_y -= 1;
+            if (keyboard_check(ord("S"))) input_y += 1;
+            
+            // If player is moving, dash in movement direction
+            if (input_x != 0 || input_y != 0) {
+                dash_dir = point_direction(0, 0, input_x, input_y);
+                show_debug_message("Air dash: Using movement direction " + string(dash_dir));
+            } else {
+                // If not moving, dash toward mouse
+                dash_dir = point_direction(player.x, player.y, mouse_x, mouse_y);
+                show_debug_message("Air dash: Using mouse direction " + string(dash_dir));
+            }
+            
+            projectile_inst.image_angle = dash_dir;
 
-			// Apply knockback effect to dash player (false = no stun)
-			add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
+            // Apply knockback effect to dash player (false = no stun)
+            add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
 
             if (is_invuln) { 
                 // Make player invincible during dash + 0.2 seconds after
-    			var invuln_time = 0.2; // seconds
-    			var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
-    			add_status_effect(player, new InvincibilityEffect(invuln_duration));
+                var invuln_time = 0.2; // seconds
+                var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
+                add_status_effect(player, new InvincibilityEffect(invuln_duration));
             }
 
-			// Create particle effect trail behind player
-			var trail_length = 5;  // Number of particles
-			for (var i = 0; i < trail_length; i++) {
-				var offset = i * 10;  // Space particles along the trail
-				var trail_x = player.x - lengthdir_x(offset, dash_dir);
-				var trail_y = player.y - lengthdir_y(offset, dash_dir);
+            // Create particle effect trail behind player
+            var trail_length = 5;  // Number of particles
+            for (var i = 0; i < trail_length; i++) {
+                var offset = i * 10;  // Space particles along the trail
+                var trail_x = player.x - lengthdir_x(offset, dash_dir);
+                var trail_y = player.y - lengthdir_y(offset, dash_dir);
 
-				// Create a wind particle at this position
-				var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
-				if (particle != noone) {
-					particle.sprite_index = spr_wind_gust;
-					particle.image_alpha = 0.4 - (i * 0.06);  // Fade out
-					particle.image_xscale = 0.3;
-					particle.image_yscale = 0.3;
-					particle.image_angle = dash_dir;
-					particle.speed = 0;
-					particle.life_steps = 15 - (i * 2);  // Particles fade quickly
-					particle.proj_data = {};  // Empty data, no collision
-				}
-			}
-		}
+                // Create a wind particle at this position
+                var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
+                if (particle != noone) {
+                    particle.sprite_index = spr_wind_gust;
+                    particle.image_alpha = 0.4 - (i * 0.06);  // Fade out
+                    particle.image_xscale = 0.3;
+                    particle.image_yscale = 0.3;
+                    particle.image_angle = dash_dir;
+                    particle.speed = 0;
+                    particle.life_steps = 15 - (i * 2);  // Particles fade quickly
+                    particle.proj_data = {};  // Empty data, no collision
+                }
+            }
+        }
 
-		// Destroy projectile immediately
-		instance_destroy(projectile_inst);
-	}
+        // Destroy projectile immediately
+        instance_destroy(projectile_inst);
+    }
 }
 
 // ========================================
@@ -135,7 +157,7 @@ function ProjectileLava() constructor {
     damage      = 1;
     life_steps  = game_get_speed(gamespeed_fps) * 2.0; // 2 second max flight time
     kb_speed = 3;  // pixels per frame
-    kb_distance = 50; // knockback distance
+    kb_distance = 30; // knockback distance
     sprite_index = spr_lava_ball;
     scale = 0.6;
     sfx_fire = undefined;
@@ -268,87 +290,114 @@ function ProjectileMudBall() constructor {
 }
 
 function ProjectileCurrent() constructor {
-	name = "Current";
-	speed = 0;  // Doesn't move (player dashes instead)
-	damage = 0;
-	life_steps = 1;  // Destroy immediately after dash
-	kb_speed = 12;  // Dash speed (pixels per frame)
-	kb_distance = 128;  // Total dash distance (2 units)
-	dash_duration = 8;  // Frames for dash
-	sprite_index = spr_wind_gust;
-	scale = 0.2;  // Small visual effect during dash
+    name = "Current";
+    speed = 0;  // Doesn't move (player dashes instead)
+    damage = 0;
+    life_steps = 1;  // Destroy immediately after dash
+    kb_speed = 12;  // Dash speed (pixels per frame)
+    kb_distance = 128;  // Total dash distance (2 units)
+    dash_duration = 8;  // Frames for dash
+    sprite_index = spr_wind_gust;
+    scale = 0.2;  // Small visual effect during dash
     sfx_fire = undefined;
     sfx_hit = undefined;
 
-	// Knockback gust properties (applied at end of dash)
-	gust_kb_speed = 4;
-	gust_kb_distance = 30;
-	gust_speed = 9.375;  // units per second (600 / 64)
-	gust_lifetime = game_get_speed(gamespeed_fps) * 0.2;
+    // Knockback gust properties (applied at end of dash)
+    gust_kb_speed = 4;
+    gust_kb_distance = 30;
+    gust_speed = 9.375;  // units per second (600 / 64)
+    gust_lifetime = game_get_speed(gamespeed_fps) * 0.2;
 
-	on_launch = function(projectile_inst) {
-		// Spawn projectile on player
-		projectile_inst.x = projectile_inst.creator.x;
-		projectile_inst.y = projectile_inst.creator.y;
-		projectile_inst.speed = 0;
-		projectile_inst.image_alpha = 0.5;  // Semi-transparent
+    on_launch = function(projectile_inst) {
+        // Spawn projectile on player
+        projectile_inst.x = projectile_inst.creator.x;
+        projectile_inst.y = projectile_inst.creator.y;
+        projectile_inst.speed = 0;
+        projectile_inst.image_alpha = 0.5;  // Semi-transparent
 
-		// Immediately dash the player towards mouse
-		if (instance_exists(projectile_inst.creator)) {
-			var player = projectile_inst.creator;
-			var dash_dir = projectile_inst.image_angle;
+        // Immediately dash the player towards movement direction or mouse
+        if (instance_exists(projectile_inst.creator)) {
+            var player = projectile_inst.creator;
+            
+            // DETERMINE DASH DIRECTION: Player movement takes priority
+            var dash_dir;
+            var gust_dir; // Direction for the air gust (always toward mouse for Current)
+            
+            // Check if player is moving (get current input)
+            var input_x = 0;
+            var input_y = 0;
+            
+            if (keyboard_check(ord("A"))) input_x -= 1;
+            if (keyboard_check(ord("D"))) input_x += 1;
+            if (keyboard_check(ord("W"))) input_y -= 1;
+            if (keyboard_check(ord("S"))) input_y += 1;
+            
+            // If player is moving, dash in movement direction
+            if (input_x != 0 || input_y != 0) {
+                dash_dir = point_direction(0, 0, input_x, input_y);
+                show_debug_message("Current dash: Using movement direction " + string(dash_dir));
+            } else {
+                // If not moving, dash toward mouse
+                dash_dir = point_direction(player.x, player.y, mouse_x, mouse_y);
+                show_debug_message("Current dash: Using mouse direction " + string(dash_dir));
+            }
+            
+            // Air gust ALWAYS goes toward mouse for Current (for strategic aiming)
+            gust_dir = point_direction(player.x, player.y, mouse_x, mouse_y);
+            
+            projectile_inst.image_angle = dash_dir;
 
-			// Apply knockback effect to dash player (false = no stun)
-			add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
+            // Apply knockback effect to dash player (false = no stun)
+            add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
 
-			// Make player invincible during dash + 0.2 seconds after
-			var invuln_time = 0.2; // seconds
-			var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
-			add_status_effect(player, new InvincibilityEffect(invuln_duration));
+            // Make player invincible during dash + 0.2 seconds after
+            var invuln_time = 0.2; // seconds
+            var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
+            add_status_effect(player, new InvincibilityEffect(invuln_duration));
 
-			// Create particle effect trail behind player
-			var trail_length = 5;  // Number of particles
-			for (var i = 0; i < trail_length; i++) {
-				var offset = i * 10;  // Space particles along the trail
-				var trail_x = player.x - lengthdir_x(offset, dash_dir);
-				var trail_y = player.y - lengthdir_y(offset, dash_dir);
+            // Create particle effect trail behind player
+            var trail_length = 5;  // Number of particles
+            for (var i = 0; i < trail_length; i++) {
+                var offset = i * 10;  // Space particles along the trail
+                var trail_x = player.x - lengthdir_x(offset, dash_dir);
+                var trail_y = player.y - lengthdir_y(offset, dash_dir);
 
-				// Create a wind particle at this position
-				var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
-				if (particle != noone) {
-					particle.sprite_index = spr_wind_gust;
-					particle.image_alpha = 0.4 - (i * 0.06);  // Fade out
-					particle.image_xscale = 0.3;
-					particle.image_yscale = 0.3;
-					particle.image_angle = dash_dir;
-					particle.speed = 0;
-					particle.life_steps = 15 - (i * 2);  // Particles fade quickly
-					particle.proj_data = {};  // Empty data, no collision
-				}
-			}
+                // Create a wind particle at this position
+                var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
+                if (particle != noone) {
+                    particle.sprite_index = spr_wind_gust;
+                    particle.image_alpha = 0.4 - (i * 0.06);  // Fade out
+                    particle.image_xscale = 0.3;
+                    particle.image_yscale = 0.3;
+                    particle.image_angle = dash_dir;
+                    particle.speed = 0;
+                    particle.life_steps = 15 - (i * 2);  // Particles fade quickly
+                    particle.proj_data = {};  // Empty data, no collision
+                }
+            }
 
-			// After dash completes, spawn the knockback gust projectile
-			// Schedule it to spawn after dash_duration frames
-			var gust_data = {
-				x: player.x,
-				y: player.y,
-				direction: dash_dir,
-				creator: player,
-				kb_speed: gust_kb_speed,
-				kb_distance: gust_kb_distance,
-				gust_speed: gust_speed,
-				gust_lifetime: gust_lifetime,
-				timer: 0,
-				dash_duration: dash_duration
-			};
+            // After dash completes, spawn the knockback gust projectile
+            // Schedule it to spawn after dash_duration frames
+            var gust_data = {
+                x: player.x,
+                y: player.y,
+                direction: gust_dir, // Use mouse direction for gust
+                creator: player,
+                kb_speed: gust_kb_speed,
+                kb_distance: gust_kb_distance,
+                gust_speed: gust_speed,
+                gust_lifetime: gust_lifetime,
+                timer: 0,
+                dash_duration: dash_duration
+            };
 
-			// Store gust data on player to spawn after dash
-			player.wind_gust_pending = gust_data;
-		}
+            // Store gust data on player to spawn after dash
+            player.wind_gust_pending = gust_data;
+        }
 
-		// Destroy projectile immediately
-		instance_destroy(projectile_inst);
-	}
+        // Destroy projectile immediately
+        instance_destroy(projectile_inst);
+    }
 }
 
 // ========================================
@@ -361,7 +410,7 @@ function ProjectileEruption() constructor {
     damage      = 1.5;    // 50% higher damage than regular lava
     life_steps  = game_get_speed(gamespeed_fps) * 2.5; // 2.5 second max flight time
     kb_speed = 4;  // pixels per frame
-    kb_distance = 50; // Same knockback than lava
+    kb_distance = 30; // Same knockback than lava
     sprite_index = spr_lava_ball; // Reuse lava ball sprite
     scale = 0.8; // Slightly larger than regular lava
     sfx_fire = undefined;
@@ -373,7 +422,7 @@ function ProjectileEruption() constructor {
     homing_enabled = false;
 
     // Eruption-specific properties
-    explosion_radius = 96; // Distance between pools (1.5 units)
+    explosion_radius = 64 // Distance between pools (1.5 units)
     num_secondary_pools = 6; // Number of pools to spawn around center
 
     on_launch = function(projectile_inst) {
@@ -461,8 +510,8 @@ function ProjectileEruption() constructor {
             center_pool.damage_per_tick = 3; // 50% higher damage than lava
             center_pool.life_timer = game_get_speed(gamespeed_fps) * 10; // Lasts longer
             // Make center pool bigger
-            center_pool.image_xscale = 1.3;
-            center_pool.image_yscale = 1.3;
+            center_pool.image_xscale = 1.5;
+            center_pool.image_yscale = 1.5;
         }
         
         // Create eruption controller to spawn secondary pools with delays
@@ -520,15 +569,108 @@ function ProjectileEruption() constructor {
 }
 
 function ProjectileClay() constructor {
-	name = "Clay";
-	// UNIMPLEMENTED - Print message instead of shooting
-	show_debug_message("Clay is unimplemented");
+    name = "Clay";
+    // Clay is now implemented as direct wall spawning from gourd
+    // Constructor is kept for compatibility but not used
+    show_debug_message("Clay uses direct wall spawning instead of projectile");
 }
 
 function ProjectilePlant() constructor {
-	name = "Plant";
-	// UNIMPLEMENTED - Print message instead of shooting
-	show_debug_message("Plant is unimplemented");
+    name = "Plant";
+    speed = 0;  // Doesn't move (player dashes instead)
+    damage = 0;
+    life_steps = 1;  // Destroy immediately after dash
+    kb_speed = 10;  // Dash speed (pixels per frame) - slightly slower than Air/Current
+    kb_distance = 96;  // Total dash distance (1.5 units) - shorter than Air/Current
+    dash_duration_seconds = 0.16;  // Dash duration in seconds (slightly longer for nature feel)
+    dash_duration = dash_duration_seconds * game_get_speed(gamespeed_fps);  // Convert to frames
+    sprite_index = spr_wind_gust; // Reuse wind gust sprite or create spr_plant_dash
+    scale = 0.2;  // Small visual effect during dash
+    sfx_fire = undefined;
+    sfx_hit = undefined;
+
+    on_launch = function(projectile_inst) {
+        // Spawn projectile on player
+        projectile_inst.x = projectile_inst.creator.x;
+        projectile_inst.y = projectile_inst.creator.y;
+        projectile_inst.speed = 0;
+        projectile_inst.image_alpha = 0.5;  // Semi-transparent
+
+        // Immediately dash the player
+        if (instance_exists(projectile_inst.creator)) {
+            var player = projectile_inst.creator;
+            
+            // DETERMINE DASH DIRECTION: Player movement takes priority over mouse direction
+            var dash_dir;
+            
+            // Check if player is moving (get current input)
+            var input_x = 0;
+            var input_y = 0;
+            
+            if (keyboard_check(ord("A"))) input_x -= 1;
+            if (keyboard_check(ord("D"))) input_x += 1;
+            if (keyboard_check(ord("W"))) input_y -= 1;
+            if (keyboard_check(ord("S"))) input_y += 1;
+            
+            // If player is moving, dash in movement direction
+            if (input_x != 0 || input_y != 0) {
+                dash_dir = point_direction(0, 0, input_x, input_y);
+                show_debug_message("Plant dash: Using movement direction " + string(dash_dir));
+            } else {
+                // If not moving, dash toward mouse
+                dash_dir = point_direction(player.x, player.y, mouse_x, mouse_y);
+                show_debug_message("Plant dash: Using mouse direction " + string(dash_dir));
+            }
+            
+            projectile_inst.image_angle = dash_dir;
+
+            // Apply knockback effect to dash player (false = no stun)
+            add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
+
+            // Make player invincible during dash (shorter than Air/Current for balance)
+            var invuln_time_seconds = 0.15; // seconds
+            var invuln_duration = (dash_duration_seconds + invuln_time_seconds) * game_get_speed(gamespeed_fps);
+            add_status_effect(player, new InvincibilityEffect(invuln_duration));
+
+            // Create particle effect trail behind player (green nature particles)
+            var trail_length = 5;  // Number of particles
+            for (var i = 0; i < trail_length; i++) {
+                var offset = i * 8;  // Space particles along the trail
+                var trail_x = player.x - lengthdir_x(offset, dash_dir);
+                var trail_y = player.y - lengthdir_y(offset, dash_dir);
+
+                // Create a nature particle at this position
+                var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
+                if (particle != noone) {
+                    particle.sprite_index = spr_wind_gust; // Use wind gust or create spr_leaf_particle
+                    particle.image_alpha = 0.3 - (i * 0.05);  // Fade out
+                    particle.image_xscale = 0.25;
+                    particle.image_yscale = 0.25;
+                    particle.image_angle = dash_dir + random_range(-15, 15); // Slight rotation variation
+                    particle.image_blend = make_color_rgb(100, 200, 100); // Green tint
+                    particle.speed = 0;
+                    particle.life_steps = (1.0 - (i * 0.15)) * game_get_speed(gamespeed_fps); // Particles fade over 0.5-1 seconds
+                    particle.proj_data = {};  // Empty data, no collision
+                }
+            }
+
+            // Schedule healing area to spawn after dash completes
+            var healing_data = {
+                spawn_x: 0, // Will be set to player position after dash
+                spawn_y: 0,
+                creator: player,
+                timer: 0,
+                dash_duration: dash_duration,
+                dash_duration_seconds: dash_duration_seconds
+            };
+
+            // Store healing data on player to spawn after dash
+            player.plant_healing_pending = healing_data;
+        }
+
+        // Destroy projectile immediately
+        instance_destroy(projectile_inst);
+    }
 }
 
 function ProjectileHurricane() constructor {

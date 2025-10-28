@@ -24,6 +24,11 @@ damage_per_tick = 1;
 tick_rate = 30; // Damage every 30 frames (0.5 seconds at 60fps)
 tick_counter = 0;
 
+// Damage target configuration
+damage_enemies = true;  // Default: damage enemies
+damage_player = !damage_enemies;  // Default: don't damage player
+creator = noone;        // Who created this pool (for identification)
+
 // Track which enemies have been hit recently to prevent instant re-hits
 hit_cooldown_map = ds_map_create(); // enemy_id -> last_hit_time
 

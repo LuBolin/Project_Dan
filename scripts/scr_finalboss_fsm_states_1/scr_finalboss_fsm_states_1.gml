@@ -8,7 +8,7 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
     fireball_attack_cd_timer = 0;
     
     lava_attack_freq = 8 * game_get_speed(gamespeed_fps); // 8 seconds
-    lava_attack_cd_timer = 0;
+    lava_attack_cd_timer = lava_attack_freq;
     
     lava_spawn_x = -1;
     lava_spawn_y = -1;
@@ -63,8 +63,9 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
                     boss_lava_pool.damage_player = true;    // Damage the player
                     boss_lava_pool.creator = entity;        // Set boss as creator
                     
-                    // Make boss lava pools more threatening
-                    boss_lava_pool.damage_per_tick = 3;     // Higher damage
+                    // Make boss lava pools more threatening // Higher damage
+                    // UPDATE NOTE: Made it lower damage cuz player dies way too quickly
+                    boss_lava_pool.damage_per_tick = 1;     
                     boss_lava_pool.life_timer = game_get_speed(gamespeed_fps) * 12; // Last longer
                     
                     // Visual differentiation - make boss lava pools red-tinted
@@ -149,9 +150,11 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
             air_lunge_cd_timer = air_lunge_freq;
         }
         
-        if (entity.hp <= 20) {
-            entity.changeState(STATES.ATTACK);
-        }
+        //if (entity.hp <= 20) {
+            //entity.changeState(STATES.ATTACK);
+            //entity.move_speed_ups = 3;
+            //
+        //}
     }
 }
 

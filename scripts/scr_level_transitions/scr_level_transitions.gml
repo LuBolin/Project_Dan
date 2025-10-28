@@ -55,7 +55,9 @@ function get_random_miniboss_level() {
     /// @desc Returns a random miniboss room (MiniBoss1, MiniBoss2, or MiniBoss3)
     /// @return A random MiniBoss room
 
-    var levels = [MiniBoss_Tree, MiniBoss_Boar, MiniBoss3];
+    // TODO change this back when we implement a third boss
+    // var levels = [MiniBoss_Tree, MiniBoss_Boar, MiniBoss3];
+    var levels = [MiniBoss_Tree, MiniBoss_Boar];
     var random_index = irandom(array_length(levels) - 1);
     return levels[random_index];
 }

@@ -77,7 +77,7 @@ alarm[0] = 10
 //aim_arrow.player = id;
 //aim_arrow.depth = self.depth + 1;
 
-//var cam_inst = instance_exists(obj_camera) ? instance_find(obj_camera, 0) : noone;
+//var cam_isnst = instance_exists(obj_camera) ? instance_find(obj_camera, 0) : noone;
 //if (cam_inst == noone) cam_inst = instance_create_layer(x, y, layer, obj_camera);
 //cam_inst.follow = id;
 //cam_inst.smooth = 0.12;
@@ -88,3 +88,5 @@ colliders = [layer_tilemap_get_id("Tile_Collision"), obj_clay_wall];
 
 // gourd icon
 spr_gourd_icon = spr_gourd;
+
+death_timer = -1;

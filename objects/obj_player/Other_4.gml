@@ -14,7 +14,7 @@ cam_inst.follow = id;
 cam_inst.smooth = 0.12;
 cam_inst.preferred_ratio = 0.2;
 
-var third_hp = max_hp / 3;
-hp = hp < third_hp ? third_hp : hp; 
+var heal_up = max_hp * 0.375;
+hp = hp < heal_up ? heal_up : hp; 
 
 cam_inst.preferred_ratio = 0.12; // Lower = more zoomed out (player takes less of screen)

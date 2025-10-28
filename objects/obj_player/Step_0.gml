@@ -1,10 +1,15 @@
 update_status_effects(self);
 
+
+if (hp < 4) {
+    //obj_sfx_manager.play_sound()
+}
+
 if (hp <= 0) {
     // Player died - show death screen with element selection
     // Store player's current inventory for death screen
     global.player_death_inventory = [inv[0], inv[1], inv[2]];
-
+    
     // Create death screen (persistent so it stays across room transitions)
     if (!instance_exists(obj_death_screen)) {
         instance_create_depth(0, 0, -9999, obj_death_screen);

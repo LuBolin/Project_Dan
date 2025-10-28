@@ -167,25 +167,9 @@ function set_path(entity, _target_x = entity.player_last_known_x, _target_y = en
         pause = false; 
         path_delete(path);
         path = path_add();
-        
-        // Safety checks for target coordinates
-        if (!is_real(_target_x) || !is_real(_target_y)) {
-            // Fallback to entity's current position if target is invalid
-            _target_x = x;
-            _target_y = y;
-            show_debug_message("Enemy: Invalid target coordinates, using current position");
-        }
-        
-        // Convert units per second to pixels per frame
-        // units/sec * pixels/unit / frames/sec = pixels/frame
         var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
-        
-        // Additional safety check for pathfinding grid
-        if (instance_exists(obj_level_manager) && ds_exists(obj_level_manager.pathfinding_grid, ds_type_grid)) {
-            mp_grid_path(obj_level_manager.pathfinding_grid, path, x, y, _target_x, _target_y, 1);
-            path_start(path, move_speed_this_frame, path_action_stop, true);
-        } else {
-            show_debug_message("Enemy: Pathfinding grid not available");
-        }
+        mp_grid_path(obj_level_manager.pathfinding_grid, path, x, y, _target_x, _target_y, 1);
+            
+        path_start(path, move_speed_this_frame, path_action_stop, true);
     }
 }

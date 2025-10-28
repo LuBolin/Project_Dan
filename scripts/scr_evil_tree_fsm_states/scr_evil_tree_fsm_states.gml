@@ -1,4 +1,3 @@
-
 function EvilTreeRoamState(_entity, _duration = undefined, _is_timed = false) : RoamState(_entity, _duration, _is_timed) constructor {
     on_step = function() {
 
@@ -47,9 +46,22 @@ function EvilTreeAttackState(_entity, _duration = 800, _is_timed = true) : Attac
     }
 
     on_timeout = function() {
-		spawn_and_set_projectile(entity, new ProjectileGhost(), obj_player.x, obj_player.y, obj_enemy_projectile);
-		entity.attack_cd_timer = entity.attack_cooldown_sec * game_get_speed(gamespeed_fps);
+        // SAFETY CHECK: Make sure player still exists before shooting
+        if (instance_exists(obj_player)) {
+            spawn_and_set_projectile(entity, new ProjectileGhost(), obj_player.x, obj_player.y, obj_enemy_projectile);
+        } else {
+            // Player is dead, use last known position or don't shoot
+            if (variable_instance_exists(entity, "player_last_known_x") && 
+                variable_instance_exists(entity, "player_last_known_y") &&
+                is_real(entity.player_last_known_x) && 
+                is_real(entity.player_last_known_y)) {
+                spawn_and_set_projectile(entity, new ProjectileGhost(), entity.player_last_known_x, entity.player_last_known_y, obj_enemy_projectile);
+            } else {
+                show_debug_message("Evil Tree: Player dead, skipping projectile shot");
+            }
+        }
         
+        entity.attack_cd_timer = entity.attack_cooldown_sec * game_get_speed(gamespeed_fps);
         entity.changeState(STATES.CHASE);
     }
 }

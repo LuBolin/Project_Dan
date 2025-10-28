@@ -89,4 +89,8 @@ colliders = [layer_tilemap_get_id("Tile_Collision"), obj_clay_wall];
 // gourd icon
 spr_gourd_icon = spr_gourd;
 
+// Effect Sprite for Burn Effect, etc
+// Switch to a Hashmap or sth if needed 
+effect_sprite = undefined
+
 death_timer = -1;

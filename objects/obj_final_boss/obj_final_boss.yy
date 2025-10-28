@@ -1,15 +1,26 @@
 {
   "$GMObject":"",
   "%Name":"obj_final_boss",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":4,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"obj_final_boss",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"max_hp","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"40",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"base_damage","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"4",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"hp","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"40",},
+  ],
   "parent":{
     "name":"Enemies",
     "path":"folders/Objects/Enemies.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_enemy_abstract",
+    "path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

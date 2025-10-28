@@ -103,10 +103,6 @@ function RoamState(_entity, _duration = 2000, _is_timed = true) : State(_entity,
 
     }
     
-    draw = function() {
-        draw_path(path, x, y, 1);
-    }
-    
     on_player_interact = function() {
         with (entity) {
             player_last_known_x = obj_player.x;

@@ -26,7 +26,7 @@ function ProjectileFire() constructor {
 function ProjectileRock() constructor {
 	name = "Rock";
 	speed       = 18.75;  // units per second (1200 / 64)
-	damage      = 1;
+	damage      = 2;
 	life_steps  = game_get_speed(gamespeed_fps) * 0.5;
 	kb_speed = 0;
 	kb_distance = 0;
@@ -148,7 +148,7 @@ function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration =
 }
 
 function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_duration = 8) constructor {
-    name = "Air";
+    name = "EnemyAir";
     speed = 0;  // Doesn't move
     damage = 0;
     life_steps = 1;  // Destroy immediately after dash

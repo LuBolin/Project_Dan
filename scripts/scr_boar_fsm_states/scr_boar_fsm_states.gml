@@ -30,7 +30,8 @@ function BoarChaseState(_entity, _duration = 3000, _is_timed = true) : ChaseStat
         }
         
         with (entity) {
-            if (distance_to_object(obj_player) < global.UNIT_LENGTH * 2 and !has_charged) {
+            var _sight_line = collision_line(x, y, _player_x, _player_y, colliders, false, true);
+            if (distance_to_object(obj_player) < global.UNIT_LENGTH * 2 and !has_charged and _sight_line == noone) {
                 changeState(STATES.ATTACK)
             } 
         }
@@ -50,6 +51,7 @@ function BoarAttackState(_entity, _duration = 700, _is_timed = true) : AttackSta
     }
 
     on_timeout = function() {
+        
         spawn_and_set_projectile(entity, new ProjectilEnemyAir(false, 102, 10), entity.player_last_known_x, entity.player_last_known_y)
         remaining_time = duration;
         entity.has_charged = true;

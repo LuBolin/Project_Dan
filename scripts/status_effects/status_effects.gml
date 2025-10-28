@@ -419,7 +419,7 @@ function update_status_effects(_target) {
         }
     }
     
-    if (has_stun_or_knockback) {
+    if (has_stun_or_knockback and variable_instance_exists(_target, "pause")) {
         _target.pause = true;
     } else {
         _target.pause = false;

@@ -21,6 +21,9 @@ if (hp <= 0) {
     exit;
 }
 
+
+
+//********************** MOVEMENT ***********************************/
 // Check if stunned - if so, skip movement input
 var input_dirn_x = 0;
 var input_dirn_y = 0;
@@ -40,6 +43,7 @@ var vel_hori = (magnitude == 0 ? 0 : (input_dirn_x / magnitude)) * move_speed_th
 var vel_vert = (magnitude == 0 ? 0 : (input_dirn_y / magnitude)) * move_speed_this_frame;
 
 
+
 // Horizontal movement
 if (place_meeting(x + vel_hori, y, colliders)) {
     
@@ -56,6 +60,7 @@ if (place_meeting(x + vel_hori, y, colliders)) {
 
 x += vel_hori;
 
+// Vertical movement
 if (place_meeting(x, y + vel_vert, colliders)) {
     
     // Allows the players to smoothly slide past corners
@@ -76,6 +81,7 @@ if (input_dirn_x != 0) {
     image_xscale = (input_dirn_x > 0) ? scale : -scale;
 }
 
+//***************************************************************/
 
 // Handle wind gust spawning after dash (used by Current element)
 if (variable_instance_exists(self, "wind_gust_pending") && wind_gust_pending != undefined) {

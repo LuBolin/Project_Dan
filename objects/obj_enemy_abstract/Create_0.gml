@@ -1,11 +1,8 @@
-colliders = [layer_tilemap_get_id("Tile_Collision"), obj_enemy_abstract, obj_clay_wall]
+colliders = [layer_tilemap_get_id("Tile_Collision"), obj_enemy_abstract, obj_clay_wall];
 
 // FSM related variables
 player_last_known_x = undefined;
 player_last_known_y = undefined;
-
-// Pauses all activity for the enemy
-pause = true;
 
 // Status effects display
 status_texts = []; // Array of status effect strings to display above enemy

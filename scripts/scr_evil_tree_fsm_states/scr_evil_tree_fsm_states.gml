@@ -24,7 +24,8 @@ function EvilTreeChaseState(_entity, _duration = 3000, _is_timed = true) : Chase
                 var _player_x = player_last_known_x ?? x;
                 var _player_y = player_last_known_y ?? y;
                 var dist = point_distance(x, y, _player_x, _player_y);
-                if (dist <= other._shoot_range_px && attack_cd_timer <= 0) { 
+                var _sight_line = collision_line(x, y, _player_x, _player_y, colliders, false, true);
+                if (attack_cd_timer <= 0 && _sight_line == noone) { 
                     changeState(STATES.ATTACK);
                 }
             }
@@ -36,8 +37,6 @@ function EvilTreeChaseState(_entity, _duration = 3000, _is_timed = true) : Chase
 /// Stands still (no movement here), after a brief wind-up (duration frames), 
 /// fires once at player_last_known_ then returns to CHASE
 function EvilTreeAttackState(_entity, _duration = 800, _is_timed = true) : AttackState(_entity, _duration, _is_timed) constructor {
-    _tx = undefined;
-    _ty = undefined;
 
     on_enter = function() {
         remaining_time = duration; // wind-up
@@ -48,7 +47,6 @@ function EvilTreeAttackState(_entity, _duration = 800, _is_timed = true) : Attac
     }
 
     on_timeout = function() {
-		// pass the ghost instance and player coords so spawn_and_set_projectile computes angle correctly
 		spawn_and_set_projectile(entity, new ProjectileGhost(), obj_player.x, obj_player.y, obj_enemy_projectile);
 		entity.attack_cd_timer = entity.attack_cooldown_sec * game_get_speed(gamespeed_fps);
         

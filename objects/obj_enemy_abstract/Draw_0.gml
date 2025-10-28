@@ -62,3 +62,4 @@ if !is_undefined(effect_sprite) {
     draw_sprite_ext(effect_sprite, 0, x, y + 20, 0.05, 0.05, 0, c_white, 1);
 }
 
+curr_state.draw()

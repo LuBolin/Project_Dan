@@ -10,7 +10,7 @@ if (_num_enemies > 0) {
         
         // Check if there is line-of-sight between player and enemy
         _sight_line = collision_line(x, y, _current_enemy.x, _current_enemy.y, colliders, false, false)
-
+        //show_debug_message(_sight_line == noone)
         if (_sight_line == noone) {
 
             _current_enemy.player_last_known_x = x;

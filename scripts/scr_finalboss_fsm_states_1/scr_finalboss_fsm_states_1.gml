@@ -46,11 +46,26 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
             }
             
             if (telegraph_lava_attack_blink_num >= 3 and (lava_spawn_x != -1 and lava_spawn_y != -1)) {
-                // TODO: WHY WONT THE LAVA SPAWWN :<<<<
-                // Also need to modify the lava to damage the player
-                instance_create_layer(lava_spawn_x, lava_spawn_y, "Instances", obj_lava_pool);
+                // Create lava pool that damages the player
+                var boss_lava_pool = instance_create_layer(lava_spawn_x, lava_spawn_y, "Instances", obj_lava_pool);
+                
+                if (instance_exists(boss_lava_pool)) {
+                    // Configure this lava pool to damage the player instead of enemies
+                    boss_lava_pool.damage_enemies = false;  // Don't damage enemies
+                    boss_lava_pool.damage_player = true;    // Damage the player
+                    boss_lava_pool.creator = entity;        // Set boss as creator
+                    
+                    // Make boss lava pools more threatening
+                    boss_lava_pool.damage_per_tick = 3;     // Higher damage
+                    boss_lava_pool.life_timer = game_get_speed(gamespeed_fps) * 12; // Last longer
+                    
+                    // Visual differentiation - make boss lava pools red-tinted
+                    boss_lava_pool.image_blend = make_color_rgb(255, 150, 150);
+                    
+                    show_debug_message("Boss spawned player-damaging lava pool at " + string(lava_spawn_x) + ", " + string(lava_spawn_y));
+                }
 
-                // Reset Other variables
+                // Reset variables
                 lava_attack_cd_timer = lava_attack_freq;
                 lava_spawn_x = -1;
                 lava_spawn_y = -1;

@@ -235,7 +235,7 @@ function ProjectileLava() constructor {
     kb_speed = 3;  // pixels per frame
     kb_distance = 30; // knockback distance
     sprite_index = spr_lava_ball;
-    scale = 0.6;
+    scale = 0.4;
     sfx_fire = undefined;
     sfx_hit = undefined;
 

@@ -25,8 +25,21 @@ var back_col   = make_color_rgb(40, 40, 40);
 var fill_col   = make_color_rgb(200, 50, 50);
 var border_col = c_black;
 
+
+// Progressive shading for low health
+draw_set_color(c_black)
+
+var shading = 1 - ratio * 3;
+
+draw_set_alpha(clamp(shading, 0, 0.5));
+draw_rectangle(0, 0, gui_w, gui_h, false);
+
+draw_set_alpha(clamp(shading, 0, 0.8));
+draw_sprite_stretched(spr_hurt_pov, 0, 0, 0, gui_w, gui_h);
+
 // draw back
 draw_set_color(back_col);
+draw_set_alpha(1);
 draw_rectangle(bar_x, bar_y, bar_x + bar_w, bar_y + bar_h, false);
 
 // draw fill
@@ -123,9 +136,6 @@ if (instance_exists(obj_level_manager)) {
         draw_set_valign(fa_top);
     }
 }
-
-
-
 
 
 // ======== GOURD RING HUD (integrated) ========

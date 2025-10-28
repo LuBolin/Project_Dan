@@ -405,6 +405,7 @@ function update_status_effects(_target) {
         return;
     }
 
+    var has_stun_or_knockback = false
     // Update all effects and remove expired ones
     for (var i = array_length(_target.status_effects) - 1; i >= 0; i--) {
         var effect = _target.status_effects[i];
@@ -413,7 +414,15 @@ function update_status_effects(_target) {
         if (!still_active) {
             effect.remove();
             array_delete(_target.status_effects, i, 1);
+        } else if (instanceof(effect) == "StunEffect" or instanceof(effect) == "KnockbackEffect") {
+            has_stun_or_knockback = true;
         }
+    }
+    
+    if (has_stun_or_knockback) {
+        _target.pause = true;
+    } else {
+        _target.pause = false;
     }
 }
 

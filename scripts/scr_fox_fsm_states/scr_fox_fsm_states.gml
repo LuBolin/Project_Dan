@@ -1,7 +1,7 @@
 /// @description FSM States
 /// States to be used in Enemy's FSM
 
-function FoxChaseState(_entity, _duration = 60, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
+function FoxChaseState(_entity, _duration = 3500, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.CHASE;
     has_second_chance = true;
     

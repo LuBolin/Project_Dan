@@ -147,6 +147,82 @@ function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration =
     }
 }
 
+function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_duration = 8) constructor {
+    name = "Air";
+    speed = 0;  // Doesn't move
+    damage = 0;
+    life_steps = 1;  // Destroy immediately after dash
+    kb_speed = 12;  // Dash speed (pixels per frame) - slower for smoother dash
+    kb_distance = _dash_distance;  // Total dash distance (2 units)
+    dash_duration = _dash_duration;  // 0.133 seconds at 60 FPS (96 / 12 = 8 frames)
+    sprite_index = spr_wind_gust;
+    scale = 0.2;  // Small visual effect
+    sfx_fire = snd_air_projectile;
+    sfx_hit = undefined;
+    is_invuln = _is_invuln;
+
+    on_launch = function(projectile_inst) {
+        // Spawn projectile on player
+        projectile_inst.x = projectile_inst.creator.x;
+        projectile_inst.y = projectile_inst.creator.y;
+        projectile_inst.speed = 0;
+        projectile_inst.image_alpha = 0.5;  // Semi-transparent
+
+        // Immediately dash the player
+        if (instance_exists(projectile_inst.creator)) {
+     		// Spawn projectile on player
+    		projectile_inst.x = projectile_inst.creator.x;
+    		projectile_inst.y = projectile_inst.creator.y;
+    		projectile_inst.speed = 0;
+    		projectile_inst.image_alpha = 0.5;  // Semi-transparent
+    
+    		// Immediately dash the player towards mouse
+    		if (instance_exists(projectile_inst.creator)) {
+    			var player = projectile_inst.creator;
+    			//var dash_dir = point_direction(player.x, player.y, projectile_inst, mouse_y);
+                dash_dir = projectile_inst.image_angle
+            
+
+                if (is_invuln) { 
+                    // Make player invincible during dash + 0.2 seconds after
+                    var invuln_time = 0.2; // seconds
+                    var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
+                    add_status_effect(player, new InvincibilityEffect(invuln_duration));
+                }
+    
+                // Apply knockback effect to dash player (false = no stun)
+                add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
+                
+                // Create particle effect trail behind player
+                var trail_length = 5;  // Number of particles
+                for (var i = 0; i < trail_length; i++) {
+                    var offset = i * 10;  // Space particles along the trail
+                    var trail_x = player.x - lengthdir_x(offset, dash_dir);
+                    var trail_y = player.y - lengthdir_y(offset, dash_dir);
+    
+                    // Create a wind particle at this position
+                    var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
+                    if (particle != noone) {
+                        particle.sprite_index = spr_wind_gust;
+                        particle.image_alpha = 0.4 - (i * 0.06);  // Fade out
+                        particle.image_xscale = 0.3;
+                        particle.image_yscale = 0.3;
+                        particle.image_angle = dash_dir;
+                        particle.speed = 0;
+                        particle.life_steps = 15 - (i * 2);  // Particles fade quickly
+                        particle.proj_data = {};  // Empty data, no collision
+                    }
+                }
+            }
+        }
+
+        // Destroy projectile immediately
+        instance_destroy(projectile_inst);
+    }
+}
+
+
+
 // ========================================
 // TIER 1 - BASIC COMBINATIONS
 // ========================================

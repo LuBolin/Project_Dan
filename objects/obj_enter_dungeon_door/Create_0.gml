@@ -9,12 +9,6 @@ fade_timer = 0;
 fade_duration = 60; // 1 second at 60fps
 should_fade = false;
 
-// Use entry door sprite if it exists, otherwise keep default
-if (sprite_exists(spr_dungeon_entry_door)) {
-    sprite_index = spr_dungeon_entry_door;
-} else {
-    image_blend = c_green; // Fallback to greenish tint
-}
 
 // Spawn or move player at entry door and start fade
 if (!instance_exists(obj_player)) {

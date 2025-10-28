@@ -28,7 +28,7 @@ function apply_knockback(_source, _target, _kb_speed, _kb_distance, _kb_directio
 
     // Prevent player in invuln state from being "ping-ponged" between different enemies
     if (_target.object_index == obj_player and obj_player.invuln) {
-        return
+        return;
     }
     
     // Calculate knockback direction (from source to target if not provided)

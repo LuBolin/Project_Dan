@@ -733,9 +733,10 @@ function ProjectileHurricane() constructor {
 // ========================================
 
 function ProjectileDestruction() constructor {
-	name = "Destruction";
-	// UNIMPLEMENTED - Print message instead of shooting
-	show_debug_message("Destruction is unimplemented");
+    name = "Destruction";
+    // Destruction is now implemented as screen-wide effect
+    // This constructor is kept for compatibility but not used
+    show_debug_message("Destruction uses screen-wide effect instead of projectile");
 }
 
 function ProjectileCreation() constructor {

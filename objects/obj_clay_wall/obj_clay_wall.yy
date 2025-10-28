@@ -11,8 +11,8 @@
   "name":"obj_clay_wall",
   "overriddenProperties":[],
   "parent":{
-    "name":"Others",
-    "path":"folders/Objects/Others.yy",
+    "name":"Elements",
+    "path":"folders/Objects/Player/Elements.yy",
   },
   "parentObjectId":null,
   "persistent":false,

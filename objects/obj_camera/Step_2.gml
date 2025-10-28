@@ -1,3 +1,22 @@
+// Camera shake effect
+var shake_offset_x = 0;
+var shake_offset_y = 0;
+
+if (variable_instance_exists(self, "shake_timer") && shake_timer > 0) {
+    shake_timer--;
+    
+    if (variable_instance_exists(self, "shake_intensity")) {
+        // Apply random shake offset
+        var shake_x = random_range(-shake_intensity, shake_intensity);
+        var shake_y = random_range(-shake_intensity, shake_intensity);
+        
+        // Reduce shake intensity over time
+        var shake_strength = shake_timer / shake_duration;
+        shake_offset_x = shake_x * shake_strength;
+        shake_offset_y = shake_y * shake_strength;
+    }
+}
+
 /// obj_camera - End Step
 if (!instance_exists(follow)) exit;
 
@@ -39,6 +58,10 @@ var ty = follow.y - vh * 0.5;
 var k = clamp(smooth, 0, 1);
 tx = lerp(cx, tx, k);
 ty = lerp(cy, ty, k);
+
+// Apply shake offset to final camera position
+tx += shake_offset_x;
+ty += shake_offset_y;
 
 // apply camera position
 camera_set_view_pos(cam, tx, ty);

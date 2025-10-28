@@ -211,9 +211,21 @@ function GourdPlant() : GourdBase() constructor
 function GourdDestruction() : GourdBase() constructor
 {
     name = "Destruction";
-	color = make_color_rgb(150, 0, 0);
-    cooldown = 8;
-	projectile = ProjectileDestruction;
+    color = make_color_rgb(150, 0, 0);
+    cooldown = 15; // Long cooldown for powerful screen-clearing ability
+    projectile = undefined; // Destruction doesn't use projectiles
+    
+    use = function(_p) {
+        if (can_use()) {
+            // Create destruction effect that covers the screen
+            var destruction_effect = instance_create_layer(_p.x, _p.y, "Instances", obj_destruction_effect);
+            if (instance_exists(destruction_effect)) {
+                destruction_effect.creator = _p;
+                show_debug_message("Destruction effect activated - screen clearing attack!");
+            }
+            trigger_cd();
+        }
+    }
 }
 
 function GourdCreation() : GourdBase() constructor

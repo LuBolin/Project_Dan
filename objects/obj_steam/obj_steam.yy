@@ -11,8 +11,8 @@
   "name":"obj_steam",
   "overriddenProperties":[],
   "parent":{
-    "name":"Player",
-    "path":"folders/Objects/Player.yy",
+    "name":"Elements",
+    "path":"folders/Objects/Player/Elements.yy",
   },
   "parentObjectId":null,
   "persistent":false,

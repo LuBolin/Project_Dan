@@ -10,8 +10,8 @@
   "name":"obj_mud_pool",
   "overriddenProperties":[],
   "parent":{
-    "name":"Others",
-    "path":"folders/Objects/Others.yy",
+    "name":"Elements",
+    "path":"folders/Objects/Player/Elements.yy",
   },
   "parentObjectId":null,
   "persistent":false,

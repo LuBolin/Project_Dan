@@ -15,6 +15,11 @@ preferred_ratio = 0.15;
 min_zoom = 0.5;   // zoom in limit (smaller view)
 max_zoom = 2.0;   // zoom out limit (bigger view)
 
+// CAMERA SHAKE VARIABLES
+shake_intensity = 0;
+shake_timer = 0;
+shake_duration = 0;
+
 // ensure view 0 exists
 if (!view_enabled)  view_enabled = true;
 if (!view_visible[0]) view_visible[0] = true;

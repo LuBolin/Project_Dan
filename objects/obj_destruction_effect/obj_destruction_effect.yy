@@ -1,13 +1,13 @@
 {
   "$GMObject":"",
-  "%Name":"obj_plant",
+  "%Name":"obj_destruction_effect",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_plant",
+  "name":"obj_destruction_effect",
   "overriddenProperties":[],
   "parent":{
     "name":"Elements",
@@ -32,8 +32,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_plant",
-    "path":"sprites/spr_plant/spr_plant.yy",
+    "name":"spr_destruction_effect",
+    "path":"sprites/spr_destruction_effect/spr_destruction_effect.yy",
   },
   "spriteMaskId":null,
   "visible":true,

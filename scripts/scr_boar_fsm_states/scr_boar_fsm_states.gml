@@ -23,19 +23,47 @@ function BoarChaseState(_entity, _duration = 3000, _is_timed = true) : ChaseStat
     
     on_step = function() {
         path_remaining_time -= 1;
-   
+
         if (path_remaining_time <= 0) {
             path_remaining_time = path_reset_timer;
             set_path(entity);
         }
         
         with (entity) {
+            // Properly get player coordinates, with safety checks
+            var _player_x = obj_player.x;
+            var _player_y = obj_player.y;
+            
+            // Safety check: make sure player exists and coordinates are valid
+            if (!instance_exists(obj_player)) {
+                // Player doesn't exist, return to roam state
+                changeState(STATES.ROAM);
+                exit;
+            }
+            
+            // Check if player_last_known position is defined, use as fallback
+            if (variable_instance_exists(self, "player_last_known_x") && 
+                variable_instance_exists(self, "player_last_known_y")) {
+                
+                // Use last known position if current position seems invalid
+                if (!is_real(_player_x) || !is_real(_player_y)) {
+                    _player_x = player_last_known_x;
+                    _player_y = player_last_known_y;
+                }
+            }
+            
+            // Final safety check
+            if (!is_real(_player_x) || !is_real(_player_y)) {
+                show_debug_message("Boar: Invalid player coordinates, returning to roam");
+                changeState(STATES.ROAM);
+                exit;
+            }
+            
             var _sight_line = collision_line(x, y, _player_x, _player_y, colliders, false, true);
-            if (distance_to_object(obj_player) < global.UNIT_LENGTH * 2 and !has_charged and _sight_line == noone) {
-                changeState(STATES.ATTACK)
+            if (distance_to_object(obj_player) < global.UNIT_LENGTH * 2 && !has_charged && _sight_line == noone) {
+                changeState(STATES.ATTACK);
             } 
         }
-        
     }
     
     on_timeout = function() {

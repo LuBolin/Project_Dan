@@ -184,12 +184,13 @@ function clone_ai_attack_target(clone_instance) {
 }
 
 /// @function clone_spawn_clay_wall(clone_instance, direction)
-/// @description Spawn clay wall for clone (identical to player)
+/// @description Spawn clay wall for clone (matching player with offset)
 function clone_spawn_clay_wall(clone_instance, direction) {
     // Wall properties (same as player)
     var wall_segments = 6; // Same as player
     var segment_spacing = 45; // Same as player spacing
     var wall_scale = 2.0; // Same as player scale
+    var initial_offset = 16; // Same offset as player to prevent clipping
     
     // Update collision arrays for new walls
     with (obj_player) {
@@ -204,10 +205,11 @@ function clone_spawn_clay_wall(clone_instance, direction) {
         }
     }
     
-    // Spawn wall segments (same as player)
+    // Spawn wall segments (same as player with offset)
     for (var i = 1; i <= wall_segments; i++) {
-        var segment_x = clone_instance.x + lengthdir_x(i * segment_spacing, direction);
-        var segment_y = clone_instance.y + lengthdir_y(i * segment_spacing, direction);
+        // UPDATED: Add initial_offset to push wall away from clone
+        var segment_x = clone_instance.x + lengthdir_x(initial_offset + (i * segment_spacing), direction);
+        var segment_y = clone_instance.y + lengthdir_y(initial_offset + (i * segment_spacing), direction);
         
         // Check if position is valid (same logic as player)
         var can_place = true;
@@ -239,5 +241,5 @@ function clone_spawn_clay_wall(clone_instance, direction) {
         }
     }
     
-    show_debug_message("Clone clay wall spawned matching player style");
+    show_debug_message("Clone clay wall spawned with offset to prevent clipping");
 }

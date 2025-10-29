@@ -138,6 +138,7 @@ function GourdClay() : GourdBase() constructor
         var wall_segments = 6; // Number of wall pieces
         var segment_spacing = 45; // Distance between wall segments (0.75 units)
         var wall_scale = 2.0; // Scale factor for wall size
+        var initial_offset = 16; // Start wall further away from player
         
         // IMMEDIATELY UPDATE COLLISION ARRAYS BEFORE SPAWNING WALLS
         with (obj_player) {
@@ -154,10 +155,11 @@ function GourdClay() : GourdBase() constructor
             }
         }
         
-        // Start spawning from player position, extending outward in aim direction
-        for (var i = 1; i <= wall_segments; i++) { // Start from 1 to not spawn on player
-            var segment_x = start_x + lengthdir_x(i * segment_spacing, direction);
-            var segment_y = start_y + lengthdir_y(i * segment_spacing, direction);
+        // Start spawning from offset position, extending outward in aim direction
+        for (var i = 1; i <= wall_segments; i++) {
+            // Add initial_offset to push wall away from player
+            var segment_x = start_x + lengthdir_x(initial_offset + (i * segment_spacing), direction);
+            var segment_y = start_y + lengthdir_y(initial_offset + (i * segment_spacing), direction);
             
             // Check if position is valid (not in existing walls)
             var can_place = true;

@@ -10,6 +10,8 @@ invuln = false
 detection_radius = default_detection_radius;
 // Wind gust pending for Current element ability
 wind_gust_pending = undefined;
+plant_healing_pending = undefined;
+creation_clone_pending = undefined;
 
 // Check if player is carrying over an element from previous run
 var carried_element = undefined;

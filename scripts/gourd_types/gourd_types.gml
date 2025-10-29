@@ -232,7 +232,7 @@ function GourdCreation() : GourdBase() constructor
 {
     name = "Creation";
 	color = make_color_rgb(255, 255, 200);
-    cooldown = 8;
+    cooldown = 12;
 	projectile = ProjectileCreation;
 }
 

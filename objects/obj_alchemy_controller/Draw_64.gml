@@ -387,17 +387,27 @@ for (var i = 0; i < array_length(element_names); i++) {
     } else {
         // Greyed out for undiscovered
         if (is_elixir) {
-            // Draw gourd sprite in grey for undiscovered Elixir
+            // Draw gourd sprite brighter for undiscovered Elixir (make it more visible)
             var gourd_scale = tree_node_size / sprite_get_width(spr_gourd);
             draw_sprite_ext(spr_gourd, 0,
                           node_x + tree_node_size / 2,
                           node_y + tree_node_size / 2,
-                          gourd_scale, gourd_scale, 0, make_color_rgb(40, 40, 50), 1);
+                          gourd_scale, gourd_scale, 0, make_color_rgb(180, 180, 200), 1);
         } else {
             // Draw circle in grey for undiscovered other elements
             draw_set_color(make_color_rgb(40, 40, 50));
             draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, false);
         }
+    }
+
+    // Draw yellow border for Elixir (always visible)
+    if (is_elixir) {
+        draw_set_color(c_yellow);
+        var border_radius = tree_node_size * 0.6;
+        draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, border_radius, true);
+        // Draw thicker border by drawing multiple circles
+        draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, border_radius + 1, true);
+        draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, border_radius + 2, true);
     }
 
     // Draw node border (only for non-Elixir nodes)

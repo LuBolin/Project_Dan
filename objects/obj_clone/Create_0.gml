@@ -12,8 +12,8 @@ vel_vert = 0;
 // Visual properties
 image_alpha = 0.8; // Semi-transparent to distinguish from player
 image_blend = make_color_rgb(255, 215, 0); // Golden tint
-image_xscale = 0.25; // Same size as player
-image_yscale = 0.25;
+image_xscale = 1.0; // Same size as player
+image_yscale = 1.0;
 
 // Lifespan: 12 seconds
 life_duration_seconds = 12;
@@ -21,7 +21,7 @@ life_duration = life_duration_seconds * game_get_speed(gamespeed_fps);
 life_timer = life_duration;
 
 // Combat properties
-detection_radius = 3 * global.UNIT_LENGTH; // 3 units detection range
+detection_radius = 4 * global.UNIT_LENGTH; // 4 units detection range
 attack_cooldown_seconds = 1.5; // 1.5 seconds between attacks
 attack_cooldown = attack_cooldown_seconds * game_get_speed(gamespeed_fps);
 attack_timer = 0;

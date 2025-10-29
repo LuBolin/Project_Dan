@@ -1,5 +1,3 @@
-// NO STATUS EFFECTS - Skip update_status_effects() entirely
-
 // Check if owner still exists
 if (!instance_exists(owner)) {
     instance_destroy();
@@ -39,11 +37,11 @@ if (life_timer <= 0) {
             particle.image_alpha = 0.6;
             particle.image_xscale = 0.2;
             particle.image_yscale = 0.2;
-            particle.image_blend = make_color_rgb(255, 215, 0); // Golden
+            particle.image_blend = make_color_rgb(255, 215, 0);
             particle.speed = 1;
             particle.direction = random(360);
             particle.life_steps = 30;
-            particle.proj_data = {}; // No collision
+            particle.proj_data = {};
         }
     }
     
@@ -70,7 +68,7 @@ if (hp <= 0) {
             particle.speed = 0.5;
             particle.direction = random(360);
             particle.life_steps = 20;
-            particle.proj_data = {}; // No collision
+            particle.proj_data = {};
         }
     }
     
@@ -78,7 +76,7 @@ if (hp <= 0) {
     exit;
 }
 
-// AI Logic using script functions (no stun checking needed)
+// AI Logic using simple script functions
 switch (state) {
     case "idle":
         clone_ai_find_target(self);

@@ -229,10 +229,15 @@ if (craft_feedback != "none" && craft_feedback_timer > 0 && craft_feedback_equat
     }
 }
 
-// === TODO: DRAW NEW ELEMENT ===
+// === DRAW TIP TEXT ===
 draw_set_color(col_text);
-draw_text(gui_width / 2, new_ele_separator_y + 20, "New Element!");
+draw_set_halign(fa_center);
+draw_set_valign(fa_top);
+draw_text(gui_width / 2, new_ele_separator_y - 30, "Tip: Remember to equip (drag to inventory) new elements!");
+
+// === DRAW NEW ELEMENT ===
 draw_line_width(separator_x, new_ele_separator_y, tree_panel_x, new_ele_separator_y, 2);
+draw_text(gui_width / 2, new_ele_separator_y + 20, "New Element!");
 
 var new_slot_x = (gui_width - equipped_slot_size - equipped_slot_spacing) / 2;
 var new_slot_y = new_ele_separator_y + 40;

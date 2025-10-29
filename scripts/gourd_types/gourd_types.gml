@@ -245,9 +245,39 @@ function GourdCreation() : GourdBase() constructor
 function GourdElixir() : GourdBase() constructor
 {
     name = "Elixir";
-	color = make_color_rgb(255, 215, 0);
+    color = make_color_rgb(255, 215, 0);
     cooldown = 10;
-	projectile = undefined; // Final element - no projectile
+    projectile = undefined; // Final element - no projectile
+    
+    use = function(_p) {
+        if (can_use()) {
+            // Create visual effect at player position
+            var elixir_effect = instance_create_layer(_p.x, _p.y, "Instances", obj_projectile);
+            if (instance_exists(elixir_effect)) {
+                elixir_effect.sprite_index = spr_wind_gust; // Reuse wind sprite or create elixir effect sprite
+                elixir_effect.image_alpha = 0.8;
+                elixir_effect.image_xscale = 0.8;
+                elixir_effect.image_yscale = 0.8;
+                elixir_effect.image_blend = make_color_rgb(255, 215, 0); // Golden color
+                elixir_effect.speed = 0; // Stationary effect
+                elixir_effect.life_steps = 60; // 1 second visual effect
+                elixir_effect.proj_data = {}; // No collision
+            }
+            
+            // Apply 5 seconds of invincibility
+            var invuln_duration = 5 * game_get_speed(gamespeed_fps); // 5 seconds in frames
+            add_status_effect(_p, new InvincibilityEffect(invuln_duration));
+            
+            // Visual feedback - golden flash
+            if (variable_instance_exists(_p, "image_blend")) {
+                _p.image_blend = make_color_rgb(255, 215, 0); // Golden flash
+                _p.alarm[11] = 20; // Flash duration (will reset to white after 20 frames)
+            }
+            
+            trigger_cd();
+            show_debug_message("Elixir used - Player is invulnerable for 5 seconds!");
+        }
+    }
 }
 
 // Helper function to get gourd type constructor by element name

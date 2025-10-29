@@ -6,7 +6,13 @@ function FoxChaseState(_entity, _duration = 3500, _is_timed = true) : State(_ent
     has_second_chance = true;
     
     on_step = function() {
-        with (entity) { 
+        with (entity) {
+            // Safety check: make sure player exists
+            if (!instance_exists(obj_player)) {
+                instance_destroy(self);
+                exit;
+            }
+
             var flee_dir = point_direction(obj_player.x, obj_player.y, x, y);
             var _hor = lengthdir_x(1, flee_dir);
             var _vert = lengthdir_y(1, flee_dir);

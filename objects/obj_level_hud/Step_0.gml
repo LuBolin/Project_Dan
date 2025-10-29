@@ -17,6 +17,22 @@ if (keyboard_check_pressed(ord("E"))) {
 	p.equipped_element = p.inv[p.sel_slot] // update the equipped element
 }
 
+// --- ADDED: Mouse wheel cycling ---
+var wheel_up = mouse_wheel_up();
+var wheel_down = mouse_wheel_down();
+
+if (wheel_up) {
+    // Scroll up = next element (same as E key)
+    p.sel_slot = (p.sel_slot + 1) mod 3;
+    p.equipped_element = p.inv[p.sel_slot];
+}
+
+if (wheel_down) {
+    // Scroll down = previous element (same as Q key)
+    p.sel_slot = (p.sel_slot + 2) mod 3; // +2 mod 3 = -1 mod 3
+    p.equipped_element = p.inv[p.sel_slot];
+}
+
 // compute desired offset so selected slot appears at 270°
 var sel = clamp(p.sel_slot, 0, 2);
 var desired = 270 - base_angles[sel];

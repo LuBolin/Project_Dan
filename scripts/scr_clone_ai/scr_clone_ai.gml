@@ -150,6 +150,9 @@ function clone_ai_attack_target(clone_instance) {
                     clone_instance.attack_timer = clone_instance.attack_cooldown;
                     show_debug_message("Clone used Clay Wall");
                     break;
+					
+				case "Elixir":
+					break;
                     
                 case "Destruction":
                     // Destruction: Create destruction effect at clone position

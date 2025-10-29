@@ -7,6 +7,9 @@ image_yscale = 2.0;
 // Lifespan: 5 seconds
 life_timer = game_get_speed(gamespeed_fps) * 5;
 
+// Overrides lifespan to last forever
+is_forever = false;
+
 // Track which enemies are currently slowed
 slowed_enemies = ds_list_create();
 
@@ -14,9 +17,14 @@ slowed_enemies = ds_list_create();
 slow_amount = 0.3; // 30% slow
 
 // Set depth so it renders below most objects
-depth = 500;
+depth = 300;
 
 // Visual fade-in/out
 alpha = 0;
 fade_in_duration = 15; // frames
 fade_out_duration = 30; // frames
+
+// Damage target configuration
+affect_enemies = true;  // Default: damage enemies
+affect_player = !affect_enemies;  // Default: don't damage player
+creator = noone;        // Who created this pool (for identification)

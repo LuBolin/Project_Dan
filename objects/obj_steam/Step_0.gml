@@ -46,7 +46,8 @@ if (tick_counter >= tick_rate) {
     var check_area_x2 = x + collision_box_radius;
     var check_area_y2 = y + collision_box_radius;
 
-    var num_enemies = collision_rectangle_list(check_area_x1, check_area_y1, check_area_x2, check_area_y2, obj_enemy_abstract, false, true, enemy_list, false);
+    var num_enemies = collision_rectangle_list(check_area_x1, check_area_y1, check_area_x2, check_area_y2, 
+        instance_exists(obj_player) && owner == obj_player ? obj_enemy_abstract : obj_player, false, true, enemy_list, false);
 
     // Process each enemy in the collision area
     for (var i = 0; i < num_enemies; i++) {

@@ -23,7 +23,7 @@ damage_player = !damage_enemies;  // Default: don't damage player
 creator = noone;        // Who created this pool (for identification)
 
 // Set depth so it renders below most objects
-depth = 500;
+depth = 300;
 
 // Visual fade-in/out
 alpha = 0;

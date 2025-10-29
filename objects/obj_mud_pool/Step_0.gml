@@ -8,7 +8,7 @@ if (life_timer > game_get_speed(gamespeed_fps) * 5 - fade_in_duration) {
     alpha = min(1, alpha + (1 / fade_in_duration));
 }
 // Fade out near end
-else if (life_timer <= fade_out_duration) {
+else if (!is_forever && life_timer <= fade_out_duration) {
     alpha = max(0, alpha - (1 / fade_out_duration));
 }
 // Fully visible in between
@@ -17,7 +17,7 @@ else {
 }
 
 // Destroy when lifetime expires
-if (life_timer <= 0) {
+if (!is_forever && life_timer <= 0) {
     // Remove slow effect from all affected enemies
     for (var i = 0; i < ds_list_size(slowed_enemies); i++) {
         var enemy = slowed_enemies[| i];
@@ -42,13 +42,22 @@ if (life_timer <= 0) {
 var enemy_list = ds_list_create();
 var num_enemies = 0;
 
-// Use collision_rectangle to find all enemies overlapping with the mud pool's bounding box
-with (obj_enemy_abstract) {
-    // Check if enemy's collision box overlaps with mud pool's collision box
-    if (place_meeting(x, y, other)) {
+if (affect_enemies){
+    // Use collision_rectangle to find all enemies overlapping with the mud pool's bounding box
+    with (obj_enemy_abstract) {
+        // Check if enemy's collision box overlaps with mud pool's collision box
+        if (place_meeting(x, y, other)) {
+            ds_list_add(enemy_list, id);
+            num_enemies++;
+        }
+    }
+}
+
+if (affect_player and instance_exists(obj_player)) {
+    if (place_meeting(x, y, obj_player)) {
         ds_list_add(enemy_list, id);
         num_enemies++;
-    }
+    }    
 }
 
 if (num_enemies > 0) {

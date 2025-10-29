@@ -52,11 +52,11 @@ function GourdLava() : GourdBase() constructor
     projectile = ProjectileLava;
 }
 
-function GourdSteam(_cd = 8) : GourdBase() constructor
+function GourdSteam() : GourdBase() constructor
 {
     name = "Steam";
 	color = make_color_rgb(200, 220, 255);
-    cooldown = _cd;
+    cooldown = 8;
 	projectile = undefined; // Steam doesn't use projectiles
     
     use = function(_p) {

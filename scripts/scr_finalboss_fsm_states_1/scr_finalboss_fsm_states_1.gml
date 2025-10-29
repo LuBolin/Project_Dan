@@ -4,11 +4,13 @@
 function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_entity, _duration, _is_timed) constructor {    
     id = STATES.ATTACK;
     
+    // FIREBALL
     fireball_attack_freq = 1.67 * game_get_speed(gamespeed_fps); // 1.67 seconds
     fireball_attack_cd_timer = 0;
     
+    // LAVA
     lava_attack_freq = 8 * game_get_speed(gamespeed_fps); // 8 seconds
-    lava_attack_cd_timer = 0;
+    lava_attack_cd_timer = lava_attack_freq;
     
     lava_spawn_x = -1;
     lava_spawn_y = -1;
@@ -18,10 +20,36 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
     telegraph_lava_attack_blink_freq = telegraph_lava_attack_blink_duration_seconds * game_get_speed(gamespeed_fps); // Convert to frames
     telegraph_lava_attack_blink_cd = 0;
     telegraph_lava_attack_blink_num = 0;
-    telegraph_total_blinks = 3; // Total number of blinks before attack (was 3, now 6 for longer warning)
+    do_telegraph_lava_show = false;    
+    telegraph_total_blinks = 6; // Total number of blinks before attack (was 3, now 6 for longer warning)
     telegraph_total_duration_seconds = 1.5; // Total telegraph duration: 3 seconds
     telegraph_total_duration = telegraph_total_duration_seconds * game_get_speed(gamespeed_fps);
-    do_telegraph_lava_show = false;
+    
+    // SECOND ROUND OF PHASE 1
+    is_second_round = false;
+    
+    num_mud_hazards = 8;
+    
+    on_enter = function() {
+
+        fireball_attack_cd_timer = 0;
+
+        if (is_second_round) {
+            lava_attack_cd_timer = 0;
+            create_mud_hazard(num_mud_hazards, true);
+            spawn_more_enemies();
+        } else {
+            lava_attack_cd_timer = lava_attack_freq;
+        }
+                
+        lava_spawn_x = -1;
+        lava_spawn_y = -1;
+        
+        telegraph_lava_attack_blink_freq = telegraph_lava_attack_blink_duration_seconds * game_get_speed(gamespeed_fps); // Convert to frames
+        telegraph_lava_attack_blink_cd = 0;
+        telegraph_lava_attack_blink_num = 0;
+        do_telegraph_lava_show = false;      
+    }
     
     on_step = function() {
 
@@ -63,8 +91,9 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
                     boss_lava_pool.damage_player = true;    // Damage the player
                     boss_lava_pool.creator = entity;        // Set boss as creator
                     
-                    // Make boss lava pools more threatening
-                    boss_lava_pool.damage_per_tick = 3;     // Higher damage
+                    // Make boss lava pools more threatening // Higher damage
+                    // UPDATE NOTE: Made it lower damage cuz player dies way too quickly
+                    boss_lava_pool.damage_per_tick = 1;     
                     boss_lava_pool.life_timer = game_get_speed(gamespeed_fps) * 12; // Last longer
                     
                     // Visual differentiation - make boss lava pools red-tinted
@@ -84,7 +113,7 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
                 telegraph_lava_attack_blink_num = 0;
                 do_telegraph_lava_show = false;
                 
-            } else if (lava_spawn_x != -1 and lava_spawn_y != -1) {
+            } else if (lava_spawn_x != -1 && lava_spawn_y != -1) {
                 // Continue telegraphing
                 telegraph_lava_attack_blink_cd--;
                 if (telegraph_lava_attack_blink_cd <= 0) {
@@ -97,7 +126,8 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
             }
         }
     
-        if (entity.hp <= 30) {
+        if ((!is_second_round && entity.hp <= 30) || (entity.hp <= 10)) {
+            is_second_round = true;
             entity.changeState(STATES.CHASE);
         }
     }
@@ -112,18 +142,39 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
 function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : State(_entity, _duration, _is_timed) constructor {
     path_reset_timer = 30; // This is a separate timer for pathfinding
     path_remaining_time = path_reset_timer;
-    g_steam = new GourdSteam(2);
     
     steam_attack_freq = 4 * game_get_speed(gamespeed_fps); // 4 seconds
     steam_attack_cd_timer = 0;
     
-    air_lunge_freq = 8 * game_get_speed(gamespeed_fps); // 8 seconds  
+    air_lunge_freq = 5 * game_get_speed(gamespeed_fps); // 8 seconds  
     air_lunge_cd_timer = 0;
+    
+    nearby_centre_radius = 20;
+    runaway_speed = 3;
+    chase_speed = 2.7;
+    
+    // SECOND ROUND OF PHASE 1
+    is_second_round = false;
+    
+    on_enter = function() {
+        chase_speed = instance_exists(obj_player) ? obj_player.move_speed_ups * (3/4) : chase_speed;
+    }
     
     on_step = function() {
 
         if !instance_exists(obj_player) {
             exit;
+        }
+        
+        if (!is_second_round && entity.hp <= 20) {
+            entity.move_speed_ups = runaway_speed;
+            set_path(entity, obj_final_boss_centre.x, obj_final_boss_centre.y);
+            if (point_distance(entity.x, entity.y, obj_final_boss_centre.x, obj_final_boss_centre.y) <= nearby_centre_radius) {
+                is_second_round = true;
+                entity.changeState(STATES.ATTACK);
+                exit;
+            }
+            
         }
         
         path_remaining_time -= 1;
@@ -139,7 +190,8 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
         }
         
         if (steam_attack_cd_timer <= 0) {
-            g_steam.use(entity);
+            var steam = instance_create_layer(entity.x, entity.y, "Instances", obj_steam);
+            steam.owner = entity;
             steam_attack_cd_timer = steam_attack_freq;
         }
         
@@ -149,12 +201,56 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
             air_lunge_cd_timer = air_lunge_freq;
         }
         
-        if (entity.hp <= 20) {
-            entity.changeState(STATES.ATTACK);
-        }
+
     }
 }
 
-function shoot_fireball(entity) {
+function create_mud_hazard(num_hazards, _is_permanent) {
+    // Borrowed from Level Manager code. Thanks!
+    // Get all spawn points in the room
+    var spawn_points = [];
+    
+    with (obj_env_hazard_spawn) {
+        array_push(spawn_points, id);
+    }
+    
+    var spawn_points_len = array_length(spawn_points)
+    if (num_hazards >= spawn_points_len) {
+        show_debug_message("Trying to spawn more Hazards than spawn points available! :<")
+        num_hazards = spawn_points_len
+    }
+    
+    spawn_points = array_shuffle(spawn_points, _is_permanent = true);
+    
+    for (var i = 0; i < num_hazards; i+= 1) {
+        var spawn_point = spawn_points[i]
+        var mud = instance_create_layer(spawn_point.x, spawn_point.y, "Instances", obj_mud_pool);
+        mud.affect_player = true; 
+        mud.is_forever = _is_permanent;
+        // Visual differentiation - make boss lava pools red-tinted
+        mud.image_blend = make_color_rgb(255, 150, 150);
+    }
+}
 
+function spawn_more_enemies() {
+    var spawn_points = [];
+    nearby_centre_radius = 20;
+    
+    with (obj_enemy_conditional_spawn_point) {
+        array_push(spawn_points, id);
+    }
+    var spawn_points_len = array_length(spawn_points)
+    for (var i = 0; i < spawn_points_len; i+= 1) {
+        var spawn_point = spawn_points[i]
+        
+        var inst = collision_circle(spawn_point.x, spawn_point.y, 30, obj_enemy_abstract, false, true);
+        if (inst == noone) { 
+            // Spawn enemy at spawn point
+            var enemy = instance_create_depth(spawn_point.x, spawn_point.y, 0, spawn_point.enemy_to_spawn);
+            //TODO: REMIND ME TO CHANGE THIS
+            enemy.curr_state = enemy.states_array[STATES.ROAM];
+            enemy.curr_state.enter();
+        }
+
+    }
 }

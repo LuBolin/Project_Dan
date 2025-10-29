@@ -36,7 +36,7 @@ if (tick_counter >= tick_rate) {
     if (damage_enemies) {
         // Find all enemies overlapping with lava pool
         with (obj_enemy_abstract) {
-            if (place_meeting(x, y, obj_enemy_abstract)) {
+            if (place_meeting(x, y, other)) {
                 array_push(entities_to_check, id);
             }
         }

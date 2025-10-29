@@ -27,6 +27,9 @@ tick_counter = 0;
 // Track which enemies have been hit recently to prevent instant re-hits
 hit_cooldown_map = ds_map_create(); // enemy_id -> last_hit_time
 
+// Damage target configuration (like lava_pool)
+damage_enemies = true;  // Default: damage enemies (when created by player)
+
 // Set depth so it renders above ground but below player/enemies
 depth = 100;
 

@@ -268,7 +268,11 @@ function ProjectileLava() constructor {
                 projectile_inst.speed = 0; // Stop moving
                 // Spawn lava pool at target location
                 projectile_inst.spawned_pool = true;
-                instance_create_layer(projectile_inst.target_x, projectile_inst.target_y, "Instances", obj_lava_pool);
+                var lava = instance_create_layer(projectile_inst.target_x, projectile_inst.target_y, "Instances", obj_lava_pool);
+                if (instance_exists(lava) && projectile_inst.creator == obj_player) {
+                    lava.damage_enemies = true;
+                    lava.damage_player = false;
+                }
                 instance_destroy(projectile_inst);
             } else {
                 // Adjust direction towards target with smooth homing
@@ -294,28 +298,40 @@ function ProjectileLava() constructor {
         // Apply damage and knockback
         damage_entity(target, projectile_inst.damage);
         apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
-        
+
         // Mark that we're spawning a pool
         projectile_inst.spawned_pool = true;
-        
+
         // Spawn lava pool at impact location
-        instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+        var lava = instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+        if (instance_exists(lava) && projectile_inst.creator == obj_player) {
+            lava.damage_enemies = true;
+            lava.damage_player = false;
+        }
         instance_destroy(projectile_inst);
     }
 
     on_wall_hit = function(projectile_inst) {
         // Mark that we're spawning a pool
         projectile_inst.spawned_pool = true;
-        
+
         // Spawn lava pool at wall impact location
-        instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+        var lava = instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+        if (instance_exists(lava) && projectile_inst.creator == obj_player) {
+            lava.damage_enemies = true;
+            lava.damage_player = false;
+        }
         instance_destroy(projectile_inst);
     }
 
     on_destroy = function(projectile_inst) {
         // Only spawn pool if we haven't already spawned one (from hit or wall)
         if (instance_exists(projectile_inst) && !variable_instance_exists(projectile_inst, "spawned_pool")) {
-            instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+            var lava = instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+            if (instance_exists(lava) && projectile_inst.creator == obj_player) {
+                lava.damage_enemies = true;
+                lava.damage_player = false;
+            }
         }
     }
 }
@@ -551,36 +567,36 @@ function ProjectileEruption() constructor {
         // Apply damage and knockback
         damage_entity(target, projectile_inst.damage);
         apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
-        
+
         // Mark that we're spawning pools
         projectile_inst.spawned_pool = true;
-        
+
         // Trigger eruption at impact location
-        trigger_eruption(projectile_inst.x, projectile_inst.y);
+        trigger_eruption(projectile_inst.x, projectile_inst.y, projectile_inst.creator);
         instance_destroy(projectile_inst);
     }
 
     on_wall_hit = function(projectile_inst) {
         // Mark that we're spawning pools
         projectile_inst.spawned_pool = true;
-        
+
         // Trigger eruption at wall impact location
-        trigger_eruption(projectile_inst.x, projectile_inst.y);
+        trigger_eruption(projectile_inst.x, projectile_inst.y, projectile_inst.creator);
         instance_destroy(projectile_inst);
     }
 
     on_destroy = function(projectile_inst) {
         // Only spawn eruption if we haven't already spawned one (from hit or wall)
         if (instance_exists(projectile_inst) && !variable_instance_exists(projectile_inst, "spawned_pool")) {
-            trigger_eruption(projectile_inst.x, projectile_inst.y);
+            trigger_eruption(projectile_inst.x, projectile_inst.y, projectile_inst.creator);
         }
     }
 
     // Helper function to create the eruption pattern
-    trigger_eruption = function(center_x, center_y) {
+    trigger_eruption = function(center_x, center_y, creator) {
         // Spawn center lava pool immediately
         var center_pool = instance_create_layer(center_x, center_y, "Instances", obj_lava_pool);
-        
+
         // Make center pool slightly more powerful AND bigger
         if (instance_exists(center_pool)) {
             center_pool.damage_per_tick = 3; // 50% higher damage than lava
@@ -588,6 +604,11 @@ function ProjectileEruption() constructor {
             // Make center pool bigger
             center_pool.image_xscale = 1.5;
             center_pool.image_yscale = 1.5;
+            // Set damage flags if created by player
+            if (creator == obj_player) {
+                center_pool.damage_enemies = true;
+                center_pool.damage_player = false;
+            }
         }
         
         // Create eruption controller to spawn secondary pools with delays
@@ -596,7 +617,7 @@ function ProjectileEruption() constructor {
             eruption_controller.sprite_index = -1; // Invisible
             eruption_controller.speed = 0;
             eruption_controller.life_steps = num_secondary_pools * 3 + 10; // Live long enough to spawn all pools
-            
+
             // Store eruption data
             eruption_controller.proj_data = {
                 center_x: center_x,
@@ -605,6 +626,7 @@ function ProjectileEruption() constructor {
                 spawn_timer: 0,
                 explosion_radius: explosion_radius,
                 num_secondary_pools: num_secondary_pools,
+                creator: creator,
                 
                 on_step: function(projectile_inst) {
                     self.spawn_timer++;
@@ -626,6 +648,11 @@ function ProjectileEruption() constructor {
                                 // Make secondary pools smaller
                                 secondary_pool.image_xscale = 0.8;
                                 secondary_pool.image_yscale = 0.8;
+                                // Set damage flags if created by player
+                                if (self.creator == obj_player) {
+                                    secondary_pool.damage_enemies = true;
+                                    secondary_pool.damage_player = false;
+                                }
                             }
                         }
 

@@ -255,3 +255,11 @@ show_debug_message("Final new_element: " + (is_struct(new_element) ? new_element
 
 // Glow animation for Elixir
 elixir_glow_timer = 0;
+
+// ===== Pause button config =====
+pause_button_width = 120;
+pause_button_height = 40;
+pause_button_x = gui_width - pause_button_width - 16;
+pause_button_y = 16;
+pause_button_hovered = false;
+pause_button_text = "Esc: Pause";

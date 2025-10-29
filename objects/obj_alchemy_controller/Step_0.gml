@@ -3,6 +3,22 @@
 var mx = device_mouse_x_to_gui(0);
 var my = device_mouse_y_to_gui(0);
 
+// === PAUSE BUTTON INTERACTION ===
+// Check if mouse is hovering over button
+pause_button_hovered = point_in_rectangle(mx, my, pause_button_x, pause_button_y,
+                                          pause_button_x + pause_button_width,
+                                          pause_button_y + pause_button_height);
+
+// Check for click on pause button
+if (pause_button_hovered && mouse_check_button_pressed(mb_left)) {
+    // Trigger pause (same as pressing Escape)
+    if (instance_exists(obj_pause_menu)) {
+        with (obj_pause_menu) {
+            event_perform(ev_keypress, vk_escape);
+        }
+    }
+}
+
 // === HELPER FUNCTION: Try to craft from equation inputs ===
 function try_craft_equation(eq_index) {
     var eq = equations[eq_index];

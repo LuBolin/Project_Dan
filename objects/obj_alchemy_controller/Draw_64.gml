@@ -1,5 +1,34 @@
 /// Alchemy Controller - Draw GUI
 
+// === DRAW PAUSE BUTTON ===
+// Position button in top-right corner
+var btn_x = pause_button_x;
+var btn_y = pause_button_y;
+
+// Button colors
+var btn_bg_color = pause_button_hovered ? make_color_rgb(80, 60, 50) : make_color_rgb(50, 40, 30);
+var btn_border_color = make_color_rgb(150, 120, 90);
+var btn_text_color = c_white;
+
+// Draw button background
+draw_set_alpha(0.8);
+draw_set_color(btn_bg_color);
+draw_rectangle(btn_x, btn_y, btn_x + pause_button_width, btn_y + pause_button_height, false);
+
+// Draw button border
+draw_set_alpha(1);
+draw_set_color(btn_border_color);
+draw_rectangle(btn_x, btn_y, btn_x + pause_button_width, btn_y + pause_button_height, true);
+
+// Draw button text
+draw_set_color(btn_text_color);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+draw_text(btn_x + pause_button_width / 2, btn_y + pause_button_height / 2, pause_button_text);
+
+// Reset draw settings
+draw_set_alpha(1);
+
 // Helper function to draw text with black outline
 function draw_text_outlined(_x, _y, _text) {
     // Draw black outline

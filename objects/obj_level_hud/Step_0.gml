@@ -1,3 +1,28 @@
+// ======== PAUSE BUTTON INTERACTION ========
+// Only in non-menu rooms
+if (room != MainMenu) {
+    var gui_w = display_get_gui_width();
+    var mx = device_mouse_x_to_gui(0);
+    var my = device_mouse_y_to_gui(0);
+
+    // Calculate button position (same as in Draw event)
+    var btn_x = gui_w - pause_button_width - 16;
+    var btn_y = pause_button_y;
+
+    // Check if mouse is hovering over button
+    pause_button_hovered = point_in_rectangle(mx, my, btn_x, btn_y, btn_x + pause_button_width, btn_y + pause_button_height);
+
+    // Check for click on pause button
+    if (pause_button_hovered && mouse_check_button_pressed(mb_left)) {
+        // Trigger pause (same as pressing Escape)
+        if (instance_exists(obj_pause_menu)) {
+            with (obj_pause_menu) {
+                event_perform(ev_keypress, vk_escape);
+            }
+        }
+    }
+}
+
 // get player safely
 if (is_undefined(global.player) || !instance_exists(global.player)) exit;
 

@@ -85,7 +85,7 @@ volume_slider_y = volume_label_y; // Same vertical position as label
 
 // Initialize global volume if not already set
 if (!variable_global_exists("master_volume")) {
-    global.master_volume = 0.5; // 50%
+    global.master_volume = 0.25; // 25%
 }
 
 // Instructions text (placeholder, can be changed per room)

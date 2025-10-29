@@ -1,3 +1,41 @@
+// ======== PAUSE BUTTON ========
+// Get GUI dimensions first
+var gui_w = display_get_gui_width();
+var gui_h = display_get_gui_height();
+
+// Only show in non-menu rooms
+if (room != MainMenu) {
+    // Position button in top-right corner
+    var btn_x = gui_w - pause_button_width - 16;
+    var btn_y = pause_button_y;
+
+    // Button colors
+    var btn_bg_color = pause_button_hovered ? make_color_rgb(80, 60, 50) : make_color_rgb(50, 40, 30);
+    var btn_border_color = make_color_rgb(150, 120, 90);
+    var btn_text_color = c_white;
+
+    // Draw button background
+    draw_set_alpha(0.8);
+    draw_set_color(btn_bg_color);
+    draw_rectangle(btn_x, btn_y, btn_x + pause_button_width, btn_y + pause_button_height, false);
+
+    // Draw button border
+    draw_set_alpha(1);
+    draw_set_color(btn_border_color);
+    draw_rectangle(btn_x, btn_y, btn_x + pause_button_width, btn_y + pause_button_height, true);
+
+    // Draw button text
+    draw_set_color(btn_text_color);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(btn_x + pause_button_width / 2, btn_y + pause_button_height / 2, pause_button_text);
+
+    // Reset draw settings
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_alpha(1);
+}
+
 // ======== HEALTH BAR (your original, unchanged except organized) ========
 if (!instance_exists(global.player)) exit;
 var p = global.player;
@@ -8,10 +46,6 @@ if (!variable_instance_exists(p, "hp") || !variable_instance_exists(p, "max_hp")
 var hp     = p.hp;
 var hp_max = max(1, p.max_hp);
 var ratio  = clamp(hp / hp_max, 0, 1);
-
-// GUI size
-var gui_w = display_get_gui_width();
-var gui_h = display_get_gui_height();
 
 // health bar size & pos
 var bar_w = gui_w * 0.20;   // 20% width

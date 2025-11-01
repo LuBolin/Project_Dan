@@ -434,16 +434,101 @@ for (var i = 0; i < array_length(element_names); i++) {
 
 
 // === DRAW CONTINUE BUTTON ===
-draw_set_color(button_hover ? col_button_hover : col_button);
-draw_rectangle(button_x, button_y, button_x + button_w, button_y + button_h, false);
+// Only show if popup is not displayed
+if (!show_confirmation_popup) {
+    draw_set_color(button_hover ? col_button_hover : col_button);
+    draw_rectangle(button_x, button_y, button_x + button_w, button_y + button_h, false);
 
-draw_set_color(col_border);
-draw_rectangle(button_x, button_y, button_x + button_w, button_y + button_h, true);
+    draw_set_color(col_border);
+    draw_rectangle(button_x, button_y, button_x + button_w, button_y + button_h, true);
 
-draw_set_color(col_text);
-draw_set_halign(fa_center);
-draw_set_valign(fa_middle);
-draw_text(button_x + button_w / 2, button_y + button_h / 2, "Continue to Next Level");
+    draw_set_color(col_text);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(button_x + button_w / 2, button_y + button_h / 2, "Continue to Next Level");
+}
+
+// === DRAW CONFIRMATION POPUP ===
+if (show_confirmation_popup) {
+    // Draw overlay background
+    draw_set_alpha(0.7);
+    draw_set_color(c_black);
+    draw_rectangle(0, 0, gui_width, gui_height, false);
+    draw_set_alpha(1);
+    
+    // Draw popup background
+    draw_set_color(col_bg);
+    draw_rectangle(popup_x, popup_y, popup_x + popup_width, popup_y + popup_height, false);
+    
+    // Draw popup border
+    draw_set_color(col_border);
+    draw_rectangle(popup_x, popup_y, popup_x + popup_width, popup_y + popup_height, true);
+    
+    // Draw title
+    draw_set_color(col_text);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_top);
+    draw_text_transformed(popup_x + popup_width / 2, popup_y + 20, "Confirm Next Level", 1.2, 1.2, 0);
+    
+    // Draw confirmation message
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    var message_y = popup_y + 80;
+    var line_height = 25;
+    
+    draw_text(popup_x + popup_width / 2, message_y, "Are you sure you want to proceed to the next level");
+    draw_text(popup_x + popup_width / 2, message_y + line_height, "with these elements?");
+    
+    // Draw current equipped elements
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_top);
+    var elements_y = message_y + line_height * 2 + 20;
+    
+    draw_set_color(make_color_rgb(255, 215, 150));
+    draw_text(popup_x + popup_width / 2, elements_y, "Current Inventory:");
+    
+    // Draw element names
+    var element_text = "";
+    for (var i = 0; i < 3; i++) {
+        if (i > 0) element_text += ", ";
+        element_text += equipped_gourds[i].name;
+    }
+    
+    draw_set_color(col_text);
+    draw_text_ext(popup_x + popup_width / 2, elements_y + 25, element_text, line_height, popup_width - 40);
+    
+    // Draw reminder text
+    draw_set_color(make_color_rgb(255, 200, 200));
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_bottom);
+    draw_text_ext(popup_x + popup_width / 2, popup_buttons_y - 10, 
+                  "Remember to equip any newly discovered elements!", 
+                  line_height, popup_width - 40);
+    
+    // Draw OK button
+    var ok_color = popup_ok_hover ? col_button_hover : col_button;
+    draw_set_color(ok_color);
+    draw_rectangle(popup_ok_x, popup_ok_y, popup_ok_x + popup_button_width, popup_ok_y + popup_button_height, false);
+    draw_set_color(col_border);
+    draw_rectangle(popup_ok_x, popup_ok_y, popup_ok_x + popup_button_width, popup_ok_y + popup_button_height, true);
+    
+    draw_set_color(col_text);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(popup_ok_x + popup_button_width / 2, popup_ok_y + popup_button_height / 2, "OK");
+    
+    // Draw Cancel button
+    var cancel_color = popup_cancel_hover ? col_button_hover : col_button;
+    draw_set_color(cancel_color);
+    draw_rectangle(popup_cancel_x, popup_cancel_y, popup_cancel_x + popup_button_width, popup_cancel_y + popup_button_height, false);
+    draw_set_color(col_border);
+    draw_rectangle(popup_cancel_x, popup_cancel_y, popup_cancel_x + popup_button_width, popup_cancel_y + popup_button_height, true);
+    
+    draw_set_color(col_text);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(popup_cancel_x + popup_button_width / 2, popup_cancel_y + popup_button_height / 2, "Cancel");
+}
 
 // === RESET DRAW SETTINGS ===
 draw_set_halign(fa_left);

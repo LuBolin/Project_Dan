@@ -248,27 +248,61 @@ if (craft_feedback_timer > 0) {
 }
 
 // === CONTINUE BUTTON ===
-// Check hover state
-button_hover = point_in_rectangle(mx, my, button_x, button_y, button_x + button_w, button_y + button_h);
+// Check hover state (only if popup is not shown)
+if (!show_confirmation_popup) {
+    button_hover = point_in_rectangle(mx, my, button_x, button_y, button_x + button_w, button_y + button_h);
 
-// Check click
-if (button_hover && mouse_check_button_pressed(mb_left)) {
-    // Reactivate player
-    instance_activate_object(obj_player);
+    // Check click
+    if (button_hover && mouse_check_button_pressed(mb_left)) {
+        // Show confirmation popup instead of immediately proceeding
+        show_confirmation_popup = true;
+        mouse_clear(mb_left); // Clear click to prevent accidental interactions
+    }
+}
 
-    // Update player's inventory
-    if (instance_exists(obj_player)) {
-        obj_player.inv[0] = equipped_gourds[0];
-        obj_player.inv[1] = equipped_gourds[1];
-        obj_player.inv[2] = equipped_gourds[2];
-        obj_player.equipped_element = obj_player.inv[obj_player.sel_slot];
+// === CONFIRMATION POPUP LOGIC ===
+if (show_confirmation_popup) {
+    // Check button hover states
+    popup_ok_hover = point_in_rectangle(mx, my, popup_ok_x, popup_ok_y, 
+                                       popup_ok_x + popup_button_width, popup_ok_y + popup_button_height);
+    popup_cancel_hover = point_in_rectangle(mx, my, popup_cancel_x, popup_cancel_y, 
+                                           popup_cancel_x + popup_button_width, popup_cancel_y + popup_button_height);
+
+    // Handle OK button click
+    if (popup_ok_hover && mouse_check_button_pressed(mb_left)) {
+        // Proceed to next level (original continue button logic)
+        show_confirmation_popup = false;
+        
+        // Reactivate player
+        instance_activate_object(obj_player);
+
+        // Update player's inventory
+        if (instance_exists(obj_player)) {
+            obj_player.inv[0] = equipped_gourds[0];
+            obj_player.inv[1] = equipped_gourds[1];
+            obj_player.inv[2] = equipped_gourds[2];
+            obj_player.equipped_element = obj_player.inv[obj_player.sel_slot];
+        }
+
+        // Clear mouse button state to prevent click carrying over to next room
+        io_clear();
+
+        // Advance to next level or return to menu
+        advance_level_progress();
     }
 
-    // Clear mouse button state to prevent click carrying over to next room
-    io_clear();
+    // Handle Cancel button click
+    if (popup_cancel_hover && mouse_check_button_pressed(mb_left)) {
+        // Close popup and return to alchemy screen
+        show_confirmation_popup = false;
+        mouse_clear(mb_left);
+    }
 
-    // Advance to next level or return to menu
-    advance_level_progress();
+    // Handle Escape key to cancel
+    if (keyboard_check_pressed(vk_escape)) {
+        show_confirmation_popup = false;
+        keyboard_clear(vk_escape);
+    }
 }
 
 // === ELIXIR GLOW ANIMATION ===

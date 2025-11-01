@@ -116,6 +116,33 @@ button_x = gui_width - button_w - 40;
 button_y = gui_height - button_h - 40;
 button_hover = false;
 
+// === CONFIRMATION POPUP ===
+show_confirmation_popup = false;
+popup_width = 500;
+popup_height = 300;
+popup_x = (gui_width - popup_width) / 2;
+popup_y = (gui_height - popup_height) / 2;
+
+// Popup buttons
+popup_button_width = 120;
+popup_button_height = 40;
+popup_button_spacing = 20;
+
+// Calculate button positions centered in popup
+popup_buttons_total_width = (popup_button_width * 2) + popup_button_spacing;
+popup_buttons_start_x = popup_x + (popup_width - popup_buttons_total_width) / 2;
+popup_buttons_y = popup_y + popup_height - 70;
+
+// OK button (left)
+popup_ok_x = popup_buttons_start_x;
+popup_ok_y = popup_buttons_y;
+popup_ok_hover = false;
+
+// Cancel button (right)
+popup_cancel_x = popup_buttons_start_x + popup_button_width + popup_button_spacing;
+popup_cancel_y = popup_buttons_y;
+popup_cancel_hover = false;
+
 // === CRAFT FEEDBACK ===
 craft_feedback = "none"; // "none", "success", "fail"
 craft_feedback_timer = 0;

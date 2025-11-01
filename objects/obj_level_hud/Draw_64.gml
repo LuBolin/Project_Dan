@@ -252,3 +252,79 @@ var sel_name = (is_struct(sel_g) && !is_undefined(sel_g.name)) ? sel_g.name : "E
 draw_set_color(col_text);
 //draw_text(ui_x + ring_R + 16, ui_y - 6, sel_name);
 draw_text(ui_x - 15 , ui_y + 100, sel_name);
+
+// ======== BOSS HEALTH BAR ========
+// Check if final boss exists and display boss health bar
+if (instance_exists(obj_final_boss)) {
+    var boss = instance_find(obj_final_boss, 0);
+    
+    // Boss health bar dimensions and position (GUI coordinates)
+    var boss_bar_width = gui_w * 0.5;  // 50% of screen width
+    var boss_bar_height = 20;          // Taller than player health bar
+    var boss_bar_x = (gui_w - boss_bar_width) / 2 + 40;  // shifted right a bit to avoid player ui
+    var boss_bar_y = 75;               // Near top of screen a little lower than player health bar
+    
+    // Portrait dimensions
+    var portrait_size = 50;            // Square portrait
+    var portrait_x = boss_bar_x - portrait_size - 10;  // Left of health bar
+    var portrait_y = boss_bar_y - (portrait_size - boss_bar_height) / 2;  // Vertically centered with bar
+    
+    // Boss health calculation
+    var boss_hp = max(0, boss.hp);
+    var boss_max_hp = max(1, boss.max_hp);
+    var boss_ratio = clamp(boss_hp / boss_max_hp, 0, 1);
+    
+    // Colors for boss health bar
+    var boss_bg_color = make_color_rgb(20, 20, 20);
+    var boss_fill_color = make_color_rgb(180, 30, 30);  // Dark red
+    var boss_border_color = make_color_rgb(200, 200, 200);
+    
+    // Draw boss portrait background
+    draw_set_color(make_color_rgb(40, 40, 50));
+    draw_rectangle(portrait_x, portrait_y, portrait_x + portrait_size, portrait_y + portrait_size, false);
+    
+    // Draw boss portrait border
+    draw_set_color(boss_border_color);
+    draw_rectangle(portrait_x, portrait_y, portrait_x + portrait_size, portrait_y + portrait_size, true);
+    
+    // Draw boss sprite as portrait (scaled to fit)
+    if (sprite_exists(boss.sprite_index)) {
+        var sprite_w = sprite_get_width(boss.sprite_index);
+        var sprite_h = sprite_get_height(boss.sprite_index);
+        var scale = min(portrait_size / sprite_w, portrait_size / sprite_h) * 0.8;  // 80% to leave padding
+        
+        draw_sprite_ext(boss.sprite_index, 0, 
+                       portrait_x + portrait_size / 2, 
+                       portrait_y + portrait_size / 2, 
+                       scale, scale, 0, c_white, 1);
+    }
+    
+    // Draw boss health bar background
+    draw_set_color(boss_bg_color);
+    draw_rectangle(boss_bar_x, boss_bar_y, boss_bar_x + boss_bar_width, boss_bar_y + boss_bar_height, false);
+    
+    // Draw boss health bar fill
+    draw_set_color(boss_fill_color);
+    draw_rectangle(boss_bar_x, boss_bar_y, boss_bar_x + (boss_bar_width * boss_ratio), boss_bar_y + boss_bar_height, false);
+    
+    // Draw boss health bar border
+    draw_set_color(boss_border_color);
+    draw_rectangle(boss_bar_x, boss_bar_y, boss_bar_x + boss_bar_width, boss_bar_y + boss_bar_height, true);
+    
+    // Draw boss name and health text
+    draw_set_color(c_white);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    
+    // Boss name above the bar
+    draw_text_transformed(boss_bar_x + boss_bar_width / 2, boss_bar_y - 15, "FINAL BOSS", 1.0, 1.0, 0);
+    
+    // Health numbers on the bar
+    var health_text = string(boss_hp) + " / " + string(boss_max_hp);
+    draw_text(boss_bar_x + boss_bar_width / 2, boss_bar_y + boss_bar_height / 2, health_text);
+    
+    // Reset draw settings
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_color(c_white);
+}

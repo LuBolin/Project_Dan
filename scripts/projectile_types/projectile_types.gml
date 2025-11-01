@@ -233,7 +233,7 @@ function ProjectileLava() constructor {
     damage      = 1;
     life_steps  = game_get_speed(gamespeed_fps) * 2.0; // 2 second max flight time
     kb_speed = 3;  // pixels per frame
-    kb_distance = 30; // knockback distance
+    kb_distance = 20; // knockback distance
     sprite_index = spr_lava_ball;
     scale = 0.4;
     sfx_fire = undefined;
@@ -346,7 +346,7 @@ function ProjectileSteam() constructor {
 function ProjectileMudBall() constructor {
 	name = "Mud Ball";
 	speed       = 7.5;  // units per second (480 / 64)
-	damage      = 0;
+	damage      = 1;
 	life_steps  = game_get_speed(gamespeed_fps) * 1.2;
 	kb_speed = 2;  // pixels per frame (knockback still frame-based)
 	kb_distance = 40;
@@ -502,7 +502,7 @@ function ProjectileEruption() constructor {
     damage      = 1.5;    // 50% higher damage than regular lava
     life_steps  = game_get_speed(gamespeed_fps) * 2.5; // 2.5 second max flight time
     kb_speed = 4;  // pixels per frame
-    kb_distance = 30; // Same knockback than lava
+    kb_distance = 20; // Same knockback than lava
     sprite_index = spr_lava_ball; // Reuse lava ball sprite
     scale = 0.8; // Slightly larger than regular lava
     sfx_fire = undefined;

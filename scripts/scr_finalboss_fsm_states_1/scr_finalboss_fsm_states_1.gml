@@ -5,7 +5,7 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
     id = STATES.ATTACK;
     
     // FIREBALL
-    fireball_attack_freq = 1.67 * game_get_speed(gamespeed_fps); // 1.67 seconds
+    fireball_attack_freq = 1.5 * game_get_speed(gamespeed_fps); // 1.5 seconds
     fireball_attack_cd_timer = 0;
     
     // LAVA
@@ -65,8 +65,12 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
             lava_attack_cd_timer--;
         }
         
+		var boss_fire_ball = new ProjectileFire();
+		boss_fire_ball.speed = 6.0; // half speed
+		boss_fire_ball.scale = 1.5; // 1.5 size
+		
         if (fireball_attack_cd_timer <= 0 and _sight_line == noone) {
-            spawn_and_set_projectile(entity, new ProjectileFire(), obj_player.x, obj_player.y, obj_enemy_projectile);
+            spawn_and_set_projectile(entity, boss_fire_ball, obj_player.x, obj_player.y, obj_enemy_projectile);
             fireball_attack_cd_timer = fireball_attack_freq;
         }
         

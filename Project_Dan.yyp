@@ -75,7 +75,6 @@
     {"id":{"name":"obj_fox","path":"objects/obj_fox/obj_fox.yy",},},
     {"id":{"name":"obj_game_controller","path":"objects/obj_game_controller/obj_game_controller.yy",},},
     {"id":{"name":"obj_ghost","path":"objects/obj_ghost/obj_ghost.yy",},},
-    {"id":{"name":"obj_health_shader","path":"objects/obj_health_shader/obj_health_shader.yy",},},
     {"id":{"name":"obj_instructions_overlay","path":"objects/obj_instructions_overlay/obj_instructions_overlay.yy",},},
     {"id":{"name":"obj_lava_pool","path":"objects/obj_lava_pool/obj_lava_pool.yy",},},
     {"id":{"name":"obj_level_hud","path":"objects/obj_level_hud/obj_level_hud.yy",},},

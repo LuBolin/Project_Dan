@@ -87,3 +87,51 @@ col_title = make_color_rgb(255, 215, 150);
 
 // Hover state
 hovered_button = -1;
+
+// Check if this is the first launch (splash screen only on first launch)
+if (!variable_global_exists("game_launched")) {
+    global.game_launched = false;
+}
+
+// Title position animation
+title_y_target = gui_height * 0.2; // Final position (top)
+title_y_center = gui_height * 0.5; // Center position for splash
+
+// Determine if this is first launch or re-entrance
+var is_first_launch = !global.game_launched;
+
+// Always show splash animation
+show_buttons = false;
+
+// Fade effect for title
+title_alpha = 0;
+title_fade_speed = 0.01;
+
+// Title starts at center during splash
+title_y_current = title_y_center;
+
+// Button fade-in effect
+buttons_alpha = 0;
+
+if (is_first_launch) {
+    // First launch: Show "Press Space" prompt, wait for user input
+    global.game_launched = true; // Mark as launched
+
+    // Fade effect for prompt (slower fade)
+    prompt_alpha = 0;
+    prompt_fade_direction = 1; // 1 = fading in, -1 = fading out
+    prompt_fade_speed = 0.005;
+
+    // Animation state
+    transitioning = false; // Will be true when space is pressed
+    auto_transition = false; // Manual transition
+    auto_transition_delay = 0;
+} else {
+    // Re-entrance: No prompt, immediate auto-transition
+    prompt_alpha = 0; // Don't show prompt
+
+    // Animation state
+    transitioning = true; // Start immediately
+    auto_transition = true; // Auto transition enabled
+    auto_transition_delay = 0; // No delay
+}

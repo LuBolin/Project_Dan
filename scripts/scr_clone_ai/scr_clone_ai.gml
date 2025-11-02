@@ -167,7 +167,7 @@ function clone_ai_attack_target(clone_instance) {
                     
                 default:
                     // Regular projectile elements
-                    if (variable_struct_exists(usable_element, "projectile") && usable_element.projectile != undefined) {
+                    if (is_struct(usable_element) && variable_struct_exists(usable_element, "projectile") && usable_element.projectile != undefined) {
                         var target_x = clone_instance.target_enemy.x;
                         var target_y = clone_instance.target_enemy.y;
                         spawn_and_set_projectile(clone_instance, new usable_element.projectile(), target_x, target_y);

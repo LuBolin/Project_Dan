@@ -69,7 +69,7 @@ if (tick_counter >= tick_rate) {
             add_status_effect(entity, new BurnEffect(burn_duration, burn_damage));
             
             // Add "Burning" status text if entity supports it
-            if (variable_instance_exists(entity, "status_texts")) {
+            if (variable_instance_exists(entity, "status_texts") && is_array(entity.status_texts)) {
                 if (array_get_index(entity.status_texts, "Burning") == -1) {
                     array_push(entity.status_texts, "Burning");
                 }

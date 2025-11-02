@@ -540,7 +540,7 @@ function ProjectileEruption() constructor {
                 projectile_inst.homing_enabled = false;
                 projectile_inst.speed = 0; // Stop moving
                 // Trigger eruption at target location
-                trigger_eruption(projectile_inst.target_x, projectile_inst.target_y);
+                trigger_eruption(projectile_inst.target_x, projectile_inst.target_y, projectile_inst.creator);
                 projectile_inst.spawned_pool = true;
                 instance_destroy(projectile_inst);
             } else {

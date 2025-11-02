@@ -6,9 +6,9 @@ if (!is_paused || room == MainMenu) exit;
 // Update instructions based on current room
 var current_instructions = "";
 if (room == AlchemyRoom) {
-    current_instructions = @"Drag elements from your inventory into the crafting area to synthesize!
+    current_instructions = @"Drag elements from your inventory or new elements into the crafting area to synthesize!
     
-Drag synthesized elements from the crafting area to your inventory to use them in combat
+Drag synthesized elements from the crafting area to your inventory or new elements to use them in combat
     
 You can only carry at most only 3 elements inventory.";
 } else if (room == Level0) {

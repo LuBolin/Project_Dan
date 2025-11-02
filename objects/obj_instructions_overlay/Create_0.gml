@@ -35,8 +35,8 @@ Left Click - Activate active element
 Q/E or Mouse Wheel - Cycle active element
 
 Alchemy Phase:
-Drag elements from your inventory into the crafting area to synthesize!
-Drag synthesized elements from the crafting area to your inventory to use them in combat
+Drag elements from your inventory or new elements into the crafting area to synthesize!
+Drag synthesized elements from the crafting area or new elements to your inventory to use them in combat
 You can only carry at most only 3 elements inventory.
 
 

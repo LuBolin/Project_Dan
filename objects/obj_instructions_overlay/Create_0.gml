@@ -25,23 +25,25 @@ col_title = make_color_rgb(255, 215, 150);
 col_close_normal = make_color_rgb(80, 50, 40);
 col_close_hover = make_color_rgb(120, 80, 60);
 
-// Instructions content
-instructions_text = @"How to Play:
+// Instructions content - organized into sections
+overarching_text = @"Venture through dungeons and biomes, surviving waves of enemies.
+Discover new elements along the way and synthesize higher tier elements.
+Is the Elixir real, or is it just a myth?";
 
-Dungeon Phase:
-WASD - Move your character
+exploration_text = @"WASD - Move your character
 Mouse - Aim
 Left Click - Activate active element
 Q/E or Mouse Wheel - Cycle active element
 
-Alchemy Phase:
-Drag elements from your inventory or new elements into the crafting area to synthesize!
-Drag synthesized elements from the crafting area or new elements to your inventory to use them in combat
-You can only carry at most only 3 elements inventory.
+Defeat enemies to gather their Chi
+Unlock the door to access Alchemy Room";
 
+alchemy_text = @"Drag synthesized element and
+new element into inventory to equip and
+swap with equipped element
 
-Venture through dungeons and biomes and survive waves of enemies.
-Discover new elements along the way and synthesize higher tier elements.
-Is the Elixir real, or is it just a myth?
+Drag elements from your inventory or new
+elements into the crafting area to synthesize
 
-Good luck!";
+You can carry at most 3 elements in
+your inventory";

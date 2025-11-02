@@ -42,7 +42,7 @@ if (!is_forever && life_timer <= 0) {
 var enemy_list = ds_list_create();
 var num_enemies = 0;
 
-if (affect_enemies){
+if (damage_enemies){
     // Use collision_rectangle to find all enemies overlapping with the mud pool's bounding box
     with (obj_enemy_abstract) {
         // Check if enemy's collision box overlaps with mud pool's collision box
@@ -53,11 +53,13 @@ if (affect_enemies){
     }
 }
 
-if (affect_player and instance_exists(obj_player)) {
-    if (place_meeting(x, y, obj_player)) {
-        ds_list_add(enemy_list, id);
-        num_enemies++;
-    }    
+if (damage_player and instance_exists(obj_player)) {
+    with (obj_player) {
+         if (place_meeting(x, y, other)) {
+            ds_list_add(enemy_list, id);
+            num_enemies++;
+        }           
+    }
 }
 
 if (num_enemies > 0) {
@@ -79,8 +81,10 @@ for (var i = 0; i < num_enemies; i++) {
         enemy.mud_pool_slow = true;
 
         // Add "Slowed" status text
-        array_push(enemy.status_texts, "Slowed");
-
+        if (variable_instance_exists(enemy, "status_texts")) {
+            array_push(enemy.status_texts, "Slowed");
+        }
+        
         ds_list_add(slowed_enemies, enemy);
     }
 }
@@ -97,9 +101,11 @@ for (var i = ds_list_size(slowed_enemies) - 1; i >= 0; i--) {
             enemy.mud_pool_slow = false;
 
             // Remove "Slowed" status text
-            var slowed_index = array_get_index(enemy.status_texts, "Slowed");
-            if (slowed_index != -1) {
-                array_delete(enemy.status_texts, slowed_index, 1);
+            if (variable_instance_exists(enemy, "status_texts")) {
+                var slowed_index = array_get_index(enemy.status_texts, "Slowed");
+                if (slowed_index != -1) { 
+                    array_delete(enemy.status_texts, slowed_index, 1);
+                }
             }
         }
         ds_list_delete(slowed_enemies, i);

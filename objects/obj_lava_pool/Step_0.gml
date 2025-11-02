@@ -6,7 +6,7 @@ if (life_timer > game_get_speed(gamespeed_fps) * 8 - fade_in_duration) {
     alpha = min(1, alpha + (1 / fade_in_duration));
 }
 // Fade out near end
-else if (life_timer <= fade_out_duration) {
+else if (!is_forever and life_timer <= fade_out_duration) {
     alpha = max(0, alpha - (1 / fade_out_duration));
 }
 // Fully visible in between
@@ -18,7 +18,7 @@ else {
 glow_timer += 0.1;
 
 // Destroy when lifetime expires
-if (life_timer <= 0) {
+if (!is_forever and life_timer <= 0) {
     ds_map_destroy(hit_cooldown_map);
     instance_destroy();
     exit;

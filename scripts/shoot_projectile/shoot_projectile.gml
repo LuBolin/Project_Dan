@@ -6,11 +6,22 @@
 /// @param {Asset.GMObject} [projectile_object] Optional: obj_projectile (default) or obj_enemy_projectile
 function spawn_and_set_projectile(_entity, projectile, target_x, target_y, projectile_object = obj_projectile) {
     var ang  = point_direction(_entity.x, _entity.y, target_x, target_y);
+    
+    return spawn_and_set_projectile_angled(_entity, projectile, ang, projectile_object);
+}
+
+
+/// @function spawn_and_set_projectile(_entity, projectile, target_x, target_y, [projectile_object])
+/// @param {Id.Instance} _entity The entity the projectile was fired from
+/// @param {Struct} projectile The type of projectile fired
+/// @param {Real} angle The angle to fire at
+/// @param {Asset.GMObject} [projectile_object] Optional: obj_projectile (default) or obj_enemy_projectile
+function spawn_and_set_projectile_angled(_entity, projectile, angle, projectile_object = obj_projectile) {
     var r    = player_radius_simple(_entity);
     var gap  = 5;
 
-    var sx = _entity.x + lengthdir_x(r + gap, ang);
-    var sy = _entity.y + lengthdir_y(r + gap, ang);
+    var sx = _entity.x + lengthdir_x(r + gap, angle);
+    var sy = _entity.y + lengthdir_y(r + gap, angle);
 
     // Use the specified projectile object (defaults to obj_projectile)
     var inst = instance_create_layer(sx, sy, "Instances", projectile_object);
@@ -40,8 +51,8 @@ function spawn_and_set_projectile(_entity, projectile, target_x, target_y, proje
         }
         
         inst.creator = _entity;
-        inst.direction = ang;
-        inst.image_angle = ang;
+        inst.direction = angle;
+        inst.image_angle = angle;
 
         // Call on_launch callback if it exists
         if (is_struct(projectile) && variable_struct_exists(projectile, "on_launch")) {

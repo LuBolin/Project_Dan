@@ -108,7 +108,7 @@
     {"name":"spr_enemy_spawn","order":3,"path":"sprites/spr_enemy_spawn/spr_enemy_spawn.yy",},
     {"name":"spr_env_hazard_spawn","order":7,"path":"sprites/spr_env_hazard_spawn/spr_env_hazard_spawn.yy",},
     {"name":"spr_evil_tree","order":6,"path":"sprites/spr_evil_tree/spr_evil_tree.yy",},
-    {"name":"spr_final_boss","order":11,"path":"sprites/spr_final_boss/spr_final_boss.yy",},
+    {"name":"spr_final_boss","order":17,"path":"sprites/spr_final_boss/spr_final_boss.yy",},
     {"name":"spr_fire_ball","order":4,"path":"sprites/spr_fire_ball/spr_fire_ball.yy",},
     {"name":"spr_fire_projectile","order":1,"path":"sprites/spr_fire_projectile/spr_fire_projectile.yy",},
     {"name":"spr_fox","order":7,"path":"sprites/spr_fox/spr_fox.yy",},

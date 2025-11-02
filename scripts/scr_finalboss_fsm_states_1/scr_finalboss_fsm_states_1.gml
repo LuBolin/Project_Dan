@@ -36,7 +36,7 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
 
         if (is_second_round) {
             lava_attack_cd_timer = 0;
-            create_mud_hazard(num_mud_hazards, true);
+            create_env_hazard(obj_mud_pool ,num_mud_hazards, true);
             spawn_more_enemies();
         } else {
             lava_attack_cd_timer = lava_attack_freq;
@@ -68,6 +68,7 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
 		var boss_fire_ball = new ProjectileFire();
 		boss_fire_ball.speed = 6.0; // half speed
 		boss_fire_ball.scale = 1.5; // 1.5 size
+        boss_fire_ball.life_steps = infinity;
 		
         if (fireball_attack_cd_timer <= 0 and _sight_line == noone) {
             spawn_and_set_projectile(entity, boss_fire_ball, obj_player.x, obj_player.y, obj_enemy_projectile);
@@ -196,6 +197,7 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
         if (steam_attack_cd_timer <= 0) {
             var steam = instance_create_layer(entity.x, entity.y, "Instances", obj_steam);
             steam.owner = entity;
+            steam.damage_enemies = false;
             steam_attack_cd_timer = steam_attack_freq;
         }
         
@@ -209,7 +211,7 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
     }
 }
 
-function create_mud_hazard(num_hazards, _is_permanent) {
+function create_env_hazard(obj_hazard, num_hazards, _is_permanent = true, _is_affect_enemy = true) {
     // Borrowed from Level Manager code. Thanks!
     // Get all spawn points in the room
     var spawn_points = [];
@@ -228,11 +230,12 @@ function create_mud_hazard(num_hazards, _is_permanent) {
     
     for (var i = 0; i < num_hazards; i+= 1) {
         var spawn_point = spawn_points[i]
-        var mud = instance_create_layer(spawn_point.x, spawn_point.y, "Instances", obj_mud_pool);
-        mud.affect_player = true; 
-        mud.is_forever = _is_permanent;
+        var env = instance_create_layer(spawn_point.x, spawn_point.y, "Instances", obj_hazard);
+        env.damage_player = true; 
+        env.is_forever = _is_permanent;
+        env.damage_enemies = _is_affect_enemy;
         // Visual differentiation - make boss lava pools red-tinted
-        mud.image_blend = make_color_rgb(255, 150, 150);
+        env.image_blend = make_color_rgb(255, 150, 150);
     }
 }
 
@@ -247,7 +250,7 @@ function spawn_more_enemies() {
     for (var i = 0; i < spawn_points_len; i+= 1) {
         var spawn_point = spawn_points[i]
         
-        var inst = collision_circle(spawn_point.x, spawn_point.y, 30, obj_enemy_abstract, false, true);
+        var inst = collision_circle(spawn_point.x, spawn_point.y, 30, [obj_enemy_abstract, obj_player], false, true);
         if (inst == noone) { 
             // Spawn enemy at spawn point
             var enemy = instance_create_depth(spawn_point.x, spawn_point.y, 0, spawn_point.enemy_to_spawn);

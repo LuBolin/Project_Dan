@@ -5,6 +5,9 @@ image_yscale = 2.0;
 // Lifespan: 8 seconds (longer than mud for more damage)
 life_timer = game_get_speed(gamespeed_fps) * 8;
 
+// Overrides lifespan to last forever
+is_forever = false;
+
 // Track which entities have been hit recently to prevent instant re-hits
 hit_cooldown_map = ds_map_create(); // entity_id -> last_hit_time
 

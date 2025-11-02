@@ -11,6 +11,7 @@ image_xscale = 1.5;
 image_yscale = 1.5;
 
 // Use custom Fire Boar states
+states_array[STATES.ROAM] = new FireBoarRoamState(self)
 states_array[STATES.ALERT] = new FireBoarAlertState(self);
 states_array[STATES.CHASE] = new FireBoarChaseState(self);
 states_array[STATES.ATTACK] = new FireBoarAttackState(self);

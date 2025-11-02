@@ -4,6 +4,7 @@
 function BoarAlertState(_entity, _duration = undefined, _is_timed = false) : AlertState(_entity, _duration, _is_timed) constructor {
     on_enter = function() {
         charge = false;
+        
         with (entity) {
             // Safety check: make sure player exists
             if (!instance_exists(obj_player)) {

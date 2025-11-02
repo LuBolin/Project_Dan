@@ -25,6 +25,6 @@ fade_in_duration = 15; // frames
 fade_out_duration = 30; // frames
 
 // Damage target configuration
-affect_enemies = true;  // Default: damage enemies
-affect_player = !affect_enemies;  // Default: don't damage player
+damage_enemies = true;  // Default: damage enemies
+damage_player = !damage_enemies;  // Default: don't damage player
 creator = noone;        // Who created this pool (for identification)

@@ -28,14 +28,17 @@ col_close_hover = make_color_rgb(120, 80, 60);
 // Instructions content
 instructions_text = @"How to Play:
 
-Dungeon:
+Dungeon Phase:
 WASD - Move your character
 Mouse - Aim
 Left Click - Activate active element
-Q/E - Cycle active element
+Q/E or Mouse Wheel - Cycle active element
 
-Alchemy:
-Drag to combine elements in the crafting area
+Alchemy Phase:
+Drag elements from your inventory into the crafting area to synthesize!
+Drag synthesized elements from the crafting area to your inventory to use them in combat
+You can only carry at most only 3 elements inventory.
+
 
 Venture through dungeons and biomes and survive waves of enemies.
 Discover new elements along the way and synthesize higher tier elements.

@@ -1,5 +1,14 @@
 /// Alchemy Controller - Step
 
+// Advance animated backdrop frame
+if (sprite_exists(spr_alchemy_crafting_backdrop)) {
+    var _frames = sprite_get_number(spr_alchemy_crafting_backdrop);
+    if (_frames > 0) {
+        backdrop_frame += backdrop_frame_step;
+        if (backdrop_frame >= _frames) backdrop_frame -= _frames;
+    }
+}
+
 var mx = device_mouse_x_to_gui(0);
 var my = device_mouse_y_to_gui(0);
 

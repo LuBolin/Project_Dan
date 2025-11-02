@@ -134,6 +134,7 @@
     {"id":{"name":"spr_aim_arrow","path":"sprites/spr_aim_arrow/spr_aim_arrow.yy",},},
     {"id":{"name":"spr_aim_instructions","path":"sprites/spr_aim_instructions/spr_aim_instructions.yy",},},
     {"id":{"name":"spr_alchemy_backdrop","path":"sprites/spr_alchemy_backdrop/spr_alchemy_backdrop.yy",},},
+    {"id":{"name":"spr_alchemy_crafting_backdrop","path":"sprites/spr_alchemy_crafting_backdrop/spr_alchemy_crafting_backdrop.yy",},},
     {"id":{"name":"spr_ambient_heal_particle","path":"sprites/spr_ambient_heal_particle/spr_ambient_heal_particle.yy",},},
     {"id":{"name":"spr_boar","path":"sprites/spr_boar/spr_boar.yy",},},
     {"id":{"name":"spr_chi","path":"sprites/spr_chi/spr_chi.yy",},},

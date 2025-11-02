@@ -92,6 +92,7 @@
     {"name":"rock2","order":8,"path":"sprites/rock2/rock2.yy",},
     {"name":"rock3","order":9,"path":"sprites/rock3/rock3.yy",},
     {"name":"rock4","order":10,"path":"sprites/rock4/rock4.yy",},
+    {"name":"spr_alchemy_crafting_backdrop","order":4,"path":"sprites/spr_alchemy_crafting_backdrop/spr_alchemy_crafting_backdrop.yy",},
     {"name":"spr_ambient_heal_particle","order":20,"path":"sprites/spr_ambient_heal_particle/spr_ambient_heal_particle.yy",},
     {"name":"spr_boar","order":8,"path":"sprites/spr_boar/spr_boar.yy",},
     {"name":"spr_chi","order":2,"path":"sprites/spr_chi/spr_chi.yy",},

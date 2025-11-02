@@ -1,34 +1,5 @@
 /// Alchemy Controller - Draw GUI
 
-/// Backdrop (fills the GUI, keeps aspect by cropping like "cover")
-var gui_w = display_get_gui_width();
-var gui_h = display_get_gui_height();
-
-if (sprite_exists(spr_alchemy_crafting_backdrop)) {
-    var sw = sprite_get_width(spr_alchemy_crafting_backdrop);
-    var sh = sprite_get_height(spr_alchemy_crafting_backdrop);
-
-    // Scale to cover entire GUI (may crop a bit)
-    var scale = max(gui_w / sw, gui_h / sh);
-    var draw_w = sw * scale;
-    var draw_h = sh * scale;
-    var draw_x = (gui_w - draw_w) * 0.5;
-    var draw_y = (gui_h - draw_h) * 0.5;
-
-    // Use animated subimage
-    var subimg = floor(backdrop_frame);
-
-    draw_set_alpha(1);
-    draw_set_color(c_white);
-    draw_sprite_ext(spr_alchemy_crafting_backdrop, subimg, draw_x, draw_y, scale, scale, 0, c_white, 1);
-
-    // Darken pass on top
-    draw_set_color(c_black);
-    draw_set_alpha(clamp(backdrop_darken_alpha, 0, 1));
-    draw_rectangle(0, 0, gui_w, gui_h, false);
-    draw_set_alpha(1);
-}
-
 // === DRAW PAUSE BUTTON ===
 // Position button in top-right corner
 var btn_x = pause_button_x;
@@ -476,6 +447,29 @@ if (!show_confirmation_popup) {
     draw_set_valign(fa_middle);
     draw_text(button_x + button_w / 2, button_y + button_h / 2, "Continue to\nNext Level");
 }
+
+// === DRAW SWAP INSTRUCTIONS (left side, smaller, on top of UI) ===
+if (sprite_exists(spr_swap_instructions)) {
+    var iw = sprite_get_width(spr_swap_instructions);
+    var ih = sprite_get_height(spr_swap_instructions);
+
+    var margin = 18;
+    // Smaller target width (was ~22% and clamped 220..360)
+    var target_w = clamp(gui_width * 0.14, 140, 220);
+    var scale = target_w / max(1, iw);
+
+    // Bottom-left placement
+    var draw_x = margin;
+    var draw_y = gui_height - (ih * scale) - margin;
+
+    draw_set_alpha(1);
+    draw_set_color(c_white);
+    draw_sprite_ext(spr_swap_instructions, 0, draw_x, draw_y, scale, scale, 0, c_white, 1);
+}
+
+// Reset draw state
+draw_set_alpha(1);
+draw_set_color(c_white);
 
 // === DRAW CONFIRMATION POPUP ===
 if (show_confirmation_popup) {

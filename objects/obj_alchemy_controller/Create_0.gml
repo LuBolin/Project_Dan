@@ -10,7 +10,7 @@ if (!audio_is_playing(snd_dungeon_bgm)) {
 backdrop_frame = 0;                                  // fractional frame index
 backdrop_fps = 12;                                   // play at 12 FPS
 backdrop_frame_step = backdrop_fps / game_get_speed(gamespeed_fps);
-backdrop_darken_alpha = 0.6;  
+backdrop_darken_alpha = 0.7;  
 
 // === LAYOUT CONFIG ===
 gui_width = display_get_gui_width();

@@ -151,9 +151,9 @@ craft_feedback_equation = -1;
 
 // === RECIPE TREE LAYOUT (Right side) ===
 tree_panel_x = gui_width - 250; // Further reduced for narrower panel
-tree_panel_y = 50;
-tree_panel_w = 230; // Further reduced (about 12% smaller than 260)
-tree_panel_h = 520; // Reduced from gui_height - 100 to fit content better
+tree_panel_y = 80; // Moved down from 50 to avoid overlap with pause button
+tree_panel_w = 200; // Reduced width from 230
+tree_panel_h = 480; // Reduced height from 520
 
 // Tree node layout
 tree_node_size = 40; // Reduced from 60 to fit narrower panel

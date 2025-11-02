@@ -445,7 +445,7 @@ if (!show_confirmation_popup) {
     draw_set_color(col_text);
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
-    draw_text(button_x + button_w / 2, button_y + button_h / 2, "Continue to Next Level");
+    draw_text(button_x + button_w / 2, button_y + button_h / 2, "Continue to\nNext Level");
 }
 
 // === DRAW CONFIRMATION POPUP ===

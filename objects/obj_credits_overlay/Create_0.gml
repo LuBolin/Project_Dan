@@ -38,10 +38,10 @@ col_title = make_color_rgb(255, 215, 150);
 col_close_normal = make_color_rgb(80, 50, 40);
 col_close_hover = make_color_rgb(120, 80, 60);
 
-// Credits content
-credits_text = @"Dan 丹
+// Credits content - split into parts for different fonts
+credits_title = "Dan 丹"; // Uses Chinese font
 
-Designer:
+credits_body = @"Designer:
 Bolin, Ashley, James
 
 Artist:
@@ -61,4 +61,4 @@ https://pixabay.com/music/china-china-asian-china-chinese-music-390969/
 Special Thanks:
 Everyone who played and supported this game!
 
-© 2025";
+© 2025"; // Uses default font

@@ -24,9 +24,13 @@ var mouse_wheel = mouse_wheel_up() - mouse_wheel_down();
 if (mouse_wheel != 0) {
     scroll_y += mouse_wheel * scroll_speed;
 
-    // Calculate total text height
-    var line_height = 25;
-    var text_height = string_height_ext(credits_text, line_height, overlay_width - 80);
+    // Calculate total content height (title + spacing + body)
+    draw_set_font(fnt_chinese);
+    var title_scale = 0.6;
+    var title_height = string_height(credits_title) * title_scale;
+    draw_set_font(-1);
+    var body_height = string_height_ext(credits_body, 25, overlay_width - 80);
+    var text_height = title_height + 30 + body_height; // 30 is spacing between title and body
 
     // Clamp scroll position
     var max_scroll = max(0, text_height - text_area_height);

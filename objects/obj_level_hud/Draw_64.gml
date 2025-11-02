@@ -60,16 +60,48 @@ var fill_col   = make_color_rgb(200, 50, 50);
 var border_col = c_black;
 
 
-// Progressive shading for low health
-draw_set_color(c_black)
+// Progressive desaturation effect for low health using shader
+// Start at 80% health (0.8), full effect at 10% health (0.1)
+// At 80% health: 0% desaturation
+// At 10% health: 80% desaturation (20% saturation remaining)
+var desaturation = 0;
+if (ratio <= 0.8) {
+    // Map health from 80% -> 10% to desaturation 0% -> 80%
+    // ratio 0.8 -> 0.0, ratio 0.1 -> 0.8
+    desaturation = clamp((0.8 - ratio) / 0.7, 0, 0.8);
+}
 
-var shading = 1 - ratio * 3;
+// Apply desaturation shader to the application surface
+if (desaturation > 0) {
+    shader_set(shd_desaturate);
+    shader_set_uniform_f(uni_desaturation, desaturation);
 
-draw_set_alpha(clamp(shading, 0, 0.5));
-draw_rectangle(0, 0, gui_w, gui_h, false);
+    // Draw the application surface with shader applied
+    if (surface_exists(application_surface)) {
+        draw_surface(application_surface, 0, 0);
+    }
 
-draw_set_alpha(clamp(shading, 0, 0.8));
+    shader_reset();
+}
+
+// Add darkening overlay (0% at 80% health, 30% at 10% health)
+var darkness = 0;
+if (ratio <= 0.8) {
+    // Map health from 80% -> 10% to darkness 0% -> 30%
+    darkness = clamp((0.8 - ratio) / 0.7 * 0.3, 0, 0.3);
+}
+if (darkness > 0) {
+    draw_set_color(c_black);
+    draw_set_alpha(darkness);
+    draw_rectangle(0, 0, gui_w, gui_h, false);
+    draw_set_alpha(1);
+}
+
+// Draw red blood vignette on top (stays red, not affected by shader)
+draw_set_color(c_white);
+draw_set_alpha(clamp(desaturation, 0, 0.7));
 draw_sprite_stretched(spr_hurt_pov, 0, 0, 0, gui_w, gui_h);
+draw_set_alpha(1);
 
 // draw back
 draw_set_color(back_col);

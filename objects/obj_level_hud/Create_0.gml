@@ -35,3 +35,6 @@ pause_button_width = 120;
 pause_button_height = 40;
 pause_button_hovered = false;
 pause_button_text = "Esc: Pause";
+
+// ===== Desaturation shader config =====
+uni_desaturation = shader_get_uniform(shd_desaturate, "u_desaturation");

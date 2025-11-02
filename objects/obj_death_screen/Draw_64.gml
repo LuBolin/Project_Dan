@@ -42,17 +42,28 @@ draw_set_color(col_text);
 draw_set_halign(fa_center);
 draw_set_valign(fa_top);
 var instruction_y = panel_y + 80;
-draw_text(panel_x + panel_width / 2, instruction_y, "Choose one element to bring to your next run:");
+draw_text(panel_x + panel_width / 2, instruction_y, "Choose one option to continue:");
 
-// Draw element slots
-for (var i = 0; i < array_length(player_elements); i++) {
+// Draw element slots (3 player elements + "Bring nothing")
+for (var i = 0; i < 4; i++) {
     var slot_x = element_start_x + i * (element_slot_size + element_slot_spacing);
     var slot_y = element_start_y;
-    var element = player_elements[i];
-
-    // Determine slot color (selected gets highlight)
-    var slot_color = element.color;
     var is_selected = (selected_element_index == i);
+
+    // Determine slot content and color
+    var slot_text = "";
+    var slot_color = col_button;
+
+    if (i < array_length(player_elements)) {
+        // Player element slot
+        var element = player_elements[i];
+        slot_text = element.name;
+        slot_color = element.color;
+    } else if (i == bring_nothing_index) {
+        // "Bring nothing" slot
+        slot_text = "Bring\nnothing";
+        slot_color = col_button;
+    }
 
     // Draw slot background
     draw_set_color(slot_color);
@@ -70,47 +81,43 @@ for (var i = 0; i < array_length(player_elements); i++) {
         draw_rectangle(slot_x, slot_y, slot_x + element_slot_size, slot_y + element_slot_size, true);
     }
 
-    // Draw element name
+    // Draw slot text
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
-    draw_text_outlined(slot_x + element_slot_size / 2, slot_y + element_slot_size / 2, element.name);
+    draw_text_outlined(slot_x + element_slot_size / 2, slot_y + element_slot_size / 2, slot_text);
 }
-
-// Draw "Start Fresh" button
-var fresh_col = fresh_button_hover ? col_button_hover : col_button;
-if (selected_element_index == -1) {
-    fresh_col = col_button_selected; // Highlight if "Start Fresh" is selected
-}
-draw_set_color(fresh_col);
-draw_rectangle(fresh_button_x, fresh_button_y, fresh_button_x + fresh_button_width, fresh_button_y + button_height, false);
-draw_set_color(col_panel_border);
-draw_rectangle(fresh_button_x, fresh_button_y, fresh_button_x + fresh_button_width, fresh_button_y + button_height, true);
-
-draw_set_color(col_text);
-draw_set_halign(fa_center);
-draw_set_valign(fa_middle);
-draw_text(fresh_button_x + fresh_button_width / 2, fresh_button_y + button_height / 2, "Start Fresh");
 
 // Draw separator line
-var separator_y = fresh_button_y + button_height + 30;
+var separator_y = element_start_y + element_slot_size + 40;
 draw_set_color(col_panel_border);
 draw_line_width(panel_x + 50, separator_y, panel_x + panel_width - 50, separator_y, 2);
 
 // Draw "Start New Run" button
-var start_col = start_button_hover ? col_button_hover : col_button;
+var can_start = (selected_element_index >= 0);
+var start_col = col_button;
+
+// Determine button color based on state
+if (!can_start) {
+    start_col = make_color_rgb(40, 40, 50); // Disabled/grayed out
+} else if (start_button_hover) {
+    start_col = col_button_hover;
+}
+
 draw_set_color(start_col);
 draw_rectangle(start_button_x, start_button_y, start_button_x + button_width, start_button_y + button_height, false);
 draw_set_color(col_panel_border);
 draw_rectangle(start_button_x, start_button_y, start_button_x + button_width, start_button_y + button_height, true);
 
-draw_set_color(col_text);
+// Draw button text
+var text_col = can_start ? col_text : make_color_rgb(100, 100, 110); // Dimmed text when disabled
+draw_set_color(text_col);
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 var start_text = "Start New Run";
-if (selected_element_index >= 0) {
+if (selected_element_index >= 0 && selected_element_index < array_length(player_elements)) {
     start_text += "\n(with " + player_elements[selected_element_index].name + ")";
-} else {
-    start_text += "\n(Fresh Start)";
+} else if (selected_element_index == bring_nothing_index) {
+    start_text += "\n(with nothing)";
 }
 draw_text(start_button_x + button_width / 2, start_button_y + button_height / 2, start_text);
 

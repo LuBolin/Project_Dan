@@ -5,7 +5,7 @@ image_blend = c_ltgray; // Exit doors are light gray
 to_kill = 0;
 
 // Set depth so door renders behind instances but in front of terrain
-depth = 190;
+depth = 400;
 
 // Arrow indicator variables
 is_on_screen = true;

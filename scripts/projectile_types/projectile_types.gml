@@ -13,7 +13,11 @@ function ProjectileFire() constructor {
 	scale = 1;
     sfx_fire = undefined;
     sfx_hit = undefined;
-
+    
+    on_launch = function(projectile_inst) {
+        projectile_inst.depth = 0;
+    }
+    
 	on_hit = function(projectile_inst, target) {
 		// Initial damage
 		damage_entity(target, projectile_inst.damage);
@@ -35,6 +39,10 @@ function ProjectileRock() constructor {
     sfx_fire = undefined;
     sfx_hit = undefined;
     
+    on_launch = function(projectile_inst) {
+        projectile_inst.depth = 0;
+    }
+    
 	on_hit = function(projectile_inst, target) {
 		damage_entity(target, projectile_inst.damage);
 		add_status_effect(target, new StunEffect(game_get_speed(gamespeed_fps) * 0.5));
@@ -53,6 +61,10 @@ function ProjectileWaterBall() constructor {
 	scale = 1;
     sfx_fire = undefined;
     sfx_hit = undefined;
+    
+    on_launch = function(projectile_inst) {
+        projectile_inst.depth = 0;
+    }
     
 	on_hit = function(projectile_inst, target) {
 		damage_entity(target, projectile_inst.damage);
@@ -85,6 +97,7 @@ function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration =
         // Immediately dash the player
         if (instance_exists(projectile_inst.creator)) {
             var player = projectile_inst.creator;
+            projectile_inst.depth = 0;
             
             // DETERMINE DASH DIRECTION: Player movement takes priority over mouse direction
             var dash_dir;
@@ -175,8 +188,9 @@ function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_durati
     		projectile_inst.y = projectile_inst.creator.y;
     		projectile_inst.speed = 0;
     		projectile_inst.image_alpha = 0.5;  // Semi-transparent
-    
-    		// Immediately dash the player towards mouse
+            projectile_inst.depth = 0;
+    		
+            // Immediately dash the player towards mouse
     		if (instance_exists(projectile_inst.creator)) {
     			var player = projectile_inst.creator;
     			//var dash_dir = point_direction(player.x, player.y, projectile_inst, mouse_y);
@@ -249,6 +263,7 @@ function ProjectileLava() constructor {
         projectile_inst.target_x = mouse_x;
         projectile_inst.target_y = mouse_y;
         projectile_inst.homing_enabled = true;
+        projectile_inst.depth = 0;
         
         // Calculate initial direction towards target
         var dir = point_direction(projectile_inst.x, projectile_inst.y, mouse_x, mouse_y);
@@ -354,6 +369,10 @@ function ProjectileMudBall() constructor {
 	scale = 1;
     sfx_fire = undefined;
     sfx_hit = undefined;
+    
+    on_launch = function(projectile_inst) {
+        projectile_inst.depth = 0;
+    }
 
 	on_hit = function(projectile_inst, target) {
 		damage_entity(target, projectile_inst.damage);
@@ -410,7 +429,7 @@ function ProjectileCurrent() constructor {
         // Immediately dash the player towards movement direction or mouse
         if (instance_exists(projectile_inst.creator)) {
             var player = projectile_inst.creator;
-            
+            projectile_inst.depth = 0;
             // DETERMINE DASH DIRECTION: Player movement takes priority
             var dash_dir;
             var gust_dir; // Direction for the air gust (always toward mouse for Current)
@@ -522,6 +541,7 @@ function ProjectileEruption() constructor {
         projectile_inst.target_x = mouse_x;
         projectile_inst.target_y = mouse_y;
         projectile_inst.homing_enabled = true;
+        projectile_inst.depth = 0;
         
         // Calculate initial direction towards target
         var dir = point_direction(projectile_inst.x, projectile_inst.y, mouse_x, mouse_y);
@@ -702,7 +722,7 @@ function ProjectilePlant() constructor {
         // Immediately dash the player
         if (instance_exists(projectile_inst.creator)) {
             var player = projectile_inst.creator;
-            
+            projectile_inst.depth = 0;
             // DETERMINE DASH DIRECTION: Player movement takes priority over mouse direction
             var dash_dir;
             
@@ -793,6 +813,7 @@ function ProjectileHurricane() constructor {
 		projectile_inst.image_angle = 0;
 		// Initialize hit tracking
 		projectile_inst.hit_targets = ds_map_create();
+        projectile_inst.depth = 0;
 	}
 
 	on_step = function(projectile_inst) {
@@ -855,6 +876,7 @@ function ProjectileCreation() constructor {
     scale = 0.2;  // Small visual effect during dash
     sfx_fire = undefined;
     sfx_hit = undefined;
+    
 
     on_launch = function(projectile_inst) {
         // Spawn projectile on player
@@ -870,6 +892,7 @@ function ProjectileCreation() constructor {
         // Immediately dash the player
         if (instance_exists(projectile_inst.creator)) {
             var player = projectile_inst.creator;
+            projectile_inst.depth = 0;
             
             // DETERMINE DASH DIRECTION: Player movement takes priority over mouse direction
             var dash_dir;

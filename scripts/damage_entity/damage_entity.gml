@@ -4,6 +4,10 @@
 function damage_entity(_target, _dmg) {
     if (!variable_instance_exists(_target, "invuln") || !_target.invuln) {
         _target.hp -= _dmg;
+        
+        if variable_instance_exists(_target, "is_hurt_this_level") 
+            _target.is_hurt_this_level = true;
+        
         _target.image_blend = c_red;
 
 

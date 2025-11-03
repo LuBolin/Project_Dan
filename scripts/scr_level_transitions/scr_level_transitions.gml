@@ -19,7 +19,7 @@ function goto_level(target_room, difficulty_level) {
 }
 
 function get_current_difficulty() {
-    /// @desc Get the current level difficulty
+    /// @desc Get thcurr_level_e current level difficulty
     /// @return The current difficulty level (1-5)
 
     if (!variable_global_exists("current_level_difficulty")) {
@@ -46,9 +46,12 @@ function get_random_level() {
     /// @desc Returns a random level room (Level1, Level2, or Level3)
     /// @return A random Level room
 
-    var levels = [Level1, Level2, Level3];
-    var random_index = irandom(array_length(levels) - 1);
-    return levels[random_index];
+    //var levels = [Level1, Level2, Level3];
+    //var random_index = irandom(array_length(levels) - 1);
+    
+    // Levels are shuffled
+    var level = global.level_order[global.level_progress - 1 % array_length(global.level_order)];
+    return level;
 }
 
 function get_random_miniboss_level() {
@@ -69,6 +72,11 @@ function advance_level_progress() {
     // Initialize level progress if it doesn't exist
     if (!variable_global_exists("level_progress")) {
         global.level_progress = 1;
+    }
+    
+    if (global.level_progress == 1) {
+        // Ensures that we do not face repeat levels back-to-back
+        global.level_order = array_shuffle([Level1, Level2, Level3]);
     }
 
     // Increment level progress

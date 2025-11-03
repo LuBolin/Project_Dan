@@ -126,6 +126,8 @@ if (is_first_launch) {
     transitioning = false; // Will be true when space is pressed
     auto_transition = false; // Manual transition
     auto_transition_delay = 0;
+    
+    randomize()
 } else {
     // Re-entrance: No prompt, immediate auto-transition
     prompt_alpha = 0; // Don't show prompt

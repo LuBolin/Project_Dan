@@ -228,7 +228,7 @@ new_ele_separator_y = tree_panel_y + tree_panel_h
 
 var level = global.level_progress;
 var tier_elements;
-show_debug_message(level)
+
 switch (level) {
     case 2:
     case 3:    
@@ -241,12 +241,12 @@ switch (level) {
     case 1:
     default:    
         tier_elements = json_data.display_tiers.base.elements;
+        global.prev_received_elements = []
     break;
 }
 
 var rand_i;
 var arr_len = array_length(tier_elements);
-show_debug_message(tier_elements)
 new_element = gourd_create(GourdEarth);
 
 // Filter out elements that are already equipped
@@ -254,6 +254,10 @@ var available_elements = [];
 for (var t = 0; t < array_length(tier_elements); t++) {
     var tier_element = tier_elements[t];
     var is_equipped = false;
+    
+    if (array_contains(global.prev_received_elements, tier_element)) {
+        continue;    
+    }
     
     // Check if this element is already equipped
     for (var i = 0; i < array_length(equipped_gourds); i++) { 
@@ -268,23 +272,25 @@ for (var t = 0; t < array_length(tier_elements); t++) {
         array_push(available_elements, tier_element);
     }
 }
-
+show_debug_message(available_elements)
 // Pick random element from available (non-equipped) elements
 if (array_length(available_elements) > 0) {
     var random_index = irandom(array_length(available_elements) - 1);
+    show_debug_message(random_index);
     new_element = get_gourd_constructor_by_name(available_elements[random_index]);
     show_debug_message("Selected new element: " + available_elements[random_index]);
+    array_push(global.prev_received_elements, new_element.name);
 } else {
     // All elements of this tier are equipped, pick any random one
     if (array_length(tier_elements) > 0) {
         var random_index = irandom(array_length(tier_elements) - 1);
         new_element = get_gourd_constructor_by_name(tier_elements[random_index]);
         show_debug_message("All tier elements equipped, picked: " + tier_elements[random_index]);
+        array_push(global.prev_received_elements, new_element.name);
     }
 }
 
 show_debug_message("Final new_element: " + (is_struct(new_element) ? new_element.name : "undefined"));
-
 
 // Glow animation for Elixir
 elixir_glow_timer = 0;

@@ -45,7 +45,8 @@ if (!variable_instance_exists(p, "hp") || !variable_instance_exists(p, "max_hp")
 
 var hp     = p.hp;
 var hp_max = max(1, p.max_hp);
-var ratio  = clamp(hp / hp_max, 0, 1);
+// If player was not hurt this level, make the hurt-effect obvious
+var ratio  = p.is_hurt_this_level ? clamp(hp / hp_max, 0, 1) : clamp(hp / hp_max, 0.7, 1) 
 
 // health bar size & pos
 var bar_w = gui_w * 0.20;   // 20% width
@@ -58,7 +59,6 @@ var bar_y = pad;
 var back_col   = make_color_rgb(40, 40, 40);
 var fill_col   = make_color_rgb(200, 50, 50);
 var border_col = c_black;
-
 
 // Progressive desaturation effect for low health using shader
 // Start at 80% health (0.8), full effect at 10% health (0.1)

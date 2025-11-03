@@ -186,6 +186,7 @@
     {"id":{"name":"zombiesprite","path":"sprites/zombiesprite/zombiesprite.yy",},},
     {"id":{"name":"dummy_tileset","path":"tilesets/dummy_tileset/dummy_tileset.yy",},},
     {"id":{"name":"dungeon_tileset","path":"tilesets/dungeon_tileset/dungeon_tileset.yy",},},
+    {"id":{"name":"TileSet3","path":"tilesets/TileSet3/TileSet3.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",

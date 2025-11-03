@@ -140,5 +140,6 @@
     {"name":"wind_sprite","order":14,"path":"sprites/wind_sprite/wind_sprite.yy",},
     {"name":"zombiesprite","order":9,"path":"sprites/zombiesprite/zombiesprite.yy",},
     {"name":"dungeon_tileset","order":1,"path":"tilesets/dungeon_tileset/dungeon_tileset.yy",},
+    {"name":"TileSet3","order":9,"path":"tilesets/TileSet3/TileSet3.yy",},
   ],
 }

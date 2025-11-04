@@ -8,8 +8,8 @@
   "name":"obj_enemy_spawn_point",
   "overriddenProperties":[],
   "parent":{
-    "name":"Others",
-    "path":"folders/Objects/Others.yy",
+    "name":"Level",
+    "path":"folders/Objects/Level.yy",
   },
   "parentObjectId":null,
   "persistent":false,

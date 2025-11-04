@@ -76,7 +76,7 @@ function advance_level_progress() {
     
     if (global.level_progress == 1) {
         // Ensures that we do not face repeat levels back-to-back
-        global.level_order = array_shuffle([Level1, Level2, Level3]);
+        global.level_order = array_shuffle([Level1, Level2, Level3, Level4, Level5]);
     }
 
     // Increment level progress

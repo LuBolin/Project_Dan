@@ -859,10 +859,34 @@ function ProjectileHurricane() constructor {
 				var enemy = enemy_list[| i];
 				var target_id = enemy.id;
 				var last_hit_time = ds_map_find_value(hit_targets, target_id);
-
+                
+                // Copy and Paste from Mud Pool. Inflict slowness on Enemy to make Hurricane more useful
+                // Apply slow effect using status effect system
+                if (!variable_instance_exists(enemy, "mud_pool_slow") || !enemy.mud_pool_slow) {
+                    // Apply slow effect for 0.2 seconds (will be refreshed while in pool)
+                    var slow_duration = game_get_speed(gamespeed_fps) * 0.2; // 0.2 seconds
+                    add_status_effect(enemy, new SlowEffect(slow_duration, 0.3));
+                    
+                    enemy.mud_pool_slow = true;
+                    show_debug_message("Applied slow effect to enemy " + string(enemy.id));
+            
+                    // Add "Slowed" status text
+                    if (variable_instance_exists(enemy, "status_texts")) {
+                        if (array_get_index(enemy.status_texts, "Slowed") == -1) {
+                            array_push(enemy.status_texts, "Slowed");
+                        }
+                    }
+                    
+                } else {
+                    // Refresh slow effect for enemies still in pool
+                    var slow_duration = game_get_speed(gamespeed_fps) * 0.2;
+                    add_status_effect(enemy, new SlowEffect(slow_duration, 0.3));
+                }
+                
 				// If never hit or 1 second has passed (1000 milliseconds)
 				if (is_undefined(last_hit_time) || (curr_time - last_hit_time >= 1000)) {
 					damage_entity(enemy, 1);
+                    
 					ds_map_set(hit_targets, target_id, curr_time);
 				}
 			}

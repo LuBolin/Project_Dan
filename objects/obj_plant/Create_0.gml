@@ -20,6 +20,7 @@ life_duration_seconds = 8;
 life_duration = life_duration_seconds * game_get_speed(gamespeed_fps);
 life_timer = life_duration;
 
+
 // Healing properties
 heal_per_tick = 1; // Amount of health restored per tick
 tick_rate_seconds = 1.5; // Heal every 0.75 seconds
@@ -32,7 +33,7 @@ heal_cooldown_seconds = 0.5; // 0.5 seconds between heals
 heal_cooldown = heal_cooldown_seconds * 1000; // Convert to milliseconds for current_time
 
 // Set depth so it renders below player but above ground
-depth = 200;
+depth = 100;
 
 // Rotation for visual effect
 rotation_speed = 0.3; // degrees per frame (slower than steam for peaceful feel)

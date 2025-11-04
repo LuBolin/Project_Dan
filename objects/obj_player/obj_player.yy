@@ -44,9 +44,12 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_taoist",
-    "path":"sprites/spr_taoist/spr_taoist.yy",
+    "name":"spr_character_still",
+    "path":"sprites/spr_character_still/spr_character_still.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"spr_character_still",
+    "path":"sprites/spr_character_still/spr_character_still.yy",
+  },
   "visible":true,
 }

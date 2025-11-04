@@ -65,12 +65,9 @@ if (carried_element != undefined) {
 
     // Take the first 3 elements after shuffling
     self.inv = [
-        //gourd_create(base_elements[0]),
-        //gourd_create(base_elements[1]),
-        //gourd_create(base_elements[2])
-		gourd_create(GourdDestruction),
-		gourd_create(GourdEruption),
-		gourd_create(GourdElixir)
+        gourd_create(base_elements[0]),
+        gourd_create(base_elements[1]),
+        gourd_create(base_elements[2])
     ];
 }
 

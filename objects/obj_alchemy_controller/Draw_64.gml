@@ -270,6 +270,10 @@ draw_rectangle(tree_panel_x, tree_panel_y, tree_panel_x + tree_panel_w, tree_pan
 draw_set_color(col_border);
 draw_rectangle(tree_panel_x, tree_panel_y, tree_panel_x + tree_panel_w, tree_panel_y + tree_panel_h, true);
 
+// Synthesis Record Label
+draw_set_color(c_white);
+draw_text(tree_panel_x + tree_panel_w / 2, tree_panel_y + 10, "Synthesis Record");
+
 // Get all discovered recipes
 var discovered_array = get_discovered_recipes(global.recipe_tree);
 // GML bugs out here and gives warning about discovered_map

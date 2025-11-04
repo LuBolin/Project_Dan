@@ -51,3 +51,11 @@ function spawn_and_set_projectile(_entity, projectile, target_x, target_y, proje
     
     return inst;
 }
+
+/// @function get_bullet_spawn(_entity, angle)
+/// @param {Id.Instance} _entity The entity the projectile was fired from
+/// @param {Real} angle The angle to fire at
+function get_bullet_spawn(_entity, angle) {
+    var sx = _entity.x + lengthdir_x(r + gap, angle);
+    var sy = _entity.y + lengthdir_y(r + gap, angle);
+}

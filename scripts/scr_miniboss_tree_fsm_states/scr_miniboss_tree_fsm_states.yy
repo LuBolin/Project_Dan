@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_finalboss_fsm_states_1",
+  "%Name":"scr_miniboss_tree_fsm_states",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_finalboss_fsm_states_1",
+  "name":"scr_miniboss_tree_fsm_states",
   "parent":{
     "name":"Enemy States",
     "path":"folders/Scripts/Enemy States.yy",

@@ -18,8 +18,8 @@
   "resourceType":"GMTileSet",
   "resourceVersion":"2.0",
   "spriteId":{
-    "name":"spr_dungeon_tileset_temp",
-    "path":"sprites/spr_dungeon_tileset_temp/spr_dungeon_tileset_temp.yy",
+    "name":"spr_dungeon_tileset",
+    "path":"sprites/spr_dungeon_tileset/spr_dungeon_tileset.yy",
   },
   "spriteNoExport":false,
   "textureGroupId":{
@@ -32,7 +32,7 @@
   "tilehsep":0,
   "tilevsep":0,
   "tileWidth":32,
-  "tilexoff":7,
+  "tilexoff":0,
   "tileyoff":0,
   "tile_count":36,
 }

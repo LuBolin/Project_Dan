@@ -1,10 +1,10 @@
 {
   "$GMSprite":"",
-  "%Name":"spr_dungeon_tileset_temp",
+  "%Name":"spr_dungeon_tileset",
   "bboxMode":0,
-  "bbox_bottom":199,
+  "bbox_bottom":191,
   "bbox_left":0,
-  "bbox_right":199,
+  "bbox_right":191,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,16 +12,16 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"01ff8799-f253-44f9-8979-eb4393089af0","name":"01ff8799-f253-44f9-8979-eb4393089af0","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"","%Name":"ddb669b4-28de-466d-8093-f1d9fd9987e2","name":"ddb669b4-28de-466d-8093-f1d9fd9987e2","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":200,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"26b15b06-d540-475b-90db-e325a81bd94d","blendMode":0,"displayName":"default","isLocked":false,"name":"26b15b06-d540-475b-90db-e325a81bd94d","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"6cf8304d-353a-4208-a4e6-9de1054410a0","blendMode":0,"displayName":"default","isLocked":false,"name":"6cf8304d-353a-4208-a4e6-9de1054410a0","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"spr_dungeon_tileset_temp",
+  "name":"spr_dungeon_tileset",
   "nineSlice":null,
   "origin":0,
   "parent":{
@@ -33,7 +33,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"spr_dungeon_tileset_temp",
+    "%Name":"spr_dungeon_tileset",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -57,7 +57,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"spr_dungeon_tileset_temp",
+    "name":"spr_dungeon_tileset",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
@@ -71,8 +71,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"01ff8799-f253-44f9-8979-eb4393089af0","path":"sprites/spr_dungeon_tileset_temp/spr_dungeon_tileset_temp.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"c92eebe3-ec1e-499e-84e6-20b45faa90b4","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"ddb669b4-28de-466d-8093-f1d9fd9987e2","path":"sprites/spr_dungeon_tileset/spr_dungeon_tileset.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"40345b68-a971-4fd7-af7d-c65839976bc9","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

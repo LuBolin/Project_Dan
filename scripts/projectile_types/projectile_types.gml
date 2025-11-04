@@ -752,7 +752,7 @@ function ProjectilePlant() constructor {
 function ProjectileHurricane() constructor {
 	name = "Hurricane";
 	speed       = 4.6875;  // units per second (300 / 64) - slow moving
-	damage      = 2;  // Used for DoT tick damage
+	damage      = 3;  // Used for DoT tick damage
 	life_steps  = game_get_speed(gamespeed_fps) * 5;  // 5 second max lifetime
 	kb_speed = 0;
 	kb_distance = 0;
@@ -789,6 +789,9 @@ function ProjectileHurricane() constructor {
 			}
 
 			ds_list_destroy(enemy_list);
+            
+            // Hurricane Test
+            projectile_inst.speed = projectile_inst.speed - 0.05 < 0 ? projectile_inst.speed - 0.05 : 0
 		}
 	}
 

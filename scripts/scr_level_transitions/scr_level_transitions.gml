@@ -50,7 +50,7 @@ function get_random_level() {
     //var random_index = irandom(array_length(levels) - 1);
     
     // Levels are shuffled
-    var level = global.level_order[global.level_progress - 1 % array_length(global.level_order)];
+    var level = global.level_order[(global.level_progress - 1) % array_length(global.level_order)];
     return level;
 }
 

@@ -10,6 +10,8 @@ invuln = false
 detection_radius = default_detection_radius;
 // Wind gust pending for Current element ability
 wind_gust_pending = undefined;
+plant_healing_pending = undefined;
+creation_clone_pending = undefined;
 
 // Check if player is carrying over an element from previous run
 var carried_element = undefined;
@@ -86,11 +88,18 @@ alarm[0] = 10
 // Entities that the player will physically collide with, such as walls
 colliders = [layer_tilemap_get_id("Tile_Collision"), obj_clay_wall];
 
-// gourd icon
+
+// ==================== SPRITES =============================
+// active gourd icon
 spr_gourd_icon = spr_gourd;
 
 // Effect Sprite for Burn Effect, etc
 // Switch to a Hashmap or sth if needed 
 effect_sprite = undefined
+// ==========================================================
+
+// For Health HUD
+is_hurt_this_level = false;
+
 
 death_timer = -1;

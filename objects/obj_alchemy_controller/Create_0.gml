@@ -6,6 +6,12 @@ if (!audio_is_playing(snd_dungeon_bgm)) {
     audio_sound_gain(bgm_instance, 0.5, 0); // Set volume to 50%
 }
 
+// Backdrop animation + darken settings
+backdrop_frame = 0;                                  // fractional frame index
+backdrop_fps = 12;                                   // play at 12 FPS
+backdrop_frame_step = backdrop_fps / game_get_speed(gamespeed_fps);
+backdrop_darken_alpha = 0.7;  
+
 // === LAYOUT CONFIG ===
 gui_width = display_get_gui_width();
 gui_height = display_get_gui_height();
@@ -116,6 +122,33 @@ button_x = gui_width - button_w - 40;
 button_y = gui_height - button_h - 40;
 button_hover = false;
 
+// === CONFIRMATION POPUP ===
+show_confirmation_popup = false;
+popup_width = 500;
+popup_height = 300;
+popup_x = (gui_width - popup_width) / 2;
+popup_y = (gui_height - popup_height) / 2;
+
+// Popup buttons
+popup_button_width = 120;
+popup_button_height = 40;
+popup_button_spacing = 20;
+
+// Calculate button positions centered in popup
+popup_buttons_total_width = (popup_button_width * 2) + popup_button_spacing;
+popup_buttons_start_x = popup_x + (popup_width - popup_buttons_total_width) / 2;
+popup_buttons_y = popup_y + popup_height - 70;
+
+// OK button (left)
+popup_ok_x = popup_buttons_start_x;
+popup_ok_y = popup_buttons_y;
+popup_ok_hover = false;
+
+// Cancel button (right)
+popup_cancel_x = popup_buttons_start_x + popup_button_width + popup_button_spacing;
+popup_cancel_y = popup_buttons_y;
+popup_cancel_hover = false;
+
 // === CRAFT FEEDBACK ===
 craft_feedback = "none"; // "none", "success", "fail"
 craft_feedback_timer = 0;
@@ -124,9 +157,9 @@ craft_feedback_equation = -1;
 
 // === RECIPE TREE LAYOUT (Right side) ===
 tree_panel_x = gui_width - 250; // Further reduced for narrower panel
-tree_panel_y = 50;
-tree_panel_w = 230; // Further reduced (about 12% smaller than 260)
-tree_panel_h = 520; // Reduced from gui_height - 100 to fit content better
+tree_panel_y = 80; // Moved down from 50 to avoid overlap with pause button
+tree_panel_w = 200; // Reduced width from 230
+tree_panel_h = 480; // Reduced height from 520
 
 // Tree node layout
 tree_node_size = 40; // Reduced from 60 to fit narrower panel
@@ -195,7 +228,7 @@ new_ele_separator_y = tree_panel_y + tree_panel_h
 
 var level = global.level_progress;
 var tier_elements;
-show_debug_message(level)
+
 switch (level) {
     case 2:
     case 3:    
@@ -208,12 +241,12 @@ switch (level) {
     case 1:
     default:    
         tier_elements = json_data.display_tiers.base.elements;
+        global.prev_received_elements = []
     break;
 }
 
 var rand_i;
 var arr_len = array_length(tier_elements);
-show_debug_message(tier_elements)
 new_element = gourd_create(GourdEarth);
 
 // Filter out elements that are already equipped
@@ -221,6 +254,10 @@ var available_elements = [];
 for (var t = 0; t < array_length(tier_elements); t++) {
     var tier_element = tier_elements[t];
     var is_equipped = false;
+    
+    if (array_contains(global.prev_received_elements, tier_element)) {
+        continue;    
+    }
     
     // Check if this element is already equipped
     for (var i = 0; i < array_length(equipped_gourds); i++) { 
@@ -235,23 +272,33 @@ for (var t = 0; t < array_length(tier_elements); t++) {
         array_push(available_elements, tier_element);
     }
 }
-
+show_debug_message(available_elements)
 // Pick random element from available (non-equipped) elements
 if (array_length(available_elements) > 0) {
     var random_index = irandom(array_length(available_elements) - 1);
+    show_debug_message(random_index);
     new_element = get_gourd_constructor_by_name(available_elements[random_index]);
     show_debug_message("Selected new element: " + available_elements[random_index]);
+    array_push(global.prev_received_elements, new_element.name);
 } else {
     // All elements of this tier are equipped, pick any random one
     if (array_length(tier_elements) > 0) {
         var random_index = irandom(array_length(tier_elements) - 1);
         new_element = get_gourd_constructor_by_name(tier_elements[random_index]);
         show_debug_message("All tier elements equipped, picked: " + tier_elements[random_index]);
+        array_push(global.prev_received_elements, new_element.name);
     }
 }
 
 show_debug_message("Final new_element: " + (is_struct(new_element) ? new_element.name : "undefined"));
 
-
 // Glow animation for Elixir
 elixir_glow_timer = 0;
+
+// ===== Pause button config =====
+pause_button_width = 120;
+pause_button_height = 40;
+pause_button_x = gui_width - pause_button_width - 16;
+pause_button_y = 16;
+pause_button_hovered = false;
+pause_button_text = "Esc: Pause";

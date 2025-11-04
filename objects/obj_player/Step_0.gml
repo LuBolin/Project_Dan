@@ -146,6 +146,56 @@ if (variable_instance_exists(self, "plant_healing_pending") && plant_healing_pen
     }
 }
 
+// Handle creation clone spawning after dash (used by Creation element)
+if (variable_instance_exists(self, "creation_clone_pending") && creation_clone_pending != undefined) {
+    // Increment timer
+    if (is_struct(creation_clone_pending) && variable_struct_exists(creation_clone_pending, "timer")) {
+        creation_clone_pending.timer++;
+    } else {
+        creation_clone_pending.timer = 1;
+    }
+
+    // Check if dash duration has passed
+    if (creation_clone_pending.timer >= creation_clone_pending.dash_duration) {
+        // Spawn the clone at the initial position (where player started the dash)
+        var clone = instance_create_layer(creation_clone_pending.spawn_x, creation_clone_pending.spawn_y, "Instances", obj_clone);
+        if (instance_exists(clone)) {
+            clone.owner = creation_clone_pending.creator;
+            
+            // Copy player's elements to clone (simplified versions)
+            if (variable_instance_exists(clone, "clone_elements")) {
+                clone.clone_elements = [];
+                for (var i = 0; i < array_length(inv); i++) {
+                    if (inv[i].name != "(Empty)" && inv[i].name != "Creation") { // EXCLUDE Creation element
+                        // Use the get_gourd_constructor_by_name function from alchemy controller
+                        var element_constructor = get_gourd_type_by_name(inv[i].name);
+                        if (element_constructor != undefined) {
+                            var clone_element = gourd_create(element_constructor);
+                            clone_element.cooldown *= 1.5; // Clone elements have longer cooldowns
+                            array_push(clone.clone_elements, clone_element);
+                        }
+                    }
+                }
+                
+                // If clone has no elements after filtering, give it a basic element
+                if (array_length(clone.clone_elements) == 0) {
+                    var fallback_element = gourd_create(GourdFire); // Give clone Fire as fallback
+                    fallback_element.cooldown *= 1.5;
+                    array_push(clone.clone_elements, fallback_element);
+                    show_debug_message("Clone had no valid elements, gave Fire as fallback");
+                }
+            }
+            
+            show_debug_message("Creation clone spawned at initial position after " + 
+                             string(creation_clone_pending.dash_duration_seconds) + " seconds with " + 
+                             string(array_length(clone.clone_elements)) + " elements (Creation excluded)");
+        }
+
+        // Remove the pending clone data
+        creation_clone_pending = undefined;
+    }
+}
+
 // Ranged Vacuum Pickup for Chi
 with (obj_chi) {
     var dist = point_distance(x, y, other.x, other.y);

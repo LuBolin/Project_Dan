@@ -1,23 +1,28 @@
 /// @description Fire Boar FSM States
 /// Custom states for the Fire Boar miniboss
 
+
+function FireBoarRoamState(_entity, _duration = 2000, _is_timed = true) : RoamState(_entity, _duration, _is_timed) constructor {
+    on_enter = function() {
+        create_env_hazard(obj_lava_pool, 3, true, false);
+    }
+}
+
 function FireBoarAlertState(_entity, _duration = undefined, _is_timed = false) : AlertState(_entity, _duration, _is_timed) constructor {
     on_enter = function() {
         charge = false;
+        
         with (entity) {
             // Creates the '!' pop up to indicate the enemy has detected the player
             instance_create_layer(x, y - sprite_height / 2 - 10, "Effects", obj_enemy_alert_popup);
 
-            if (distance_to_object(obj_player) < global.UNIT_LENGTH * 2 and !has_charged) {
-                changeState(STATES.ATTACK)
-            } else {
-                changeState(STATES.CHASE)
-            }
+            changeState(STATES.ATTACK)
+
         }
     }
 }
 
-function FireBoarChaseState(_entity, _duration = 3000, _is_timed = true) : ChaseState(_entity, _duration, _is_timed) constructor {
+function FireBoarChaseState(_entity, _duration = 5000, _is_timed = true) : ChaseState(_entity, _duration, _is_timed) constructor {
 
     on_step = function() {
         path_remaining_time -= 1;
@@ -28,20 +33,25 @@ function FireBoarChaseState(_entity, _duration = 3000, _is_timed = true) : Chase
         }
 
         with (entity) {
+            
+            // Safety check: make sure player exists BEFORE accessing coordinates
+            if (!instance_exists(obj_player)) {
+                // Player doesn't exist, return to roam state
+                changeState(STATES.ROAM);
+                exit;
+            } 
+                
+            // Check if player_last_known position is defined before using
+            var _sight_line = collision_line(x, y, player_last_known_x, player_last_known_y, obj_player.colliders, false, true);
+            
             // Shoot fireballs while chasing
-            if (fireball_cooldown <= 0 && instance_exists(obj_player)) {
+            if (fireball_cooldown <= 0 and _sight_line == noone) {
                 // Calculate direction to player
-                var dir = point_direction(x, y, obj_player.x, obj_player.y);
-
-                // Create and shoot fireball projectile
-                var fireball = instance_create_depth(x, y, depth - 1, obj_enemy_projectile);
-                fireball.projectile_type = new ProjectileFire();
-                fireball.damage = 1; // Fire damage
-                fireball.direction = dir;
-                fireball.speed = fireball.projectile_type.speed;
-                fireball.sprite_index = fireball.projectile_type.sprite_index;
-                fireball.life_steps = fireball.projectile_type.life_steps;
-
+                var boss_fire_ball = new ProjectileFire();
+        		boss_fire_ball.speed = 6.0; // half speed
+        		boss_fire_ball.scale = 1.5; // 1.5 size
+                
+                spawn_and_set_projectile(self, boss_fire_ball, player_last_known_x, player_last_known_y, obj_enemy_projectile);
                 // Reset cooldown
                 fireball_cooldown = fireball_cooldown_max;
 
@@ -49,24 +59,38 @@ function FireBoarChaseState(_entity, _duration = 3000, _is_timed = true) : Chase
                 // TODO: Replace with snd_fireball when available
                 obj_sfx_manager.play_sound(snd_air_projectile, true);
             }
-
-            // Check for charge attack opportunity
-            if (distance_to_object(obj_player) < global.UNIT_LENGTH * 2 and !has_charged) {
-                changeState(STATES.ATTACK)
-            }
         }
+        show_debug_message(remaining_time)
     }
 
     on_timeout = function() {
-        remaining_time = duration;
-        entity.has_charged = false;
-        entity.changeState(STATES.ROAM);
+        // Check for charge attack opportunity
+        var _sight_line = collision_line(entity.x, entity.y, entity.player_last_known_x, entity.player_last_known_x, obj_player.colliders, false, true);
+        if (_sight_line == noone) {
+            remaining_time = duration
+            entity.changeState(STATES.ATTACK)
+        }
+    }
+    
+    on_player_interact = function() {
+        
     }
 }
 
 function FireBoarAttackState(_entity, _duration = 700, _is_timed = true) : AttackState(_entity, _duration, _is_timed) constructor {
+    player_previous_x = 0 ;
+    plater_previous_y = 0;
     on_enter = function() {
         obj_sfx_manager.play_sound(snd_boar, true);
+        // Safety check: make sure player exists BEFORE accessing coordinates
+        if (!instance_exists(obj_player)) {
+            // Player doesn't exist, return to roam state
+            changeState(STATES.ROAM);
+            exit;
+        } 
+        
+        player_previous_x = obj_player.x;
+        player_previous_y = obj_player.y;
 
         // Shoot a burst of fireballs when starting charge
         with (entity) {
@@ -75,14 +99,14 @@ function FireBoarAttackState(_entity, _duration = 700, _is_timed = true) : Attac
                 var base_dir = point_direction(x, y, obj_player.x, obj_player.y);
                 var spread_angle = 15; // Degrees between fireballs
 
+
+                
                 for (var i = -1; i <= 1; i++) {
-                    var fireball = instance_create_depth(x, y, depth - 1, obj_enemy_projectile);
-                    fireball.projectile_type = new ProjectileFire();
-                    fireball.damage = 1;
-                    fireball.direction = base_dir + (i * spread_angle);
-                    fireball.speed = fireball.projectile_type.speed;
-                    fireball.sprite_index = fireball.projectile_type.sprite_index;
-                    fireball.life_steps = fireball.projectile_type.life_steps;
+                    
+                    var boss_fire_ball = new ProjectileFire();
+                    boss_fire_ball.speed = 6.0; // half speed 
+                    boss_fire_ball.scale = 1.5; // 1.5 size                   
+                    spawn_and_set_projectile_angled(self, boss_fire_ball, base_dir + (i * spread_angle), obj_enemy_projectile); 
                 }
 
                 // Reset fireball cooldown
@@ -93,9 +117,8 @@ function FireBoarAttackState(_entity, _duration = 700, _is_timed = true) : Attac
 
     on_timeout = function() {
         // Regular charge attack (wind gust)
-        spawn_and_set_projectile(entity, new ProjectilEnemyAir(false, 102, 10), entity.player_last_known_x, entity.player_last_known_y)
+        spawn_and_set_projectile(entity, new ProjectilEnemyAir(false, 102, 30), player_previous_x, player_previous_y)
         remaining_time = duration;
-        entity.has_charged = true;
         entity.changeState(STATES.CHASE)
     }
 }

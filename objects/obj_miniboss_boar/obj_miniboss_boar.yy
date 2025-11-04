@@ -9,7 +9,7 @@
   "managed":true,
   "name":"obj_miniboss_boar",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"move_speed_ups","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1.6",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"move_speed_ups","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1.0",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"max_hp","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"12",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"hp","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"12",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"base_damage","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"4",},

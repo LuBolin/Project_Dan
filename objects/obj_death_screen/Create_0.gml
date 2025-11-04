@@ -26,34 +26,31 @@ if (variable_global_exists("player_death_inventory")) {
     player_elements = global.player_death_inventory;
 }
 
-// Element selection
-selected_element_index = -1; // -1 means "Start Fresh" (no element carried over)
-element_slot_size = 80;
-element_slot_spacing = 20;
-element_start_y = panel_y + 120;
+// Element selection (including "Bring nothing" as 4th option)
+selected_element_index = -1; // -1 means nothing selected yet
+element_slot_size = 100;
+element_slot_spacing = 15;
+element_start_y = panel_y + 150;
 
-// Calculate element positions centered in panel
-var total_elements = array_length(player_elements);
-var total_width = total_elements * element_slot_size + (total_elements - 1) * element_slot_spacing;
+// Calculate element positions for 4 buttons in a row (3 elements + "Bring nothing")
+var total_slots = 4;
+var total_width = total_slots * element_slot_size + (total_slots - 1) * element_slot_spacing;
 element_start_x = panel_x + (panel_width - total_width) / 2;
+
+// The 4th slot (index 3) is the "Bring nothing" option
+bring_nothing_index = 3;
 
 // Buttons
 button_width = 180;
 button_height = 50;
 button_spacing = 20;
 
-// "Start New Run" button
+// "Start New Run" button (left side, below element slots)
 start_button_x = panel_x + panel_width / 2 - button_width - button_spacing / 2;
-start_button_y = panel_y + panel_height - 100;
+start_button_y = panel_y + panel_height - 80;
 start_button_hover = false;
 
-// "Main Menu" button
+// "Main Menu" button (right side, same row as Start button)
 menu_button_x = panel_x + panel_width / 2 + button_spacing / 2;
-menu_button_y = panel_y + panel_height - 100;
+menu_button_y = start_button_y;
 menu_button_hover = false;
-
-// "Start Fresh" button (no element carried over)
-fresh_button_width = 120;
-fresh_button_x = panel_x + (panel_width - fresh_button_width) / 2;
-fresh_button_y = element_start_y + element_slot_size + 40;
-fresh_button_hover = false;

@@ -52,11 +52,11 @@ function GourdLava() : GourdBase() constructor
     projectile = ProjectileLava;
 }
 
-function GourdSteam(_cd = 8) : GourdBase() constructor
+function GourdSteam() : GourdBase() constructor
 {
     name = "Steam";
 	color = make_color_rgb(200, 220, 255);
-    cooldown = _cd;
+    cooldown = 8;
 	projectile = undefined; // Steam doesn't use projectiles
     
     use = function(_p) {
@@ -138,6 +138,7 @@ function GourdClay() : GourdBase() constructor
         var wall_segments = 6; // Number of wall pieces
         var segment_spacing = 45; // Distance between wall segments (0.75 units)
         var wall_scale = 2.0; // Scale factor for wall size
+        var initial_offset = 16; // Start wall further away from player
         
         // IMMEDIATELY UPDATE COLLISION ARRAYS BEFORE SPAWNING WALLS
         with (obj_player) {
@@ -154,10 +155,11 @@ function GourdClay() : GourdBase() constructor
             }
         }
         
-        // Start spawning from player position, extending outward in aim direction
-        for (var i = 1; i <= wall_segments; i++) { // Start from 1 to not spawn on player
-            var segment_x = start_x + lengthdir_x(i * segment_spacing, direction);
-            var segment_y = start_y + lengthdir_y(i * segment_spacing, direction);
+        // Start spawning from offset position, extending outward in aim direction
+        for (var i = 1; i <= wall_segments; i++) {
+            // Add initial_offset to push wall away from player
+            var segment_x = start_x + lengthdir_x(initial_offset + (i * segment_spacing), direction);
+            var segment_y = start_y + lengthdir_y(initial_offset + (i * segment_spacing), direction);
             
             // Check if position is valid (not in existing walls)
             var can_place = true;
@@ -232,7 +234,7 @@ function GourdCreation() : GourdBase() constructor
 {
     name = "Creation";
 	color = make_color_rgb(255, 255, 200);
-    cooldown = 8;
+    cooldown = 12;
 	projectile = ProjectileCreation;
 }
 
@@ -243,9 +245,39 @@ function GourdCreation() : GourdBase() constructor
 function GourdElixir() : GourdBase() constructor
 {
     name = "Elixir";
-	color = make_color_rgb(255, 215, 0);
+    color = make_color_rgb(255, 215, 0);
     cooldown = 10;
-	projectile = undefined; // Final element - no projectile
+    projectile = undefined; // Final element - no projectile
+    
+    use = function(_p) {
+        if (can_use()) {
+            // Create visual effect at player position
+            var elixir_effect = instance_create_layer(_p.x, _p.y, "Instances", obj_projectile);
+            if (instance_exists(elixir_effect)) {
+                elixir_effect.sprite_index = spr_wind_gust; // Reuse wind sprite or create elixir effect sprite
+                elixir_effect.image_alpha = 0.8;
+                elixir_effect.image_xscale = 0.8;
+                elixir_effect.image_yscale = 0.8;
+                elixir_effect.image_blend = make_color_rgb(255, 215, 0); // Golden color
+                elixir_effect.speed = 0; // Stationary effect
+                elixir_effect.life_steps = 60; // 1 second visual effect
+                elixir_effect.proj_data = {}; // No collision
+            }
+            
+            // Apply 5 seconds of invincibility
+            var invuln_duration = 5 * game_get_speed(gamespeed_fps); // 5 seconds in frames
+            add_status_effect(_p, new InvincibilityEffect(invuln_duration));
+            
+            // Visual feedback - golden flash
+            if (variable_instance_exists(_p, "image_blend")) {
+                _p.image_blend = make_color_rgb(255, 215, 0); // Golden flash
+                _p.alarm[11] = 20; // Flash duration (will reset to white after 20 frames)
+            }
+            
+            trigger_cd();
+            show_debug_message("Elixir used - Player is invulnerable for 5 seconds!");
+        }
+    }
 }
 
 // Helper function to get gourd type constructor by element name

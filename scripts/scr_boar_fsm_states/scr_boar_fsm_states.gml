@@ -4,16 +4,23 @@
 function BoarAlertState(_entity, _duration = undefined, _is_timed = false) : AlertState(_entity, _duration, _is_timed) constructor {
     on_enter = function() {
         charge = false;
+        
         with (entity) {
+            // Safety check: make sure player exists
+            if (!instance_exists(obj_player)) {
+                changeState(STATES.ROAM);
+                exit;
+            }
+
             // Creates the '!' pop up to indicate the enemy has detected the player
             instance_create_layer(x, y - sprite_height / 2 - 10, "Effects", obj_enemy_alert_popup);
-            
+
             if (distance_to_object(obj_player) < global.UNIT_LENGTH * 2 and !has_charged) {
                 changeState(STATES.ATTACK)
             } else {
                 changeState(STATES.CHASE)
             }
-            
+
         }
     }
 
@@ -28,18 +35,18 @@ function BoarChaseState(_entity, _duration = 3000, _is_timed = true) : ChaseStat
             path_remaining_time = path_reset_timer;
             set_path(entity);
         }
-        
+
         with (entity) {
-            // Properly get player coordinates, with safety checks
-            var _player_x = obj_player.x;
-            var _player_y = obj_player.y;
-            
-            // Safety check: make sure player exists and coordinates are valid
+            // Safety check: make sure player exists BEFORE accessing coordinates
             if (!instance_exists(obj_player)) {
                 // Player doesn't exist, return to roam state
                 changeState(STATES.ROAM);
                 exit;
             }
+
+            // Properly get player coordinates, with safety checks
+            var _player_x = obj_player.x;
+            var _player_y = obj_player.y;
             
             // Check if player_last_known position is defined, use as fallback
             if (variable_instance_exists(self, "player_last_known_x") && 

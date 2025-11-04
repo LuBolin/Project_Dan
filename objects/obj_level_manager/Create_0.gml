@@ -1,5 +1,3 @@
-randomize()
-
 // Track all enemies and kills
 total_enemies = 0;
 current_kills = 0;

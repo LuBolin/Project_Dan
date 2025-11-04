@@ -13,7 +13,11 @@ function ProjectileFire() constructor {
 	scale = 1;
     sfx_fire = undefined;
     sfx_hit = undefined;
-
+    
+    on_launch = function(projectile_inst) {
+        projectile_inst.depth = 0;
+    }
+    
 	on_hit = function(projectile_inst, target) {
 		// Initial damage
 		damage_entity(target, projectile_inst.damage);
@@ -35,6 +39,10 @@ function ProjectileRock() constructor {
     sfx_fire = undefined;
     sfx_hit = undefined;
     
+    on_launch = function(projectile_inst) {
+        projectile_inst.depth = 0;
+    }
+    
 	on_hit = function(projectile_inst, target) {
 		damage_entity(target, projectile_inst.damage);
 		add_status_effect(target, new StunEffect(game_get_speed(gamespeed_fps) * 0.5));
@@ -53,6 +61,10 @@ function ProjectileWaterBall() constructor {
 	scale = 1;
     sfx_fire = undefined;
     sfx_hit = undefined;
+    
+    on_launch = function(projectile_inst) {
+        projectile_inst.depth = 0;
+    }
     
 	on_hit = function(projectile_inst, target) {
 		damage_entity(target, projectile_inst.damage);
@@ -85,6 +97,7 @@ function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration =
         // Immediately dash the player
         if (instance_exists(projectile_inst.creator)) {
             var player = projectile_inst.creator;
+            projectile_inst.depth = 0;
             
             // DETERMINE DASH DIRECTION: Player movement takes priority over mouse direction
             var dash_dir;
@@ -175,8 +188,9 @@ function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_durati
     		projectile_inst.y = projectile_inst.creator.y;
     		projectile_inst.speed = 0;
     		projectile_inst.image_alpha = 0.5;  // Semi-transparent
-    
-    		// Immediately dash the player towards mouse
+            projectile_inst.depth = 0;
+    		
+            // Immediately dash the player towards mouse
     		if (instance_exists(projectile_inst.creator)) {
     			var player = projectile_inst.creator;
     			//var dash_dir = point_direction(player.x, player.y, projectile_inst, mouse_y);
@@ -233,7 +247,7 @@ function ProjectileLava() constructor {
     damage      = 1;
     life_steps  = game_get_speed(gamespeed_fps) * 2.0; // 2 second max flight time
     kb_speed = 3;  // pixels per frame
-    kb_distance = 30; // knockback distance
+    kb_distance = 20; // knockback distance
     sprite_index = spr_lava_ball;
     scale = 0.4;
     sfx_fire = undefined;
@@ -249,6 +263,7 @@ function ProjectileLava() constructor {
         projectile_inst.target_x = mouse_x;
         projectile_inst.target_y = mouse_y;
         projectile_inst.homing_enabled = true;
+        projectile_inst.depth = 0;
         
         // Calculate initial direction towards target
         var dir = point_direction(projectile_inst.x, projectile_inst.y, mouse_x, mouse_y);
@@ -268,7 +283,11 @@ function ProjectileLava() constructor {
                 projectile_inst.speed = 0; // Stop moving
                 // Spawn lava pool at target location
                 projectile_inst.spawned_pool = true;
-                instance_create_layer(projectile_inst.target_x, projectile_inst.target_y, "Instances", obj_lava_pool);
+                var lava = instance_create_layer(projectile_inst.target_x, projectile_inst.target_y, "Instances", obj_lava_pool);
+                if (instance_exists(lava) && projectile_inst.creator == obj_player) {
+                    lava.damage_enemies = true;
+                    lava.damage_player = false;
+                }
                 instance_destroy(projectile_inst);
             } else {
                 // Adjust direction towards target with smooth homing
@@ -294,28 +313,40 @@ function ProjectileLava() constructor {
         // Apply damage and knockback
         damage_entity(target, projectile_inst.damage);
         apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
-        
+
         // Mark that we're spawning a pool
         projectile_inst.spawned_pool = true;
-        
+
         // Spawn lava pool at impact location
-        instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+        var lava = instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+        if (instance_exists(lava) && projectile_inst.creator == obj_player) {
+            lava.damage_enemies = true;
+            lava.damage_player = false;
+        }
         instance_destroy(projectile_inst);
     }
 
     on_wall_hit = function(projectile_inst) {
         // Mark that we're spawning a pool
         projectile_inst.spawned_pool = true;
-        
+
         // Spawn lava pool at wall impact location
-        instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+        var lava = instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+        if (instance_exists(lava) && projectile_inst.creator == obj_player) {
+            lava.damage_enemies = true;
+            lava.damage_player = false;
+        }
         instance_destroy(projectile_inst);
     }
 
     on_destroy = function(projectile_inst) {
         // Only spawn pool if we haven't already spawned one (from hit or wall)
         if (instance_exists(projectile_inst) && !variable_instance_exists(projectile_inst, "spawned_pool")) {
-            instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+            var lava = instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
+            if (instance_exists(lava) && projectile_inst.creator == obj_player) {
+                lava.damage_enemies = true;
+                lava.damage_player = false;
+            }
         }
     }
 }
@@ -330,7 +361,7 @@ function ProjectileSteam() constructor {
 function ProjectileMudBall() constructor {
 	name = "Mud Ball";
 	speed       = 7.5;  // units per second (480 / 64)
-	damage      = 0;
+	damage      = 1;
 	life_steps  = game_get_speed(gamespeed_fps) * 1.2;
 	kb_speed = 2;  // pixels per frame (knockback still frame-based)
 	kb_distance = 40;
@@ -338,6 +369,10 @@ function ProjectileMudBall() constructor {
 	scale = 1;
     sfx_fire = undefined;
     sfx_hit = undefined;
+    
+    on_launch = function(projectile_inst) {
+        projectile_inst.depth = 0;
+    }
 
 	on_hit = function(projectile_inst, target) {
 		damage_entity(target, projectile_inst.damage);
@@ -394,7 +429,7 @@ function ProjectileCurrent() constructor {
         // Immediately dash the player towards movement direction or mouse
         if (instance_exists(projectile_inst.creator)) {
             var player = projectile_inst.creator;
-            
+            projectile_inst.depth = 0;
             // DETERMINE DASH DIRECTION: Player movement takes priority
             var dash_dir;
             var gust_dir; // Direction for the air gust (always toward mouse for Current)
@@ -486,7 +521,7 @@ function ProjectileEruption() constructor {
     damage      = 1.5;    // 50% higher damage than regular lava
     life_steps  = game_get_speed(gamespeed_fps) * 2.5; // 2.5 second max flight time
     kb_speed = 4;  // pixels per frame
-    kb_distance = 30; // Same knockback than lava
+    kb_distance = 20; // Same knockback than lava
     sprite_index = spr_lava_ball; // Reuse lava ball sprite
     scale = 0.8; // Slightly larger than regular lava
     sfx_fire = undefined;
@@ -506,6 +541,7 @@ function ProjectileEruption() constructor {
         projectile_inst.target_x = mouse_x;
         projectile_inst.target_y = mouse_y;
         projectile_inst.homing_enabled = true;
+        projectile_inst.depth = 0;
         
         // Calculate initial direction towards target
         var dir = point_direction(projectile_inst.x, projectile_inst.y, mouse_x, mouse_y);
@@ -524,7 +560,7 @@ function ProjectileEruption() constructor {
                 projectile_inst.homing_enabled = false;
                 projectile_inst.speed = 0; // Stop moving
                 // Trigger eruption at target location
-                trigger_eruption(projectile_inst.target_x, projectile_inst.target_y);
+                trigger_eruption(projectile_inst.target_x, projectile_inst.target_y, projectile_inst.creator);
                 projectile_inst.spawned_pool = true;
                 instance_destroy(projectile_inst);
             } else {
@@ -551,36 +587,36 @@ function ProjectileEruption() constructor {
         // Apply damage and knockback
         damage_entity(target, projectile_inst.damage);
         apply_knockback(projectile_inst, target, projectile_inst.kb_speed, projectile_inst.kb_distance);
-        
+
         // Mark that we're spawning pools
         projectile_inst.spawned_pool = true;
-        
+
         // Trigger eruption at impact location
-        trigger_eruption(projectile_inst.x, projectile_inst.y);
+        trigger_eruption(projectile_inst.x, projectile_inst.y, projectile_inst.creator);
         instance_destroy(projectile_inst);
     }
 
     on_wall_hit = function(projectile_inst) {
         // Mark that we're spawning pools
         projectile_inst.spawned_pool = true;
-        
+
         // Trigger eruption at wall impact location
-        trigger_eruption(projectile_inst.x, projectile_inst.y);
+        trigger_eruption(projectile_inst.x, projectile_inst.y, projectile_inst.creator);
         instance_destroy(projectile_inst);
     }
 
     on_destroy = function(projectile_inst) {
         // Only spawn eruption if we haven't already spawned one (from hit or wall)
         if (instance_exists(projectile_inst) && !variable_instance_exists(projectile_inst, "spawned_pool")) {
-            trigger_eruption(projectile_inst.x, projectile_inst.y);
+            trigger_eruption(projectile_inst.x, projectile_inst.y, projectile_inst.creator);
         }
     }
 
     // Helper function to create the eruption pattern
-    trigger_eruption = function(center_x, center_y) {
+    trigger_eruption = function(center_x, center_y, creator) {
         // Spawn center lava pool immediately
         var center_pool = instance_create_layer(center_x, center_y, "Instances", obj_lava_pool);
-        
+
         // Make center pool slightly more powerful AND bigger
         if (instance_exists(center_pool)) {
             center_pool.damage_per_tick = 3; // 50% higher damage than lava
@@ -588,6 +624,11 @@ function ProjectileEruption() constructor {
             // Make center pool bigger
             center_pool.image_xscale = 1.5;
             center_pool.image_yscale = 1.5;
+            // Set damage flags if created by player
+            if (creator == obj_player) {
+                center_pool.damage_enemies = true;
+                center_pool.damage_player = false;
+            }
         }
         
         // Create eruption controller to spawn secondary pools with delays
@@ -596,7 +637,7 @@ function ProjectileEruption() constructor {
             eruption_controller.sprite_index = -1; // Invisible
             eruption_controller.speed = 0;
             eruption_controller.life_steps = num_secondary_pools * 3 + 10; // Live long enough to spawn all pools
-            
+
             // Store eruption data
             eruption_controller.proj_data = {
                 center_x: center_x,
@@ -605,6 +646,7 @@ function ProjectileEruption() constructor {
                 spawn_timer: 0,
                 explosion_radius: explosion_radius,
                 num_secondary_pools: num_secondary_pools,
+                creator: creator,
                 
                 on_step: function(projectile_inst) {
                     self.spawn_timer++;
@@ -626,6 +668,11 @@ function ProjectileEruption() constructor {
                                 // Make secondary pools smaller
                                 secondary_pool.image_xscale = 0.8;
                                 secondary_pool.image_yscale = 0.8;
+                                // Set damage flags if created by player
+                                if (self.creator == obj_player) {
+                                    secondary_pool.damage_enemies = true;
+                                    secondary_pool.damage_player = false;
+                                }
                             }
                         }
 
@@ -675,7 +722,7 @@ function ProjectilePlant() constructor {
         // Immediately dash the player
         if (instance_exists(projectile_inst.creator)) {
             var player = projectile_inst.creator;
-            
+            projectile_inst.depth = 0;
             // DETERMINE DASH DIRECTION: Player movement takes priority over mouse direction
             var dash_dir;
             
@@ -766,6 +813,7 @@ function ProjectileHurricane() constructor {
 		projectile_inst.image_angle = 0;
 		// Initialize hit tracking
 		projectile_inst.hit_targets = ds_map_create();
+        projectile_inst.depth = 0;
 	}
 
 	on_step = function(projectile_inst) {
@@ -819,9 +867,107 @@ function ProjectileDestruction() constructor {
 }
 
 function ProjectileCreation() constructor {
-	name = "Creation";
-	// UNIMPLEMENTED - Print message instead of shooting
-	show_debug_message("Creation is unimplemented");
+    name = "Creation";
+    speed = 0;  // Doesn't move (player dashes instead)
+    damage = 0;
+    life_steps = 1;  // Destroy immediately after dash
+    kb_speed = 12;  // Dash speed (pixels per frame) - same as Air
+    kb_distance = 128;  // Total dash distance (2 units) - same as Air
+    dash_duration_seconds = 0.16;  // Dash duration in seconds
+    dash_duration = dash_duration_seconds * game_get_speed(gamespeed_fps);  // Convert to frames
+    sprite_index = spr_wind_gust; // Reuse wind gust sprite for dash effect
+    scale = 0.2;  // Small visual effect during dash
+    sfx_fire = undefined;
+    sfx_hit = undefined;
+    
+
+    on_launch = function(projectile_inst) {
+        // Spawn projectile on player
+        projectile_inst.x = projectile_inst.creator.x;
+        projectile_inst.y = projectile_inst.creator.y;
+        projectile_inst.speed = 0;
+        projectile_inst.image_alpha = 0.5;  // Semi-transparent
+
+        // Store initial position for clone spawning
+        var initial_x = projectile_inst.creator.x;
+        var initial_y = projectile_inst.creator.y;
+
+        // Immediately dash the player
+        if (instance_exists(projectile_inst.creator)) {
+            var player = projectile_inst.creator;
+            projectile_inst.depth = 0;
+            
+            // DETERMINE DASH DIRECTION: Player movement takes priority over mouse direction
+            var dash_dir;
+            
+            // Check if player is moving (get current input)
+            var input_x = 0;
+            var input_y = 0;
+            
+            if (keyboard_check(ord("A"))) input_x -= 1;
+            if (keyboard_check(ord("D"))) input_x += 1;
+            if (keyboard_check(ord("W"))) input_y -= 1;
+            if (keyboard_check(ord("S"))) input_y += 1;
+            
+            // If player is moving, dash in movement direction
+            if (input_x != 0 || input_y != 0) {
+                dash_dir = point_direction(0, 0, input_x, input_y);
+                show_debug_message("Creation dash: Using movement direction " + string(dash_dir));
+            } else {
+                // If not moving, dash toward mouse
+                dash_dir = point_direction(player.x, player.y, mouse_x, mouse_y);
+                show_debug_message("Creation dash: Using mouse direction " + string(dash_dir));
+            }
+            
+            projectile_inst.image_angle = dash_dir;
+
+            // Apply knockback effect to dash player (false = no stun)
+            add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
+
+            // Make player invincible during dash
+            var invuln_time_seconds = 0.2; // seconds
+            var invuln_duration = (dash_duration_seconds + invuln_time_seconds) * game_get_speed(gamespeed_fps);
+            add_status_effect(player, new InvincibilityEffect(invuln_duration));
+
+            // Create particle effect trail behind player (golden creation particles)
+            var trail_length = 5;  // Number of particles
+            for (var i = 0; i < trail_length; i++) {
+                var offset = i * 8;  // Space particles along the trail
+                var trail_x = player.x - lengthdir_x(offset, dash_dir);
+                var trail_y = player.y - lengthdir_y(offset, dash_dir);
+
+                // Create a golden particle at this position
+                var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
+                if (particle != noone) {
+                    particle.sprite_index = spr_wind_gust; // Use wind gust or create spr_creation_particle
+                    particle.image_alpha = 0.4 - (i * 0.05);  // Fade out
+                    particle.image_xscale = 0.25;
+                    particle.image_yscale = 0.25;
+                    particle.image_angle = dash_dir + random_range(-15, 15); // Slight rotation variation
+                    particle.image_blend = make_color_rgb(255, 215, 0); // Golden tint
+                    particle.speed = 0;
+                    particle.life_steps = (1.0 - (i * 0.15)) * game_get_speed(gamespeed_fps); // Particles fade over 0.5-1 seconds
+                    particle.proj_data = {};  // Empty data, no collision
+                }
+            }
+
+            // Schedule clone spawning after dash completes
+            var clone_data = {
+                spawn_x: initial_x, // Spawn at initial position
+                spawn_y: initial_y,
+                creator: player,
+                timer: 0,
+                dash_duration: dash_duration,
+                dash_duration_seconds: dash_duration_seconds
+            };
+
+            // Store clone data on player to spawn after dash
+            player.creation_clone_pending = clone_data;
+        }
+
+        // Destroy projectile immediately
+        instance_destroy(projectile_inst);
+    }
 }
 
 // ========================================

@@ -1,3 +1,41 @@
+// ======== PAUSE BUTTON ========
+// Get GUI dimensions first
+var gui_w = display_get_gui_width();
+var gui_h = display_get_gui_height();
+
+// Only show in non-menu rooms
+if (room != MainMenu) {
+    // Position button in top-right corner
+    var btn_x = gui_w - pause_button_width - 16;
+    var btn_y = pause_button_y;
+
+    // Button colors
+    var btn_bg_color = pause_button_hovered ? make_color_rgb(80, 60, 50) : make_color_rgb(50, 40, 30);
+    var btn_border_color = make_color_rgb(150, 120, 90);
+    var btn_text_color = c_white;
+
+    // Draw button background
+    draw_set_alpha(0.8);
+    draw_set_color(btn_bg_color);
+    draw_rectangle(btn_x, btn_y, btn_x + pause_button_width, btn_y + pause_button_height, false);
+
+    // Draw button border
+    draw_set_alpha(1);
+    draw_set_color(btn_border_color);
+    draw_rectangle(btn_x, btn_y, btn_x + pause_button_width, btn_y + pause_button_height, true);
+
+    // Draw button text
+    draw_set_color(btn_text_color);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(btn_x + pause_button_width / 2, btn_y + pause_button_height / 2, pause_button_text);
+
+    // Reset draw settings
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_alpha(1);
+}
+
 // ======== HEALTH BAR (your original, unchanged except organized) ========
 if (!instance_exists(global.player)) exit;
 var p = global.player;
@@ -7,11 +45,8 @@ if (!variable_instance_exists(p, "hp") || !variable_instance_exists(p, "max_hp")
 
 var hp     = p.hp;
 var hp_max = max(1, p.max_hp);
-var ratio  = clamp(hp / hp_max, 0, 1);
-
-// GUI size
-var gui_w = display_get_gui_width();
-var gui_h = display_get_gui_height();
+// If player was not hurt this level, make the hurt-effect obvious
+var ratio  = p.is_hurt_this_level ? clamp(hp / hp_max, 0, 1) : clamp(hp / hp_max, 0.7, 1) 
 
 // health bar size & pos
 var bar_w = gui_w * 0.20;   // 20% width
@@ -25,17 +60,48 @@ var back_col   = make_color_rgb(40, 40, 40);
 var fill_col   = make_color_rgb(200, 50, 50);
 var border_col = c_black;
 
+// Progressive desaturation effect for low health using shader
+// Start at 80% health (0.8), full effect at 10% health (0.1)
+// At 80% health: 0% desaturation
+// At 10% health: 80% desaturation (20% saturation remaining)
+var desaturation = 0;
+if (ratio <= 0.8) {
+    // Map health from 80% -> 10% to desaturation 0% -> 80%
+    // ratio 0.8 -> 0.0, ratio 0.1 -> 0.8
+    desaturation = clamp((0.8 - ratio) / 0.7, 0, 0.8);
+}
 
-// Progressive shading for low health
-draw_set_color(c_black)
+// Apply desaturation shader to the application surface
+if (desaturation > 0) {
+    shader_set(shd_desaturate);
+    shader_set_uniform_f(uni_desaturation, desaturation);
 
-var shading = 1 - ratio * 3;
+    // Draw the application surface with shader applied
+    if (surface_exists(application_surface)) {
+        draw_surface(application_surface, 0, 0);
+    }
 
-draw_set_alpha(clamp(shading, 0, 0.5));
-draw_rectangle(0, 0, gui_w, gui_h, false);
+    shader_reset();
+}
 
-draw_set_alpha(clamp(shading, 0, 0.8));
+// Add darkening overlay (0% at 80% health, 30% at 10% health)
+var darkness = 0;
+if (ratio <= 0.8) {
+    // Map health from 80% -> 10% to darkness 0% -> 30%
+    darkness = clamp((0.8 - ratio) / 0.7 * 0.3, 0, 0.3);
+}
+if (darkness > 0) {
+    draw_set_color(c_black);
+    draw_set_alpha(darkness);
+    draw_rectangle(0, 0, gui_w, gui_h, false);
+    draw_set_alpha(1);
+}
+
+// Draw red blood vignette on top (stays red, not affected by shader)
+draw_set_color(c_white);
+draw_set_alpha(clamp(desaturation, 0, 0.7));
 draw_sprite_stretched(spr_hurt_pov, 0, 0, 0, gui_w, gui_h);
+draw_set_alpha(1);
 
 // draw back
 draw_set_color(back_col);
@@ -218,3 +284,79 @@ var sel_name = (is_struct(sel_g) && !is_undefined(sel_g.name)) ? sel_g.name : "E
 draw_set_color(col_text);
 //draw_text(ui_x + ring_R + 16, ui_y - 6, sel_name);
 draw_text(ui_x - 15 , ui_y + 100, sel_name);
+
+// ======== BOSS HEALTH BAR ========
+// Check if final boss exists and display boss health bar
+if (instance_exists(obj_final_boss)) {
+    var boss = instance_find(obj_final_boss, 0);
+    
+    // Boss health bar dimensions and position (GUI coordinates)
+    var boss_bar_width = gui_w * 0.5;  // 50% of screen width
+    var boss_bar_height = 20;          // Taller than player health bar
+    var boss_bar_x = (gui_w - boss_bar_width) / 2 + 40;  // shifted right a bit to avoid player ui
+    var boss_bar_y = 75;               // Near top of screen a little lower than player health bar
+    
+    // Portrait dimensions
+    var portrait_size = 50;            // Square portrait
+    var portrait_x = boss_bar_x - portrait_size - 10;  // Left of health bar
+    var portrait_y = boss_bar_y - (portrait_size - boss_bar_height) / 2;  // Vertically centered with bar
+    
+    // Boss health calculation
+    var boss_hp = max(0, boss.hp);
+    var boss_max_hp = max(1, boss.max_hp);
+    var boss_ratio = clamp(boss_hp / boss_max_hp, 0, 1);
+    
+    // Colors for boss health bar
+    var boss_bg_color = make_color_rgb(20, 20, 20);
+    var boss_fill_color = make_color_rgb(180, 30, 30);  // Dark red
+    var boss_border_color = make_color_rgb(200, 200, 200);
+    
+    // Draw boss portrait background
+    draw_set_color(make_color_rgb(40, 40, 50));
+    draw_rectangle(portrait_x, portrait_y, portrait_x + portrait_size, portrait_y + portrait_size, false);
+    
+    // Draw boss portrait border
+    draw_set_color(boss_border_color);
+    draw_rectangle(portrait_x, portrait_y, portrait_x + portrait_size, portrait_y + portrait_size, true);
+    
+    // Draw boss sprite as portrait (scaled to fit)
+    if (sprite_exists(boss.sprite_index)) {
+        var sprite_w = sprite_get_width(boss.sprite_index);
+        var sprite_h = sprite_get_height(boss.sprite_index);
+        var scale = min(portrait_size / sprite_w, portrait_size / sprite_h) * 0.8;  // 80% to leave padding
+        
+        draw_sprite_ext(boss.sprite_index, 0, 
+                       portrait_x + portrait_size / 2, 
+                       portrait_y + portrait_size / 2, 
+                       scale, scale, 0, c_white, 1);
+    }
+    
+    // Draw boss health bar background
+    draw_set_color(boss_bg_color);
+    draw_rectangle(boss_bar_x, boss_bar_y, boss_bar_x + boss_bar_width, boss_bar_y + boss_bar_height, false);
+    
+    // Draw boss health bar fill
+    draw_set_color(boss_fill_color);
+    draw_rectangle(boss_bar_x, boss_bar_y, boss_bar_x + (boss_bar_width * boss_ratio), boss_bar_y + boss_bar_height, false);
+    
+    // Draw boss health bar border
+    draw_set_color(boss_border_color);
+    draw_rectangle(boss_bar_x, boss_bar_y, boss_bar_x + boss_bar_width, boss_bar_y + boss_bar_height, true);
+    
+    // Draw boss name and health text
+    draw_set_color(c_white);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    
+    // Boss name above the bar
+    draw_text_transformed(boss_bar_x + boss_bar_width / 2, boss_bar_y - 15, "FINAL BOSS", 1.0, 1.0, 0);
+    
+    // Health numbers on the bar
+    var health_text = string(boss_hp) + " / " + string(boss_max_hp);
+    draw_text(boss_bar_x + boss_bar_width / 2, boss_bar_y + boss_bar_height / 2, health_text);
+    
+    // Reset draw settings
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_color(c_white);
+}

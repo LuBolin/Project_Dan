@@ -158,6 +158,70 @@ function KnockbackEffect(_direction, _speed, _duration, _apply_stun = true) : St
     }
 }
 
+/// @function KnockbackEffect(_direction, _speed, _duration, _apply_stun)
+/// @description Applies knockback force with optional stun
+function EnemyChargeEffect(_direction, _speed, _duration, _apply_stun = true) : KnockbackEffect(_direction, _speed, _duration, _apply_stun = true) constructor {
+
+    on_step = function() {
+        // Apply knockback movement at constant speed
+        var kb_x = lengthdir_x(kb_speed, kb_direction);
+        var kb_y = lengthdir_y(kb_speed, kb_direction);
+
+        // Move the target with collision if it has the necessary properties
+        if (variable_instance_exists(target, "colliders")) {
+            with (target) {
+                charge(kb_x, kb_y, colliders);
+            }
+        } else if (variable_instance_exists(target, "x") && variable_instance_exists(target, "y")) {
+            // Fallback: move without collision if no colliders defined
+            target.x += kb_x;
+            target.y += kb_y;
+        }
+    }
+
+    get_type = function() {
+        return "Charge";
+    }
+    
+    charge = function(_kb_x, _kb_y, _colliders) {
+        with (target) {
+            vel_hori = _kb_x;
+            vel_vert = _kb_y;
+            // Horizontal movement
+            if (place_meeting(x + vel_hori, y, _colliders)) {
+                
+                // Allows the players to smoothly slide past corners
+                if (!place_meeting(x + vel_hori, y + move_speed_this_frame, _colliders)) {
+                    y += move_speed_this_frame
+                } else if (!place_meeting(x + vel_hori, y - move_speed_this_frame, _colliders)) {
+                    y -= move_speed_this_frame
+                } else {
+                    vel_hori = 0;   
+                }
+                
+            }
+            
+            x += vel_hori;
+            
+            // Vertical movement
+            if (place_meeting(x, y + vel_vert, _colliders)) {
+                
+                // Allows the players to smoothly slide past corners
+                if (!place_meeting(x + move_speed_this_frame, y + vel_vert , _colliders)) {
+                    x += move_speed_this_frame
+                } else if (!place_meeting(x - move_speed_this_frame, y + vel_vert, _colliders)) {
+                    x -= move_speed_this_frame
+                } else {
+                    vel_vert = 0;   
+                }
+            }
+            
+            y += vel_vert;
+        }
+    }
+}
+
+
 /// @function DamageOverTimeEffect(_duration, _damage_per_tick, _tick_rate)
 /// @description Deals damage over time
 function DamageOverTimeEffect(_duration, _damage_per_tick, _tick_rate = 30) : StatusEffect() constructor {
@@ -249,15 +313,17 @@ function SlowEffect(_duration, _slow_percent) : StatusEffect() constructor {
     stack_behavior = "replace"; // Only one slow at a time
 
     on_apply = function() {
-        if (variable_instance_exists(target, "move_speed")) {
-            original_speed = target.move_speed;
-            target.move_speed = original_speed * (1 - slow_percent);
+        if (variable_instance_exists(target, "move_speed_ups")) {
+            original_speed = target.move_speed_ups;
+            target.move_speed_ups = original_speed * (1 - slow_percent);
+            show_debug_message("SlowEffect applied: " + string(original_speed) + " -> " + string(target.move_speed_ups));
         }
     }
 
     on_remove = function() {
-        if (variable_instance_exists(target, "move_speed")) {
-            target.move_speed = original_speed;
+        if (variable_instance_exists(target, "move_speed_ups")) {
+            target.move_speed_ups = original_speed;
+            show_debug_message("SlowEffect removed: restored to " + string(original_speed));
         }
     }
 

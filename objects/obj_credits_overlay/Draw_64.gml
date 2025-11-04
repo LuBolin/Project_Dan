@@ -43,14 +43,29 @@ gpu_set_scissor(overlay_x + 40, text_start_y, overlay_width - 80, text_area_heig
 draw_set_color(col_text);
 draw_set_halign(fa_center);
 draw_set_valign(fa_top);
-draw_text_ext(gui_width / 2, text_start_y + scroll_y, credits_text, 25, overlay_width - 80);
+
+// Draw title with Chinese font (scaled down)
+draw_set_font(fnt_chinese);
+var title_scale = 0.6;
+draw_text_transformed(gui_width / 2, text_start_y + scroll_y, credits_title, title_scale, title_scale, 0);
+
+// Calculate title height for positioning body text
+var title_height = string_height(credits_title) * title_scale;
+
+// Draw body with default font
+draw_set_font(-1);
+draw_text_ext(gui_width / 2, text_start_y + scroll_y + title_height + 30, credits_body, 25, overlay_width - 80);
 
 // Disable clipping
 gpu_set_scissor(-1, -1, -1, -1);
 
 // Draw scroll bar
-var line_height = 25;
-var text_height = string_height_ext(credits_text, line_height, overlay_width - 80);
+// Calculate total content height (title + spacing + body)
+draw_set_font(fnt_chinese);
+var title_height = string_height(credits_title) * title_scale;
+draw_set_font(-1);
+var body_height = string_height_ext(credits_body, 25, overlay_width - 80);
+var text_height = title_height + 30 + body_height; // 30 is spacing between title and body
 var max_scroll = max(0, text_height - text_area_height);
 
 if (max_scroll > 0) {

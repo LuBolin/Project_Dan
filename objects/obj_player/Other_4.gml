@@ -14,7 +14,9 @@ cam_inst.follow = id;
 cam_inst.smooth = 0.12;
 cam_inst.preferred_ratio = 0.2;
 
+// Reheal the player up to 3/8 of their health
 var heal_up = max_hp * 0.375;
 hp = hp < heal_up ? heal_up : hp; 
+is_hurt_this_level = false;
 
 cam_inst.preferred_ratio = 0.12; // Lower = more zoomed out (player takes less of screen)

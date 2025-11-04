@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_desaturate",
+  "name":"shd_desaturate",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Shaders.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"1.0",
+  "type":1,
+}

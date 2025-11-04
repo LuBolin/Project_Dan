@@ -13,4 +13,9 @@ if (is_paused) {
 } else {
     // Reactivate all instances
     instance_activate_all();
+
+    // In alchemy room, player should remain deactivated
+    if (room == AlchemyRoom && instance_exists(obj_player)) {
+        instance_deactivate_object(obj_player);
+    }
 }

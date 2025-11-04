@@ -1,5 +1,34 @@
 /// Alchemy Controller - Draw GUI
 
+// === DRAW PAUSE BUTTON ===
+// Position button in top-right corner
+var btn_x = pause_button_x;
+var btn_y = pause_button_y;
+
+// Button colors
+var btn_bg_color = pause_button_hovered ? make_color_rgb(80, 60, 50) : make_color_rgb(50, 40, 30);
+var btn_border_color = make_color_rgb(150, 120, 90);
+var btn_text_color = c_white;
+
+// Draw button background
+draw_set_alpha(0.8);
+draw_set_color(btn_bg_color);
+draw_rectangle(btn_x, btn_y, btn_x + pause_button_width, btn_y + pause_button_height, false);
+
+// Draw button border
+draw_set_alpha(1);
+draw_set_color(btn_border_color);
+draw_rectangle(btn_x, btn_y, btn_x + pause_button_width, btn_y + pause_button_height, true);
+
+// Draw button text
+draw_set_color(btn_text_color);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+draw_text(btn_x + pause_button_width / 2, btn_y + pause_button_height / 2, pause_button_text);
+
+// Reset draw settings
+draw_set_alpha(1);
+
 // Helper function to draw text with black outline
 function draw_text_outlined(_x, _y, _text) {
     // Draw black outline
@@ -200,10 +229,15 @@ if (craft_feedback != "none" && craft_feedback_timer > 0 && craft_feedback_equat
     }
 }
 
-// === TODO: DRAW NEW ELEMENT ===
+// === DRAW TIP TEXT ===
 draw_set_color(col_text);
-draw_text(gui_width / 2, new_ele_separator_y + 20, "New Element!");
+draw_set_halign(fa_center);
+draw_set_valign(fa_top);
+draw_text(gui_width / 2, new_ele_separator_y - 30, "Tip: Remember to equip (drag to inventory) new elements!");
+
+// === DRAW NEW ELEMENT ===
 draw_line_width(separator_x, new_ele_separator_y, tree_panel_x, new_ele_separator_y, 2);
+draw_text(gui_width / 2, new_ele_separator_y + 20, "New Element!");
 
 var new_slot_x = (gui_width - equipped_slot_size - equipped_slot_spacing) / 2;
 var new_slot_y = new_ele_separator_y + 40;
@@ -362,17 +396,27 @@ for (var i = 0; i < array_length(element_names); i++) {
     } else {
         // Greyed out for undiscovered
         if (is_elixir) {
-            // Draw gourd sprite in grey for undiscovered Elixir
+            // Draw gourd sprite brighter for undiscovered Elixir (make it more visible)
             var gourd_scale = tree_node_size / sprite_get_width(spr_gourd);
             draw_sprite_ext(spr_gourd, 0,
                           node_x + tree_node_size / 2,
                           node_y + tree_node_size / 2,
-                          gourd_scale, gourd_scale, 0, make_color_rgb(40, 40, 50), 1);
+                          gourd_scale, gourd_scale, 0, make_color_rgb(180, 180, 200), 1);
         } else {
             // Draw circle in grey for undiscovered other elements
             draw_set_color(make_color_rgb(40, 40, 50));
             draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, false);
         }
+    }
+
+    // Draw yellow border for Elixir (always visible)
+    if (is_elixir) {
+        draw_set_color(c_yellow);
+        var border_radius = tree_node_size * 0.6;
+        draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, border_radius, true);
+        // Draw thicker border by drawing multiple circles
+        draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, border_radius + 1, true);
+        draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, border_radius + 2, true);
     }
 
     // Draw node border (only for non-Elixir nodes)
@@ -394,16 +438,124 @@ for (var i = 0; i < array_length(element_names); i++) {
 
 
 // === DRAW CONTINUE BUTTON ===
-draw_set_color(button_hover ? col_button_hover : col_button);
-draw_rectangle(button_x, button_y, button_x + button_w, button_y + button_h, false);
+// Only show if popup is not displayed
+if (!show_confirmation_popup) {
+    draw_set_color(button_hover ? col_button_hover : col_button);
+    draw_rectangle(button_x, button_y, button_x + button_w, button_y + button_h, false);
 
-draw_set_color(col_border);
-draw_rectangle(button_x, button_y, button_x + button_w, button_y + button_h, true);
+    draw_set_color(col_border);
+    draw_rectangle(button_x, button_y, button_x + button_w, button_y + button_h, true);
 
-draw_set_color(col_text);
-draw_set_halign(fa_center);
-draw_set_valign(fa_middle);
-draw_text(button_x + button_w / 2, button_y + button_h / 2, "Continue to Next Level");
+    draw_set_color(col_text);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(button_x + button_w / 2, button_y + button_h / 2, "Continue to\nNext Level");
+}
+
+// === DRAW SWAP INSTRUCTIONS (left side, smaller, on top of UI) ===
+if (sprite_exists(spr_swap_instructions)) {
+    var iw = sprite_get_width(spr_swap_instructions);
+    var ih = sprite_get_height(spr_swap_instructions);
+
+    var margin = 18;
+    // Smaller target width (was ~22% and clamped 220..360)
+    var target_w = clamp(gui_width * 0.14, 140, 220);
+    var scale = target_w / max(1, iw);
+
+    // Bottom-left placement
+    var draw_x = margin;
+    var draw_y = gui_height - (ih * scale) - margin;
+
+    draw_set_alpha(1);
+    draw_set_color(c_white);
+    draw_sprite_ext(spr_swap_instructions, 0, draw_x, draw_y, scale, scale, 0, c_white, 1);
+}
+
+// Reset draw state
+draw_set_alpha(1);
+draw_set_color(c_white);
+
+// === DRAW CONFIRMATION POPUP ===
+if (show_confirmation_popup) {
+    // Draw overlay background
+    draw_set_alpha(0.7);
+    draw_set_color(c_black);
+    draw_rectangle(0, 0, gui_width, gui_height, false);
+    draw_set_alpha(1);
+    
+    // Draw popup background
+    draw_set_color(col_bg);
+    draw_rectangle(popup_x, popup_y, popup_x + popup_width, popup_y + popup_height, false);
+    
+    // Draw popup border
+    draw_set_color(col_border);
+    draw_rectangle(popup_x, popup_y, popup_x + popup_width, popup_y + popup_height, true);
+    
+    // Draw title
+    draw_set_color(col_text);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_top);
+    draw_text_transformed(popup_x + popup_width / 2, popup_y + 20, "Confirm Next Level", 1.2, 1.2, 0);
+    
+    // Draw confirmation message
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    var message_y = popup_y + 80;
+    var line_height = 25;
+    
+    draw_text(popup_x + popup_width / 2, message_y, "Are you sure you want to proceed to the next level");
+    draw_text(popup_x + popup_width / 2, message_y + line_height, "with these elements?");
+    
+    // Draw current equipped elements
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_top);
+    var elements_y = message_y + line_height * 2 + 20;
+    
+    draw_set_color(make_color_rgb(255, 215, 150));
+    draw_text(popup_x + popup_width / 2, elements_y, "Current Inventory:");
+    
+    // Draw element names
+    var element_text = "";
+    for (var i = 0; i < 3; i++) {
+        if (i > 0) element_text += ", ";
+        element_text += equipped_gourds[i].name;
+    }
+    
+    draw_set_color(col_text);
+    draw_text_ext(popup_x + popup_width / 2, elements_y + 25, element_text, line_height, popup_width - 40);
+    
+    // Draw reminder text
+    draw_set_color(make_color_rgb(255, 200, 200));
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_bottom);
+    draw_text_ext(popup_x + popup_width / 2, popup_buttons_y - 10, 
+                  "Remember to equip any newly discovered elements!", 
+                  line_height, popup_width - 40);
+    
+    // Draw OK button
+    var ok_color = popup_ok_hover ? col_button_hover : col_button;
+    draw_set_color(ok_color);
+    draw_rectangle(popup_ok_x, popup_ok_y, popup_ok_x + popup_button_width, popup_ok_y + popup_button_height, false);
+    draw_set_color(col_border);
+    draw_rectangle(popup_ok_x, popup_ok_y, popup_ok_x + popup_button_width, popup_ok_y + popup_button_height, true);
+    
+    draw_set_color(col_text);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(popup_ok_x + popup_button_width / 2, popup_ok_y + popup_button_height / 2, "OK");
+    
+    // Draw Cancel button
+    var cancel_color = popup_cancel_hover ? col_button_hover : col_button;
+    draw_set_color(cancel_color);
+    draw_rectangle(popup_cancel_x, popup_cancel_y, popup_cancel_x + popup_button_width, popup_cancel_y + popup_button_height, false);
+    draw_set_color(col_border);
+    draw_rectangle(popup_cancel_x, popup_cancel_y, popup_cancel_x + popup_button_width, popup_cancel_y + popup_button_height, true);
+    
+    draw_set_color(col_text);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(popup_cancel_x + popup_button_width / 2, popup_cancel_y + popup_button_height / 2, "Cancel");
+}
 
 // === RESET DRAW SETTINGS ===
 draw_set_halign(fa_left);

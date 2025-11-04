@@ -27,3 +27,14 @@ col_text    = c_white;
 spr_gourd_icon = spr_gourd;
 node_px = 40; // normal diameter (pixels)
 node_px_sel = 64; // selected diameter
+
+// ===== Pause button config =====
+pause_button_x = 16;
+pause_button_y = 16;
+pause_button_width = 120;
+pause_button_height = 40;
+pause_button_hovered = false;
+pause_button_text = "Esc: Pause";
+
+// ===== Desaturation shader config =====
+uni_desaturation = shader_get_uniform(shd_desaturate, "u_desaturation");

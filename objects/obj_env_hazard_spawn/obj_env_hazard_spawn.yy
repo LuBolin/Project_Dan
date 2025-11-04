@@ -32,5 +32,5 @@
     "path":"sprites/spr_env_hazard_spawn/spr_env_hazard_spawn.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

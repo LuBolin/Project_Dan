@@ -3,7 +3,7 @@
 var mx = device_mouse_x_to_gui(0);
 var my = device_mouse_y_to_gui(0);
 
-// Check element slot hover and click
+// Check element slot hover and click (first 3 slots are player elements)
 for (var i = 0; i < array_length(player_elements); i++) {
     var slot_x = element_start_x + i * (element_slot_size + element_slot_spacing);
     var slot_y = element_start_y;
@@ -15,21 +15,30 @@ for (var i = 0; i < array_length(player_elements); i++) {
     }
 }
 
-// Check "Start Fresh" button hover and click
-fresh_button_hover = point_in_rectangle(mx, my, fresh_button_x, fresh_button_y,
-    fresh_button_x + fresh_button_width, fresh_button_y + button_height);
+// Check "Bring nothing" button (4th slot) hover and click
+var bring_nothing_x = element_start_x + bring_nothing_index * (element_slot_size + element_slot_spacing);
+var bring_nothing_y = element_start_y;
+bring_nothing_hover = point_in_rectangle(mx, my, bring_nothing_x, bring_nothing_y,
+    bring_nothing_x + element_slot_size, bring_nothing_y + element_slot_size);
 
-if (fresh_button_hover && mouse_check_button_pressed(mb_left)) {
-    selected_element_index = -1; // Reset to "Start Fresh"
+if (bring_nothing_hover && mouse_check_button_pressed(mb_left)) {
+    selected_element_index = bring_nothing_index; // Select "Bring nothing"
 }
 
 // Check "Start New Run" button hover and click
 start_button_hover = point_in_rectangle(mx, my, start_button_x, start_button_y,
     start_button_x + button_width, start_button_y + button_height);
 
-if (start_button_hover && mouse_check_button_pressed(mb_left)) {
+// Only allow clicking start button if an option is selected
+var can_start = (selected_element_index >= 0);
+
+if (start_button_hover && can_start && mouse_check_button_pressed(mb_left)) {
     // Store the selected element for the next run
-    if (selected_element_index >= 0 && selected_element_index < array_length(player_elements)) {
+    if (selected_element_index == bring_nothing_index) {
+        // "Bring nothing" selected
+        global.carried_over_element = undefined;
+    } else if (selected_element_index >= 0 && selected_element_index < array_length(player_elements)) {
+        // Element selected
         global.carried_over_element = player_elements[selected_element_index];
     } else {
         global.carried_over_element = undefined;

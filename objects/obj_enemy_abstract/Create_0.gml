@@ -1,4 +1,8 @@
-colliders = [layer_tilemap_get_id("Tile_Collision"), obj_enemy_abstract, obj_clay_wall];
+//colliders = [layer_tilemap_get_id("Tile_Collision"), obj_enemy_abstract, obj_clay_wall];
+
+// To prevent enemies from getting stuck on one another :<
+colliders = [layer_tilemap_get_id("Tile_Collision"), obj_clay_wall];
+
 
 // FSM related variables
 player_last_known_x = undefined;
@@ -35,3 +39,4 @@ effect_sprite = undefined
 
 // Path for more advanced pathfinding
 path = path_add();
+pause = false

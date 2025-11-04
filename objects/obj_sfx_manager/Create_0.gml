@@ -10,3 +10,11 @@ function play_sound(_snd, _play_if_alrdy_playing) {
         array_push(sfxs_queue, [_snd, random_range(0.9, 1.1), _play_if_alrdy_playing])
     }
 }
+
+// Initialize global master volume setting if it doesn't exist
+if (!variable_global_exists("master_volume")) {
+    global.master_volume = 0.25; // 0.0 to 1.0 (starts at 25%)
+}
+
+// Apply the master volume setting on startup
+audio_master_gain(global.master_volume);

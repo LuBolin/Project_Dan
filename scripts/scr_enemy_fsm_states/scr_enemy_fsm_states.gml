@@ -104,6 +104,11 @@ function RoamState(_entity, _duration = 2000, _is_timed = true) : State(_entity,
     }
     
     on_player_interact = function() {
+        // Safety check: make sure player exists
+        if (!instance_exists(obj_player)) {
+            exit;
+        }
+
         with (entity) {
             player_last_known_x = obj_player.x;
             player_last_known_y = obj_player.y;

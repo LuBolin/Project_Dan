@@ -1,6 +1,6 @@
 /// Main Menu Controller - Step Event
 
-// Check if we're still showing the splash (Press Space to continue)
+// Check if we're still showing the splash (Press any key to continue)
 if (!show_buttons || transitioning) {
     // Fade in title
     if (title_alpha < 1) {
@@ -8,7 +8,7 @@ if (!show_buttons || transitioning) {
         title_alpha = min(title_alpha, 1);
     }
 
-    // Fade in/out effect for "Press Space" text (only for first launch, not auto-transition)
+    // Fade in/out effect for "Press any key" text (only for first launch, not auto-transition)
     if (!auto_transition && !transitioning && title_alpha > 0.5) {
         // First fade in from 0 to 1
         if (prompt_alpha < 1 && prompt_fade_direction == 1) {
@@ -41,9 +41,30 @@ if (!show_buttons || transitioning) {
         }
     }
 
-    // Check for space key press to start transition (manual mode only)
-    if (!auto_transition && !transitioning && keyboard_check_pressed(vk_space)) {
-        transitioning = true;
+    // Check for ANY input to start transition (manual mode only)
+    if (!auto_transition && !transitioning) {
+        var any_key_pressed = false;
+        var mouse_clicked = false;
+        
+        // Check for any keyboard input
+        if (keyboard_check_pressed(vk_anykey)) {
+            any_key_pressed = true;
+        }
+        
+        // Check for mouse clicks
+        if (mouse_check_button_pressed(mb_left) || mouse_check_button_pressed(mb_right) || mouse_check_button_pressed(mb_middle)) {
+            mouse_clicked = true;
+        }
+        
+        // Start transition if any input detected
+        if (any_key_pressed || mouse_clicked) {
+            transitioning = true;
+            // Clear the input to prevent it from affecting menu buttons
+            keyboard_clear(vk_anykey);
+            mouse_clear(mb_left);
+            mouse_clear(mb_right);
+            mouse_clear(mb_middle);
+        }
     }
 
     // Handle transition animation

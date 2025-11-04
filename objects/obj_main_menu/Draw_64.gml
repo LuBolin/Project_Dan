@@ -18,7 +18,7 @@ draw_set_alpha(1);
 // Reset to default font
 draw_set_font(-1);
 
-// If buttons haven't been shown yet, draw "Press Space to continue" (only if not auto-transition)
+// If buttons haven't been shown yet, draw "Press any key to continue" (only if not auto-transition)
 if (!show_buttons && !auto_transition && prompt_alpha > 0) {
     draw_set_alpha(prompt_alpha);
     draw_set_color(col_text);
@@ -29,7 +29,7 @@ if (!show_buttons && !auto_transition && prompt_alpha > 0) {
     // Draw "Press " in normal font
     draw_set_font(-1);
     var text_before = "Press ";
-    var text_bold = "Space";
+    var text_bold = "any key";
     var text_after = " to continue";
 
     // Measure text widths to position correctly
@@ -44,7 +44,7 @@ if (!show_buttons && !auto_transition && prompt_alpha > 0) {
     // Draw "Press " normally
     draw_text(start_x + before_width / 2, prompt_y, text_before);
 
-    // Draw "Space" in bold (simulated with multiple draws offset slightly)
+    // Draw "any key" in bold (simulated with multiple draws offset slightly)
     var bold_x = start_x + before_width + bold_width / 2;
     draw_text(bold_x, prompt_y, text_bold);
     draw_text(bold_x + 1, prompt_y, text_bold); // Offset for bold effect

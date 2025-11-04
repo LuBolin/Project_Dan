@@ -35,8 +35,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_evil_tree",
-    "path":"sprites/spr_evil_tree/spr_evil_tree.yy",
+    "name":"spr_evil_tree_new",
+    "path":"sprites/spr_evil_tree_new/spr_evil_tree_new.yy",
   },
   "spriteMaskId":null,
   "visible":true,

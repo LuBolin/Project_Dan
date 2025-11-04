@@ -34,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_ghost",
-    "path":"sprites/spr_ghost/spr_ghost.yy",
+    "name":"spr_ghost_new",
+    "path":"sprites/spr_ghost_new/spr_ghost_new.yy",
   },
   "spriteMaskId":null,
   "visible":true,

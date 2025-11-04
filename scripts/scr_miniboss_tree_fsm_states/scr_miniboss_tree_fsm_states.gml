@@ -6,10 +6,42 @@ function MiniBossTreeRoamState(_entity, _duration = undefined, _is_timed = false
     }
 }
 
-function MiniBossTreeChaseState(_entity, _duration = 3000, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
+function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.CHASE;
     
- 
+    on_enter = function() {
+        
+        remaining_time = duration;
+        // Create a new list
+        enemies = ds_list_create();
+        
+        // Loop through all instances of obj_enemy (example)
+        with (obj_enemy_abstract) {
+            if (hp < max_hp) {
+                ds_list_add(other.enemies, self);
+            }
+            
+        }
+        
+        if (ds_list_size(enemies) != 0) {
+            var enemy_to_heal = enemies[| irandom(ds_list_size(enemies) - 1)];
+            var boss_plant_pool = instance_create_layer(enemy_to_heal.x, enemy_to_heal.y, "Instances", obj_plant);
+            if (instance_exists(boss_plant_pool)) {
+                boss_plant_pool.heal_enemies = true;
+            }
+            ds_list_destroy(enemies)           
+        } else {
+            ds_list_destroy(enemies)
+            entity.changeState(STATES.ATTACK);
+        }
+        
+        
+        
+    }
+
+    on_timeout = function() {
+        entity.changeState(STATES.ATTACK);
+    }
 }
 
 /// Stands still (no movement here), after a brief wind-up (duration frames), 
@@ -29,6 +61,8 @@ function MiniBossTreeAttackState(_entity, _duration = 6000, _is_timed = true) : 
         bullet_attack_cd_timer = 0;
 
         hurricane_attack_cd_timer = 5 * game_get_speed(gamespeed_fps);
+        
+        remaining_time = duration;
     }
     
     on_step = function() {
@@ -66,6 +100,10 @@ function MiniBossTreeAttackState(_entity, _duration = 6000, _is_timed = true) : 
             hurricane_attack_cd_timer = hurricane_attack_freq;
         }
 
+    }
+    
+    on_timeout = function() {
+        entity.changeState(STATES.CHASE);
     }
     
 }

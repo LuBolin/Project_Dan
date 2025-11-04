@@ -22,35 +22,45 @@ tick_counter++;
 if (tick_counter >= tick_rate) {
     tick_counter = 0;
 
-    var curr_time = current_time;
-
-    // Check if player is within healing radius
-    if (instance_exists(obj_player)) {
-        var distance = point_distance(x, y, obj_player.x, obj_player.y);
-        
-        if (distance <= healing_radius) {
-            // Check heal cooldown
-            if (curr_time - last_heal_time >= heal_cooldown) {
-                // Only heal if player is not at full health
-                if (obj_player.hp < obj_player.max_hp) {
-                    // Heal the player
-                    obj_player.hp = min(obj_player.max_hp, obj_player.hp + heal_per_tick);
-                    last_heal_time = curr_time;
-                    
-                    // Visual feedback - green flash for healing
-                    if (variable_instance_exists(obj_player, "image_blend")) {
-                        obj_player.image_blend = make_color_rgb(100, 255, 100); // Light green
-                        obj_player.alarm[11] = 10; // Short flash duration
+    curr_time = current_time;
+    
+    // Loop through both player and enemy objects
+    var possible_heal_targets = heal_enemies ? [obj_player, obj_enemy_abstract] : [obj_player];
+    
+    for (var i = 0; i < array_length(possible_heal_targets); i += 1) {
+        var entity = possible_heal_targets[i]
+        // Check if player is within healing radius
+        if (instance_exists(entity)) {
+            with(entity) { 
+                var distance = point_distance(x, y, other.x, other.y);
+            
+                if (distance <= other.healing_radius) {
+                    // Check heal cooldown
+                    if (other.curr_time - other.last_heal_time >= other.heal_cooldown) {
+                        // Only heal if player is not at full health
+                        if (hp < max_hp) {
+                            // Heal the player
+                            hp = min(max_hp, hp + other.heal_per_tick);
+                            other.last_heal_time = other.curr_time;
+                            
+                            // Visual feedback - green flash for healing
+                            if (variable_instance_exists(self, "image_blend")) {
+                                image_blend = make_color_rgb(100, 255, 100); // Light green
+                                alarm[11] = 10; // Short flash duration
+                            }
+                            
+                            // Create healing particle effect
+                            other.create_healing_particles(self);
+                            
+                            show_debug_message("Plant healed player for " + string(other.heal_per_tick) + " HP");
+                        }
                     }
-                    
-                    // Create healing particle effect
-                    create_healing_particles();
-                    
-                    show_debug_message("Plant healed player for " + string(heal_per_tick) + " HP");
                 }
             }
+
         }
     }
+    
 }
 
 // Create ambient particles occasionally
@@ -67,11 +77,11 @@ if (life_timer <= 0) {
 
 /// @function create_healing_particles()
 /// @description Creates particles when player is healed
-create_healing_particles = function() {
+create_healing_particles = function(_target) {
     repeat(3) {
         var particle = instance_create_layer(
-            obj_player.x + random_range(-16, 16), 
-            obj_player.y + random_range(-16, 16), 
+            _target.x + random_range(-16, 16), 
+            _target.y + random_range(-16, 16), 
             "Instances", 
             obj_projectile
         );

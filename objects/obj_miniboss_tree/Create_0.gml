@@ -7,3 +7,12 @@ states_array[STATES.ATTACK] = new MiniBossTreeAttackState(self);
 
 attack_cooldown_sec = 1.25; // tweak this
 attack_cd_timer = 0;        // counts down in frames
+
+function if_death() {
+    if (hp <= 0) {
+        global.defeated_miniboss_sprite = sprite_index;
+        trigger_miniboss_defeat_cutscene();
+        instance_destroy();
+        exit;
+    }
+}

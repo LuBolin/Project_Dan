@@ -1,10 +1,9 @@
 function setup_miniboss_defeat_cutscene(cutscene_manager) {
-    var defeated_miniboss_sprite = spr_miniboss_boar;
+    var defeated_miniboss_sprite = noone;
     
-    if (instance_exists(obj_miniboss_tree)) {
-        defeated_miniboss_sprite = obj_miniboss_tree.sprite_index;
-    } else if (instance_exists(obj_miniboss_boar)) {
-        defeated_miniboss_sprite = obj_miniboss_boar.sprite_index;
+    if (variable_global_exists("defeated_miniboss_sprite")) {
+        defeated_miniboss_sprite = global.defeated_miniboss_sprite;
+        global.defeated_miniboss_sprite = noone;
     }
     
     cutscene_manager.dialog_lines = [
@@ -38,19 +37,28 @@ function setup_miniboss_defeat_cutscene(cutscene_manager) {
 
 function check_player_has_elixir(cutscene_manager) {
     var has_elixir = false;
-    
+    var inventory = [];
+
     if (instance_exists(obj_player)) {
-        for (var i = 0; i < array_length(obj_player.inv); i++) {
-            if (obj_player.inv[i].name == "Elixir") {
+        inventory = [obj_player.inv[0], obj_player.inv[1], obj_player.inv[2]];
+    } else if (array_length(cutscene_manager.player_inventory_snapshot) >= 3) {
+        inventory = cutscene_manager.player_inventory_snapshot;
+    }
+
+    if (array_length(inventory) >= 3) {
+        for (var i = 0; i < array_length(inventory); i++) {
+            var entry = inventory[i];
+            if (is_struct(entry) && entry.name == "Elixir") {
                 has_elixir = true;
                 break;
             }
         }
+        cutscene_manager.player_inventory_snapshot = inventory;
     }
-    
+
     cutscene_manager.show_lightning = true;
     cutscene_manager.lightning_timer = 0;
-    
+
     if (!has_elixir) {
         cutscene_manager.dialog_lines[3] = "You currently do not have the means to survive this curse.\nYou have returned to the cycle of reincarnation.";
         cutscene_manager.speaker_names[3] = "";
@@ -96,26 +104,57 @@ function check_player_has_elixir(cutscene_manager) {
 
 function complete_cutscene(cutscene_manager) {
     cutscene_manager.cutscene_complete = true;
-    
+
     if (!cutscene_manager.has_elixir) {
+        var inventory = [];
+
         if (instance_exists(obj_player)) {
-            global.player_death_inventory = [obj_player.inv[0], obj_player.inv[1], obj_player.inv[2]];
+            inventory = [obj_player.inv[0], obj_player.inv[1], obj_player.inv[2]];
+        } else if (array_length(cutscene_manager.player_inventory_snapshot) >= 3) {
+            inventory = cutscene_manager.player_inventory_snapshot;
+        }
+
+        if (array_length(inventory) >= 3) {
+            global.player_death_inventory = inventory;
+        }
+
+        if (instance_exists(obj_player)) {
             obj_player.persistent = false;
             instance_destroy(obj_player);
         }
-        
+
+        global.cutscene_complete_flag = true;
+
+        with (cutscene_manager) {
+            global.cutscene_active = false;
+            instance_destroy();
+        }
+
         if (!instance_exists(obj_death_screen)) {
-            instance_create_depth(0, 0, -9999, obj_death_screen);
+            var death_screen = instance_create_depth(0, 0, -9999, obj_death_screen);
+            death_screen.persistent = true;
         }
     } else {
+        with (cutscene_manager) {
+            global.cutscene_active = false;
+            instance_destroy();
+        }
+
         goto_level(Level_FinalBoss, 5);
     }
-    
-    instance_activate_all();
-    instance_destroy(cutscene_manager);
 }
 
 function trigger_miniboss_defeat_cutscene() {
+    if (!variable_global_exists("cutscene_active")) {
+        global.cutscene_active = false;
+    }
+
+    if (global.cutscene_active) {
+        return;
+    }
+
+    global.cutscene_active = true;
+
     if (!instance_exists(obj_cutscene_manager)) {
         instance_create_depth(0, 0, -10000, obj_cutscene_manager);
     }

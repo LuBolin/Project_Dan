@@ -1,5 +1,9 @@
 /// Death Screen - Create
 
+if (variable_global_exists("cutscene_complete_flag") && global.cutscene_complete_flag) {
+    global.cutscene_complete_flag = false;
+}
+
 // GUI dimensions
 gui_width = display_get_gui_width();
 gui_height = display_get_gui_height();

@@ -138,3 +138,10 @@ function collect_chi() {
 
 // Call the spawn function now that it's defined
 spawn_enemies_from_points();
+
+// Trigger Cutscene
+function trigger_miniboss_defeat_cutscene() {
+    if (!instance_exists(obj_cutscene_manager)) {
+        instance_create_depth(0, 0, -10000, obj_cutscene_manager);
+    }
+}

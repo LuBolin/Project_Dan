@@ -1,4 +1,13 @@
-draw_self();
+if (!hide_self) {
+    draw_self();
+}
+
+
+// Call on_draw callback if it exists
+if (variable_struct_exists(proj_data, "on_draw")) {
+    proj_data.on_draw(self);
+}
+
 
 // Debug: Draw collision shape
 if (global.debug_draw_collisions) {

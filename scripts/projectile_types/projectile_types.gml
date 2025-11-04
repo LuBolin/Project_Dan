@@ -798,13 +798,15 @@ function ProjectilePlant() constructor {
 
 function ProjectileHurricane() constructor {
 	name = "Hurricane";
-	speed       = 4.6875;  // units per second (300 / 64) - slow moving
+	speed       = 4;  // units per second (300 / 64) - slow moving
 	damage      = 3;  // Used for DoT tick damage
 	life_steps  = game_get_speed(gamespeed_fps) * 5;  // 5 second max lifetime
-	kb_speed = 0;
-	kb_distance = 0;
-	sprite_index = spr_hurricane;
-	scale = 1;
+	kb_speed = 0;     
+	kb_distance = 0;    
+	sprite_index = spr_hurricane_collision;
+	scale = 0.2;
+    damage_player = false;
+    damage_enemies = !damage_player;
     sfx_fire = undefined;
     sfx_hit = undefined;
     
@@ -814,14 +816,43 @@ function ProjectileHurricane() constructor {
 		// Initialize hit tracking
 		projectile_inst.hit_targets = ds_map_create();
         projectile_inst.depth = 0;
+
+        if (variable_instance_exists(projectile_inst, "hide_self")) {
+            projectile_inst.hide_self = true;      
+        }
 	}
 
 	on_step = function(projectile_inst) {
 		// Check all enemies overlapping with hurricane
 		with (projectile_inst) {
-			var enemy_list = ds_list_create();
-			var num_colliding = instance_place_list(x, y, obj_enemy_abstract, enemy_list, false);
+			enemy_list = ds_list_create();
+			//var num_colliding = instance_place_list(x, y, obj_enemy_abstract, enemy_list, false);
+            _scale = other.scale * 4;
+            
+            if (other.damage_player) {
+                with (obj_player) {
+                    var dist = point_distance(x, y, other.x, other.y);
+                    if (dist <= (sprite_get_width(spr_hurricane) / 2) * other._scale) {
+                        // Add this enemy's id to the list of the checking object
+                        ds_list_add(other.enemy_list, id);
+                    }
+                }
+            }
+            
+            if (other.damage_enemies) {
+                with (obj_enemy_abstract) {
+                    var dist = point_distance(x, y + (sprite_get_height(spr_hurricane) / 2) * other._scale, other.x, other.y);
+                    if (dist <= (sprite_get_width(spr_hurricane) / 2) * other._scale) {
+                        // Add this enemy's id to the list of the checking object
+                        ds_list_add(other.enemy_list, id);
+                    }
+                }
+            }
+                
 
+            
+            var num_colliding = ds_list_size(enemy_list) 
+            
 			var curr_time = current_time;
 
 			for (var i = 0; i < num_colliding; i++) {
@@ -839,7 +870,7 @@ function ProjectileHurricane() constructor {
 			ds_list_destroy(enemy_list);
             
             // Hurricane Test
-            projectile_inst.speed = projectile_inst.speed - 0.05 < 0 ? projectile_inst.speed - 0.05 : 0
+            projectile_inst.speed = projectile_inst.speed - 0.05 < 0 ? 0 : projectile_inst.speed - 0.05
 		}
 	}
 
@@ -853,6 +884,10 @@ function ProjectileHurricane() constructor {
 		projectile_inst.speed = 0;
 		// Don't destroy - let it last its full duration
 	}
+    
+    on_draw = function(projectile_inst) {
+        draw_sprite_ext(spr_hurricane, 0, projectile_inst.x, projectile_inst.y, scale * 4, scale * 4, 0, c_white, 1);
+    }
 }
 
 // ========================================

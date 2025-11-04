@@ -95,7 +95,7 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
                     boss_lava_pool.damage_enemies = false;  // Don't damage enemies
                     boss_lava_pool.damage_player = true;    // Damage the player
                     boss_lava_pool.creator = entity;        // Set boss as creator
-                    
+                    boss_lava_pool.scale = 2;               // Set the Lava to be bigger so the player has less room to "camp"
                     // Make boss lava pools more threatening // Higher damage
                     // UPDATE NOTE: Made it lower damage cuz player dies way too quickly
                     boss_lava_pool.damage_per_tick = 1;     

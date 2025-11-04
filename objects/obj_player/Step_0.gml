@@ -76,9 +76,66 @@ if (place_meeting(x, y + vel_vert, colliders)) {
 y += vel_vert;
 
 
-if (input_dirn_x != 0) {
-    var scale = abs(image_xscale);
-    image_xscale = (input_dirn_x > 0) ? scale : -scale;
+// Update facing direction based on movement input (only when not attacking)
+// When attacking, facing_direction is set by Mouse_50.gml based on mouse position
+if (!is_attacking) {
+    if (input_dirn_y < 0 && abs(input_dirn_y) > abs(input_dirn_x)) {
+        facing_direction = "up";
+    } else if (input_dirn_y > 0 && abs(input_dirn_y) > abs(input_dirn_x)) {
+        facing_direction = "down";
+    } else if (input_dirn_x != 0) {
+        if (input_dirn_x < 0) {
+            facing_direction = "left";
+        } else {
+            facing_direction = "right";
+        }
+    }
+}
+
+// Update sprite based on state and direction
+if (is_attacking) {
+    // Attack animation
+    attack_frame += attack_animation_speed;
+
+    var attack_sprite = spr_attack_right;
+    if (facing_direction == "up") {
+        attack_sprite = spr_attack_up;
+        image_xscale = abs(image_xscale); // Face forward
+    } else if (facing_direction == "down") {
+        attack_sprite = spr_attack_down;
+        image_xscale = abs(image_xscale); // Face forward
+    } else if (facing_direction == "left") {
+        attack_sprite = spr_attack_left;
+        image_xscale = abs(image_xscale); // Don't flip, sprite already faces left
+    } else {
+        attack_sprite = spr_attack_right;
+        image_xscale = abs(image_xscale); // Don't flip, sprite already faces right
+    }
+
+    sprite_index = attack_sprite;
+    image_index = floor(attack_frame);
+
+    // Check if attack animation is complete
+    if (attack_frame >= sprite_get_number(attack_sprite)) {
+        is_attacking = false;
+        attack_frame = 0;
+    }
+} else {
+    // Idle animation
+    if (facing_direction == "up") {
+        sprite_index = spr_idle_up;
+        image_xscale = abs(image_xscale); // Face forward
+    } else if (facing_direction == "down") {
+        sprite_index = spr_idle_down;
+        image_xscale = abs(image_xscale); // Face forward
+    } else if (facing_direction == "left") {
+        sprite_index = spr_idle_right;
+        image_xscale = -abs(image_xscale); // Flip right sprite to face left
+    } else {
+        sprite_index = spr_idle_right;
+        image_xscale = abs(image_xscale); // Face right
+    }
+    image_index = 0;
 }
 
 //***************************************************************/

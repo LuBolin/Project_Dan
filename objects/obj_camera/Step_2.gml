@@ -30,7 +30,13 @@ var cx = camera_get_view_x(cam);
 var cy = camera_get_view_y(cam);
 
 // get player size (scaled sprite height)
-var ph = sprite_get_height(follow.sprite_index) * abs(follow.image_yscale);
+// Use a fixed reference size to prevent zoom changes when sprite changes
+// Use the idle sprite size as reference (64px) instead of current sprite
+var reference_sprite = follow.sprite_index;
+if (variable_instance_exists(follow, "spr_idle_right")) {
+    reference_sprite = follow.spr_idle_right;
+}
+var ph = sprite_get_height(reference_sprite) * abs(follow.image_yscale);
 
 // how much of the camera height the player currently takes
 var current_ratio = ph / vh;

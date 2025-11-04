@@ -38,8 +38,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_fox",
-    "path":"sprites/spr_fox/spr_fox.yy",
+    "name":"spr_fox_new",
+    "path":"sprites/spr_fox_new/spr_fox_new.yy",
   },
   "spriteMaskId":null,
   "visible":true,

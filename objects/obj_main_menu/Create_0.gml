@@ -34,6 +34,7 @@ buttons = [
             // Reset level progress
             global.level_progress = 1;
             goto_level(Level0, 1); // Start at Level0 with difficulty level 1
+
         }
     },
     {
@@ -58,9 +59,9 @@ buttons = [
     },
     {
         name: "Recipes",
-        x_offset: -(button_width / 3 + button_spacing),
+        x_offset: -((button_width - button_spacing) / 3 + button_spacing),
         y_offset: 75,
-        width: button_width / 3,
+        width: (button_width - button_spacing) / 3,
         height: button_height,
         action: function() {
             instance_create_depth(0, 0, -1000, obj_recipes_overlay);
@@ -70,7 +71,7 @@ buttons = [
         name: "Credits",
         x_offset: 0,
         y_offset: 75,
-        width: button_width / 3,
+        width: (button_width - button_spacing) / 3,
         height: button_height,
         action: function() {
             instance_create_depth(0, 0, -1000, obj_credits_overlay);
@@ -78,9 +79,9 @@ buttons = [
     },
     {
         name: "Exit",
-        x_offset: (button_width / 3 + button_spacing),
+        x_offset: ((button_width - button_spacing) / 3 + button_spacing),
         y_offset: 75,
-        width: button_width / 3,
+        width: (button_width - button_spacing) / 3,
         height: button_height,
         action: function() {
             game_end();

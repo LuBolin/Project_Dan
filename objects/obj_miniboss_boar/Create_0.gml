@@ -15,3 +15,12 @@ states_array[STATES.ROAM] = new FireBoarRoamState(self)
 states_array[STATES.ALERT] = new FireBoarAlertState(self);
 states_array[STATES.CHASE] = new FireBoarChaseState(self);
 states_array[STATES.ATTACK] = new FireBoarAttackState(self);
+
+function if_death() {
+    if (hp <= 0) {
+        global.defeated_miniboss_sprite = sprite_index;
+        trigger_miniboss_defeat_cutscene();
+        instance_destroy();
+        exit;
+    }
+}

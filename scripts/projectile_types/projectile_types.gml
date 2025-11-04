@@ -798,13 +798,15 @@ function ProjectilePlant() constructor {
 
 function ProjectileHurricane() constructor {
 	name = "Hurricane";
-	speed       = 4.6875;  // units per second (300 / 64) - slow moving
+	speed       = 4;  // units per second (300 / 64) - slow moving
 	damage      = 3;  // Used for DoT tick damage
 	life_steps  = game_get_speed(gamespeed_fps) * 5;  // 5 second max lifetime
-	kb_speed = 0;
-	kb_distance = 0;
-	sprite_index = spr_hurricane;
-	scale = 1;
+	kb_speed = 0;     
+	kb_distance = 0;    
+	sprite_index = spr_hurricane_collision;
+	scale = 0.2;
+    damage_player = false;
+    damage_enemies = !damage_player;
     sfx_fire = undefined;
     sfx_hit = undefined;
     
@@ -814,6 +816,10 @@ function ProjectileHurricane() constructor {
 		// Initialize hit tracking
 		projectile_inst.hit_targets = ds_map_create();
         projectile_inst.depth = 0;
+
+        if (variable_instance_exists(projectile_inst, "hide_self")) {
+            projectile_inst.hide_self = true;      
+        }
 	}
 
 	on_step = function(projectile_inst) {
@@ -842,6 +848,8 @@ function ProjectileHurricane() constructor {
                     }
                 }
             }
+                
+
             
             var num_colliding = ds_list_size(enemy_list) 
             
@@ -886,7 +894,7 @@ function ProjectileHurricane() constructor {
 			ds_list_destroy(enemy_list);
             
             // Hurricane Test
-            projectile_inst.speed = projectile_inst.speed - 0.05 < 0 ? projectile_inst.speed - 0.05 : 0
+            projectile_inst.speed = projectile_inst.speed - 0.05 < 0 ? 0 : projectile_inst.speed - 0.05
 		}
 	}
 
@@ -900,6 +908,10 @@ function ProjectileHurricane() constructor {
 		projectile_inst.speed = 0;
 		// Don't destroy - let it last its full duration
 	}
+    
+    on_draw = function(projectile_inst) {
+        draw_sprite_ext(spr_hurricane, 0, projectile_inst.x, projectile_inst.y, scale * 4, scale * 4, 0, c_white, 1);
+    }
 }
 
 // ========================================

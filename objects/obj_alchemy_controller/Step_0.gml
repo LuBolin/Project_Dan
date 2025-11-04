@@ -1,11 +1,19 @@
 /// Alchemy Controller - Step
 
-// Advance animated backdrop frame
-if (sprite_exists(spr_alchemy_crafting_backdrop)) {
-    var _frames = sprite_get_number(spr_alchemy_crafting_backdrop);
+// Advance animated backdrop frame with ping-pong
+if (sprite_exists(spr_alchemy_bg_anim)) {
+    var _frames = sprite_get_number(spr_alchemy_bg_anim);
     if (_frames > 0) {
-        backdrop_frame += backdrop_frame_step;
-        if (backdrop_frame >= _frames) backdrop_frame -= _frames;
+        backdrop_frame += backdrop_frame_step * backdrop_frame_direction;
+
+        // Ping-pong: reverse direction at boundaries
+        if (backdrop_frame >= _frames - 1) {
+            backdrop_frame = _frames - 1;
+            backdrop_frame_direction = -1; // Start going backward
+        } else if (backdrop_frame <= 0) {
+            backdrop_frame = 0;
+            backdrop_frame_direction = 1; // Start going forward
+        }
     }
 }
 

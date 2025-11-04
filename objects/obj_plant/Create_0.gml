@@ -42,3 +42,5 @@ rotation_speed = 0.3; // degrees per frame (slower than steam for peaceful feel)
 particle_timer = 0;
 particle_interval_seconds = 0.5; // Create ambient particles every 0.5 seconds
 particle_interval = particle_interval_seconds * game_get_speed(gamespeed_fps);
+
+heal_enemies = false

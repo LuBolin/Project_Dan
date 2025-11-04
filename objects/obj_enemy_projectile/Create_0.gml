@@ -9,3 +9,6 @@ kb_distance = 0;
 
 // Set depth so projectiles render above most objects
 depth = -5;
+
+// Hide this projectile
+hide_self = false;

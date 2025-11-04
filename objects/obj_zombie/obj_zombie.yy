@@ -40,8 +40,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"zombiesprite",
-    "path":"sprites/zombiesprite/zombiesprite.yy",
+    "name":"spr_zombie_new",
+    "path":"sprites/spr_zombie_new/spr_zombie_new.yy",
   },
   "spriteMaskId":null,
   "visible":true,

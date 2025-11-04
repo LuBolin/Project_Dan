@@ -36,8 +36,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_boar",
-    "path":"sprites/spr_boar/spr_boar.yy",
+    "name":"spr_boar_new",
+    "path":"sprites/spr_boar_new/spr_boar_new.yy",
   },
   "spriteMaskId":null,
   "visible":true,

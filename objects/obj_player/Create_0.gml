@@ -94,8 +94,25 @@ colliders = [layer_tilemap_get_id("Tile_Collision"), obj_clay_wall];
 spr_gourd_icon = spr_gourd;
 
 // Effect Sprite for Burn Effect, etc
-// Switch to a Hashmap or sth if needed 
+// Switch to a Hashmap or sth if needed
 effect_sprite = undefined
+
+// Character sprites - idle/still
+spr_idle_right = spr_character_still;
+spr_idle_up = spr_character_still_up;
+spr_idle_down = spr_character_still_down;
+
+// Character sprites - attack
+spr_attack_right = spr_character_attack_right;
+spr_attack_left = spr_character_attack_left;
+spr_attack_up = spr_character_attack_up;
+spr_attack_down = spr_character_attack_down;
+
+// Animation state
+facing_direction = "right"; // "up", "down", "left", "right"
+is_attacking = false;
+attack_frame = 0;
+attack_animation_speed = 0.5; // frames per game frame
 // ==========================================================
 
 // For Health HUD

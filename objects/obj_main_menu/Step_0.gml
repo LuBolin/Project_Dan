@@ -95,6 +95,11 @@ if (!show_buttons || transitioning) {
     }
 }
 
+if (instance_exists(obj_recipes_overlay) || instance_exists(obj_instructions_overlay) || 
+    instance_exists(obj_settings_overlay) || instance_exists(obj_credits_overlay)) {
+    return;
+}
+
 // Get mouse position in GUI coordinates
 var mx = device_mouse_x_to_gui(0);
 var my = device_mouse_y_to_gui(0);

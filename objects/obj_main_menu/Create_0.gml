@@ -22,7 +22,7 @@ center_y = gui_height / 2;
 // Create button structure
 // Row 1: Play (double width and height)
 // Row 2: Instructions (left half) | Settings (right half)
-// Row 3: Credits (left half) | Exit (right half)
+// Row 3: Recipes (left half) | Credits (middle) | Exit (right)
 buttons = [
     {
         name: "Play",
@@ -57,10 +57,20 @@ buttons = [
         }
     },
     {
-        name: "Credits",
-        x_offset: -(button_width / 4 + button_spacing / 2),
+        name: "Recipes",
+        x_offset: -(button_width / 3 + button_spacing),
         y_offset: 75,
-        width: button_width / 2,
+        width: button_width / 3,
+        height: button_height,
+        action: function() {
+            instance_create_depth(0, 0, -1000, obj_recipes_overlay);
+        }
+    },
+    {
+        name: "Credits",
+        x_offset: 0,
+        y_offset: 75,
+        width: button_width / 3,
         height: button_height,
         action: function() {
             instance_create_depth(0, 0, -1000, obj_credits_overlay);
@@ -68,9 +78,9 @@ buttons = [
     },
     {
         name: "Exit",
-        x_offset: (button_width / 4 + button_spacing / 2),
+        x_offset: (button_width / 3 + button_spacing),
         y_offset: 75,
-        width: button_width / 2,
+        width: button_width / 3,
         height: button_height,
         action: function() {
             game_end();

@@ -313,15 +313,17 @@ function SlowEffect(_duration, _slow_percent) : StatusEffect() constructor {
     stack_behavior = "replace"; // Only one slow at a time
 
     on_apply = function() {
-        if (variable_instance_exists(target, "move_speed")) {
-            original_speed = target.move_speed;
-            target.move_speed = original_speed * (1 - slow_percent);
+        if (variable_instance_exists(target, "move_speed_ups")) {
+            original_speed = target.move_speed_ups;
+            target.move_speed_ups = original_speed * (1 - slow_percent);
+            show_debug_message("SlowEffect applied: " + string(original_speed) + " -> " + string(target.move_speed_ups));
         }
     }
 
     on_remove = function() {
-        if (variable_instance_exists(target, "move_speed")) {
-            target.move_speed = original_speed;
+        if (variable_instance_exists(target, "move_speed_ups")) {
+            target.move_speed_ups = original_speed;
+            show_debug_message("SlowEffect removed: restored to " + string(original_speed));
         }
     }
 

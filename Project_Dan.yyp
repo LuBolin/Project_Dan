@@ -174,7 +174,6 @@
     {"id":{"name":"spr_fire_ball","path":"sprites/spr_fire_ball/spr_fire_ball.yy",},},
     {"id":{"name":"spr_fire_projectile","path":"sprites/spr_fire_projectile/spr_fire_projectile.yy",},},
     {"id":{"name":"spr_fox_new","path":"sprites/spr_fox_new/spr_fox_new.yy",},},
-    {"id":{"name":"spr_fox","path":"sprites/spr_fox/spr_fox.yy",},},
     {"id":{"name":"spr_ghost_new","path":"sprites/spr_ghost_new/spr_ghost_new.yy",},},
     {"id":{"name":"spr_ghost_projectile","path":"sprites/spr_ghost_projectile/spr_ghost_projectile.yy",},},
     {"id":{"name":"spr_ghost","path":"sprites/spr_ghost/spr_ghost.yy",},},

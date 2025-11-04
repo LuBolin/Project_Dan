@@ -120,7 +120,6 @@
     {"name":"spr_final_boss","order":17,"path":"sprites/spr_final_boss/spr_final_boss.yy",},
     {"name":"spr_fire_ball","order":4,"path":"sprites/spr_fire_ball/spr_fire_ball.yy",},
     {"name":"spr_fire_projectile","order":1,"path":"sprites/spr_fire_projectile/spr_fire_projectile.yy",},
-    {"name":"spr_fox","order":7,"path":"sprites/spr_fox/spr_fox.yy",},
     {"name":"spr_ghost_projectile","order":4,"path":"sprites/spr_ghost_projectile/spr_ghost_projectile.yy",},
     {"name":"spr_ghost","order":3,"path":"sprites/spr_ghost/spr_ghost.yy",},
     {"name":"spr_gourd","order":2,"path":"sprites/spr_gourd/spr_gourd.yy",},

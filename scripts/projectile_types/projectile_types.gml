@@ -1005,6 +1005,184 @@ function ProjectileCreation() constructor {
     }
 }
 
+function ProjectileLightningBeam() constructor {
+    name = "LightningBeam";
+    speed = 0;
+    damage = 0;
+    life_steps = 2 * game_get_speed(gamespeed_fps);
+    kb_speed = 0;
+    kb_distance = 0;
+    sprite_index = -1;
+    scale = 1.0;
+    sfx_fire = undefined;
+    sfx_hit = undefined;
+
+    beam_length = 900;
+    beam_width = 16;
+    beam_glow = 32;
+    beam_dps = 8;
+    beam_acc = undefined;
+    damage_enemies = true;
+    damage_player = false;
+
+    beam_sprite = spr_lightning_beam; // your animated sprite (set origin to Left Middle)
+    beam_anim_t = 0;
+    beam_anim_speed = 0.6;
+
+    origin_x = 0;
+    origin_y = 0;
+    end_x = 0;
+    end_y = 0;
+
+    on_launch = function(projectile_inst) {
+        projectile_inst.x = projectile_inst.creator.x;
+        projectile_inst.y = projectile_inst.creator.y;
+
+        projectile_inst.beam_acc = ds_map_create();
+        projectile_inst.origin_x = projectile_inst.x;
+        projectile_inst.origin_y = projectile_inst.y;
+        projectile_inst.beam_anim_t = 0;
+        
+        // Copy beam properties from constructor to instance
+        projectile_inst.beam_sprite = beam_sprite;
+        projectile_inst.beam_anim_speed = beam_anim_speed;
+        projectile_inst.beam_length = beam_length;
+        projectile_inst.beam_width = beam_width;
+        projectile_inst.beam_glow = beam_glow;
+        projectile_inst.beam_dps = beam_dps;
+
+        var ex = projectile_inst.origin_x + lengthdir_x(projectile_inst.beam_length, projectile_inst.image_angle);
+        var ey = projectile_inst.origin_y + lengthdir_y(projectile_inst.beam_length, projectile_inst.image_angle);
+        var clamped = _beam_clamp_to_walls(projectile_inst.origin_x, projectile_inst.origin_y, ex, ey);
+        projectile_inst.end_x = clamped.x;
+        projectile_inst.end_y = clamped.y;
+    }
+
+    on_step = function(projectile_inst) {
+        if (instance_exists(projectile_inst.creator)) {
+            projectile_inst.origin_x = projectile_inst.creator.x;
+            projectile_inst.origin_y = projectile_inst.creator.y;
+            
+            // Update beam angle to follow mouse
+            var new_angle = point_direction(projectile_inst.origin_x, projectile_inst.origin_y, mouse_x, mouse_y);
+            projectile_inst.image_angle = new_angle;
+        }
+
+        var ex = projectile_inst.origin_x + lengthdir_x(projectile_inst.beam_length, projectile_inst.image_angle);
+        var ey = projectile_inst.origin_y + lengthdir_y(projectile_inst.beam_length, projectile_inst.image_angle);
+        var clamped = _beam_clamp_to_walls(projectile_inst.origin_x, projectile_inst.origin_y, ex, ey);
+        projectile_inst.end_x = clamped.x;
+        projectile_inst.end_y = clamped.y;
+
+        var x1 = projectile_inst.origin_x;
+        var y1 = projectile_inst.origin_y;
+        var x2 = projectile_inst.end_x;
+        var y2 = projectile_inst.end_y;
+
+        var hit_list = ds_list_create();
+        if (collision_line_list(x1, y1, x2, y2, obj_enemy_abstract, true, true, hit_list, true)) {
+            var curr_fps = max(1, game_get_speed(gamespeed_fps));
+            for (var i = 0; i < ds_list_size(hit_list); i++) {
+                var e = hit_list[| i];
+                if (!instance_exists(e)) continue;
+
+                var key = string(e);
+                var accum = 0;
+                if (ds_map_exists(projectile_inst.beam_acc, key)) {
+                    accum = ds_map_find_value(projectile_inst.beam_acc, key);
+                }
+
+                accum += projectile_inst.beam_dps / curr_fps;
+                var dmg_now = floor(accum);
+                if (dmg_now >= 1) {
+                    damage_entity(e, dmg_now);
+                    accum -= dmg_now;
+                }
+
+                ds_map_set(projectile_inst.beam_acc, key, accum);
+            }
+        }
+        ds_list_destroy(hit_list);
+
+        projectile_inst.beam_anim_t += projectile_inst.beam_anim_speed;
+
+        projectile_inst.life_steps -= 1;
+        if (projectile_inst.life_steps <= 0) {
+            if (!is_undefined(projectile_inst.beam_acc)) {
+                ds_map_destroy(projectile_inst.beam_acc);
+                projectile_inst.beam_acc = undefined;
+            }
+            instance_destroy(projectile_inst);
+        }
+    }
+
+    on_draw = function(projectile_inst) {
+        var x1 = projectile_inst.origin_x;
+        var y1 = projectile_inst.origin_y;
+        var x2 = projectile_inst.end_x;
+        var y2 = projectile_inst.end_y;
+
+        var len = point_distance(x1, y1, x2, y2);
+
+        if (sprite_exists(projectile_inst.beam_sprite)) {
+            var frames = max(1, sprite_get_number(projectile_inst.beam_sprite));
+            var frame = floor(projectile_inst.beam_anim_t) mod frames;
+            var sw = max(1, sprite_get_width(projectile_inst.beam_sprite));
+            var sh = max(1, sprite_get_height(projectile_inst.beam_sprite));
+
+            var xscale = len / sw;
+            var yscale = projectile_inst.beam_width / sh;
+
+            draw_sprite_ext(projectile_inst.beam_sprite, frame, x1, y1, xscale, yscale, projectile_inst.image_angle, c_white, 1);
+        } else {
+            gpu_set_blendmode(bm_add);
+            draw_set_alpha(0.35);
+            draw_set_color(make_color_rgb(120, 170, 255));
+            draw_line_width(x1, y1, x2, y2, projectile_inst.beam_glow);
+            draw_set_alpha(1);
+            draw_set_color(c_white);
+            draw_line_width(x1, y1, x2, y2, projectile_inst.beam_width);
+            gpu_set_blendmode(bm_normal);
+        }
+    }
+
+    _beam_clamp_to_walls = function(x1, y1, x2, y2) {
+        var tmap = layer_tilemap_get_id("Tile_Collision");
+        var max_len = point_distance(x1, y1, x2, y2);
+        var ang = point_direction(x1, y1, x2, y2);
+        var step = 4;
+        var steps = ceil(max_len / step);
+        var last_x = x1, last_y = y1;
+
+        for (var i = 1; i <= steps; i++) {
+            var px = x1 + lengthdir_x(i * step, ang);
+            var py = y1 + lengthdir_y(i * step, ang);
+
+            var hit_tile = false;
+            var hit_wall = false;
+
+            if (tmap != -1) {
+                hit_tile = tilemap_get_at_pixel(tmap, px, py) != 0;
+            }
+
+            with (obj_clay_wall) {
+                if (point_distance(x, y, px, py) < 32) {
+                    hit_wall = true;
+                    break;
+                }
+            }
+
+            if (hit_tile || hit_wall) {
+                return { x: last_x, y: last_y };
+            }
+
+            last_x = px;
+            last_y = py;
+        }
+
+        return { x: x2, y: y2 };
+    }
+}
 // ========================================
 // ENEMY PROJECTILE
 // ========================================

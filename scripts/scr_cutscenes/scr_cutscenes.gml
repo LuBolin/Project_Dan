@@ -135,6 +135,38 @@ function complete_cutscene(cutscene_manager) {
             death_screen.persistent = true;
         }
     } else {
+        // Replace Elixir with Lightning before moving to final boss
+        var names = [];
+        var sel_idx = 0;
+
+        if (instance_exists(obj_player)) {
+            var p = obj_player;
+            for (var i = 0; i < array_length(p.inv); i++) {
+                var g = p.inv[i];
+                if (is_struct(g) && variable_struct_exists(g, "name") && g.name == "Elixir") {
+                    p.inv[i] = gourd_create(GourdLightning);
+                    if (p.sel_slot == i) {
+                        p.equipped_element = p.inv[i];
+                    }
+                }
+                array_push(names, is_struct(p.inv[i]) ? p.inv[i].name : "");
+            }
+            sel_idx = clamp(p.sel_slot, 0, array_length(p.inv) - 1);
+        } else if (array_length(cutscene_manager.player_inventory_snapshot) >= 3) {
+            for (var i = 0; i < array_length(cutscene_manager.player_inventory_snapshot); i++) {
+                var g2 = cutscene_manager.player_inventory_snapshot[i];
+                if (is_struct(g2) && variable_struct_exists(g2, "name") && g2.name == "Elixir") {
+                    cutscene_manager.player_inventory_snapshot[i] = gourd_create(GourdLightning);
+                }
+                array_push(names, is_struct(cutscene_manager.player_inventory_snapshot[i]) ? cutscene_manager.player_inventory_snapshot[i].name : "");
+            }
+            sel_idx = 0;
+        }
+
+        // Persist for next room’s player Create
+        global.next_room_inv_names = names;
+        global.next_room_sel_slot = sel_idx;
+
         with (cutscene_manager) {
             global.cutscene_active = false;
             instance_destroy();

@@ -280,6 +280,22 @@ function GourdElixir() : GourdBase() constructor
     }
 }
 
+function GourdLightning() : GourdBase() constructor
+{
+    name = "Lightning";
+    color = make_color_rgb(180, 220, 255);
+    cooldown = 15; // seconds
+    projectile = ProjectileLightningBeam;
+
+    use = function(_p) {
+        if (can_use()) {
+            // Fire at current aim (mouse) position
+            spawn_and_set_projectile(_p, new projectile(), mouse_x, mouse_y);
+            trigger_cd();
+        }
+    }
+}
+
 // Helper function to get gourd type constructor by element name
 function get_gourd_type_by_name(element_name) {
     switch (element_name) {
@@ -298,6 +314,7 @@ function get_gourd_type_by_name(element_name) {
         case "Destruction": return GourdDestruction;
         case "Creation": return GourdCreation;
         case "Elixir": return GourdElixir;
+        case "Lightning": return GourdLightning;
         default: return undefined;
     }
 }

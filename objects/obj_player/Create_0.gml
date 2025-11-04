@@ -65,10 +65,48 @@ if (carried_element != undefined) {
 
     // Take the first 3 elements after shuffling
     self.inv = [
-        gourd_create(base_elements[0]),
-        gourd_create(base_elements[1]),
-        gourd_create(base_elements[2])
+        //gourd_create(base_elements[0]),
+        //gourd_create(base_elements[1]),
+        //gourd_create(base_elements[2])
+		gourd_create(GourdDestruction),
+		gourd_create(GourdEruption),
+		gourd_create(GourdElixir)
     ];
+}
+
+// Apply inventory override from cutscene (if present)
+if (variable_global_exists("next_room_inv_names") && is_array(global.next_room_inv_names)) {
+    self.inv = [];
+    var names = global.next_room_inv_names;
+    for (var i = 0; i < array_length(names); i++) {
+        var ctor = get_gourd_type_by_name(names[i]);
+        if (ctor != undefined) {
+            array_push(self.inv, gourd_create(ctor));
+        }
+    }
+
+    // Pad to 3 if any failed to map
+    var fallbacks = [GourdFire, GourdEarth, GourdWater, GourdAir];
+    var f = 0;
+    while (array_length(self.inv) < 3 && f < array_length(fallbacks)) {
+        array_push(self.inv, gourd_create(fallbacks[f]));
+        f++;
+    }
+
+    if (array_length(self.inv) == 0) {
+        self.inv = [ gourd_create(GourdFire), gourd_create(GourdEarth), gourd_create(GourdWater) ];
+    }
+
+    // Restore selection
+    if (variable_global_exists("next_room_sel_slot")) {
+        self.sel_slot = clamp(global.next_room_sel_slot, 0, max(0, array_length(self.inv) - 1));
+    } else {
+        self.sel_slot = 0;
+    }
+    self.equipped_element = self.inv[self.sel_slot];
+
+    global.next_room_inv_names = undefined;
+    global.next_room_sel_slot = undefined;
 }
 
 self.sel_slot = 0;

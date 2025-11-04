@@ -6,9 +6,21 @@ if (hp < 4) {
 }
 
 if (hp <= 0) {
-    // Player died - show death screen with element selection
-    // Store player's current inventory for death screen
-    global.player_death_inventory = [inv[0], inv[1], inv[2]];
+    // Player died - store inventory for death screen
+    var death_inventory = [inv[0], inv[1], inv[2]];
+    
+    // If player dies in final boss room, revert Lightning back to Elixir
+    if (room == Level_FinalBoss) {
+        for (var i = 0; i < array_length(death_inventory); i++) {
+            var elem = death_inventory[i];
+            if (is_struct(elem) && variable_struct_exists(elem, "name") && elem.name == "Lightning") {
+                death_inventory[i] = gourd_create(GourdElixir);
+                show_debug_message("Reverted Lightning back to Elixir for death screen");
+            }
+        }
+    }
+    
+    global.player_death_inventory = death_inventory;
     
     // Create death screen (persistent so it stays across room transitions)
     if (!instance_exists(obj_death_screen)) {

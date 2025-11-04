@@ -128,6 +128,7 @@
     {"name":"spr_hurt_pov","order":5,"path":"sprites/spr_hurt_pov/spr_hurt_pov.yy",},
     {"name":"spr_lava_ball","order":3,"path":"sprites/spr_lava_ball/spr_lava_ball.yy",},
     {"name":"spr_lava_pool","order":12,"path":"sprites/spr_lava_pool/spr_lava_pool.yy",},
+    {"name":"spr_lightning_beam","order":22,"path":"sprites/spr_lightning_beam/spr_lightning_beam.yy",},
     {"name":"spr_lightning_strike","order":5,"path":"sprites/spr_lightning_strike/spr_lightning_strike.yy",},
     {"name":"spr_lock","order":1,"path":"sprites/spr_lock/spr_lock.yy",},
     {"name":"spr_locked_door","order":11,"path":"sprites/spr_locked_door/spr_locked_door.yy",},

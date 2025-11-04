@@ -25,36 +25,33 @@ if (room != MainMenu) {
 
 // get player safely
 if (is_undefined(global.player) || !instance_exists(global.player)) exit;
-
 var p = global.player;
+if (!variable_instance_exists(p, "inv")) exit;
+
+var inv_len = array_length(p.inv);
+if (inv_len <= 0) exit;
 
 // ensure sel_slot exists
-if (!variable_instance_exists(p, "sel_slot")) exit;
-
+if (!variable_instance_exists(p, "sel_slot")) p.sel_slot = 0;
+p.sel_slot = clamp(p.sel_slot, 0, max(0, inv_len - 1));
 
 // --- Cycle active gourd slot ---
 if (keyboard_check_pressed(ord("Q"))) {
-    p.sel_slot = (p.sel_slot + 1) mod 3;
-	p.equipped_element = p.inv[p.sel_slot] // update the equipped element
+    p.sel_slot = (p.sel_slot + 1) mod inv_len;
+    p.equipped_element = p.inv[p.sel_slot];
 }
 if (keyboard_check_pressed(ord("E"))) {
-    p.sel_slot = (p.sel_slot + 2) mod 3;
-	p.equipped_element = p.inv[p.sel_slot] // update the equipped element
-}
-
-// --- ADDED: Mouse wheel cycling ---
-var wheel_up = mouse_wheel_up();
-var wheel_down = mouse_wheel_down();
-
-if (wheel_up) {
-    // Scroll up = next element (same as E key)
-    p.sel_slot = (p.sel_slot + 1) mod 3;
+    p.sel_slot = (p.sel_slot + inv_len - 1) mod inv_len;
     p.equipped_element = p.inv[p.sel_slot];
 }
 
-if (wheel_down) {
-    // Scroll down = previous element (same as Q key)
-    p.sel_slot = (p.sel_slot + 2) mod 3; // +2 mod 3 = -1 mod 3
+// Mouse wheel
+if (mouse_wheel_up()) {
+    p.sel_slot = (p.sel_slot + 1) mod inv_len;
+    p.equipped_element = p.inv[p.sel_slot];
+}
+if (mouse_wheel_down()) {
+    p.sel_slot = (p.sel_slot + inv_len - 1) mod inv_len;
     p.equipped_element = p.inv[p.sel_slot];
 }
 

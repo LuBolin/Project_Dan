@@ -61,7 +61,7 @@ if (particle_timer >= particle_interval) {
 }
 
 // Destroy when lifetime expires
-if (life_timer <= 0) {
+if (!is_forever and life_timer <= 0) {
     instance_destroy();
 }
 

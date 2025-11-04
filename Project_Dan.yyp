@@ -99,6 +99,8 @@
     {"id":{"name":"Level1","path":"rooms/Level1/Level1.yy",},},
     {"id":{"name":"Level2","path":"rooms/Level2/Level2.yy",},},
     {"id":{"name":"Level3","path":"rooms/Level3/Level3.yy",},},
+    {"id":{"name":"Level4","path":"rooms/Level4/Level4.yy",},},
+    {"id":{"name":"Level5","path":"rooms/Level5/Level5.yy",},},
     {"id":{"name":"MainMenu","path":"rooms/MainMenu/MainMenu.yy",},},
     {"id":{"name":"MiniBoss_Boar","path":"rooms/MiniBoss_Boar/MiniBoss_Boar.yy",},},
     {"id":{"name":"MiniBoss_Tree","path":"rooms/MiniBoss_Tree/MiniBoss_Tree.yy",},},
@@ -204,6 +206,8 @@
     {"roomId":{"name":"AlchemyRoom","path":"rooms/AlchemyRoom/AlchemyRoom.yy",},},
     {"roomId":{"name":"Level_FinalBoss","path":"rooms/Level_FinalBoss/Level_FinalBoss.yy",},},
     {"roomId":{"name":"MiniBoss_Tree","path":"rooms/MiniBoss_Tree/MiniBoss_Tree.yy",},},
+    {"roomId":{"name":"Level4","path":"rooms/Level4/Level4.yy",},},
+    {"roomId":{"name":"Level5","path":"rooms/Level5/Level5.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

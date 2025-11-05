@@ -47,6 +47,12 @@ if (start_button_hover && can_start && mouse_check_button_pressed(mb_left)) {
     // Reset game state
     global.level_progress = 1;
 
+    // Reset run timer
+    if (instance_exists(obj_run_timer)) {
+        obj_run_timer.run_time_seconds = 0;
+        obj_run_timer.is_active = false;
+    }
+
     // Clean up death inventory
     if (variable_global_exists("player_death_inventory")) {
         global.player_death_inventory = undefined;
@@ -73,6 +79,12 @@ if (menu_button_hover && mouse_check_button_pressed(mb_left)) {
     }
     if (variable_global_exists("carried_over_element")) {
         global.carried_over_element = undefined;
+    }
+
+    // Reset run timer
+    if (instance_exists(obj_run_timer)) {
+        obj_run_timer.run_time_seconds = 0;
+        obj_run_timer.is_active = false;
     }
 
     // Clear mouse button state to prevent click carrying over to next room

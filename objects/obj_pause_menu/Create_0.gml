@@ -66,6 +66,13 @@ buttons = [
         action: function() {
             instance_activate_all();
             other.is_paused = false;
+
+            // Reset run timer
+            if (instance_exists(obj_run_timer)) {
+                obj_run_timer.run_time_seconds = 0;
+                obj_run_timer.is_active = false;
+            }
+
             // Destroy player and related objects before returning to menu
             if (instance_exists(obj_player)) {
                 instance_destroy(obj_player);

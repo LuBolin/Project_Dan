@@ -163,9 +163,15 @@ function complete_cutscene(cutscene_manager) {
             sel_idx = 0;
         }
 
-        // Persist for next room’s player Create
+        // Persist for next room's player Create
         global.next_room_inv_names = names;
         global.next_room_sel_slot = sel_idx;
+
+        // Resume run timer before room transition
+        if (instance_exists(obj_run_timer)) {
+            obj_run_timer.persistent = true;
+            // Timer will be reactivated by Room Start event in Level_FinalBoss
+        }
 
         with (cutscene_manager) {
             global.cutscene_active = false;

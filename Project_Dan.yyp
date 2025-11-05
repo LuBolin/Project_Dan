@@ -90,6 +90,7 @@
     {"id":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},},
     {"id":{"name":"obj_projectile","path":"objects/obj_projectile/obj_projectile.yy",},},
     {"id":{"name":"obj_recipes_overlay","path":"objects/obj_recipes_overlay/obj_recipes_overlay.yy",},},
+    {"id":{"name":"obj_run_timer","path":"objects/obj_run_timer/obj_run_timer.yy",},},
     {"id":{"name":"obj_settings_overlay","path":"objects/obj_settings_overlay/obj_settings_overlay.yy",},},
     {"id":{"name":"obj_sfx_manager","path":"objects/obj_sfx_manager/obj_sfx_manager.yy",},},
     {"id":{"name":"obj_steam","path":"objects/obj_steam/obj_steam.yy",},},

@@ -145,3 +145,14 @@ function trigger_miniboss_defeat_cutscene() {
         instance_create_depth(0, 0, -10000, obj_cutscene_manager);
     }
 }
+
+//var _my_fx_struct = layer_get_fx("TintEffect");
+//
+//if (_my_fx_struct != -1)
+//{
+    //var _params = fx_get_parameters(_my_fx_struct);
+    //_params.g_TintCol = c_red; // Example: Set tint color to red for a Colour Tint filter
+    //_params.g_TintIntensity = 1.0; // Example: Set tint intensity
+    //fx_set_parameters(_my_fx_struct, _params);
+//}
+

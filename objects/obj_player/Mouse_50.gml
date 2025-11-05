@@ -1,8 +1,5 @@
-// Full-auto shooting, if want Semi-auto use left pressed
-self.equipped_element.use(id);
-
 // Trigger attack animation
-if (!is_attacking) {
+if (!is_attacking and self.equipped_element.can_use()) {
     is_attacking = true;
     attack_frame = 0;
 
@@ -18,3 +15,6 @@ if (!is_attacking) {
         facing_direction = (mouse_dir_x < 0) ? "left" : "right";
     }
 }
+
+// Full-auto shooting, if want Semi-auto use left pressed
+self.equipped_element.use(id);

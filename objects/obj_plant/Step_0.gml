@@ -6,7 +6,7 @@ if (life_timer > life_duration - fade_in_duration) {
     image_alpha = min(0.6, image_alpha + (0.6 / fade_in_duration));
 }
 // Fade out near end
-else if (life_timer <= fade_out_duration) {
+else if (!is_forever && life_timer <= fade_out_duration) {
     image_alpha = max(0, image_alpha - (0.6 / fade_out_duration));
 }
 // Fully visible in between

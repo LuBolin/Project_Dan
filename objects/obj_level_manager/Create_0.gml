@@ -146,13 +146,14 @@ function trigger_miniboss_defeat_cutscene() {
     }
 }
 
-//var _my_fx_struct = layer_get_fx("TintEffect");
-//
-//if (_my_fx_struct != -1)
-//{
-    //var _params = fx_get_parameters(_my_fx_struct);
-    //_params.g_TintCol = c_red; // Example: Set tint color to red for a Colour Tint filter
-    //_params.g_TintIntensity = 1.0; // Example: Set tint intensity
-    //fx_set_parameters(_my_fx_struct, _params);
-//}
+var _my_fx_struct = fx_create("_filter_tintfilter");
+
+var possible_colourations = [[1, 1, 1, 1], [1, 0, 0, 0.5], [1, 0.64, 0, 1]]
+
+
+if (_my_fx_struct != -1)
+{
+    fx_set_parameter(_my_fx_struct, "g_TintCol", global.current_level_difficulty % array_length(possible_colourations));
+    layer_set_fx("Tile_Collision", _my_fx_struct);
+}
 

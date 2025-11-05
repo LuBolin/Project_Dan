@@ -14,7 +14,7 @@ is_forever = false;
 slowed_enemies = ds_list_create();
 
 // Slow effect percentage
-slow_amount = 0.3; // 30% slow
+slow_amount = 0.5; // 50% slow
 
 // Set depth so it renders below most objects
 depth = 300;

@@ -33,7 +33,7 @@ heal_cooldown_seconds = 0.5; // 0.5 seconds between heals
 heal_cooldown = heal_cooldown_seconds * 1000; // Convert to milliseconds for current_time
 
 // Set depth so it renders below player but above ground
-depth = 100;
+depth = 200;
 
 // Rotation for visual effect
 rotation_speed = 0.3; // degrees per frame (slower than steam for peaceful feel)

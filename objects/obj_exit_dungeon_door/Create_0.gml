@@ -17,6 +17,9 @@ function update_exit_kills(_kills_remaining) {
 
     to_kill = _kills_remaining;
     if (to_kill == 0) {
+        if (!instance_exists(obj_sfx_manager)) {
+            instance_create_depth(0, 0, 0, obj_sfx_manager);
+        }
         obj_sfx_manager.play_sound(snd_unlock, false)
     }
 }

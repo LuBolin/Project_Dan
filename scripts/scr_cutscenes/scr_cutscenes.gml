@@ -66,7 +66,7 @@ function check_player_has_elixir(cutscene_manager) {
         cutscene_manager.speaker_portrait_darkened[3] = false;
         cutscene_manager.has_elixir = false;
     } else {
-        var final_boss_sprite = spr_final_boss;
+        var final_boss_sprite = spr_boss_new;
         
         array_resize(cutscene_manager.dialog_lines, 8);
         array_resize(cutscene_manager.speaker_names, 8);

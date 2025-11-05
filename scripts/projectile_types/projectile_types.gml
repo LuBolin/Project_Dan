@@ -248,8 +248,8 @@ function ProjectileLava() constructor {
     life_steps  = game_get_speed(gamespeed_fps) * 2.0; // 2 second max flight time
     kb_speed = 3;  // pixels per frame
     kb_distance = 20; // knockback distance
-    sprite_index = spr_lava_ball;
-    scale = 0.4;
+    sprite_index = spr_water_ball;
+    scale = 0.8;
     sfx_fire = undefined;
     sfx_hit = undefined;
 
@@ -264,6 +264,7 @@ function ProjectileLava() constructor {
         projectile_inst.target_y = mouse_y;
         projectile_inst.homing_enabled = true;
         projectile_inst.depth = 0;
+        projectile_inst.image_blend = make_color_rgb(255, 50, 0); // make water ball red
         
         // Calculate initial direction towards target
         var dir = point_direction(projectile_inst.x, projectile_inst.y, mouse_x, mouse_y);
@@ -522,7 +523,7 @@ function ProjectileEruption() constructor {
     life_steps  = game_get_speed(gamespeed_fps) * 2.5; // 2.5 second max flight time
     kb_speed = 4;  // pixels per frame
     kb_distance = 20; // Same knockback than lava
-    sprite_index = spr_lava_ball; // Reuse lava ball sprite
+    sprite_index = spr_water_ball; // Reuse lava ball sprite
     scale = 0.8; // Slightly larger than regular lava
     sfx_fire = undefined;
     sfx_hit = undefined;
@@ -542,6 +543,7 @@ function ProjectileEruption() constructor {
         projectile_inst.target_y = mouse_y;
         projectile_inst.homing_enabled = true;
         projectile_inst.depth = 0;
+        projectile_inst.image_blend = make_color_rgb(255, 50, 0);
         
         // Calculate initial direction towards target
         var dir = point_direction(projectile_inst.x, projectile_inst.y, mouse_x, mouse_y);

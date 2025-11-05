@@ -8,9 +8,8 @@ if (!audio_is_playing(snd_dungeon_bgm)) {
 
 // Backdrop animation + darken settings
 backdrop_frame = 0;                                  // fractional frame index
-backdrop_fps = 2;                                    // play at 2 FPS (slow, calming animation)
+backdrop_fps = 5;                                    // play at 5 FPS (slow, calming animation)
 backdrop_frame_step = backdrop_fps / game_get_speed(gamespeed_fps);
-backdrop_frame_direction = 1;                        // 1 = forward, -1 = backward (for ping-pong)
 backdrop_darken_alpha = 0.7;  
 
 // === LAYOUT CONFIG ===

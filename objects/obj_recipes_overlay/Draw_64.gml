@@ -34,8 +34,16 @@ draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 draw_text_transformed(close_button_x + close_button_size / 2, close_button_y + close_button_size / 2, "X", 1.5, 1.5, 0);
 
+// Convert GUI coordinates to window coordinates for scissor
+var window_scale_x = window_get_width() / gui_width;
+var window_scale_y = window_get_height() / gui_height;
+var scissor_x = tree_panel_x * window_scale_x;
+var scissor_y = tree_panel_y * window_scale_y;
+var scissor_w = tree_panel_w * window_scale_x;
+var scissor_h = tree_panel_h * window_scale_y;
+
 // Set up clipping for tree area
-gpu_set_scissor(tree_panel_x, tree_panel_y, tree_panel_w, tree_panel_h);
+gpu_set_scissor(scissor_x, scissor_y, scissor_w, scissor_h);
 
 // Draw tree background (matching brown theme)
 draw_set_color(make_color_rgb(25, 20, 15));

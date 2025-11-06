@@ -19,6 +19,12 @@ if (hp <= 0) {
             }
         }
     }
+
+    // Stop the run timer right away
+    if (instance_exists(obj_run_timer)) {
+        obj_run_timer.is_active = false;
+        global.run_time_seconds_saved = obj_run_timer.run_time_seconds;
+    }
     
     global.player_death_inventory = death_inventory;
     

@@ -1,5 +1,7 @@
 // Timer in seconds (decimal for precision)
-run_time_seconds = 0;
+run_time_seconds = variable_global_exists("run_time_seconds_saved") && is_real(global.run_time_seconds_saved)
+    ? global.run_time_seconds_saved
+    : 0;
 
 // Flag to track if timer is active
 is_active = false;

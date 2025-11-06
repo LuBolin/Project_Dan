@@ -1,14 +1,16 @@
-// Only increment timer if active and game is not paused
-if (is_active) {
-    var is_paused = false;
-    
-    // Check if pause menu exists and is paused
-    if (instance_exists(obj_pause_menu)) {
-        is_paused = obj_pause_menu.is_paused;
-    }
-    
-    // Don't increment if paused or in alchemy room
-    if (!is_paused && room != AlchemyRoom && room != MainMenu) {
-        run_time_seconds += delta_time / 1000000; // Convert microseconds to seconds
-    }
+/// Run Timer - Step
+
+// Global pause conditions
+var paused = false;
+paused |= (instance_exists(obj_pause_menu) && obj_pause_menu.is_paused);
+paused |= instance_exists(obj_cutscene_manager);
+paused |= instance_exists(obj_death_screen);
+paused |= (room == AlchemyRoom) || (room == MainMenu);
+
+// Only advance when active and not paused
+if (is_active && !paused) {
+    run_time_seconds += (delta_time / 1000000); // microseconds -> seconds
 }
+
+// Persist so room changes won't reset
+global.run_time_seconds_saved = run_time_seconds;

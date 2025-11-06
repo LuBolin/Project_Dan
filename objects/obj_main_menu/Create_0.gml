@@ -33,8 +33,7 @@ buttons = [
         action: function() {
             // Reset level progress
             global.level_progress = 1;
-            //goto_level(Level0, 1); // Start at Level0 with difficulty level 1
-			goto_level(MiniBoss_Tree, 5);
+            goto_level(Level0, 1); // Start at Level0 with difficulty level 1
         }
     },
     {

@@ -86,6 +86,7 @@ if (menu_button_hover && mouse_check_button_pressed(mb_left)) {
         obj_run_timer.run_time_seconds = 0;
         obj_run_timer.is_active = false;
     }
+    global.run_time_seconds_saved = 0;
 
     // Clear mouse button state to prevent click carrying over to next room
     io_clear();

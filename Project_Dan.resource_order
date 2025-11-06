@@ -61,6 +61,7 @@
     {"name":"obj_player","order":1,"path":"objects/obj_player/obj_player.yy",},
     {"name":"obj_projectile","order":2,"path":"objects/obj_projectile/obj_projectile.yy",},
     {"name":"obj_recipes_overlay","order":13,"path":"objects/obj_recipes_overlay/obj_recipes_overlay.yy",},
+    {"name":"obj_run_timer","order":8,"path":"objects/obj_run_timer/obj_run_timer.yy",},
     {"name":"obj_settings_overlay","order":8,"path":"objects/obj_settings_overlay/obj_settings_overlay.yy",},
     {"name":"obj_zombie","order":1,"path":"objects/obj_zombie/obj_zombie.yy",},
     {"name":"AlchemyRoom","order":2,"path":"rooms/AlchemyRoom/AlchemyRoom.yy",},

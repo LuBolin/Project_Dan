@@ -15,6 +15,11 @@ if (show_lightning) {
     }
 }
 
+// Pause run timer during cutscene
+if (instance_exists(obj_run_timer)) {
+    obj_run_timer.is_active = false;
+}
+
 if (waiting_for_click) {
     if (mouse_check_button_pressed(mb_left) || keyboard_check_pressed(vk_space)) {
         advance_dialog();

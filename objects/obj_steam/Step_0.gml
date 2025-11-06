@@ -1,5 +1,3 @@
-/// Steam Cloud - Step Event
-
 // Follow the owner (player)
 if (instance_exists(owner)) {
     x = owner.x;
@@ -39,44 +37,33 @@ if (tick_counter >= tick_rate) {
     // Determine which entities to damage based on configuration
     var target_object = damage_enemies ? obj_enemy_abstract : obj_player;
 
-    // Use instance_place_list to find all targets overlapping with steam's collision circle
+    // Use collision_circle_list for proper circular area detection
     var enemy_list = ds_list_create();
-    var collision_box_radius = collision_radius;
-
-    // Check all targets in range using a rectangular area check first
-    var check_area_x1 = x - collision_box_radius;
-    var check_area_y1 = y - collision_box_radius;
-    var check_area_x2 = x + collision_box_radius;
-    var check_area_y2 = y + collision_box_radius;
-
-    var num_enemies = collision_rectangle_list(check_area_x1, check_area_y1, check_area_x2, check_area_y2,
-        target_object, false, true, enemy_list, false);
+    var num_enemies = collision_circle_list(x, y, collision_radius, target_object, false, true, enemy_list, false);
 
     // Process each enemy in the collision area
     for (var i = 0; i < num_enemies; i++) {
         var enemy = enemy_list[| i];
+        if (!instance_exists(enemy)) continue;
+        
         var enemy_id = enemy.id;
         var last_hit_time = ds_map_find_value(hit_cooldown_map, enemy_id);
 
-        // Check if enemy is within the circular collision radius
-        var distance = point_distance(enemy.x, enemy.y, x, y);
-        if (distance <= collision_box_radius) {
-            // If never hit or cooldown expired (0.5 seconds)
-            if (is_undefined(last_hit_time) || (curr_time - last_hit_time >= 500)) {
-                // Apply damage
-                if (instance_exists(enemy)) {
-                    damage_entity(enemy, damage_per_tick);
+        // If never hit or cooldown expired (0.5 seconds)
+        if (is_undefined(last_hit_time) || (curr_time - last_hit_time >= 500)) {
+            // Apply damage
+            damage_entity(enemy, damage_per_tick);
 
-                    // Record hit time
-                    ds_map_set(hit_cooldown_map, enemy_id, curr_time);
+            // Record hit time
+            ds_map_set(hit_cooldown_map, enemy_id, curr_time);
 
-                    // Apply burn effect for 1 second
-                    add_status_effect(enemy, new BurnEffect(game_get_speed(gamespeed_fps) * 1, damage_per_tick));
+            // Apply burn effect for 1 second
+            add_status_effect(enemy, new BurnEffect(game_get_speed(gamespeed_fps) * 1, damage_per_tick));
 
-                    // Apply 20% slow effect for 1 second
-                    add_status_effect(enemy, new SlowEffect(game_get_speed(gamespeed_fps) * 1, 0.2));
-                }
-            }
+            // Apply 20% slow effect for 1 second
+            add_status_effect(enemy, new SlowEffect(game_get_speed(gamespeed_fps) * 1, 0.2));
+            
+            show_debug_message("Steam damaged enemy " + string(enemy_id) + " at distance " + string(point_distance(x, y, enemy.x, enemy.y)));
         }
     }
 

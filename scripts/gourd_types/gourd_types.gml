@@ -165,7 +165,9 @@ function GourdClay() : GourdBase() constructor
             var can_place = true;
             
             // Check collision with terrain
-            if (place_meeting(segment_x, segment_y, layer_tilemap_get_id("Tile_Collision"))) {
+            var tilemap = layer_tilemap_get_id("Tile_Collision");
+            var tile = tilemap_get_at_pixel(tilemap, segment_x, segment_y);
+            if (tile != 0) {
                 can_place = false;
             }
             

@@ -97,7 +97,7 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
             lava_attack_cd_timer = lava_attack_freq;
         }
     
-        if ((!is_second_round && entity.hp <= 30) || (entity.hp <= 10)) {
+        if ((!is_second_round && entity.hp <= 45) || (entity.hp <= 15)) {
             is_second_round = true;
             entity.changeState(STATES.CHASE);
         }
@@ -132,7 +132,7 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
             exit;
         }
         
-        if (!is_second_round && entity.hp <= 20) {
+        if (!is_second_round && entity.hp <= 30) {
             entity.move_speed_ups = runaway_speed;
             set_path(entity, obj_final_boss_centre.x, obj_final_boss_centre.y);
             if (point_distance(entity.x, entity.y, obj_final_boss_centre.x, obj_final_boss_centre.y) <= nearby_centre_radius) {

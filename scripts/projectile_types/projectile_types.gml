@@ -662,11 +662,14 @@ function ProjectileEruption() constructor {
                         var pool_y = self.center_y + lengthdir_y(self.explosion_radius, angle);
 
                         // Check if position is valid (not in walls)
-                        if (!place_meeting(pool_x, pool_y, layer_tilemap_get_id("Tile_Collision"))) {
+                        var tilemap = layer_tilemap_get_id("Tile_Collision");
+                        var tile = tilemap_get_at_pixel(tilemap, pool_x, pool_y);
+                        //if (!place_meeting(pool_x, pool_y, layer_tilemap_get_id("Tile_Collision"))) {
+                        if (tile == 0) {
                             var secondary_pool = instance_create_layer(pool_x, pool_y, "Instances", obj_lava_pool);
                             if (instance_exists(secondary_pool)) {
                                 secondary_pool.life_timer = game_get_speed(gamespeed_fps) * 6; // 6 seconds
-								secondary_pool.damage_per_tick = 1.4; // 70% of damage of lava
+								secondary_pool.damage_per_tick = 0.6; // 70% of damage of lava
                                 // Make secondary pools smaller
                                 secondary_pool.image_xscale = 0.8;
                                 secondary_pool.image_yscale = 0.8;
@@ -1045,7 +1048,7 @@ function ProjectileLightningBeam() constructor {
     name = "LightningBeam";
     speed = 0;
     damage = 0;
-    life_steps = 2 * game_get_speed(gamespeed_fps);
+    life_steps = 2.5 * game_get_speed(gamespeed_fps);
     kb_speed = 0;
     kb_distance = 0;
     sprite_index = -1;
@@ -1201,12 +1204,13 @@ function ProjectileLightningBeam() constructor {
                 hit_tile = tilemap_get_at_pixel(tmap, px, py) != 0;
             }
 
-            with (obj_clay_wall) {
-                if (point_distance(x, y, px, py) < 32) {
-                    hit_wall = true;
-                    break;
-                }
-            }
+            // Let's Buff Lightning a bit shall we
+            //with (obj_clay_wall) {
+                //if (point_distance(x, y, px, py) < 32) {
+                    //hit_wall = true;
+                    //break;
+                //}
+            //}
 
             if (hit_tile || hit_wall) {
                 return { x: last_x, y: last_y };

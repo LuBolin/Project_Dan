@@ -24,8 +24,7 @@ function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : S
             other.enemy_count += 1
         }
         
-        show_debug_message(instance_exists(obj_player))
-        if (enemy_count <= 3 && instance_exists(obj_player) && obj_player.hp >= 6) {
+        if (enemy_count <= 4 && instance_exists(obj_player) && (obj_player.hp >= 6 || entity.hp <= 20)) {
             spawn_more_enemies();
         }
         

@@ -26,8 +26,10 @@ if (is_first_frame) {
                 var new_y = y + lengthdir_y(push_distance, push_angle);
                 
                 // Check if this position is free of walls (both terrain and clay walls)
-                if (!place_meeting(new_x, new_y, layer_tilemap_get_id("Tile_Collision")) &&
-                    !place_meeting(new_x, new_y, obj_clay_wall)) {
+                var tilemap = layer_tilemap_get_id("Tile_Collision");
+                var tile = tilemap_get_at_pixel(tilemap, new_x, new_y);
+                //if (!place_meeting(new_x, new_y, layer_tilemap_get_id("Tile_Collision"))) {
+                if (tile != 0 && !place_meeting(new_x, new_y, obj_clay_wall)) {
                     // Move enemy to this position
                     x = new_x;
                     y = new_y;
@@ -76,8 +78,9 @@ with (obj_enemy_abstract) {
             var new_y = y + lengthdir_y(push_distance, push_angle);
             
             // Check if this position is free
-            if (!place_meeting(new_x, new_y, layer_tilemap_get_id("Tile_Collision")) &&
-                !place_meeting(new_x, new_y, obj_clay_wall)) {
+            var tilemap = layer_tilemap_get_id("Tile_Collision");
+            var tile = tilemap_get_at_pixel(tilemap, new_x, new_y);
+            if (tile != 0 && !place_meeting(new_x, new_y, obj_clay_wall)) {
                 // Move enemy to this position
                 x = new_x;
                 y = new_y;

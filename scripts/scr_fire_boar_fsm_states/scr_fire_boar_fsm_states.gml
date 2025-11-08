@@ -47,8 +47,8 @@ function FireBoarChaseState(_entity, _duration = 5000, _is_timed = true) : Chase
             // Shoot fireballs while chasing
             if (fireball_cooldown <= 0 and _sight_line == noone) {
                 // Calculate direction to player
-                var boss_fire_ball = new ProjectileFire();
-        		boss_fire_ball.speed = 6.0; // half speed
+                var boss_fire_ball = new ProjectileRock();
+        		boss_fire_ball.speed = 4.0; // half speed
         		boss_fire_ball.scale = 1.5; // 1.5 size
                 
                 spawn_and_set_projectile(self, boss_fire_ball, player_last_known_x, player_last_known_y, obj_enemy_projectile);
@@ -97,10 +97,7 @@ function FireBoarAttackState(_entity, _duration = 700, _is_timed = true) : Attac
             if (instance_exists(obj_player)) {
                 // Shoot 3 fireballs in a spread pattern
                 var base_dir = point_direction(x, y, obj_player.x, obj_player.y);
-                var spread_angle = 15; // Degrees between fireballs
-
-
-                
+                var spread_angle = 30; // Degrees between fireballs
                 for (var i = -1; i <= 1; i++) {
                     
                     var boss_fire_ball = new ProjectileFire();

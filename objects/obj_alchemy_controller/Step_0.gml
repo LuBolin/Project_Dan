@@ -36,6 +36,30 @@ if (pause_button_hovered && mouse_check_button_pressed(mb_left)) {
     }
 }
 
+// === TOOLTIP HOVER DETECTION ===
+tooltip_hovered_element = noone;
+
+var mx = device_mouse_x_to_gui(0);
+var my = device_mouse_y_to_gui(0);
+
+// Check if mouse is over any element in the tree
+var element_names = variable_struct_get_names(tree_positions);
+for (var i = 0; i < array_length(element_names); i++) {
+    var elem_name = element_names[i];
+    var pos = tree_positions[$ elem_name];
+    var node_x = tree_start_x + pos.x;
+    var node_y = tree_start_y + pos.y;
+    
+    // Check if mouse is within node circle
+    var dist = point_distance(mx, my, node_x, node_y);
+    if (dist <= tree_node_size / 2) {
+        tooltip_hovered_element = elem_name;
+        tooltip_x = mx + 15;
+        tooltip_y = my + 15;
+        break;
+    }
+}
+
 // === HELPER FUNCTION: Try to craft from equation inputs ===
 function try_craft_equation(eq_index) {
     var eq = equations[eq_index];

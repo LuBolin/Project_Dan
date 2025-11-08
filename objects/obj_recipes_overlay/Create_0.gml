@@ -88,10 +88,20 @@ for (var i = 0; i < array_length(json_data.recipes); i++) {
     };
 }
 
-// Remove scrolling variables (shouldn't be needed)
+// Scrolling variables (currently not used, shouldn't be needed)
 // scroll_x = 0;
 // scroll_y = 0;
 // scroll_speed = 30;
 // panning = false;
 // pan_start_x = 0;
 // pan_start_y = 0;
+
+// ===== Tooltip config =====
+tooltip_hovered_element = noone;
+tooltip_x = 0;
+tooltip_y = 0;
+tooltip_width = 250;
+tooltip_padding = 10;
+col_tooltip_bg = make_color_rgb(30, 25, 20);
+col_tooltip_border = make_color_rgb(150, 120, 90);
+col_tooltip_text = c_white;

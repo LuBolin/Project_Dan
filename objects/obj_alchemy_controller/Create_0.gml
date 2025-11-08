@@ -26,6 +26,7 @@ col_slot_used = make_color_rgb(40, 40, 50);
 col_button = make_color_rgb(80, 160, 220);
 col_button_hover = make_color_rgb(100, 180, 240);
 col_text = c_white;
+col_title = make_color_rgb(255, 215, 150);
 
 // === HELPER FUNCTION: Get gourd constructor by name ===
 function get_gourd_constructor_by_name(name) {
@@ -303,3 +304,13 @@ pause_button_x = gui_width - pause_button_width - 16;
 pause_button_y = 16;
 pause_button_hovered = false;
 pause_button_text = "Esc: Pause";
+
+// ===== Tooltip config =====
+tooltip_hovered_element = noone;
+tooltip_x = 0;
+tooltip_y = 0;
+tooltip_width = 250;
+tooltip_padding = 10;
+col_tooltip_bg = make_color_rgb(30, 25, 20);
+col_tooltip_border = make_color_rgb(150, 120, 90);
+col_tooltip_text = c_white;

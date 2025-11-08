@@ -318,3 +318,37 @@ function get_gourd_type_by_name(element_name) {
         default: return undefined;
     }
 }
+
+// Helper function to get element descriptions
+function get_element_description(element_name) {
+    switch(element_name) {
+        // Base elements
+        case "Fire": return "Shoots water balls that burns enemies";
+        case "Earth": return "Launches rocks that stuns enemies";
+        case "Water": return "Shoots water balls that knocks back enemies";
+        case "Air": return "Use wind to dash through enemies";
+        
+        // Tier 1
+        case "Mud": return "Shoots a mud ball that makes a pool of mud to slow enemies";
+        case "Lava": return "Create a pool of lava at where you click to burn enemies";
+        case "Steam": return "Creates steam clouds around you that burns the enemy";
+        case "Current": return "Blow enemies away after dashing";
+        
+        // Tier 2
+        case "Eruption": return "Create a strong pool of lava at where you click with additional pools surrounding it";
+        case "Hurricane": return "Shoots a large wind vortex that slows and damages enemies";
+        case "Clay": return "Creates defensive walls that stuns and blocks enemies";
+        case "Plant": return "Spawns a healing area after dashing";
+        
+        // Tier 3
+        case "Destruction": return "Destruction rains down on all enemies on screen, stunning and damaging them";
+        case "Creation": return "Creates a clone after dashing that can use the other elements equipped";
+        
+        // Tier 4
+        case "Elixir": return "Grants invincibility for a short period of time. " +
+                              "In certain circumstances, transforms into a powerful lightning beam that pierces through enemies";
+        case "Lightning": return "Powerful lightning beam that shoots at where you aim";
+        
+        default: return "No description available";
+    }
+}

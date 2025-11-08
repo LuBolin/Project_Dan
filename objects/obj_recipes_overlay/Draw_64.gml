@@ -181,6 +181,82 @@ for (var i = 0; i < array_length(element_names); i++) {
 // Reset clipping
 gpu_set_scissor(-1, -1, -1, -1);
 
+// Draw tooltip
+if (tooltip_hovered_element != noone) {
+    // Get discovered recipes
+    var discovered_array = get_discovered_recipes(global.recipe_tree);
+    var discovered_map = {};
+    for (var i = 0; i < array_length(discovered_array); i++) {
+        discovered_map[$ discovered_array[i].name] = true;
+    }
+    
+    // Check if element is discovered
+    var is_discovered = variable_struct_exists(discovered_map, tooltip_hovered_element);
+    var is_elixir = (tooltip_hovered_element == "Elixir");
+    
+    // Get description text
+    var description_text = "";
+    var title_text = "";
+    
+    if (is_discovered) {
+        title_text = tooltip_hovered_element;
+        description_text = get_element_description(tooltip_hovered_element);
+    } else {
+        // For undiscovered elements
+        if (is_elixir) {
+            // Elixir shows name even when undiscovered
+            title_text = tooltip_hovered_element;
+        } else {
+            // Other elements show "???" instead of name
+            title_text = "???";
+        }
+        description_text = "Element not discovered yet";
+    }
+    
+    // Calculate tooltip dimensions
+    draw_set_font(-1);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    
+    var text_height = string_height_ext(description_text, -1, tooltip_width - tooltip_padding * 2);
+    var tooltip_height = text_height + tooltip_padding * 2 + 30; // Extra space for title
+    
+    // Adjust tooltip position if it goes off-screen
+    var adjusted_x = tooltip_x;
+    var adjusted_y = tooltip_y;
+    
+    if (adjusted_x + tooltip_width > gui_width) {
+        adjusted_x = gui_width - tooltip_width - 10;
+    }
+    if (adjusted_y + tooltip_height > gui_height) {
+        adjusted_y = gui_height - tooltip_height - 10;
+    }
+    
+    // Draw tooltip background
+    draw_set_alpha(0.95);
+    draw_set_color(col_tooltip_bg);
+    draw_rectangle(adjusted_x, adjusted_y, 
+                   adjusted_x + tooltip_width, adjusted_y + tooltip_height, false);
+    draw_set_alpha(1);
+    
+    // Draw tooltip border
+    draw_set_color(col_tooltip_border);
+    draw_rectangle(adjusted_x, adjusted_y, 
+                   adjusted_x + tooltip_width, adjusted_y + tooltip_height, true);
+    
+    // Draw element name/title
+    draw_set_color(col_title);
+    draw_set_halign(fa_center);
+    draw_text(adjusted_x + tooltip_width / 2, adjusted_y + tooltip_padding, title_text);
+    
+    // Draw description text
+    draw_set_color(col_tooltip_text);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_text_ext(adjusted_x + tooltip_padding, adjusted_y + tooltip_padding + 20, 
+                  description_text, -1, tooltip_width - tooltip_padding * 2);
+}
+
 // Remove scrolling instructions since we don't need them anymore
 // draw_set_color(make_color_rgb(200, 180, 140));
 // draw_set_halign(fa_left);

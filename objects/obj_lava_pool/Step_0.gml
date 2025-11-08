@@ -43,7 +43,6 @@ if (tick_counter >= tick_rate) {
     }
     
     if (damage_player) {
-        image_blend = make_color_rgb(255, 150, 150);
         // Check if player is overlapping with lava pool
         if (instance_exists(obj_player) && place_meeting(x, y, obj_player)) {
             array_push(entities_to_check, obj_player.id);

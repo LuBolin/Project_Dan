@@ -24,7 +24,7 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
         var boss_lava_pool = instance_create_layer(other.x, other.y, "Instances", obj_lava_pool);
         if (instance_exists(boss_lava_pool)) {
             // Configure this lava pool to damage the player instead of enemies
-            boss_lava_pool.damage_enemies = false;  // Don't damage enemies
+            boss_lava_pool.damage_enemies = true;  // damage enemies (For consistency :< )
             boss_lava_pool.damage_player = true;    // Damage the player
             boss_lava_pool.creator = entity;        // Set boss as creator
             boss_lava_pool.scale = 2;               // Set the Lava to be bigger so the player has less room to "camp"

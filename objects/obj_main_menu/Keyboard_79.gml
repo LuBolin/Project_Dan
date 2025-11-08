@@ -5,6 +5,4 @@ global.next_room_inv_names = ["Creation", "Eruption", "Current"];
 global.next_room_sel_slot = 0;
 
 
-goto_level(MiniBoss_Tree, 5)
-//goto_level(MiniBoss_Boar, 1)
-//goto_level(Level_FinalBoss, 1)
+goto_level(MiniBoss_Boar, 5)

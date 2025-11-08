@@ -138,7 +138,7 @@ function GourdClay() : GourdBase() constructor
         var wall_segments = 6; // Number of wall pieces
         var segment_spacing = 45; // Distance between wall segments (0.75 units)
         var wall_scale = 2.0; // Scale factor for wall size
-        var initial_offset = 16; // Start wall further away from player
+        var initial_offset = 20; // Start wall further away from player
         
         // IMMEDIATELY UPDATE COLLISION ARRAYS BEFORE SPAWNING WALLS
         with (obj_player) {
@@ -329,9 +329,9 @@ function get_element_description(element_name) {
         case "Air": return "Use wind to dash through enemies";
         
         // Tier 1
-        case "Mud": return "Shoots a mud ball that makes a pool of mud to slow enemies";
-        case "Lava": return "Create a pool of lava at where you click to burn enemies";
-        case "Steam": return "Creates steam clouds around you that burns the enemy";
+        case "Mud": return "Shoots a mud ball that makes a pool of mud to slow enemies within it";
+        case "Lava": return "Create a pool of lava at where you click to burn enemies within it";
+        case "Steam": return "Creates steam clouds around you that burns enemies within it";
         case "Current": return "Blow enemies away after dashing";
         
         // Tier 2

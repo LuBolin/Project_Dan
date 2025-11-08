@@ -148,7 +148,7 @@ function trigger_miniboss_defeat_cutscene() {
 
 var _my_fx_struct = fx_create("_filter_tintfilter");
 
-var possible_colourations = [[1, 1, 1, 1], [1, 0, 0, 0.5], [1, 0.64, 0, 1]]
+var possible_colourations = [[1, 1, 1, 1], [1, 0.75, 0.79, 0.5], [1, 0.64, 0, 1]]
 
 
 if (_my_fx_struct != -1)

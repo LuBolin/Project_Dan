@@ -40,3 +40,5 @@ effect_sprite = undefined
 // Path for more advanced pathfinding
 path = path_add();
 pause = false
+
+plant_healing_pending = undefined

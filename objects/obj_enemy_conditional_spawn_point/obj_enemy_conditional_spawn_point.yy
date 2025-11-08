@@ -26,9 +26,11 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"enemy_to_spawn","filters":[
+    {"$GMObjectProperty":"v2","%Name":"enemy_to_spawn","filters":[
         "GMObject",
       ],"listItems":[],"multiselect":false,"name":"enemy_to_spawn","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
+    {"$GMObjectProperty":"v2","%Name":"check_adjacent_enemies","filters":[],"listItems":[],"multiselect":false,"name":"check_adjacent_enemies","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"check_adjacent_player","filters":[],"listItems":[],"multiselect":false,"name":"check_adjacent_player","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

@@ -10,6 +10,7 @@ function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : S
     id = STATES.CHASE;
     
     on_enter = function() {
+        enemy_count = 0;
         
         remaining_time = duration;
         // Create a new list
@@ -20,7 +21,12 @@ function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : S
             if (hp < max_hp) {
                 ds_list_add(other.enemies, self);
             }
-            
+            other.enemy_count += 1
+        }
+        
+        show_debug_message(instance_exists(obj_player))
+        if (enemy_count <= 3 && instance_exists(obj_player) && obj_player.hp >= 6) {
+            spawn_more_enemies();
         }
         
         if (ds_list_size(enemies) != 0) {

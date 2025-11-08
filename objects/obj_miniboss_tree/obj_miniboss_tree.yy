@@ -8,7 +8,10 @@
   ],
   "managed":true,
   "name":"obj_miniboss_tree",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"max_hp","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"40",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"hp","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"40",},
+  ],
   "parent":{
     "name":"Enemies",
     "path":"folders/Objects/Enemies.yy",

@@ -1,19 +1,17 @@
 {
   "$GMObject":"",
-  "%Name":"obj_exit_dungeon_door",
+  "%Name":"obj_telegraph_attack",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},"eventNum":0,"eventType":4,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":4,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_exit_dungeon_door",
+  "name":"obj_telegraph_attack",
   "overriddenProperties":[],
   "parent":{
-    "name":"Others",
-    "path":"folders/Objects/Others.yy",
+    "name":"Level",
+    "path":"folders/Objects/Level.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -29,18 +27,11 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[
-    {"$GMObjectProperty":"v2","%Name":"target_room","filters":[
-        "GMRoom",
-      ],"listItems":[],"multiselect":false,"name":"target_room","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
-  ],
+  "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_door",
-    "path":"sprites/spr_door/spr_door.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

@@ -2,7 +2,7 @@
   "$GMProject":"v1",
   "%Name":"Project_Dan",
   "AudioGroups":[
-    {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_default","exportDir":"","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
   "configs":{
     "children":[],
@@ -46,7 +46,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.13.1.193",
+    "IDEVersion":"2024.14.0.207",
   },
   "name":"Project_Dan",
   "resources":[
@@ -94,6 +94,7 @@
     {"id":{"name":"obj_settings_overlay","path":"objects/obj_settings_overlay/obj_settings_overlay.yy",},},
     {"id":{"name":"obj_sfx_manager","path":"objects/obj_sfx_manager/obj_sfx_manager.yy",},},
     {"id":{"name":"obj_steam","path":"objects/obj_steam/obj_steam.yy",},},
+    {"id":{"name":"obj_telegraph_attack","path":"objects/obj_telegraph_attack/obj_telegraph_attack.yy",},},
     {"id":{"name":"obj_zombie","path":"objects/obj_zombie/obj_zombie.yy",},},
     {"id":{"name":"AlchemyRoom","path":"rooms/AlchemyRoom/AlchemyRoom.yy",},},
     {"id":{"name":"Level_FinalBoss","path":"rooms/Level_FinalBoss/Level_FinalBoss.yy",},},
@@ -228,9 +229,9 @@
     {"roomId":{"name":"MiniBoss_Boar","path":"rooms/MiniBoss_Boar/MiniBoss_Boar.yy",},},
     {"roomId":{"name":"AlchemyRoom","path":"rooms/AlchemyRoom/AlchemyRoom.yy",},},
     {"roomId":{"name":"Level_FinalBoss","path":"rooms/Level_FinalBoss/Level_FinalBoss.yy",},},
-    {"roomId":{"name":"MiniBoss_Tree","path":"rooms/MiniBoss_Tree/MiniBoss_Tree.yy",},},
     {"roomId":{"name":"Level4","path":"rooms/Level4/Level4.yy",},},
     {"roomId":{"name":"Level5","path":"rooms/Level5/Level5.yy",},},
+    {"roomId":{"name":"MiniBoss_Tree","path":"rooms/MiniBoss_Tree/MiniBoss_Tree.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

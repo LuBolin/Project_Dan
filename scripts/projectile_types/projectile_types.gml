@@ -728,34 +728,44 @@ function ProjectilePlant() constructor {
             // DETERMINE DASH DIRECTION: Player movement takes priority over mouse direction
             var dash_dir;
             
-            // Check if player is moving (get current input)
-            var input_x = 0;
-            var input_y = 0;
+            if (player == obj_player) { 
+                
+                // Check if player is moving (get current input)
+                var input_x = 0;
+                var input_y = 0;
+                
+                if (keyboard_check(ord("A"))) input_x -= 1;
+                if (keyboard_check(ord("D"))) input_x += 1;
+                if (keyboard_check(ord("W"))) input_y -= 1;
+                if (keyboard_check(ord("S"))) input_y += 1; 
+                    
+                // If player is moving, dash in movement direction
+                if (input_x != 0 || input_y != 0) {
+                    dash_dir = point_direction(0, 0, input_x, input_y);
+                    show_debug_message("Plant dash: Using movement direction " + string(dash_dir));
+                } else {
+                    // If not moving, dash toward mouse
+                    dash_dir = point_direction(player.x, player.y, mouse_x, mouse_y);
+                    show_debug_message("Plant dash: Using mouse direction " + string(dash_dir));
+                }
             
-            if (keyboard_check(ord("A"))) input_x -= 1;
-            if (keyboard_check(ord("D"))) input_x += 1;
-            if (keyboard_check(ord("W"))) input_y -= 1;
-            if (keyboard_check(ord("S"))) input_y += 1;
-            
-            // If player is moving, dash in movement direction
-            if (input_x != 0 || input_y != 0) {
-                dash_dir = point_direction(0, 0, input_x, input_y);
-                show_debug_message("Plant dash: Using movement direction " + string(dash_dir));
-            } else {
-                // If not moving, dash toward mouse
-                dash_dir = point_direction(player.x, player.y, mouse_x, mouse_y);
-                show_debug_message("Plant dash: Using mouse direction " + string(dash_dir));
+            } else if (player == obj_enemy_abstract) {
+                
+                dash_dir = point_direction(player.x, player.y, obj_player.x, obj_player.y);    
             }
-            
+
+ 
             projectile_inst.image_angle = dash_dir;
 
             // Apply knockback effect to dash player (false = no stun)
             add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
 
             // Make player invincible during dash (shorter than Air/Current for balance)
-            var invuln_time_seconds = 0.15; // seconds
-            var invuln_duration = (dash_duration_seconds + invuln_time_seconds) * game_get_speed(gamespeed_fps);
-            add_status_effect(player, new InvincibilityEffect(invuln_duration));
+            if (player == obj_player) {
+                var invuln_time_seconds = 0.15; // seconds
+                var invuln_duration = (dash_duration_seconds + invuln_time_seconds) * game_get_speed(gamespeed_fps);
+                add_status_effect(player, new InvincibilityEffect(invuln_duration));
+            }
 
             // Create particle effect trail behind player (green nature particles)
             var trail_length = 5;  // Number of particles

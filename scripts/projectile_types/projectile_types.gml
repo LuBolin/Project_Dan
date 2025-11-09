@@ -252,8 +252,8 @@ function ProjectileLava() : ProjectileBase() constructor {
     life_steps  = game_get_speed(gamespeed_fps) * 2.0; // 2 second max flight time
     kb_speed = 3;  // pixels per frame
     kb_distance = 20; // knockback distance
-    sprite_index = spr_water_ball;
-    scale = 0.8;
+    sprite_index = spr_lava_ball;
+    scale = 0.7;
     sfx_fire = undefined;
     sfx_hit = undefined;
 
@@ -268,7 +268,7 @@ function ProjectileLava() : ProjectileBase() constructor {
         projectile_inst.target_y = mouse_y;
         projectile_inst.homing_enabled = true;
         projectile_inst.depth = 0;
-        projectile_inst.image_blend = make_color_rgb(255, 50, 0); // make water ball red
+        projectile_inst.image_speed = 0.2; // animate lava ball frames
         
         // Calculate initial direction towards target
         var dir = point_direction(projectile_inst.x, projectile_inst.y, mouse_x, mouse_y);
@@ -551,7 +551,6 @@ function ProjectileEruption() : ProjectileBase() constructor {
         projectile_inst.target_y = mouse_y;
         projectile_inst.homing_enabled = true;
         projectile_inst.depth = 0;
-        projectile_inst.image_blend = make_color_rgb(255, 50, 0);
         
         // Calculate initial direction towards target
         var dir = point_direction(projectile_inst.x, projectile_inst.y, mouse_x, mouse_y);
@@ -629,11 +628,12 @@ function ProjectileEruption() : ProjectileBase() constructor {
 
         // Make center pool slightly more powerful AND bigger
         if (instance_exists(center_pool)) {
+            var base_scale = 0.25; // matches obj_lava_pool base
             center_pool.damage_per_tick = 1; // 50% higher damage than lava
             center_pool.life_timer = game_get_speed(gamespeed_fps) * 10; // Lasts longer
             // Make center pool bigger
-            center_pool.image_xscale = 1.2;
-            center_pool.image_yscale = 1.2;
+            center_pool.image_xscale = base_scale * 1.2;
+            center_pool.image_yscale = base_scale * 1.2;
             // Set damage flags if created by player
             if (creator == obj_player) {
                 center_pool.damage_enemies = true;
@@ -676,11 +676,12 @@ function ProjectileEruption() : ProjectileBase() constructor {
                         if (tile == 0) {
                             var secondary_pool = instance_create_layer(pool_x, pool_y, "Instances", obj_lava_pool);
                             if (instance_exists(secondary_pool)) {
+                                var base_scale = 0.25;
                                 secondary_pool.life_timer = game_get_speed(gamespeed_fps) * 6; // 6 seconds
 								secondary_pool.damage_per_tick = 0.2; // 70% of damage of lava
                                 // Make secondary pools smaller
-                                secondary_pool.image_xscale = 0.8;
-                                secondary_pool.image_yscale = 0.8;
+                                secondary_pool.image_xscale = base_scale * 0.8;
+                                secondary_pool.image_yscale = base_scale * 0.8;
                                 // Set damage flags if created by player
                                 if (self.creator == obj_player) {
                                     secondary_pool.damage_enemies = true;

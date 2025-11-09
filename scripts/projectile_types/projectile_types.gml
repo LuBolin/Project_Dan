@@ -84,7 +84,7 @@ function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration =
     kb_distance = _dash_distance;  // Total dash distance (2 units)
     dash_duration = _dash_duration;  // 0.133 seconds at 60 FPS (96 / 12 = 8 frames)
     sprite_index = spr_wind_gust;
-    scale = 0.2;  // Small visual effect
+    scale = 0.8;  // Small visual effect
     sfx_fire = snd_air_projectile;
     sfx_hit = undefined;
     is_invuln = _is_invuln;
@@ -94,7 +94,8 @@ function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration =
         projectile_inst.x = projectile_inst.creator.x;
         projectile_inst.y = projectile_inst.creator.y;
         projectile_inst.speed = 0;
-        projectile_inst.image_alpha = 0.5;  // Semi-transparent
+        projectile_inst.image_alpha = 1.0; // Semi-transparent
+        projectile_inst.image_speed = 0.3; // Animate wind gust
 
         // Immediately dash the player
         if (instance_exists(projectile_inst.creator)) {
@@ -146,10 +147,11 @@ function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration =
                 var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
                 if (particle != noone) {
                     particle.sprite_index = spr_wind_gust;
-                    particle.image_alpha = 0.4 - (i * 0.06);  // Fade out
-                    particle.image_xscale = 0.3;
-                    particle.image_yscale = 0.3;
+                    particle.image_alpha = 0.6 - (i * 0.06);  // Fade out
+                    particle.image_xscale = 4.0;
+                    particle.image_yscale = 4.0;
                     particle.image_angle = dash_dir;
+                    particle.image_speed = 2.0; // animate trail
                     particle.speed = 0;
                     particle.life_steps = 15 - (i * 2);  // Particles fade quickly
                     particle.proj_data = {};  // Empty data, no collision
@@ -170,8 +172,8 @@ function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_durati
     kb_speed = 12;  // Dash speed (pixels per frame) - slower for smoother dash
     kb_distance = _dash_distance;  // Total dash distance (2 units)
     dash_duration = _dash_duration;  // 0.133 seconds at 60 FPS (96 / 12 = 8 frames)
-    sprite_index = spr_wind_gust;
-    scale = 0.2;  // Small visual effect
+    sprite_index = spr_current_gust;
+    scale = 0.8;  // Small visual effect
     sfx_fire = snd_air_projectile;
     sfx_hit = undefined;
     is_invuln = _is_invuln;
@@ -185,7 +187,9 @@ function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_durati
         projectile_inst.x = projectile_inst.creator.x;
         projectile_inst.y = projectile_inst.creator.y;
         projectile_inst.speed = 0;
-        projectile_inst.image_alpha = 0.5;  // Semi-transparent
+        projectile_inst.image_alpha = 0.8;  // Semi-transparent
+        projectile_inst.depth = 0;
+        projectile_inst.image_speed = 0.5; // Animate
 
         // Immediately dash the player
         if (instance_exists(projectile_inst.creator)) {
@@ -224,10 +228,11 @@ function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_durati
                     var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
                     if (particle != noone) {
                         particle.sprite_index = spr_wind_gust;
-                        particle.image_alpha = 0.4 - (i * 0.06);  // Fade out
-                        particle.image_xscale = 0.3;
-                        particle.image_yscale = 0.3;
+                        particle.image_alpha = 0.6 - (i * 0.06);  // Fade out
+                        particle.image_xscale = 4.0;
+                        particle.image_yscale = 4.0;
                         particle.image_angle = dash_dir;
+                        particle.image_speed = 2.0; // animate trail
                         particle.speed = 0;
                         particle.life_steps = 15 - (i * 2);  // Particles fade quickly
                         particle.proj_data = {};  // Empty data, no collision
@@ -415,8 +420,8 @@ function ProjectileCurrent() : ProjectileBase() constructor {
     kb_speed = 12;  // Dash speed (pixels per frame)
     kb_distance = 128;  // Total dash distance (2 units)
     dash_duration = 8;  // Frames for dash
-    sprite_index = spr_wind_gust;
-    scale = 0.2;  // Small visual effect during dash
+    sprite_index = spr_wind_gust; // this doesnt affect anything
+    scale = 8;  // Small visual effect during dash
     sfx_fire = undefined;
     sfx_hit = undefined;
 
@@ -424,7 +429,7 @@ function ProjectileCurrent() : ProjectileBase() constructor {
     gust_kb_speed = 4;
     gust_kb_distance = 30;
     gust_speed = 9.375;  // units per second (600 / 64)
-    gust_lifetime = game_get_speed(gamespeed_fps) * 0.2;
+    gust_lifetime = game_get_speed(gamespeed_fps) * 0.3;
 
     on_launch = function(projectile_inst) {
         // Spawn projectile on player
@@ -483,11 +488,12 @@ function ProjectileCurrent() : ProjectileBase() constructor {
                 // Create a wind particle at this position
                 var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
                 if (particle != noone) {
-                    particle.sprite_index = spr_wind_gust;
-                    particle.image_alpha = 0.4 - (i * 0.06);  // Fade out
-                    particle.image_xscale = 0.3;
-                    particle.image_yscale = 0.3;
+                    particle.sprite_index = spr_current_gust;
+                    particle.image_alpha = 0.6 - (i * 0.06);  // Fade out
+                    particle.image_xscale = 4.0;
+                    particle.image_yscale = 4.0;
                     particle.image_angle = dash_dir;
+                    particle.image_speed = 3.0; // animate trail
                     particle.speed = 0;
                     particle.life_steps = 15 - (i * 2);  // Particles fade quickly
                     particle.proj_data = {};  // Empty data, no collision
@@ -777,14 +783,15 @@ function ProjectilePlant() : ProjectileBase() constructor {
                 var trail_y = user.y - lengthdir_y(offset, dash_dir);
                 var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
                 if (particle != noone) {
-                    particle.sprite_index = spr_wind_gust; // placeholder leaf/plant sprite
-                    particle.image_alpha = 0.3 - (i * 0.05);
-                    particle.image_xscale = 0.25;
-                    particle.image_yscale = 0.25;
-                    particle.image_angle = dash_dir + random_range(-15, 15);
-                    particle.image_blend = make_color_rgb(100, 200, 100);
+                    particle.sprite_index = spr_current_gust; // placeholder leaf/plant sprite
+                    particle.image_alpha = 0.6 - (i * 0.06);  // Fade out
+                    particle.image_xscale = 4.0;
+                    particle.image_yscale = 4.0;
+                    particle.image_angle = dash_dir;
+                    particle.image_blend = make_color_rgb(100, 200, 100); // Green nature tint
+                    particle.image_speed = 3.0; // animate trail
                     particle.speed = 0;
-                    particle.life_steps = (1.0 - (i * 0.15)) * game_get_speed(gamespeed_fps);
+                    particle.life_steps = (0.5 - (i * 0.15)) * game_get_speed(gamespeed_fps);
                     particle.proj_data = {};
                 }
             }
@@ -936,7 +943,7 @@ function ProjectileCreation() : ProjectileBase() constructor {
     dash_duration_seconds = 0.16;  // Dash duration in seconds
     dash_duration = dash_duration_seconds * game_get_speed(gamespeed_fps);  // Convert to frames
     sprite_index = spr_wind_gust; // Reuse wind gust sprite for dash effect
-    scale = 0.2;  // Small visual effect during dash
+    scale = 0.8;  // Small visual effect during dash
     sfx_fire = undefined;
     sfx_hit = undefined;
     
@@ -999,15 +1006,16 @@ function ProjectileCreation() : ProjectileBase() constructor {
                 // Create a golden particle at this position
                 var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
                 if (particle != noone) {
-                    particle.sprite_index = spr_wind_gust; // Use wind gust or create spr_creation_particle
-                    particle.image_alpha = 0.4 - (i * 0.05);  // Fade out
-                    particle.image_xscale = 0.25;
-                    particle.image_yscale = 0.25;
-                    particle.image_angle = dash_dir + random_range(-15, 15); // Slight rotation variation
+                    particle.sprite_index = spr_current_gust; // Use wind gust or create spr_creation_particle
+                    particle.image_alpha = 0.6 - (i * 0.06);  // Fade out
+                    particle.image_xscale = 4.0;
+                    particle.image_yscale = 4.0;
+                    particle.image_angle = dash_dir;
                     particle.image_blend = make_color_rgb(255, 215, 0); // Golden tint
+                    particle.image_speed = 3.0; // animate trail
                     particle.speed = 0;
-                    particle.life_steps = (1.0 - (i * 0.15)) * game_get_speed(gamespeed_fps); // Particles fade over 0.5-1 seconds
-                    particle.proj_data = {};  // Empty data, no collision
+                    particle.life_steps = (0.5 - (i * 0.15)) * game_get_speed(gamespeed_fps);
+                    particle.proj_data = {};
                 }
             }
 

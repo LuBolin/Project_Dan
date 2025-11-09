@@ -171,13 +171,17 @@ if (variable_instance_exists(self, "wind_gust_pending") && wind_gust_pending != 
             gust_proj.image_angle = wind_gust_pending.direction;
             gust_proj.direction = wind_gust_pending.direction;
             gust_proj.speed = wind_gust_pending.gust_speed;
-            gust_proj.image_xscale = 0.7;
-            gust_proj.image_yscale = 0.7;
+            gust_proj.image_xscale = 2.0;
+            gust_proj.image_yscale = 2.0;
+            gust_proj.image_speed = 2.0; // Animate the gust sprite
             gust_proj.life_steps = wind_gust_pending.gust_lifetime;
             gust_proj.damage = 0;
             gust_proj.kb_speed = wind_gust_pending.kb_speed;
             gust_proj.kb_distance = wind_gust_pending.kb_distance;
             gust_proj.creator = wind_gust_pending.creator;
+
+            // Override bbox with circular collision radius matching visual size
+            gust_proj.collision_radius = 32; // 64px diameter sprite → 32px radius
 
             // Set up on_hit to apply knockback
             gust_proj.proj_data = {

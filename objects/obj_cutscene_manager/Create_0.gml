@@ -61,6 +61,20 @@ speaker_names = [];
 speaker_portraits = [];
 speaker_portrait_darkened = [];
 
+// populate immediately to avoid empty access in first Draw
+setup_miniboss_defeat_cutscene(self);
+check_player_has_elixir(self);
+// ensure current_line valid after population
+current_line = clamp(current_line, 0, max(0, array_length(dialog_lines) - 1));
+
+// Tune so whole anim lasts about desired_seconds
+var desired_seconds = 2.0;
+var frames = sprite_exists(player_cutscene_sprite) ? sprite_get_number(player_cutscene_sprite) : 1;
+player_cutscene_speed = frames > 0 ? (frames / (desired_seconds * room_speed)) : 0.1;
+// manual override per sprite
+if (player_cutscene_sprite == spr_character_lightning_death)  player_cutscene_speed = 0.10;
+if (player_cutscene_sprite == spr_character_lightning_survive) player_cutscene_speed = 0.12;
+
 show_lightning = false;
 lightning_timer = 0;
 lightning_duration = 90;
@@ -93,22 +107,32 @@ if (instance_exists(obj_camera)) {
 // List of objects that must remain active
 var keep_active = [
     obj_cutscene_manager,
-    obj_player,
     obj_camera,
     obj_aim_arrow,
-    obj_sfx_manager
+    obj_sfx_manager,
+    obj_run_timer
 ];
 
 // Deactivate everything except persistent instances
 instance_deactivate_all(true);
-
-// Reactivate only the objects that exist and should be active
 for (var i = 0; i < array_length(keep_active); i++) {
     if (instance_exists(keep_active[i])) {
         instance_activate_object(keep_active[i]);
     }
 }
 
+// Deactivate HUD / boss overlays to prevent overlap (safe lookups)
+var _obj_level_hud = asset_get_index("obj_level_hud");
+if (_obj_level_hud != -1 && instance_exists(_obj_level_hud)) {
+    instance_deactivate_object(_obj_level_hud);
+}
+
+var _obj_boss_hud = asset_get_index("obj_boss_hud");
+if (_obj_boss_hud != -1 && instance_exists(_obj_boss_hud)) {
+    instance_deactivate_object(_obj_boss_hud);
+}
+
+// Reactivate tile layers
 var tilemap = layer_tilemap_get_id("Tile_Collision");
 if (tilemap != -1) {
     instance_activate_layer(layer_get_id("Tile_Collision"));
@@ -124,20 +148,37 @@ if (background_layer != -1) {
     instance_activate_layer(background_layer);
 }
 
-setup_miniboss_defeat_cutscene(self);
-
 advance_dialog = function() {
     if (current_line < array_length(dialog_lines) - 1) {
         current_line++;
+        current_line = clamp(current_line, 0, max(0, array_length(dialog_lines) - 1));
         waiting_for_click = true;
-        
+
+        // Trigger elixir check when reaching line 2
         if (current_line == 2) {
             check_player_has_elixir(self);
         }
     } else {
         complete_cutscene(self);
     }
+};
+
+// Deactivate player after first snapshot (retain full info)
+if (instance_exists(obj_player)) {
+    instance_deactivate_object(obj_player);
+    saved_player_visible = obj_player.visible;
+    obj_player.visible = false;
+} else {
+    saved_player_visible = true;
 }
 
-player_cutscene_sprite = undefined;
 player_cutscene_sprite_index = 0;
+play_player_anim = false;
+player_cutscene_speed = 0.12;
+
+// Hide the player while cutscene draws its own animation
+saved_player_visible = true;
+if (instance_exists(obj_player)) {
+    saved_player_visible = obj_player.visible;
+    obj_player.visible = false;
+}

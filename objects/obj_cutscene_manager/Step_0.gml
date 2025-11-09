@@ -1,6 +1,7 @@
 if (show_lightning) {
     lightning_timer++;
     
+    // Fade in lightning (first 10 frames)
     if (lightning_timer <= 10) {
         lightning_alpha = lightning_timer / 10;
     } else if (lightning_timer >= lightning_duration - 10) {
@@ -9,17 +10,24 @@ if (show_lightning) {
         lightning_alpha = 1;
     }
     
+    // After lightning finishes, start the standalone cutscene sprite animation
     if (lightning_timer >= lightning_duration) {
         show_lightning = false;
         lightning_alpha = 0;
+        play_player_anim = true;
+        player_cutscene_sprite_index = 0;
     }
+}
 
-    if (instance_exists(obj_player)) {
-        var p = obj_player;
-        p.sprite_index = player_cutscene_sprite;
-        p.image_index += 1;
-        // Animation State for Cutscene
-    };
+// Animate cutscene sprite (non-looping)
+if (play_player_anim && sprite_exists(player_cutscene_sprite)) {
+    var total_frames = sprite_get_number(player_cutscene_sprite);
+    if (player_cutscene_sprite_index < total_frames - 1) {
+        player_cutscene_sprite_index += player_cutscene_speed;
+        if (player_cutscene_sprite_index >= total_frames - 1) {
+            player_cutscene_sprite_index = total_frames - 1; // hold on last frame
+        }
+    }
 }
 
 // Pause run timer during cutscene
@@ -39,6 +47,7 @@ if (keyboard_check_pressed(vk_escape)) {
     keyboard_clear(vk_escape);
 }
 
+// Update player snapshot for drawing
 if (instance_exists(obj_player)) {
     var p = obj_player;
     player_snapshot = {
@@ -64,3 +73,6 @@ if (instance_exists(obj_player)) {
         }
     }
 }
+
+// Safety clamp (in case advance_dialog moved past end)
+current_line = clamp(current_line, 0, max(0, array_length(dialog_lines) - 1));

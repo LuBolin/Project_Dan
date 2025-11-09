@@ -32,7 +32,8 @@ draw_set_color(col_dialog_border);
 draw_rectangle(0, dialog_box_y, gui_width, gui_height, true);
 draw_line_width(0, dialog_box_y, gui_width, dialog_box_y, 3);
 
-if (speaker_portraits[current_line] != noone) {
+// Portrait block
+if (array_length(speaker_portraits) > current_line && speaker_portraits[current_line] != noone) {
     draw_set_color(make_color_rgb(30, 25, 20));
     draw_rectangle(portrait_x - 5, portrait_y - 5, 
                   portrait_x + portrait_size + 5, portrait_y + portrait_size + 5, false);
@@ -55,7 +56,8 @@ if (speaker_portraits[current_line] != noone) {
     }
 }
 
-if (speaker_names[current_line] != "") {
+// Name plate
+if (array_length(speaker_names) > current_line && speaker_names[current_line] != "") {
     draw_set_color(col_name_plate_bg);
     draw_rectangle(portrait_x, name_plate_y, 
                   portrait_x + portrait_size, name_plate_y + name_plate_height, false);
@@ -72,11 +74,15 @@ if (speaker_names[current_line] != "") {
                          speaker_names[current_line], 1, 1, 0);
 }
 
-draw_set_color(col_text);
+// Dialog text
+
+// Ensure left/top alignment so the paragraph starts at dialog_text_x
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
-draw_text_ext(dialog_text_x, dialog_text_y, 
-             dialog_lines[current_line], 24, dialog_text_width);
+if (array_length(dialog_lines) > current_line) {
+    draw_set_color(col_text);
+    draw_text_ext(dialog_text_x, dialog_text_y, dialog_lines[current_line], 24, dialog_text_width);
+}
 
 if (waiting_for_click) {
     var prompt_text = "Click or press SPACE to continue...";

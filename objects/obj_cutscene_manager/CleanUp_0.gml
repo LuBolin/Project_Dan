@@ -8,3 +8,8 @@ if (instance_exists(obj_camera)) {
 if (variable_global_exists("cutscene_active")) {
     global.cutscene_active = false;
 }
+
+// Restore player visibility after cutscene
+if (instance_exists(obj_player)) {
+    obj_player.visible = saved_player_visible;
+}

@@ -71,7 +71,7 @@ var is_elixir_equipped = check_if_gourdname_equipped("Elixir");
 draw_set_color(col_text);
 draw_set_halign(fa_center);
 draw_set_valign(fa_top);
-draw_text(gui_width / 2, node_y + total_height + 40, "Level Progress");
+draw_text(gui_width / 2, node_y + total_height + 30, "Level Progress");
 
 // Draw button background
 draw_set_alpha(0.8);

@@ -24,3 +24,5 @@ function if_death() {
         exit;
     }
 }
+
+invuln = false;

@@ -251,15 +251,6 @@ var rand_i;
 var arr_len = array_length(tier_elements);
 new_element = gourd_create(GourdEarth);
 
-function check_if_gourdname_equipped(element_name) {
-    // Check if this element is already equipped
-    for (var i = 0; i < array_length(equipped_gourds); i++) { 
-        if (equipped_gourds[i].name == element_name) {
-            return true;
-        }  
-    }
-    return false;
-}
 
 // Filter out elements that are already equipped
 var available_elements = [];

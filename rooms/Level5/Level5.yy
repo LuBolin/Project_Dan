@@ -224,7 +224,11 @@
           ],"depth":200,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Instructions","properties":[],"resourceType":"GMRAssetLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":false,},
       ],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRLayer":"","%Name":"Terrain","depth":300,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[
-        {"$GMRTileLayer":"","%Name":"Tile_Collision","depth":400,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Tile_Collision","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":50,"SerialiseWidth":79,"TileCompressedData":[
+        {"$GMRTileLayer":"","%Name":"Upper_Decoration","depth":400,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Upper_Decoration","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":50,"SerialiseWidth":79,"TileCompressedData":[
+              -1061,-2147483648,3,1,-2147483648,1,-77,-2147483648,-2,1,-76,-2147483648,1,1,-695,-2147483648,-2,1,-76,
+              -2147483648,3,1,-2147483648,1,-77,-2147483648,3,1,-2147483648,1,-77,-2147483648,1,1,-1796,-2147483648,
+            ],"TileDataFormat":1,},"tilesetId":{"name":"dungeon_tileset","path":"tilesets/dungeon_tileset/dungeon_tileset.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+        {"$GMRTileLayer":"","%Name":"Tile_Collision","depth":500,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Tile_Collision","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":50,"SerialiseWidth":79,"TileCompressedData":[
               1,10,-7,536870916,1,805306378,-13,536870916,-2,10,-11,536870916,-15,10,-29,-2147483648,1,11,-6,0,2,10,
               805306378,-22,0,-3,10,-9,0,-7,10,-29,-2147483648,1,11,-29,0,-3,10,-10,0,-7,10,-29,-2147483648,1,11,-30,
               0,1,10,-11,0,-7,10,-29,-2147483648,1,11,-6,0,-2,805306378,-34,0,-7,10,-29,-2147483648,1,11,-6,0,-2,805306378,
@@ -253,14 +257,14 @@
               -2147483648,-50,10,-29,-2147483648,-50,10,-29,-2147483648,-50,10,-29,-2147483648,-50,10,-29,-2147483648,
               -50,10,-29,-2147483648,
             ],"TileDataFormat":1,},"tilesetId":{"name":"dungeon_tileset","path":"tilesets/dungeon_tileset/dungeon_tileset.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
-        {"$GMRTileLayer":"","%Name":"Decoration","depth":500,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Decoration","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":50,"SerialiseWidth":79,"TileCompressedData":[-3950,25,],"TileDataFormat":1,},"tilesetId":{"name":"dungeon_tileset","path":"tilesets/dungeon_tileset/dungeon_tileset.yy",},"userdefinedDepth":false,"visible":true,"x":-384,"y":-320,},
+        {"$GMRTileLayer":"","%Name":"Decoration","depth":600,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Decoration","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":50,"SerialiseWidth":79,"TileCompressedData":[-3950,25,],"TileDataFormat":1,},"tilesetId":{"name":"dungeon_tileset","path":"tilesets/dungeon_tileset/dungeon_tileset.yy",},"userdefinedDepth":false,"visible":true,"x":-384,"y":-320,},
       ],"name":"Terrain","properties":[],"resourceType":"GMRLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
-    {"$GMRBackgroundLayer":"","%Name":"Background","animationFPS":30.0,"animationSpeedType":0,"colour":4286486784,"depth":600,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"hspeed":0.0,"htiled":true,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Background","properties":[],"resourceType":"GMRBackgroundLayer","resourceVersion":"2.0","spriteId":null,"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":false,"visible":true,"vspeed":0.0,"vtiled":true,"x":0,"y":0,},
+    {"$GMRBackgroundLayer":"","%Name":"Background","animationFPS":30.0,"animationSpeedType":0,"colour":4286486784,"depth":700,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"hspeed":0.0,"htiled":true,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Background","properties":[],"resourceType":"GMRBackgroundLayer","resourceVersion":"2.0","spriteId":null,"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":false,"visible":true,"vspeed":0.0,"vtiled":true,"x":0,"y":0,},
   ],
   "name":"Level5",
   "parent":{
     "name":"Rooms",
-    "path":"folders/Rooms.yy",
+    "path":"folders/Sprites/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

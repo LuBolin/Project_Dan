@@ -119,6 +119,8 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
     runaway_speed = 3;
     chase_speed = 2.7;
     
+    has_health_dropped = false;
+    
     // SECOND ROUND OF PHASE 1
     is_second_round = false;
     
@@ -135,6 +137,17 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
         if (!is_second_round && entity.hp <= 30) {
             entity.move_speed_ups = runaway_speed;
             set_path(entity, obj_final_boss_centre.x, obj_final_boss_centre.y);
+            
+            
+            if (!has_health_dropped) {
+                var boss_plant_pool = instance_create_layer(entity.x, entity.y, "Instances", obj_plant);
+                if (instance_exists(boss_plant_pool)) {
+                    boss_plant_pool.heal_enemies = true;
+                    has_health_dropped = true
+                }                
+            }
+
+            
             if (point_distance(entity.x, entity.y, obj_final_boss_centre.x, obj_final_boss_centre.y) <= nearby_centre_radius) {
                 is_second_round = true;
                 entity.changeState(STATES.ATTACK);

@@ -33,6 +33,7 @@ function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : S
             var boss_plant_pool = instance_create_layer(enemy_to_heal.x, enemy_to_heal.y, "Instances", obj_plant);
             if (instance_exists(boss_plant_pool)) {
                 boss_plant_pool.heal_enemies = true;
+                boss_plant_pool.life_duration_seconds = 16;
             }
             ds_list_destroy(enemies)           
         } else {

@@ -9,8 +9,8 @@
   "managed":true,
   "name":"obj_miniboss_tree",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"max_hp","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"100",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"hp","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"100",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"max_hp","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"60",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_abstract","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"propertyId":{"name":"hp","path":"objects/obj_enemy_abstract/obj_enemy_abstract.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"60",},
   ],
   "parent":{
     "name":"Enemies",
@@ -38,9 +38,12 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_evil_tree_new",
-    "path":"sprites/spr_evil_tree_new/spr_evil_tree_new.yy",
+    "name":"spr_tree_miniboss",
+    "path":"sprites/spr_tree_miniboss/spr_tree_miniboss.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"spr_tree_miniboss",
+    "path":"sprites/spr_tree_miniboss/spr_tree_miniboss.yy",
+  },
   "visible":true,
 }

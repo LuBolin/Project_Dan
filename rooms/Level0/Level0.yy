@@ -117,7 +117,7 @@
   "name":"Level0",
   "parent":{
     "name":"Rooms",
-    "path":"folders/Rooms.yy",
+    "path":"folders/Sprites/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

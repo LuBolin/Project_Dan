@@ -354,3 +354,14 @@ function get_element_description(element_name) {
         default: return "No description available";
     }
 }
+
+function check_if_gourdname_equipped(arr, element_name) {
+    // Check if this element is already equipped
+    for (var i = 0; i < array_length(arr); i++) { 
+        if (arr[i].name == element_name) {
+            return true;
+        }  
+    }
+    return false;
+}
+

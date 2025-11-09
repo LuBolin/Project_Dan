@@ -10,8 +10,8 @@ function damage_entity(_target, _dmg) {
         
         _target.image_blend = c_red;
 
-
-        if (variable_instance_exists(_target, "invuln")) {
+        //(variable_instance_exists(_target, "invuln")
+        if (_target.object_index == obj_player)  {
             _target.invuln = true;
         }
 

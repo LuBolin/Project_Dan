@@ -519,7 +519,7 @@ function ProjectileCurrent() constructor {
 function ProjectileEruption() constructor {
     name = "Eruption";
     speed       = 7.5;  // units per second (480 / 64) - slightly faster than lava
-    damage      = 1.5;    // 50% higher damage than regular lava
+    damage      = 0.8;    // 50% higher damage than regular lava
     life_steps  = game_get_speed(gamespeed_fps) * 2.5; // 2.5 second max flight time
     kb_speed = 4;  // pixels per frame
     kb_distance = 20; // Same knockback than lava
@@ -621,11 +621,11 @@ function ProjectileEruption() constructor {
 
         // Make center pool slightly more powerful AND bigger
         if (instance_exists(center_pool)) {
-            center_pool.damage_per_tick = 3; // 50% higher damage than lava
+            center_pool.damage_per_tick = 1; // 50% higher damage than lava
             center_pool.life_timer = game_get_speed(gamespeed_fps) * 10; // Lasts longer
             // Make center pool bigger
-            center_pool.image_xscale = 1.5;
-            center_pool.image_yscale = 1.5;
+            center_pool.image_xscale = 1.2;
+            center_pool.image_yscale = 1.2;
             // Set damage flags if created by player
             if (creator == obj_player) {
                 center_pool.damage_enemies = true;
@@ -669,7 +669,7 @@ function ProjectileEruption() constructor {
                             var secondary_pool = instance_create_layer(pool_x, pool_y, "Instances", obj_lava_pool);
                             if (instance_exists(secondary_pool)) {
                                 secondary_pool.life_timer = game_get_speed(gamespeed_fps) * 6; // 6 seconds
-								secondary_pool.damage_per_tick = 0.6; // 70% of damage of lava
+								secondary_pool.damage_per_tick = 0.2; // 70% of damage of lava
                                 // Make secondary pools smaller
                                 secondary_pool.image_xscale = 0.8;
                                 secondary_pool.image_yscale = 0.8;

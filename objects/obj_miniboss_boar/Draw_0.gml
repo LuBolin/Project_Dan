@@ -13,5 +13,5 @@ image_yscale = 1.5;
 
 // Call parent draw event which uses draw_self()
 event_inherited()
-image_blend = c_purple;
+
 // Note: We don't need to restore scale as it gets reset each frame anyway

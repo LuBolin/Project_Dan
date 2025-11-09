@@ -9,6 +9,7 @@ function RecipeNode(_name, _ingredients, _tier, _description) constructor {
     children = [];   // Recipes this unlocks
     parents = [];    // Required recipes (ingredients that are crafted)
     discovered = false;
+    crafted = false; // Track if player actually crafted this (vs. received as gift)
 
     // Add child recipe (this unlocks child)
     static add_child = function(_child_node) {

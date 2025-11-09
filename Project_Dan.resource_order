@@ -76,6 +76,7 @@
     {"name":"Level4","order":11,"path":"rooms/Level4/Level4.yy",},
     {"name":"Level5","order":12,"path":"rooms/Level5/Level5.yy",},
     {"name":"Level6","order":14,"path":"rooms/Level6/Level6.yy",},
+    {"name":"Level7","order":15,"path":"rooms/Level7/Level7.yy",},
     {"name":"MainMenu","order":3,"path":"rooms/MainMenu/MainMenu.yy",},
     {"name":"MiniBoss_Tree","order":13,"path":"rooms/MiniBoss_Tree/MiniBoss_Tree.yy",},
     {"name":"damage_entity","order":7,"path":"scripts/damage_entity/damage_entity.yy",},

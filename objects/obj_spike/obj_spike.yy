@@ -38,5 +38,5 @@
     "path":"sprites/Spikes/Spikes.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

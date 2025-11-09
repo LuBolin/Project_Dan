@@ -492,6 +492,13 @@ function update_status_effects(_target) {
     }
 }
 
+/// @function check_stunned_or_knockback(_target)
+/// @description Checks if target has StunEffect or Knockback Effect
+/// I would have used pause to check, but it 
+function check_stunned_or_knockback(_target) {
+    
+}
+
 /// @function clear_status_effects(_target)
 /// @description Remove all status effects from an entity
 function clear_status_effects(_target) {

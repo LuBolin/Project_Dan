@@ -1,4 +1,5 @@
 event_inherited()
+is_charging = false;
 has_charged = false;
 
 // Please check scr_enemy_fsm_state

@@ -70,8 +70,25 @@ function try_craft_equation(eq_index) {
     var recipe = find_recipe_by_ingredients(global.recipe_tree, ing1, ing2);
 
     if (recipe != noone) {
-        // Success! Mark recipe as discovered
+        // Success! Mark recipe as discovered AND crafted
         recipe.discovered = true;
+        recipe.crafted = true;
+        
+        // Find the recipe ID from JSON to update the correct node
+        var json_data = load_recipes_from_json("recipes.json");
+        var recipe_id = undefined;
+        for (var i = 0; i < array_length(json_data.recipes); i++) {
+            if (json_data.recipes[i].result == recipe.name) {
+                recipe_id = json_data.recipes[i].id;
+                break;
+            }
+        }
+        
+        // Update using recipe ID (lowercase)
+        if (recipe_id != undefined && variable_struct_exists(global.recipe_tree, recipe_id)) {
+            global.recipe_tree[$ recipe_id].discovered = true;
+            global.recipe_tree[$ recipe_id].crafted = true;
+        }
 
         // Create the crafted gourd based on recipe result
         var crafted_gourd = get_gourd_constructor_by_name(recipe.name);

@@ -52,10 +52,20 @@ function get_gourd_constructor_by_name(name) {
 
 
 // === CRAFTING SYSTEM ===
-// Load recipes from JSON and build tree (only if not already loaded)
+// Force rebuild recipe tree to ensure all nodes have the 'crafted' property
+var json_data = load_recipes_from_json("recipes.json");
+
 if (!variable_global_exists("recipe_tree")) {
-    var json_data = load_recipes_from_json("recipes.json");
     global.recipe_tree = build_recipe_tree_from_json(json_data);
+} else {
+    // Ensure all existing nodes have the 'crafted' property
+    var keys = variable_struct_get_names(global.recipe_tree);
+    for (var i = 0; i < array_length(keys); i++) {
+        var node = global.recipe_tree[$ keys[i]];
+        if (!variable_struct_exists(node, "crafted")) {
+            node.crafted = false; // Default to false for existing nodes
+        }
+    }
 }
 
 // === DRAG & DROP SYSTEM ===
@@ -282,13 +292,48 @@ if (array_length(available_elements) > 0) {
     new_element = get_gourd_constructor_by_name(available_elements[random_index]);
     show_debug_message("Selected new element: " + available_elements[random_index]);
     array_push(global.prev_received_elements, new_element.name);
+    
+    // Find recipe ID for this element
+    var recipe_id = undefined;
+    for (var i = 0; i < array_length(json_data.recipes); i++) {
+        if (json_data.recipes[i].result == available_elements[random_index]) {
+            recipe_id = json_data.recipes[i].id;
+            break;
+        }
+    }
+    
+    // Mark as discovered (but not crafted) using recipe ID
+    if (recipe_id != undefined) {
+        var recipe_node = global.recipe_tree[$ recipe_id];
+        if (!is_undefined(recipe_node) && recipe_node != noone) {
+            recipe_node.discovered = true;
+            recipe_node.crafted = false;
+        }
+    }
 } else {
     // All elements of this tier are equipped, pick any random one
     if (array_length(tier_elements) > 0) {
         var random_index = irandom(array_length(tier_elements) - 1);
         new_element = get_gourd_constructor_by_name(tier_elements[random_index]);
-        show_debug_message("All tier elements equipped, picked: " + tier_elements[random_index]);
         array_push(global.prev_received_elements, new_element.name);
+        
+        // Find recipe ID for this element
+        var recipe_id = undefined;
+        for (var i = 0; i < array_length(json_data.recipes); i++) {
+            if (json_data.recipes[i].result == tier_elements[random_index]) {
+                recipe_id = json_data.recipes[i].id;
+                break;
+            }
+        }
+        
+        // Mark as discovered (but not crafted) using recipe ID
+        if (recipe_id != undefined) {
+            var recipe_node = global.recipe_tree[$ recipe_id];
+            if (!is_undefined(recipe_node) && recipe_node != noone) {
+                recipe_node.discovered = true;
+                recipe_node.crafted = false;
+            }
+        }
     }
 }
 

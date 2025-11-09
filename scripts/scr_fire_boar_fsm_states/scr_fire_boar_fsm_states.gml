@@ -23,7 +23,14 @@ function FireBoarAlertState(_entity, _duration = undefined, _is_timed = false) :
 }
 
 function FireBoarChaseState(_entity, _duration = 5000, _is_timed = true) : ChaseState(_entity, _duration, _is_timed) constructor {
-
+    // FIREBALL
+    rock_attack_freq = 3 * game_get_speed(gamespeed_fps); // 1.5 seconds 
+    rock_attack_cd = 0;
+    
+    on_enter = function() {
+        rock_attack_cd = rock_attack_freq;
+    }
+    
     on_step = function() {
         // Safety check: ensure entity still exists
         if (!instance_exists(entity)) {
@@ -36,7 +43,7 @@ function FireBoarChaseState(_entity, _duration = 5000, _is_timed = true) : Chase
             path_remaining_time = path_reset_timer;
             set_path(entity);
         }
-
+        rock_attack_cd -= 1;    
         with (entity) {
             
             // Safety check: make sure player exists BEFORE accessing coordinates
@@ -45,20 +52,23 @@ function FireBoarChaseState(_entity, _duration = 5000, _is_timed = true) : Chase
                 changeState(STATES.ROAM);
                 exit;
             } 
-                
+            
+            
             // Check if player_last_known position is defined before using
             var _sight_line = collision_line(x, y, player_last_known_x, player_last_known_y, obj_player.colliders, false, true);
             
             // Shoot fireballs while chasing
-            if (fireball_cooldown <= 0 and _sight_line == noone) {
+            if (other.rock_attack_cd <= 0 and _sight_line == noone) {
                 // Calculate direction to player
-                var boss_fire_ball = new ProjectileRock();
-        		boss_fire_ball.speed = 4.0; // half speed
-        		boss_fire_ball.scale = 1.5; // 1.5 size
+                var boss_rock = new ProjectileRock();
+        		boss_rock.speed = 6.0; // half speed
+        		boss_rock.scale = 2; // 1.5 size
+                boss_rock.life_steps = infinity
                 
-                spawn_and_set_projectile(self, boss_fire_ball, player_last_known_x, player_last_known_y, obj_enemy_projectile);
+                var rock_proj = spawn_and_set_projectile(self, boss_rock, player_last_known_x, player_last_known_y, obj_enemy_projectile);
+                rock_proj.image_blend = c_red;
                 // Reset cooldown
-                fireball_cooldown = fireball_cooldown_max;
+                other.rock_attack_cd = other.rock_attack_freq;
 
                 // Play projectile sound (using air projectile sound as placeholder for fireball)
                 // TODO: Replace with snd_fireball when available
@@ -107,12 +117,9 @@ function FireBoarAttackState(_entity, _duration = 700, _is_timed = true) : Attac
                     
                     var boss_fire_ball = new ProjectileFire();
                     boss_fire_ball.speed = 6.0; // half speed 
-                    boss_fire_ball.scale = 1.5; // 1.5 size                   
+                    boss_fire_ball.scale = 1.0; // 1.5 size                   
                     spawn_and_set_projectile_angled(self, boss_fire_ball, base_dir + (i * spread_angle), obj_enemy_projectile); 
                 }
-
-                // Reset fireball cooldown
-                fireball_cooldown = fireball_cooldown_max;
             }
         }
     }

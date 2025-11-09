@@ -1,9 +1,7 @@
 event_inherited()
 has_charged = false;
 
-// Fire Boar specific variables
-fireball_cooldown = 0; // Cooldown for shooting fireballs
-fireball_cooldown_max = 90; // 1.5 seconds at 60 fps
+
 is_miniboss = true;
 
 // Scale up the sprite to 1.5x size

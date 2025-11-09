@@ -5,11 +5,11 @@ var original_yscale = image_yscale;
 
 // Apply 1.5x scale while preserving any negative scale for direction
 if (original_xscale != 0) {
-    image_xscale = 1.5 * sign(original_xscale);
+    image_xscale = 1 * sign(original_xscale);
 } else {
-    image_xscale = 1.5;
+    image_xscale = 1;
 }
-image_yscale = 1.5;
+image_yscale = 1;
 
 // Call parent draw event which uses draw_self()
 event_inherited()

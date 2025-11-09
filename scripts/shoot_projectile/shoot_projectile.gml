@@ -46,9 +46,28 @@ function spawn_and_set_projectile_angled(_entity, projectile, angle, projectile_
                 inst.image_xscale = projectile.scale;
                 inst.image_yscale = projectile.scale;
             }
-            // copy damage target flags
-            if (!is_undefined(projectile.damage_player))  inst.damage_player  = projectile.damage_player;
-            if (!is_undefined(projectile.damage_enemies)) inst.damage_enemies = projectile.damage_enemies;
+
+            // SAFER: copy damage target flags with defaults by projectile side
+            var default_damage_player  = (projectile_object == obj_enemy_projectile);
+            var default_damage_enemies = (projectile_object != obj_enemy_projectile);
+
+            if (is_struct(projectile) && variable_struct_exists(projectile, "damage_player")) {
+                inst.damage_player = projectile.damage_player;
+            } else {
+                inst.damage_player = default_damage_player;
+            }
+
+            if (is_struct(projectile) && variable_struct_exists(projectile, "damage_enemies")) {
+                inst.damage_enemies = projectile.damage_enemies;
+            } else {
+                inst.damage_enemies = default_damage_enemies;
+            }
+
+            // SFX (guard against missing SFX manager)
+            if (is_struct(projectile) && !is_undefined(projectile.sfx_fire)) {
+                if (instance_exists(obj_sfx_manager)) with (obj_sfx_manager) play_sound(projectile.sfx_fire, false);
+                else audio_play_sound(projectile.sfx_fire, 0, false);
+            }
 
             if (!is_undefined(projectile.sfx_fire)) obj_sfx_manager.play_sound(projectile.sfx_fire, false);
         }

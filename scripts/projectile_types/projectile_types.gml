@@ -2,7 +2,7 @@
 // TIER 0 - BASE ELEMENTS
 // ========================================
 
-function ProjectileFire() constructor {
+function ProjectileFire() : ProjectileBase() constructor {
 	name = "Fire";
 	speed = 12.0;  // units per second
 	damage = 1;  // Initial hit damage
@@ -27,7 +27,7 @@ function ProjectileFire() constructor {
 	}
 }
 
-function ProjectileRock() constructor {
+function ProjectileRock() : ProjectileBase() constructor {
 	name = "Rock";
 	speed       = 18.75;  // units per second (1200 / 64)
 	damage      = 2;
@@ -50,7 +50,7 @@ function ProjectileRock() constructor {
 	}
 }
 
-function ProjectileWaterBall() constructor {
+function ProjectileWaterBall() : ProjectileBase() constructor {
 	name = "Water Ball";
 	speed       = 14.0625;  // units per second (900 / 64)
 	damage      = 1; // was 2
@@ -73,7 +73,7 @@ function ProjectileWaterBall() constructor {
 	}
 }
 
-function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration = 8) constructor {
+function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration = 8) : ProjectileBase() constructor {
     name = "Air";
     speed = 0;  // Doesn't move
     damage = 0;
@@ -160,7 +160,7 @@ function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration =
     }
 }
 
-function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_duration = 8) constructor {
+function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_duration = 8) : ProjectileBase() constructor {
     name = "EnemyAir";
     speed = 0;  // Doesn't move
     damage = 0;
@@ -245,7 +245,7 @@ function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_durati
 // TIER 1 - BASIC COMBINATIONS
 // ========================================
 
-function ProjectileLava() constructor {
+function ProjectileLava() : ProjectileBase() constructor {
     name = "Lava";
     speed       = 6.25;  // units per second (400 / 64) - moderate speed
     damage      = 1;
@@ -356,14 +356,14 @@ function ProjectileLava() constructor {
     }
 }
 
-function ProjectileSteam() constructor {
+function ProjectileSteam() : ProjectileBase() constructor {
     name = "Steam";
     // Steam is now implemented as obj_steam area-of-effect
     // This constructor is kept for compatibility but not used
     show_debug_message("Steam uses obj_steam AoE instead of projectile");
 }
 
-function ProjectileMudBall() constructor {
+function ProjectileMudBall() : ProjectileBase() constructor {
 	name = "Mud Ball";
 	speed       = 7.5;  // units per second (480 / 64)
 	damage      = 1;
@@ -405,7 +405,7 @@ function ProjectileMudBall() constructor {
 	}
 }
 
-function ProjectileCurrent() constructor {
+function ProjectileCurrent() : ProjectileBase() constructor {
     name = "Current";
     speed = 0;  // Doesn't move (player dashes instead)
     damage = 0;
@@ -520,7 +520,7 @@ function ProjectileCurrent() constructor {
 // TIER 2 - ADVANCED COMBINATIONS
 // ========================================
 
-function ProjectileEruption() constructor {
+function ProjectileEruption() : ProjectileBase() constructor {
     name = "Eruption";
     speed       = 7.5;  // units per second (480 / 64) - slightly faster than lava
     damage      = 0.8;    // 50% higher damage than regular lava
@@ -531,6 +531,10 @@ function ProjectileEruption() constructor {
     scale = 0.8; // Slightly larger than regular lava
     sfx_fire = undefined;
     sfx_hit = undefined;
+
+    // Explicit target flags
+    damage_player  = false;
+    damage_enemies = true;
 
     // Target position for homing
     target_x = 0;
@@ -700,14 +704,14 @@ function ProjectileEruption() constructor {
     }
 }
 
-function ProjectileClay() constructor {
+function ProjectileClay() : ProjectileBase() constructor {
     name = "Clay";
     // Clay is now implemented as direct wall spawning from gourd
     // Constructor is kept for compatibility but not used
     show_debug_message("Clay uses direct wall spawning instead of projectile");
 }
 
-function ProjectilePlant() constructor {
+function ProjectilePlant() : ProjectileBase() constructor {
     name = "Plant";
     speed = 0;  // Doesn't move (player dashes instead)
     damage = 0;
@@ -798,7 +802,7 @@ function ProjectilePlant() constructor {
     }
 }
 
-function ProjectileHurricane() constructor {
+function ProjectileHurricane() : ProjectileBase() constructor {
     name = "Hurricane";
     speed       = 3;
     damage      = 3;
@@ -912,14 +916,14 @@ function ProjectileHurricane() constructor {
 // TIER 3 - POWERFUL ELEMENTS
 // ========================================
 
-function ProjectileDestruction() constructor {
+function ProjectileDestruction() : ProjectileBase() constructor {
     name = "Destruction";
     // Destruction is now implemented as screen-wide effect
     // This constructor is kept for compatibility but not used
     show_debug_message("Destruction uses screen-wide effect instead of projectile");
 }
 
-function ProjectileCreation() constructor {
+function ProjectileCreation() : ProjectileBase() constructor {
     name = "Creation";
     speed = 0;  // Doesn't move (player dashes instead)
     damage = 0;
@@ -1023,7 +1027,7 @@ function ProjectileCreation() constructor {
     }
 }
 
-function ProjectileLightningBeam() constructor {
+function ProjectileLightningBeam() : ProjectileBase() constructor {
     name = "LightningBeam";
     speed = 0;
     damage = 0;
@@ -1206,7 +1210,7 @@ function ProjectileLightningBeam() constructor {
 // ENEMY PROJECTILE
 // ========================================
 
-function ProjectileGhost() constructor {
+function ProjectileGhost() : ProjectileBase() constructor {
     name = "Ghost";
     speed = 4.0;                             // units per second
     damage = 1;
@@ -1217,6 +1221,10 @@ function ProjectileGhost() constructor {
     scale = 1.5;
     sfx_fire = undefined;
     sfx_hit = undefined;
+
+    // Explicit target flags
+    damage_player  = true;
+    damage_enemies = false;
     
     on_hit = function(projectile_inst, target) {
         // Simple: 1 damage, no status effects; knockback handled by your hit system via kb_* fields

@@ -270,15 +270,24 @@ function ProjectileLava() : ProjectileBase() constructor {
     homing_enabled = false;
 
     on_launch = function(projectile_inst) {
-        // Store target position (mouse position at launch)
-        projectile_inst.target_x = mouse_x;
-        projectile_inst.target_y = mouse_y;
+        // OVERRIDE: use clone's target_enemy if creator is a clone
+        var tx, ty;
+        if (instance_exists(projectile_inst.creator)
+            && projectile_inst.creator.object_index == obj_clone
+            && instance_exists(projectile_inst.creator.target_enemy)) {
+            tx = projectile_inst.creator.target_enemy.x;
+            ty = projectile_inst.creator.target_enemy.y;
+        } else {
+            tx = mouse_x;
+            ty = mouse_y;
+        }
+        projectile_inst.target_x = tx;
+        projectile_inst.target_y = ty;
         projectile_inst.homing_enabled = true;
         projectile_inst.depth = 0;
-        projectile_inst.image_speed = 0.2; // animate lava ball frames
-        
-        // Calculate initial direction towards target
-        var dir = point_direction(projectile_inst.x, projectile_inst.y, mouse_x, mouse_y);
+        projectile_inst.image_speed = 0.2;
+
+        var dir = point_direction(projectile_inst.x, projectile_inst.y, tx, ty);
         projectile_inst.direction = dir;
         projectile_inst.image_angle = dir;
     }
@@ -554,14 +563,24 @@ function ProjectileEruption() : ProjectileBase() constructor {
     num_secondary_pools = 6; // Number of pools to spawn around center
 
     on_launch = function(projectile_inst) {
-        // Store target position (mouse position at launch)
-        projectile_inst.target_x = mouse_x;
-        projectile_inst.target_y = mouse_y;
+        // OVERRIDE: use clone target_enemy if available
+        var tx, ty;
+        if (instance_exists(projectile_inst.creator)
+            && projectile_inst.creator.object_index == obj_clone
+            && instance_exists(projectile_inst.creator.target_enemy)) {
+            tx = projectile_inst.creator.target_enemy.x;
+            ty = projectile_inst.creator.target_enemy.y;
+        } else {
+            tx = mouse_x;
+            ty = mouse_y;
+        }
+        projectile_inst.target_x = tx;
+        projectile_inst.target_y = ty;
         projectile_inst.homing_enabled = true;
         projectile_inst.depth = 0;
-        
-        // Calculate initial direction towards target
-        var dir = point_direction(projectile_inst.x, projectile_inst.y, mouse_x, mouse_y);
+        projectile_inst.image_speed = 0.2;
+
+        var dir = point_direction(projectile_inst.x, projectile_inst.y, tx, ty);
         projectile_inst.direction = dir;
         projectile_inst.image_angle = dir;
     }
@@ -1095,9 +1114,18 @@ function ProjectileLightningBeam() : ProjectileBase() constructor {
         if (instance_exists(projectile_inst.creator)) {
             projectile_inst.origin_x = projectile_inst.creator.x;
             projectile_inst.origin_y = projectile_inst.creator.y;
-            
-            // Update beam angle to follow mouse
-            var new_angle = point_direction(projectile_inst.origin_x, projectile_inst.origin_y, mouse_x, mouse_y);
+
+            // OVERRIDE: clones aim at their target_enemy instead of mouse
+            var aim_x, aim_y;
+            if (projectile_inst.creator.object_index == obj_clone
+                && instance_exists(projectile_inst.creator.target_enemy)) {
+                aim_x = projectile_inst.creator.target_enemy.x;
+                aim_y = projectile_inst.creator.target_enemy.y;
+            } else {
+                aim_x = mouse_x;
+                aim_y = mouse_y;
+            }
+            var new_angle = point_direction(projectile_inst.origin_x, projectile_inst.origin_y, aim_x, aim_y);
             projectile_inst.image_angle = new_angle;
         }
 

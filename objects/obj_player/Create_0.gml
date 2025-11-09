@@ -4,7 +4,9 @@ global.player = id;
 depth = -10;
 
 // Invuln timer for player to escape if they get hit
-invuln = false
+invuln = false;                  // default vulnerability
+invuln_stack = 0;                // optional, for stacking sources
+status_effects_list = [];             // REQUIRED so add_status_effect works
 
 // Detection radius used to check if enemies can spot player
 detection_radius = default_detection_radius;

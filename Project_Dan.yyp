@@ -204,6 +204,7 @@
     {"id":{"name":"spr_lava_ball","path":"sprites/spr_lava_ball/spr_lava_ball.yy",},},
     {"id":{"name":"spr_lava_pool_old","path":"sprites/spr_lava_pool_old/spr_lava_pool_old.yy",},},
     {"id":{"name":"spr_lava_pool","path":"sprites/spr_lava_pool/spr_lava_pool.yy",},},
+    {"id":{"name":"spr_lightning_beam_old","path":"sprites/spr_lightning_beam_old/spr_lightning_beam_old.yy",},},
     {"id":{"name":"spr_lightning_beam","path":"sprites/spr_lightning_beam/spr_lightning_beam.yy",},},
     {"id":{"name":"spr_lightning_strike","path":"sprites/spr_lightning_strike/spr_lightning_strike.yy",},},
     {"id":{"name":"spr_lock","path":"sprites/spr_lock/spr_lock.yy",},},

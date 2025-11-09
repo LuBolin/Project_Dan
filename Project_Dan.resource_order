@@ -154,6 +154,7 @@
     {"name":"spr_lava_ball","order":3,"path":"sprites/spr_lava_ball/spr_lava_ball.yy",},
     {"name":"spr_lava_pool_old","order":25,"path":"sprites/spr_lava_pool_old/spr_lava_pool_old.yy",},
     {"name":"spr_lava_pool","order":12,"path":"sprites/spr_lava_pool/spr_lava_pool.yy",},
+    {"name":"spr_lightning_beam_old","order":32,"path":"sprites/spr_lightning_beam_old/spr_lightning_beam_old.yy",},
     {"name":"spr_lightning_beam","order":22,"path":"sprites/spr_lightning_beam/spr_lightning_beam.yy",},
     {"name":"spr_lightning_strike","order":5,"path":"sprites/spr_lightning_strike/spr_lightning_strike.yy",},
     {"name":"spr_lock","order":1,"path":"sprites/spr_lock/spr_lock.yy",},

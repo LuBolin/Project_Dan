@@ -1050,15 +1050,15 @@ function ProjectileLightningBeam() : ProjectileBase() constructor {
     sfx_fire = undefined;
     sfx_hit = undefined;
 
-    beam_length = 900;
-    beam_width = 16;
-    beam_glow = 32;
+    beam_length = 400;
+    beam_width = 48; // NEW: matches sprite width (was 16, now base width of sprite)
+    beam_glow = 64;  // NEW: increased for better visibility (was 32)
     beam_dps = 8;
     beam_acc = undefined;
     damage_enemies = true;
     damage_player = false;
 
-    beam_sprite = spr_lightning_beam; // your animated sprite (set origin to Left Middle)
+    beam_sprite = spr_lightning_beam; // NEW sprite: 48×111, origin top-middle
     beam_anim_t = 0;
     beam_anim_speed = 0.6;
 
@@ -1160,14 +1160,24 @@ function ProjectileLightningBeam() : ProjectileBase() constructor {
         if (sprite_exists(projectile_inst.beam_sprite)) {
             var frames = max(1, sprite_get_number(projectile_inst.beam_sprite));
             var frame = floor(projectile_inst.beam_anim_t) mod frames;
-            var sw = max(1, sprite_get_width(projectile_inst.beam_sprite));
-            var sh = max(1, sprite_get_height(projectile_inst.beam_sprite));
+            
+            // NEW: sprite is 48×111 (width × height)
+            var sw = max(1, sprite_get_width(projectile_inst.beam_sprite));   // 48
+            var sh = max(1, sprite_get_height(projectile_inst.beam_sprite));  // 111
 
-            var xscale = len / sw;
-            var yscale = projectile_inst.beam_width / sh;
+            // ROTATION FIX: New sprite is vertical (top-down), old was horizontal (left-right)
+            // Add 90° to image_angle to rotate vertical sprite to horizontal aim direction
+            var draw_angle = projectile_inst.image_angle + 90;
 
-            draw_sprite_ext(projectile_inst.beam_sprite, frame, x1, y1, xscale, yscale, projectile_inst.image_angle, c_white, 1);
+            // SCALE SWAP: length stretches sprite vertically (yscale), width controls thickness (xscale)
+            // Old (horizontal sprite): xscale = len/sw, yscale = width/sh
+            // New (vertical sprite rotated 90°): xscale = width/sw, yscale = len/sh
+            var xscale = projectile_inst.beam_width / sw;  // thickness (48px base → beam_width)
+            var yscale = len / sh;                         // length stretch
+
+            draw_sprite_ext(projectile_inst.beam_sprite, frame, x1, y1, xscale, yscale, draw_angle, c_white, 1);
         } else {
+            // Fallback line drawing (unchanged)
             gpu_set_blendmode(bm_add);
             draw_set_alpha(0.35);
             draw_set_color(make_color_rgb(120, 170, 255));
@@ -1192,21 +1202,12 @@ function ProjectileLightningBeam() : ProjectileBase() constructor {
             var py = y1 + lengthdir_y(i * step, ang);
 
             var hit_tile = false;
-            var hit_wall = false;
 
             if (tmap != -1) {
                 hit_tile = tilemap_get_at_pixel(tmap, px, py) != 0;
             }
 
-            // Let's Buff Lightning a bit shall we
-            //with (obj_clay_wall) {
-                //if (point_distance(x, y, px, py) < 32) {
-                    //hit_wall = true;
-                    //break;
-                //}
-            //}
-
-            if (hit_tile || hit_wall) {
+            if (hit_tile) {
                 return { x: last_x, y: last_y };
             }
 

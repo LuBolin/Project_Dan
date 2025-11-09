@@ -13,6 +13,13 @@ if (show_lightning) {
         show_lightning = false;
         lightning_alpha = 0;
     }
+
+    if (instance_exists(obj_player)) {
+        var p = obj_player;
+        p.sprite_index = player_cutscene_sprite;
+        p.image_index += 1;
+        // Animation State for Cutscene
+    };
 }
 
 // Pause run timer during cutscene

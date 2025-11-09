@@ -519,7 +519,7 @@ function ProjectileCurrent() constructor {
 function ProjectileEruption() constructor {
     name = "Eruption";
     speed       = 7.5;  // units per second (480 / 64) - slightly faster than lava
-    damage      = 1.5;    // 50% higher damage than regular lava
+    damage      = 0.8;    // 50% higher damage than regular lava
     life_steps  = game_get_speed(gamespeed_fps) * 2.5; // 2.5 second max flight time
     kb_speed = 4;  // pixels per frame
     kb_distance = 20; // Same knockback than lava
@@ -621,11 +621,11 @@ function ProjectileEruption() constructor {
 
         // Make center pool slightly more powerful AND bigger
         if (instance_exists(center_pool)) {
-            center_pool.damage_per_tick = 3; // 50% higher damage than lava
+            center_pool.damage_per_tick = 1; // 50% higher damage than lava
             center_pool.life_timer = game_get_speed(gamespeed_fps) * 10; // Lasts longer
             // Make center pool bigger
-            center_pool.image_xscale = 1.5;
-            center_pool.image_yscale = 1.5;
+            center_pool.image_xscale = 1.2;
+            center_pool.image_yscale = 1.2;
             // Set damage flags if created by player
             if (creator == obj_player) {
                 center_pool.damage_enemies = true;
@@ -662,11 +662,14 @@ function ProjectileEruption() constructor {
                         var pool_y = self.center_y + lengthdir_y(self.explosion_radius, angle);
 
                         // Check if position is valid (not in walls)
-                        if (!place_meeting(pool_x, pool_y, layer_tilemap_get_id("Tile_Collision"))) {
+                        var tilemap = layer_tilemap_get_id("Tile_Collision");
+                        var tile = tilemap_get_at_pixel(tilemap, pool_x, pool_y);
+                        //if (!place_meeting(pool_x, pool_y, layer_tilemap_get_id("Tile_Collision"))) {
+                        if (tile == 0) {
                             var secondary_pool = instance_create_layer(pool_x, pool_y, "Instances", obj_lava_pool);
                             if (instance_exists(secondary_pool)) {
                                 secondary_pool.life_timer = game_get_speed(gamespeed_fps) * 6; // 6 seconds
-								secondary_pool.damage_per_tick = 1.4; // 70% of damage of lava
+								secondary_pool.damage_per_tick = 0.2; // 70% of damage of lava
                                 // Make secondary pools smaller
                                 secondary_pool.image_xscale = 0.8;
                                 secondary_pool.image_yscale = 0.8;
@@ -728,34 +731,44 @@ function ProjectilePlant() constructor {
             // DETERMINE DASH DIRECTION: Player movement takes priority over mouse direction
             var dash_dir;
             
-            // Check if player is moving (get current input)
-            var input_x = 0;
-            var input_y = 0;
+            if (player == obj_player) { 
+                
+                // Check if player is moving (get current input)
+                var input_x = 0;
+                var input_y = 0;
+                
+                if (keyboard_check(ord("A"))) input_x -= 1;
+                if (keyboard_check(ord("D"))) input_x += 1;
+                if (keyboard_check(ord("W"))) input_y -= 1;
+                if (keyboard_check(ord("S"))) input_y += 1; 
+                    
+                // If player is moving, dash in movement direction
+                if (input_x != 0 || input_y != 0) {
+                    dash_dir = point_direction(0, 0, input_x, input_y);
+                    show_debug_message("Plant dash: Using movement direction " + string(dash_dir));
+                } else {
+                    // If not moving, dash toward mouse
+                    dash_dir = point_direction(player.x, player.y, mouse_x, mouse_y);
+                    show_debug_message("Plant dash: Using mouse direction " + string(dash_dir));
+                }
             
-            if (keyboard_check(ord("A"))) input_x -= 1;
-            if (keyboard_check(ord("D"))) input_x += 1;
-            if (keyboard_check(ord("W"))) input_y -= 1;
-            if (keyboard_check(ord("S"))) input_y += 1;
-            
-            // If player is moving, dash in movement direction
-            if (input_x != 0 || input_y != 0) {
-                dash_dir = point_direction(0, 0, input_x, input_y);
-                show_debug_message("Plant dash: Using movement direction " + string(dash_dir));
-            } else {
-                // If not moving, dash toward mouse
-                dash_dir = point_direction(player.x, player.y, mouse_x, mouse_y);
-                show_debug_message("Plant dash: Using mouse direction " + string(dash_dir));
+            } else if (player == obj_enemy_abstract) {
+                
+                dash_dir = point_direction(player.x, player.y, obj_player.x, obj_player.y);    
             }
-            
+
+ 
             projectile_inst.image_angle = dash_dir;
 
             // Apply knockback effect to dash player (false = no stun)
             add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
 
             // Make player invincible during dash (shorter than Air/Current for balance)
-            var invuln_time_seconds = 0.15; // seconds
-            var invuln_duration = (dash_duration_seconds + invuln_time_seconds) * game_get_speed(gamespeed_fps);
-            add_status_effect(player, new InvincibilityEffect(invuln_duration));
+            if (player == obj_player) {
+                var invuln_time_seconds = 0.15; // seconds
+                var invuln_duration = (dash_duration_seconds + invuln_time_seconds) * game_get_speed(gamespeed_fps);
+                add_status_effect(player, new InvincibilityEffect(invuln_duration));
+            }
 
             // Create particle effect trail behind player (green nature particles)
             var trail_length = 5;  // Number of particles
@@ -1035,7 +1048,7 @@ function ProjectileLightningBeam() constructor {
     name = "LightningBeam";
     speed = 0;
     damage = 0;
-    life_steps = 2 * game_get_speed(gamespeed_fps);
+    life_steps = 2.5 * game_get_speed(gamespeed_fps);
     kb_speed = 0;
     kb_distance = 0;
     sprite_index = -1;
@@ -1191,12 +1204,13 @@ function ProjectileLightningBeam() constructor {
                 hit_tile = tilemap_get_at_pixel(tmap, px, py) != 0;
             }
 
-            with (obj_clay_wall) {
-                if (point_distance(x, y, px, py) < 32) {
-                    hit_wall = true;
-                    break;
-                }
-            }
+            // Let's Buff Lightning a bit shall we
+            //with (obj_clay_wall) {
+                //if (point_distance(x, y, px, py) < 32) {
+                    //hit_wall = true;
+                    //break;
+                //}
+            //}
 
             if (hit_tile || hit_wall) {
                 return { x: last_x, y: last_y };

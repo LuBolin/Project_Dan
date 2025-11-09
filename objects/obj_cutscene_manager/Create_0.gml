@@ -90,16 +90,23 @@ if (instance_exists(obj_camera)) {
     }
 }
 
+// List of objects that must remain active
+var keep_active = [
+    obj_cutscene_manager,
+    obj_player,
+    obj_camera,
+    obj_aim_arrow,
+    obj_sfx_manager
+];
+
+// Deactivate everything except persistent instances
 instance_deactivate_all(true);
-instance_activate_object(obj_cutscene_manager);
-if (instance_exists(obj_player)) {
-    instance_activate_object(obj_player);
-}
-if (instance_exists(obj_camera)) {
-    instance_activate_object(obj_camera);
-}
-if (instance_exists(obj_aim_arrow)) {
-    instance_activate_object(obj_aim_arrow);
+
+// Reactivate only the objects that exist and should be active
+for (var i = 0; i < array_length(keep_active); i++) {
+    if (instance_exists(keep_active[i])) {
+        instance_activate_object(keep_active[i]);
+    }
 }
 
 var tilemap = layer_tilemap_get_id("Tile_Collision");
@@ -131,3 +138,6 @@ advance_dialog = function() {
         complete_cutscene(self);
     }
 }
+
+player_cutscene_sprite = undefined;
+player_cutscene_sprite_index = 0;

@@ -1,10 +1,6 @@
 update_status_effects(self);
 
 
-if (hp < 4) {
-    //obj_sfx_manager.play_sound()
-}
-
 if (hp <= 0) {
     // Player died - store inventory for death screen
     var death_inventory = [inv[0], inv[1], inv[2]];

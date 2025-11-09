@@ -55,7 +55,7 @@ function check_player_has_elixir(cutscene_manager) {
         }
         cutscene_manager.player_inventory_snapshot = inventory;
     }
-
+    cutscene_manager.player_cutscene_sprite = has_elixir ? spr_character_lightning_survive : spr_character_lightning_death;
     cutscene_manager.show_lightning = true;
     cutscene_manager.lightning_timer = 0;
 

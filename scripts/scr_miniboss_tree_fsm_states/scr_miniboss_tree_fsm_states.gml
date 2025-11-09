@@ -10,6 +10,7 @@ function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : S
     id = STATES.CHASE;
     
     on_enter = function() {
+        enemy_count = 0;
         
         remaining_time = duration;
         // Create a new list
@@ -20,7 +21,11 @@ function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : S
             if (hp < max_hp) {
                 ds_list_add(other.enemies, self);
             }
-            
+            other.enemy_count += 1
+        }
+        
+        if (enemy_count <= 4 && instance_exists(obj_player) && (obj_player.hp >= 6 || entity.hp <= 20)) {
+            spawn_more_enemies();
         }
         
         if (ds_list_size(enemies) != 0) {
@@ -28,6 +33,7 @@ function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : S
             var boss_plant_pool = instance_create_layer(enemy_to_heal.x, enemy_to_heal.y, "Instances", obj_plant);
             if (instance_exists(boss_plant_pool)) {
                 boss_plant_pool.heal_enemies = true;
+                boss_plant_pool.life_duration_seconds = 16;
             }
             ds_list_destroy(enemies)           
         } else {

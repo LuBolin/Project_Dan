@@ -1,7 +1,7 @@
 if (instance_exists(obj_player)) {
     with (obj_player) {
         event_perform(ev_draw, 0);
-    }
+    } 
 }
 
 if (player_snapshot != undefined) {

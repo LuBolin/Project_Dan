@@ -9,8 +9,8 @@ fade_in_duration = fade_in_duration_seconds * game_get_speed(gamespeed_fps);  //
 fade_out_duration = fade_out_duration_seconds * game_get_speed(gamespeed_fps); // Convert to frames
 
 // Scale to reasonable healing area size
-image_xscale = 2.5;  // Larger than steam for healing area
-image_yscale = 2.5;
+image_xscale = 0.625;
+image_yscale = 0.625;
 
 // Healing radius for player detection
 healing_radius = 80; // pixels - generous healing area
@@ -36,7 +36,7 @@ heal_cooldown = heal_cooldown_seconds * 1000; // Convert to milliseconds for cur
 depth = 200;
 
 // Rotation for visual effect
-rotation_speed = 0.3; // degrees per frame (slower than steam for peaceful feel)
+rotation_speed = 0; // disable rotation
 
 // Healing particle effect timer
 particle_timer = 0;

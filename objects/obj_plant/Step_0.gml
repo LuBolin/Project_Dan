@@ -15,7 +15,8 @@ else {
 }
 
 // Rotate for visual effect
-image_angle += rotation_speed;
+// image_angle += rotation_speed; // remove rotation
+image_angle = 0; // ensure no rotation
 
 // Healing tick logic
 tick_counter++;

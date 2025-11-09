@@ -722,88 +722,71 @@ function ProjectilePlant() constructor {
         projectile_inst.x = projectile_inst.creator.x;
         projectile_inst.y = projectile_inst.creator.y;
         projectile_inst.speed = 0;
-        projectile_inst.image_alpha = 0.5;  // Semi-transparent
+        projectile_inst.image_alpha = 0.5;
+        projectile_inst.depth = 0;
 
-        // Immediately dash the player
-        if (instance_exists(projectile_inst.creator)) {
-            var player = projectile_inst.creator;
-            projectile_inst.depth = 0;
-            // DETERMINE DASH DIRECTION: Player movement takes priority over mouse direction
-            var dash_dir;
-            
-            if (player == obj_player) { 
-                
-                // Check if player is moving (get current input)
-                var input_x = 0;
-                var input_y = 0;
-                
-                if (keyboard_check(ord("A"))) input_x -= 1;
-                if (keyboard_check(ord("D"))) input_x += 1;
-                if (keyboard_check(ord("W"))) input_y -= 1;
-                if (keyboard_check(ord("S"))) input_y += 1; 
-                    
-                // If player is moving, dash in movement direction
-                if (input_x != 0 || input_y != 0) {
-                    dash_dir = point_direction(0, 0, input_x, input_y);
-                    show_debug_message("Plant dash: Using movement direction " + string(dash_dir));
-                } else {
-                    // If not moving, dash toward mouse
-                    dash_dir = point_direction(player.x, player.y, mouse_x, mouse_y);
-                    show_debug_message("Plant dash: Using mouse direction " + string(dash_dir));
-                }
-            
-            } else if (player == obj_enemy_abstract) {
-                
-                dash_dir = point_direction(player.x, player.y, obj_player.x, obj_player.y);    
+        // Reference to creator
+        var user = projectile_inst.creator;
+        if (!instance_exists(user)) {
+            instance_destroy(projectile_inst);
+            return;
+        }
+
+        // Default dash direction toward mouse
+        var dash_dir = point_direction(user.x, user.y, mouse_x, mouse_y);
+
+        // If player, prefer movement keys
+        if (user.object_index == obj_player) {
+            var input_x = (keyboard_check(ord("D")) - keyboard_check(ord("A")));
+            var input_y = (keyboard_check(ord("S")) - keyboard_check(ord("W")));
+            if (input_x != 0 || input_y != 0) {
+                dash_dir = point_direction(0, 0, input_x, input_y);
             }
+        } else if (user.object_index == obj_enemy_abstract && instance_exists(global.player)) {
+            dash_dir = point_direction(user.x, user.y, global.player.x, global.player.y);
+        }
 
- 
-            projectile_inst.image_angle = dash_dir;
+        // Apply knockback dash
+        add_status_effect(user, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
 
-            // Apply knockback effect to dash player (false = no stun)
-            add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
+        // Short invuln only for player
+        if (user.object_index == obj_player) {
+            var invuln_time_seconds = 0.15;
+            var invuln_duration = (dash_duration_seconds + invuln_time_seconds) * game_get_speed(gamespeed_fps);
+            add_status_effect(user, new InvincibilityEffect(invuln_duration));
+        }
 
-            // Make player invincible during dash (shorter than Air/Current for balance)
-            if (player == obj_player) {
-                var invuln_time_seconds = 0.15; // seconds
-                var invuln_duration = (dash_duration_seconds + invuln_time_seconds) * game_get_speed(gamespeed_fps);
-                add_status_effect(player, new InvincibilityEffect(invuln_duration));
-            }
-
-            // Create particle effect trail behind player (green nature particles)
-            var trail_length = 5;  // Number of particles
+        // Particle & healing scheduling only for player
+        if (user.object_index == obj_player) {
+            // Nature particle trail
+            var trail_length = 5;
             for (var i = 0; i < trail_length; i++) {
-                var offset = i * 8;  // Space particles along the trail
-                var trail_x = player.x - lengthdir_x(offset, dash_dir);
-                var trail_y = player.y - lengthdir_y(offset, dash_dir);
-
-                // Create a nature particle at this position
+                var offset = i * 8;
+                var trail_x = user.x - lengthdir_x(offset, dash_dir);
+                var trail_y = user.y - lengthdir_y(offset, dash_dir);
                 var particle = instance_create_layer(trail_x, trail_y, "Instances", obj_projectile);
                 if (particle != noone) {
-                    particle.sprite_index = spr_wind_gust; // Use wind gust or create spr_leaf_particle
-                    particle.image_alpha = 0.3 - (i * 0.05);  // Fade out
+                    particle.sprite_index = spr_wind_gust; // placeholder leaf/plant sprite
+                    particle.image_alpha = 0.3 - (i * 0.05);
                     particle.image_xscale = 0.25;
                     particle.image_yscale = 0.25;
-                    particle.image_angle = dash_dir + random_range(-15, 15); // Slight rotation variation
-                    particle.image_blend = make_color_rgb(100, 200, 100); // Green tint
+                    particle.image_angle = dash_dir + random_range(-15, 15);
+                    particle.image_blend = make_color_rgb(100, 200, 100);
                     particle.speed = 0;
-                    particle.life_steps = (1.0 - (i * 0.15)) * game_get_speed(gamespeed_fps); // Particles fade over 0.5-1 seconds
-                    particle.proj_data = {};  // Empty data, no collision
+                    particle.life_steps = (1.0 - (i * 0.15)) * game_get_speed(gamespeed_fps);
+                    particle.proj_data = {};
                 }
             }
 
-            // Schedule healing area to spawn after dash completes
-            var healing_data = {
-                spawn_x: 0, // Will be set to player position after dash
-                spawn_y: 0,
-                creator: player,
+            // Schedule healing area spawn after dash (handled in player step using plant_healing_pending)
+            user.plant_healing_pending = {
+                spawn_x: user.x,
+                spawn_y: user.y,
+                creator: user,
                 timer: 0,
                 dash_duration: dash_duration,
                 dash_duration_seconds: dash_duration_seconds
             };
-
-            // Store healing data on player to spawn after dash
-            player.plant_healing_pending = healing_data;
         }
 
         // Destroy projectile immediately

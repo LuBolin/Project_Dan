@@ -18,26 +18,30 @@ function GhostChaseState(_entity, _duration = 3000, _is_timed = true) : ChaseSta
     _shoot_range_px = _range_units * global.UNIT_LENGTH;
 
 
-    on_step = function() { 
-        
+    on_step = function() {
+        // Safety check: ensure entity still exists
+        if (!instance_exists(entity)) {
+            return;
+        }
+
         path_remaining_time -= 1;
-   
+
         if (path_remaining_time <= 0) {
             path_remaining_time = path_reset_timer;
             set_path(entity);
         }
-        
+
         with (entity) {
-            
+
             var dx = player_last_known_x - x;
             var dy = player_last_known_y - y;
             var dist = point_distance(x, y, player_last_known_x, player_last_known_y);
-            
+
             // If close enough, attack
             if (dist <= other._shoot_range_px && attack_cd_timer <= 0) {
                 path_end()
                 changeState(STATES.ATTACK);
-            } 
+            }
         }
 
     }

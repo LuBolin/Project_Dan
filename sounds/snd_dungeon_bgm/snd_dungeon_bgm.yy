@@ -21,6 +21,6 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"dungeon_bgm.mp3",
+  "soundFile":"snd_dungeon_bgm.mp3",
   "volume":1.0,
 }

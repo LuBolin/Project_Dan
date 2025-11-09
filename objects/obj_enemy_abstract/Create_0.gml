@@ -12,6 +12,7 @@ player_last_known_y = undefined;
 status_texts = []; // Array of status effect strings to display above enemy
 
 // Please check scr_enemy_fsm_state
+states_array = [];
 states_array[STATES.ROAM] = new RoamState(self);
 states_array[STATES.CHASE] = new ChaseState(self);
 curr_state = undefined

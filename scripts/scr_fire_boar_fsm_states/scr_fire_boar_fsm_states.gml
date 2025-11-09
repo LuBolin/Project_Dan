@@ -25,6 +25,11 @@ function FireBoarAlertState(_entity, _duration = undefined, _is_timed = false) :
 function FireBoarChaseState(_entity, _duration = 5000, _is_timed = true) : ChaseState(_entity, _duration, _is_timed) constructor {
 
     on_step = function() {
+        // Safety check: ensure entity still exists
+        if (!instance_exists(entity)) {
+            return;
+        }
+
         path_remaining_time -= 1;
 
         if (path_remaining_time <= 0) {

@@ -57,11 +57,15 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
     }
     
     on_step = function() {
+        // Safety check: ensure entity still exists
+        if (!instance_exists(entity)) {
+            return;
+        }
 
         if !instance_exists(obj_player) {
             exit;
         }
-        
+
         // Check if player_last_known position is defined before using
         var _sight_line = collision_line(entity.x, entity.y, obj_player.x, obj_player.y, obj_player.colliders, false, true);
         
@@ -129,11 +133,15 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
     }
     
     on_step = function() {
+        // Safety check: ensure entity still exists
+        if (!instance_exists(entity)) {
+            return;
+        }
 
         if !instance_exists(obj_player) {
             exit;
         }
-        
+
         if (!is_second_round && entity.hp <= 30) {
             entity.move_speed_ups = runaway_speed;
             set_path(entity, obj_final_boss_centre.x, obj_final_boss_centre.y);

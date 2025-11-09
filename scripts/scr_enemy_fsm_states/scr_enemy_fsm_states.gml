@@ -138,13 +138,18 @@ function ChaseState(_entity, _duration = 3000, _is_timed = true) : State(_entity
     path_remaining_time = path_reset_timer;
     
     on_step = function() {
+        // Safety check: ensure entity still exists
+        if (!instance_exists(entity)) {
+            return;
+        }
+
         path_remaining_time -= 1;
-   
+
         if (path_remaining_time <= 0) {
             path_remaining_time = path_reset_timer;
             set_path(entity);
         }
-        
+
     }
     
     on_timeout = function() {
@@ -167,14 +172,23 @@ function AttackState(_entity, _duration = undefined, _is_timed = false) : State(
 
 }
 
-function set_path(entity, _target_x = entity.player_last_known_x, _target_y = entity.player_last_known_y) {
-    with (entity) { 
-        pause = false; 
+function set_path(entity, _target_x = undefined, _target_y = undefined) {
+    // Validate entity exists before proceeding
+    if (!instance_exists(entity)) {
+        return;
+    }
+
+    // Use entity's last known position if target not specified
+    if (_target_x == undefined) _target_x = entity.player_last_known_x;
+    if (_target_y == undefined) _target_y = entity.player_last_known_y;
+
+    with (entity) {
+        pause = false;
         path_delete(path);
         path = path_add();
         var move_speed_this_frame = (move_speed_ups * global.UNIT_LENGTH) / game_get_speed(gamespeed_fps);
         mp_grid_path(obj_level_manager.pathfinding_grid, path, x, y, _target_x, _target_y, 1);
-            
+
         path_start(path, move_speed_this_frame, path_action_stop, true);
     }
 }

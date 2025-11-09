@@ -46,6 +46,9 @@ function spawn_and_set_projectile_angled(_entity, projectile, angle, projectile_
                 inst.image_xscale = projectile.scale;
                 inst.image_yscale = projectile.scale;
             }
+            // copy damage target flags
+            if (!is_undefined(projectile.damage_player))  inst.damage_player  = projectile.damage_player;
+            if (!is_undefined(projectile.damage_enemies)) inst.damage_enemies = projectile.damage_enemies;
 
             if (!is_undefined(projectile.sfx_fire)) obj_sfx_manager.play_sound(projectile.sfx_fire, false);
         }

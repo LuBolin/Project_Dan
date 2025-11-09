@@ -22,81 +22,66 @@ if (!is_forever && life_timer <= 0) {
     exit;
 }
 
-// Check for enemies colliding with the mud pool
-var enemy_list = ds_list_create();
-var num_enemies = 0;
-
-if (damage_enemies) {
-    // Use collision_rectangle to find all enemies overlapping with the mud pool's bounding box
-    with (obj_enemy_abstract) {
-        // Check if enemy's collision box overlaps with mud pool's collision box
-        if (place_meeting(x, y, other)) {
-            ds_list_add(enemy_list, id);
-            num_enemies++;
-        }
-    }
-}
-
-if (damage_player && instance_exists(obj_player)) {
-    with (obj_player) {
-        if (place_meeting(x, y, other)) {
-            ds_list_add(enemy_list, id);
-            num_enemies++;
-        }
-    }
-}
+// NEW: Keep radius in sync with scale (if scale changes externally)
+aoe_radius = (aoe_base_diam * max(image_xscale, image_yscale)) * 0.5;
 
 // Track which enemies are currently in the pool this frame
 var enemies_in_pool = ds_list_create();
 
-for (var i = 0; i < num_enemies; i++) {
-    var enemy = enemy_list[| i];
-    ds_list_add(enemies_in_pool, enemy);
+// Collect enemies using circular AoE
+if (damage_enemies) {
+    var enemy_list = ds_list_create();
+    var n = collision_circle_list(x, y, aoe_radius, obj_enemy_abstract, false, true, enemy_list, false);
+    for (var i = 0; i < n; i++) {
+        var e = enemy_list[| i];
+        if (instance_exists(e)) {
+            ds_list_add(enemies_in_pool, e);
+        }
+    }
+    ds_list_destroy(enemy_list);
+}
 
+// Check player using circular distance
+if (damage_player && instance_exists(obj_player)) {
+    if (point_distance(x, y, obj_player.x, obj_player.y) <= aoe_radius) {
+        ds_list_add(enemies_in_pool, obj_player);
+    }
+}
+
+// Apply slow effect to entities in pool
+for (var i = 0; i < ds_list_size(enemies_in_pool); i++) {
+    var entity = enemies_in_pool[| i];
+    
     // Apply slow effect using status effect system
-    if (!variable_instance_exists(enemy, "mud_pool_slow") || !enemy.mud_pool_slow) {
+    if (!variable_instance_exists(entity, "mud_pool_slow") || !entity.mud_pool_slow) {
         // Apply slow effect for 0.2 seconds (will be refreshed while in pool)
         var slow_duration = game_get_speed(gamespeed_fps) * 0.2; // 0.2 seconds
-        add_status_effect(enemy, new SlowEffect(slow_duration, slow_amount));
+        add_status_effect(entity, new SlowEffect(slow_duration, slow_amount));
+        entity.mud_pool_slow = true;
         
-        enemy.mud_pool_slow = true;
-        show_debug_message("Applied slow effect to enemy " + string(enemy.id));
-
-        // Add "Slowed" status text
-        if (variable_instance_exists(enemy, "status_texts")) {
-            if (array_get_index(enemy.status_texts, "Slowed") == -1) {
-                array_push(enemy.status_texts, "Slowed");
-            }
+        // Add to tracked list
+        if (ds_list_find_index(slowed_enemies, entity) == -1) {
+            ds_list_add(slowed_enemies, entity);
         }
-        
-        ds_list_add(slowed_enemies, enemy);
     } else {
-        // Refresh slow effect for enemies still in pool
+        // Refresh slow effect while in pool
         var slow_duration = game_get_speed(gamespeed_fps) * 0.2;
-        add_status_effect(enemy, new SlowEffect(slow_duration, slow_amount));
+        add_status_effect(entity, new SlowEffect(slow_duration, slow_amount));
     }
 }
 
 // Remove slow flag from enemies that left the pool
 for (var i = ds_list_size(slowed_enemies) - 1; i >= 0; i--) {
-    var enemy = slowed_enemies[| i];
-
-    // If enemy left the pool or was destroyed
-    if (!instance_exists(enemy) || ds_list_find_index(enemies_in_pool, enemy) == -1) {
-        if (instance_exists(enemy) && variable_instance_exists(enemy, "mud_pool_slow")) {
-            enemy.mud_pool_slow = false;
-
-            // Remove "Slowed" status text
-            if (variable_instance_exists(enemy, "status_texts")) {
-                var slowed_index = array_get_index(enemy.status_texts, "Slowed");
-                if (slowed_index != -1) { 
-                    array_delete(enemy.status_texts, slowed_index, 1);
-                }
-            }
+    var entity = slowed_enemies[| i];
+    
+    // If entity no longer exists or is not in pool
+    if (!instance_exists(entity) || ds_list_find_index(enemies_in_pool, entity) == -1) {
+        if (instance_exists(entity) && variable_instance_exists(entity, "mud_pool_slow")) {
+            entity.mud_pool_slow = false;
         }
         ds_list_delete(slowed_enemies, i);
     }
 }
 
-ds_list_destroy(enemy_list);
+// Clean up temporary list
 ds_list_destroy(enemies_in_pool);

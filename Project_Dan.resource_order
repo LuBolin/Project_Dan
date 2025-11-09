@@ -159,6 +159,7 @@
     {"name":"spr_move_instructions","order":3,"path":"sprites/spr_move_instructions/spr_move_instructions.yy",},
     {"name":"spr_mud_ball","order":15,"path":"sprites/spr_mud_ball/spr_mud_ball.yy",},
     {"name":"spr_mud_ball2","order":11,"path":"sprites/spr_mud_ball2/spr_mud_ball2.yy",},
+    {"name":"spr_mud_puddle_old","order":28,"path":"sprites/spr_mud_puddle_old/spr_mud_puddle_old.yy",},
     {"name":"spr_mud_puddle","order":16,"path":"sprites/spr_mud_puddle/spr_mud_puddle.yy",},
     {"name":"spr_pathfinding_coll","order":4,"path":"sprites/spr_pathfinding_coll/spr_pathfinding_coll.yy",},
     {"name":"spr_plant_old","order":23,"path":"sprites/spr_plant_old/spr_plant_old.yy",},

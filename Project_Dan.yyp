@@ -209,6 +209,7 @@
     {"id":{"name":"spr_move_instructions","path":"sprites/spr_move_instructions/spr_move_instructions.yy",},},
     {"id":{"name":"spr_mud_ball","path":"sprites/spr_mud_ball/spr_mud_ball.yy",},},
     {"id":{"name":"spr_mud_ball2","path":"sprites/spr_mud_ball2/spr_mud_ball2.yy",},},
+    {"id":{"name":"spr_mud_puddle_old","path":"sprites/spr_mud_puddle_old/spr_mud_puddle_old.yy",},},
     {"id":{"name":"spr_mud_puddle","path":"sprites/spr_mud_puddle/spr_mud_puddle.yy",},},
     {"id":{"name":"spr_pathfinding_coll","path":"sprites/spr_pathfinding_coll/spr_pathfinding_coll.yy",},},
     {"id":{"name":"spr_plant_old","path":"sprites/spr_plant_old/spr_plant_old.yy",},},

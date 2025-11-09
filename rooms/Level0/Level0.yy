@@ -93,8 +93,8 @@
       ],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRLayer":"","%Name":"Terrain","depth":300,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[
         {"$GMRTileLayer":"","%Name":"Decoration_Upper","depth":400,"effectEnabled":true,"effectType":"none","gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Decoration_Upper","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":47,"SerialiseWidth":88,"TileCompressedData":[
-              -629,0,1,10,-82,0,1,10,-279,0,1,6,-6,0,1,6,-615,0,1,1,-8,0,-2,1,-250,0,1,1,-10,0,1,1,-95,0,1,1,-248,
-              0,1,1,-101,0,-2,25,4,6,0,0,6,-82,0,1,25,-89,0,4,6,0,0,6,-1620,0,
+              -629,0,1,10,-82,0,1,10,-279,0,1,6,-6,0,1,6,-615,0,1,1,-8,0,-2,1,-174,0,-2,12,-74,0,1,1,-10,0,1,1,-95,
+              0,1,1,-248,0,1,1,-101,0,-2,25,4,6,0,0,6,-82,0,1,25,-89,0,4,6,0,0,6,-1620,0,
             ],"TileDataFormat":1,},"tilesetId":{"name":"dungeon_tileset","path":"tilesets/dungeon_tileset/dungeon_tileset.yy",},"userdefinedDepth":false,"visible":true,"x":-736,"y":-320,},
         {"$GMRTileLayer":"","%Name":"Tile_Collision","depth":500,"effectEnabled":true,"effectType":"_filter_tintfilter","gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Tile_Collision","properties":[
             {"name":"g_TintCol","type":1,"value":"#FFFFFFFF",},
@@ -105,11 +105,11 @@
               -8,0,2,805306397,29,-14,0,1,268435485,-14,28,-48,-2147483648,1,29,-8,0,2,805306397,29,-14,0,1,268435485,
               -14,28,-48,-2147483648,2,28,536870947,-7,0,2,268435491,28,-5,22,4,23,0,0,268435479,-5,22,-15,28,-48,
               -2147483648,-2,28,1,536870947,-7,0,1,268435491,-5,28,4,29,0,0,268435485,-20,28,-48,-2147483648,-3,28,
-              1,536870947,-7,0,1,268435491,-4,536870934,4,536870935,12,12,805306391,-4,536870934,-16,28,-48,-2147483648,
-              -4,28,1,536870947,-19,0,1,268435491,-15,28,-48,-2147483648,-5,28,1,536870947,-19,0,1,268435491,-14,28,
-              -48,-2147483648,-6,28,1,536870947,-19,0,1,268435491,-13,28,-48,-2147483648,-7,28,1,536870947,-19,0,1,
-              268435491,-12,28,-48,-2147483648,-8,28,1,536870947,-19,0,1,268435491,-11,28,-48,-2147483648,-9,28,1,
-              536870947,-19,0,1,268435485,-10,28,-48,-2147483648,-10,28,1,536870947,-18,0,1,268435485,-10,28,-48,-2147483648,
+              1,536870947,-7,0,1,268435491,-4,536870934,1,536870935,-3,0,-4,536870934,-16,28,-48,-2147483648,-4,28,
+              1,536870947,-19,0,1,268435491,-15,28,-48,-2147483648,-5,28,1,536870947,-19,0,1,268435491,-14,28,-48,
+              -2147483648,-6,28,1,536870947,-19,0,1,268435491,-13,28,-48,-2147483648,-7,28,1,536870947,-19,0,1,268435491,
+              -12,28,-48,-2147483648,-8,28,1,536870947,-19,0,1,268435491,-11,28,-48,-2147483648,-9,28,1,536870947,
+              -19,0,1,268435485,-10,28,-48,-2147483648,-10,28,1,536870947,-18,0,1,268435485,-10,28,-48,-2147483648,
               -11,28,2,22,536870947,-16,0,1,268435485,-10,28,-48,-2147483648,-13,28,-16,22,-11,28,-2424,-2147483648,
             ],"TileDataFormat":1,},"tilesetId":{"name":"dungeon_tileset","path":"tilesets/dungeon_tileset/dungeon_tileset.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
         {"$GMRTileLayer":"","%Name":"Decoration","depth":600,"effectEnabled":true,"effectType":"_filter_tintfilter","gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Decoration","properties":[

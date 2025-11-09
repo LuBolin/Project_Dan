@@ -2,20 +2,39 @@
 /// @param {Id.Instance} _target The target being attacked
 /// @param {Real} _dmg The amount of damage dealt
 function damage_entity(_target, _dmg) {
-    if (!variable_instance_exists(_target, "invuln") || !_target.invuln) {
-        _target.hp -= _dmg;
-        
-        if variable_instance_exists(_target, "is_hurt_this_level") 
-            _target.is_hurt_this_level = true;
-        
-        _target.image_blend = c_red;
+    // CHANGED: Check invuln flag - if true, completely skip damage
+    if (variable_instance_exists(_target, "invuln") && _target.invuln) {
+        return; // Target is invulnerable, skip all damage logic
+    }
 
-        //(variable_instance_exists(_target, "invuln")
-        if (_target.object_index == obj_player)  {
-            _target.invuln = true;
+    // Apply damage
+    _target.hp -= _dmg;
+    
+    if (variable_instance_exists(_target, "is_hurt_this_level")) 
+        _target.is_hurt_this_level = true;
+    
+    // Visual feedback - red flash
+    _target.image_blend = c_red;
+
+    // CHANGED: Only apply brief invuln if player doesn't already have status-effect-based invuln
+    if (_target.object_index == obj_player) {
+        // Check if player has InvincibilityEffect active (managed by status system)
+        var has_invuln_effect = false;
+        if (variable_instance_exists(_target, "status_effects_list")) {
+            for (var i = 0; i < array_length(_target.status_effects_list); i++) {
+                var eff = _target.status_effects_list[i];
+                if (is_struct(eff) && variable_struct_exists(eff, "get_type") && eff.get_type() == "Invincible") {
+                    has_invuln_effect = true;
+                    break;
+                }
+            }
         }
 
-        _target.alarm[11] = 30;
+        // Only set brief invuln if no InvincibilityEffect is active
+        if (!has_invuln_effect) {
+            _target.invuln = true;
+            _target.alarm[11] = 30; // Brief 0.5s invuln between hits
+        }
     }
 }
 
@@ -49,6 +68,4 @@ function apply_knockback(_source, _target, _kb_speed, _kb_distance, _kb_directio
     
     // Apply knockback as a status effect
     add_status_effect(_target, new KnockbackEffect(kb_direction, _kb_speed, kb_duration, _apply_stun));        
-    
-
 }

@@ -3,6 +3,8 @@
 // To prevent enemies from getting stuck on one another :<
 colliders = [layer_tilemap_get_id("Tile_Collision"), obj_clay_wall];
 
+if (!variable_instance_exists(self, "status_effects_list")) status_effects_list = [];
+if (!variable_instance_exists(self, "invuln")) invuln = false;
 
 // FSM related variables
 player_last_known_x = undefined;

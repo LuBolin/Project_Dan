@@ -414,36 +414,45 @@ function InvincibilityEffect(_duration) : StatusEffect() constructor {
     }
 }
 
+/// Helper: ensure the target has a status effect storage array
+function _ensure_effect_array(_target) {
+    if (!instance_exists(_target)) return;
+    // Migrate old name if it exists
+    if (variable_instance_exists(_target, "status_effects") && !variable_instance_exists(_target, "status_effects_list")) {
+        _target.status_effects_list = _target.status_effects;
+    }
+    if (!variable_instance_exists(_target, "status_effects_list")) {
+        _target.status_effects_list = [];
+    }
+}
+
 /// @function add_status_effect(_target, _effect)
 /// @description Add a status effect to an entity
 function add_status_effect(_target, _effect) {
-    // Initialize status effects array if it doesn't exist
-    if (!variable_instance_exists(_target, "status_effects")) {
-        _target.status_effects = [];
-    }
+    if (!instance_exists(_target)) return;
+    _ensure_effect_array(_target);
+
+    var effects_arr = _target.status_effects_list;
 
     // Check for existing effect of same type
     var effect_type = _effect.get_type();
     var existing_index = -1;
-
-    for (var i = 0; i < array_length(_target.status_effects); i++) {
-        if (_target.status_effects[i].get_type() == effect_type) {
-            existing_index = i;
-            break;
+    for (var i = 0; i < array_length(effects_arr); i++) {
+        if (effects_arr[i].get_type() == effect_type) {
+            existing_index = i; break;
         }
     }
 
     // Handle based on stack behavior
     if (existing_index >= 0) {
-        var existing = _target.status_effects[existing_index];
-
+        var existing = effects_arr[existing_index];
         switch (_effect.stack_behavior) {
             case "replace":
                 // Remove old, add new
                 existing.remove();
-                array_delete(_target.status_effects, existing_index, 1);
+                array_delete(effects_arr, existing_index, 1);
                 _effect.apply(_target);
-                array_push(_target.status_effects, _effect);
+                array_push(effects_arr, _effect);
                 break;
 
             case "refresh":
@@ -454,61 +463,49 @@ function add_status_effect(_target, _effect) {
             case "stack":
                 // Add as new effect (allows multiple of same type)
                 _effect.apply(_target);
-                array_push(_target.status_effects, _effect);
+                array_push(effects_arr, _effect);
                 break;
         }
     } else {
         // No existing effect of this type, just add
         _effect.apply(_target);
-        array_push(_target.status_effects, _effect);
+        array_push(effects_arr, _effect);
     }
 }
 
 /// @function update_status_effects(_target)
 /// @description Update all status effects on an entity (call in Step event)
 function update_status_effects(_target) {
-    if (!variable_instance_exists(_target, "status_effects")) {
-        return;
-    }
+    if (!instance_exists(_target)) return;
+    _ensure_effect_array(_target);
+    var effects_arr = _target.status_effects_list;
 
-    var has_stun_or_knockback = false
-    // Update all effects and remove expired ones
-    for (var i = array_length(_target.status_effects) - 1; i >= 0; i--) {
-        var effect = _target.status_effects[i];
+    var has_stun_or_knockback = false;
+    for (var i = array_length(effects_arr) - 1; i >= 0; i--) {
+        var effect = effects_arr[i];
         var still_active = effect.step();
 
         if (!still_active) {
             effect.remove();
-            array_delete(_target.status_effects, i, 1);
-        } else if (instanceof(effect) == "StunEffect" or instanceof(effect) == "KnockbackEffect") {
-            has_stun_or_knockback = true;
+            array_delete(effects_arr, i, 1);
+        } else {
+            var t = effect.get_type();
+            if (t == "Stun" || t == "Knockback") has_stun_or_knockback = true;
         }
     }
-    
-    if (has_stun_or_knockback and variable_instance_exists(_target, "pause")) {
-        _target.pause = true;
-    } else {
-        _target.pause = false;
+    if (variable_instance_exists(_target, "pause")) {
+        _target.pause = has_stun_or_knockback;
     }
-}
-
-/// @function check_stunned_or_knockback(_target)
-/// @description Checks if target has StunEffect or Knockback Effect
-/// I would have used pause to check, but it 
-function check_stunned_or_knockback(_target) {
-    
 }
 
 /// @function clear_status_effects(_target)
 /// @description Remove all status effects from an entity
 function clear_status_effects(_target) {
-    if (!variable_instance_exists(_target, "status_effects")) {
-        return;
+    if (!instance_exists(_target)) return;
+    if (!variable_instance_exists(_target, "status_effects_list")) return;
+    var effects_arr = _target.status_effects_list;
+    for (var i = 0; i < array_length(effects_arr); i++) {
+        effects_arr[i].remove();
     }
-
-    for (var i = 0; i < array_length(_target.status_effects); i++) {
-        _target.status_effects[i].remove();
-    }
-
-    _target.status_effects = [];
+    _target.status_effects_list = [];
 }

@@ -31,7 +31,7 @@ function spawn_enemy() {
     if (array_length(check_adjacent) == 0 || collision_circle(x, y, 30, check_adjacent, false, true) == noone) {
         var telegraphing = instance_create_layer(x, y, "Instances", obj_telegraph_attack); 
         if (instance_exists(telegraphing)) { 
-            telegraphing.init_telegraph_attack(_spawn_enemy, c_red, 20);
+            telegraphing.init_telegraph_attack(_spawn_enemy, c_red, blink_telegraphing);
         } else {
             show_debug_message("ERROR: Telegraphing failed due to invalid spawn coordinates!") 
         }

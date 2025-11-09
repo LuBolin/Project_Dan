@@ -263,7 +263,7 @@ for (var t = 0; t < array_length(tier_elements); t++) {
     }
     
     // Check if this element is already equipped
-    is_equipped = check_if_gourdname_equipped(tier_element);
+    is_equipped = check_if_gourdname_equipped(equipped_gourds, tier_element);
     
     // Only add to available list if not equipped
     if (!is_equipped) {

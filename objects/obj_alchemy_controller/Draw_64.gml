@@ -65,7 +65,7 @@ var total_height = 8;
 var start_x = (gui_width / 2) - (total_width / 2);
 var node_y = 35;
 
-var is_elixir_equipped = check_if_gourdname_equipped("Elixir");
+var is_elixir_equipped = check_if_gourdname_equipped(equipped_gourds, "Elixir");
 
 // === DRAW TITLE ===
 draw_set_color(col_text);

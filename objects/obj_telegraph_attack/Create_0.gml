@@ -14,9 +14,9 @@ is_telegraphing = false;
 func_execute_attack = undefined
 c_telegraph = c_yellow;
 
-function init_telegraph_attack(execute_attack, colour_telegraph = c_yellow, telegraph_total_blink = 6) {
+function init_telegraph_attack(execute_attack, colour_telegraph = c_yellow, telegraph_total_blinks = 6) {
     c_telegraph = colour_telegraph;
     func_execute_attack = execute_attack;
     is_telegraphing = true;
-    self.telegraph_total_blink = telegraph_total_blink
+    self.telegraph_total_blinks = telegraph_total_blinks
 }

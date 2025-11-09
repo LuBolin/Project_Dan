@@ -1,5 +1,10 @@
-// Draw with alpha for fade effect
-draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, c_white, alpha);
+
+if (damage_player) {
+    draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, c_red, alpha);
+} else {
+    // Draw with alpha for fade effect
+    draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, c_white, alpha);
+}
 
 // Add glowing effect (pulsing orange glow)
 var glow_alpha = alpha * (0.3 + sin(glow_timer) * 0.2);

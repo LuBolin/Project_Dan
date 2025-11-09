@@ -119,6 +119,7 @@
     {"name":"spr_character_lightning_survive","order":9,"path":"sprites/spr_character_lightning_survive/spr_character_lightning_survive.yy",},
     {"name":"spr_chi_old","order":7,"path":"sprites/spr_chi_old/spr_chi_old.yy",},
     {"name":"spr_chi","order":2,"path":"sprites/spr_chi/spr_chi.yy",},
+    {"name":"spr_clay_wall_old","order":29,"path":"sprites/spr_clay_wall_old/spr_clay_wall_old.yy",},
     {"name":"spr_clay_wall","order":18,"path":"sprites/spr_clay_wall/spr_clay_wall.yy",},
     {"name":"spr_destruction_effect","order":21,"path":"sprites/spr_destruction_effect/spr_destruction_effect.yy",},
     {"name":"spr_door","order":5,"path":"sprites/spr_door/spr_door.yy",},

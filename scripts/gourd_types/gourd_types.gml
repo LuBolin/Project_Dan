@@ -137,7 +137,7 @@ function GourdClay() : GourdBase() constructor
         // Wall properties
         var wall_segments = 6; // Number of wall pieces
         var segment_spacing = 45; // Distance between wall segments (0.75 units)
-        var wall_scale = 2.0; // Scale factor for wall size
+        var wall_scale = 1.0; // Scale factor for wall size
         var initial_offset = 20; // Start wall further away from player
         
         // IMMEDIATELY UPDATE COLLISION ARRAYS BEFORE SPAWNING WALLS
@@ -184,7 +184,7 @@ function GourdClay() : GourdBase() constructor
                 var wall_segment = instance_create_layer(segment_x, segment_y, "Instances", obj_clay_wall);
                 if (instance_exists(wall_segment)) {
                     // Orient wall segment in the same direction as aim
-                    wall_segment.image_angle = direction;
+                    wall_segment.image_angle = direction - 90;
                     
                     // Scale segments
                     wall_segment.image_xscale = wall_scale;

@@ -5,6 +5,10 @@ placement_damage = 2;
 placement_knockback_speed = 12;
 placement_knockback_distance = 80;
 
+// Animation control: play once, hold last frame
+image_speed = 0.5; // Adjust speed to taste (lower = slower)
+image_index = 0;    // Start from first frame
+
 // Track which enemies have been damaged by initial placement
 initially_damaged_enemies = ds_list_create();
 

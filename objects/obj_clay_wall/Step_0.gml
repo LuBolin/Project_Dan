@@ -1,3 +1,13 @@
+// Animation: play once then hold last frame
+if (image_index < sprite_get_number(sprite_index) - 1) {
+    // Still animating
+    image_speed = 0.5;
+} else {
+    // Reached last frame, stop
+    image_index = sprite_get_number(sprite_index) - 1;
+    image_speed = 0;
+}
+
 // Initial placement damage (only on first frame)
 if (is_first_frame) {
     is_first_frame = false;

@@ -168,6 +168,7 @@
     {"id":{"name":"spr_character_still","path":"sprites/spr_character_still/spr_character_still.yy",},},
     {"id":{"name":"spr_chi_old","path":"sprites/spr_chi_old/spr_chi_old.yy",},},
     {"id":{"name":"spr_chi","path":"sprites/spr_chi/spr_chi.yy",},},
+    {"id":{"name":"spr_clay_wall_old","path":"sprites/spr_clay_wall_old/spr_clay_wall_old.yy",},},
     {"id":{"name":"spr_clay_wall","path":"sprites/spr_clay_wall/spr_clay_wall.yy",},},
     {"id":{"name":"spr_destruction_effect","path":"sprites/spr_destruction_effect/spr_destruction_effect.yy",},},
     {"id":{"name":"spr_door","path":"sprites/spr_door/spr_door.yy",},},

@@ -4,18 +4,19 @@
 
 function ProjectileFire() : ProjectileBase() constructor {
 	name = "Fire";
-	speed = 12.0;  // units per second
+	speed = 6.0;  // units per second
 	damage = 1;  // Initial hit damage
 	life_steps = game_get_speed(gamespeed_fps) * 0.8;
 	kb_speed = 0;
 	kb_distance = 0;
 	sprite_index = spr_fire_ball;
-	scale = 1;
+	scale = 0.6;
     sfx_fire = undefined;
     sfx_hit = undefined;
     
     on_launch = function(projectile_inst) {
         projectile_inst.depth = 0;
+        projectile_inst.image_speed = 0.5; // Animate fire ball
     }
     
 	on_hit = function(projectile_inst, target) {
@@ -29,7 +30,7 @@ function ProjectileFire() : ProjectileBase() constructor {
 
 function ProjectileRock() : ProjectileBase() constructor {
 	name = "Rock";
-	speed       = 18.75;  // units per second (1200 / 64)
+	speed       = 5.0;  // units per second (1200 / 64)
 	damage      = 2;
 	life_steps  = game_get_speed(gamespeed_fps) * 0.5;
 	kb_speed = 0;
@@ -52,18 +53,19 @@ function ProjectileRock() : ProjectileBase() constructor {
 
 function ProjectileWaterBall() : ProjectileBase() constructor {
 	name = "Water Ball";
-	speed       = 14.0625;  // units per second (900 / 64)
+	speed       = 6.0;  // units per second (900 / 64)
 	damage      = 1; // was 2
 	life_steps  = game_get_speed(gamespeed_fps) * 1.0;
 	kb_speed = 8;        // pixels per frame (knockback still frame-based) - increased from 5
 	kb_distance = 20;    // was 30 pixels total - increased from 10
 	sprite_index = spr_water_ball;
-	scale = 1;
+	scale = 0.6;
     sfx_fire = undefined;
     sfx_hit = undefined;
     
     on_launch = function(projectile_inst) {
         projectile_inst.depth = 0;
+        projectile_inst.image_speed = 0.5; // Animate water ball
     }
     
 	on_hit = function(projectile_inst, target) {

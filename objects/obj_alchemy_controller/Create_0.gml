@@ -225,7 +225,7 @@ for (var i = 0; i < array_length(json_data.recipes); i++) {
     };
 }
 
-// TODO: Get new element for the player
+// Get new element for player
 new_ele_separator_y = tree_panel_y + tree_panel_h
 
 var level = global.level_progress;
@@ -251,6 +251,16 @@ var rand_i;
 var arr_len = array_length(tier_elements);
 new_element = gourd_create(GourdEarth);
 
+function check_if_gourdname_equipped(element_name) {
+    // Check if this element is already equipped
+    for (var i = 0; i < array_length(equipped_gourds); i++) { 
+        if (equipped_gourds[i].name == element_name) {
+            return true;
+        }  
+    }
+    return false;
+}
+
 // Filter out elements that are already equipped
 var available_elements = [];
 for (var t = 0; t < array_length(tier_elements); t++) {
@@ -262,12 +272,7 @@ for (var t = 0; t < array_length(tier_elements); t++) {
     }
     
     // Check if this element is already equipped
-    for (var i = 0; i < array_length(equipped_gourds); i++) { 
-        if (equipped_gourds[i].name == tier_element) {
-            is_equipped = true;
-            break;
-        }  
-    }
+    is_equipped = check_if_gourdname_equipped(tier_element);
     
     // Only add to available list if not equipped
     if (!is_equipped) {

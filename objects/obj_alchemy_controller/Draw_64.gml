@@ -49,7 +49,80 @@ function draw_text_outlined(_x, _y, _text) {
 draw_set_color(col_text);
 draw_set_halign(fa_center);
 draw_set_valign(fa_top);
-draw_text(gui_width / 2, 30, "Alchemy Workshop");
+draw_text(gui_width / 2, equation_y - 40, "Alchemy Workshop");
+
+// TODO: See if you want to keep this
+// ==== Draw Progress ==== 
+// How many total levels in the progress bar?
+var total_levels = 6;
+
+// Spacing between each circle
+var spacing = 40;
+
+// Starting position (centered around x and y)
+var total_width = (total_levels - 1) * spacing;
+var total_height = 8;
+var start_x = (gui_width / 2) - (total_width / 2);
+var node_y = 35;
+
+var is_elixir_equipped = check_if_gourdname_equipped("Elixir");
+
+// === DRAW TITLE ===
+draw_set_color(col_text);
+draw_set_halign(fa_center);
+draw_set_valign(fa_top);
+draw_text(gui_width / 2, node_y + total_height + 40, "Level Progress");
+
+// Draw button background
+draw_set_alpha(0.8);
+draw_set_color(make_color_rgb(50, 40, 30));
+draw_rectangle(start_x - 15, node_y - 15, start_x + total_width + 15, node_y + total_height + 15, false);
+
+// Draw button border
+draw_set_alpha(1);
+draw_set_color(btn_border_color);
+draw_rectangle(start_x - 15, node_y - 15, start_x + total_width + 15, node_y + total_height + 15, true);
+
+// Draw nodes and connectors
+for (var i = 0; i < total_levels; i++) {
+    var node_x = start_x + i * spacing;
+    
+    // Draw the node
+    if (i == total_levels - 1) {
+        // TODO: Check for elixir
+        if (is_elixir_equipped) {
+            draw_set_colour(c_yellow);
+        } else{
+            draw_set_colour(c_black);
+        }
+    } else {
+        // Color depends on completion
+        if (i < global.level_progress) {
+            draw_set_colour(c_white);
+        } else {
+            draw_set_colour(c_gray);
+        }    
+    }
+    
+    draw_circle(node_x, node_y, 8, false);
+    if (i == global.level_progress - 1) {
+        draw_sprite_ext(spr_taoist, 0, node_x, node_y, 0.4, 0.4, 0, c_white, 1);
+    }
+    
+    // Draw the connecting line to next node
+    if (i < total_levels - 1) {
+        var next_x = start_x + (i + 1) * spacing;
+        if (i + 2 == total_levels) {
+            if (is_elixir_equipped) {
+                draw_set_colour(c_yellow);
+            } else{
+                draw_set_colour(c_black);
+            }
+        }
+        draw_line(node_x + 8, node_y, next_x - 8, node_y)
+    }
+}
+
 
 // === DRAW EQUIPPED GOURDS (Left side - vertical row) ===
 draw_set_halign(fa_left);

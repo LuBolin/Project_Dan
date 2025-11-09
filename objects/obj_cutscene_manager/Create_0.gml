@@ -101,7 +101,9 @@ if (instance_exists(obj_camera)) {
 if (instance_exists(obj_aim_arrow)) {
     instance_activate_object(obj_aim_arrow);
 }
-
+if (instance_exists(obj_sfx_manager)) {
+    instance_activate_object(obj_sfx_manager);
+}
 var tilemap = layer_tilemap_get_id("Tile_Collision");
 if (tilemap != -1) {
     instance_activate_layer(layer_get_id("Tile_Collision"));

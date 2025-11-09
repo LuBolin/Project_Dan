@@ -174,6 +174,10 @@ function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_durati
     sfx_hit = undefined;
     is_invuln = _is_invuln;
 
+    // Explicit flags for enemy dash projectile
+    damage_player  = true;
+    damage_enemies = false;
+
     on_launch = function(projectile_inst) {
         // Spawn projectile on player
         projectile_inst.x = projectile_inst.creator.x;
@@ -795,41 +799,51 @@ function ProjectilePlant() constructor {
 }
 
 function ProjectileHurricane() constructor {
-	name = "Hurricane";
-	speed       = 4;  // units per second (300 / 64) - slow moving
-	damage      = 3;  // Used for DoT tick damage
-	life_steps  = game_get_speed(gamespeed_fps) * 5;  // 5 second max lifetime
-	kb_speed = 0;     
-	kb_distance = 0;    
-	sprite_index = spr_hurricane_collision;
-	scale = 0.4;
-    damage_player = false;
-    damage_enemies = !damage_player;
+    name = "Hurricane";
+    speed       = 3;
+    damage      = 3;
+    life_steps  = game_get_speed(gamespeed_fps) * 5;
+    kb_speed = 0;
+    kb_distance = 0;
+
+    // Base logical scale
+    scale = 0.4;
+
+    // Visual multiplier used when drawing
+    visual_mul = 4;
+
+    // Use single sprite for both visual & collision (optional keep separate)
+    sprite_index = spr_hurricane;
     sfx_fire = undefined;
     sfx_hit = undefined;
-    
-	on_launch = function(projectile_inst) {
-		// Keep hurricane vertically aligned regardless of shoot direction
-		projectile_inst.image_angle = 0;
-		// Initialize hit tracking
-		projectile_inst.hit_targets = ds_map_create();
+    damage_player  = false;
+    damage_enemies = !damage_player;
+
+    on_launch = function(projectile_inst) {
+        projectile_inst.image_angle = 0;
+        projectile_inst.hit_targets = ds_map_create();
         projectile_inst.depth = 0;
-        if (variable_instance_exists(projectile_inst, "hide_self")) {
-            projectile_inst.hide_self = true;
-        }
-        // cache radius once
-        projectile_inst.hurr_radius = 0;
+        // Store cached visual scale (actual draw scale)
+        projectile_inst.visual_scale = scale * visual_mul;
+        // Precompute radius from bbox to better match visible cyclone
+        var bw = sprite_get_bbox_right(sprite_index) - sprite_get_bbox_left(sprite_index);
+        var bh = sprite_get_bbox_bottom(sprite_index) - sprite_get_bbox_top(sprite_index);
+        var base_diam = max(bw, bh); // bounding box diameter
+        projectile_inst.aoe_radius = (base_diam * projectile_inst.visual_scale) * 0.5;
     }
 
     on_step = function(projectile_inst) {
-        // Recompute collision radius from scale every step
-        var radius = (sprite_get_width(spr_hurricane) * projectile_inst.image_xscale) * 0.5;
-        projectile_inst.hurr_radius = radius;
+        // If scale changes dynamically, recompute (else comment out)
+        var bw = sprite_get_bbox_right(sprite_index) - sprite_get_bbox_left(sprite_index);
+        var bh = sprite_get_bbox_bottom(sprite_index) - sprite_get_bbox_top(sprite_index);
+        projectile_inst.aoe_radius = (max(bw, bh) * projectile_inst.visual_scale) * 0.5;
+
+        var radius = projectile_inst.aoe_radius;
         var now_ms = current_time;
 
         // Helper to apply slow+periodic damage
-        var tick_ms = 500; // 1s between damage ticks
-        var slow_dur = game_get_speed(gamespeed_fps) * 0.5; // refresh 5x per sec
+        var tick_ms = 500; // 0.5s between damage ticks
+        var slow_dur = game_get_speed(gamespeed_fps) * 0.7;
         var slow_pct = 0.5;
 
         // Damage enemies in radius
@@ -868,16 +882,23 @@ function ProjectileHurricane() constructor {
         }
 
         // Gentle deceleration (optional)
-        projectile_inst.speed = max(0, projectile_inst.speed - 0.05);
+        projectile_inst.speed = max(0, projectile_inst.speed - 0.04);
     }
 
-    on_hit = function(projectile_inst, target) {
-        // Continuous AoE handles damage; no destroy on hit
-    }
+    on_draw = function(projectile_inst) {
+        draw_sprite_ext(sprite_index, 0,
+            projectile_inst.x, projectile_inst.y,
+            projectile_inst.visual_scale, projectile_inst.visual_scale,
+            0, c_white, 1);
 
-    on_wall_hit = function(projectile_inst) {
-        // Stop movement but continue ticking while stationary
-        projectile_inst.speed = 0;
+        // Optional debug: show AoE circle
+        if (global.debug_draw_collisions) {
+            draw_set_color(c_aqua);
+            draw_set_alpha(0.35);
+            draw_circle(projectile_inst.x, projectile_inst.y, projectile_inst.aoe_radius, true);
+            draw_set_alpha(1);
+            draw_set_color(c_white);
+        }
     }
 
     on_destroy = function(projectile_inst) {
@@ -886,12 +907,7 @@ function ProjectileHurricane() constructor {
             projectile_inst.hit_targets = undefined;
         }
     }
-
-    on_draw = function(projectile_inst) {
-        draw_sprite_ext(spr_hurricane, 0, projectile_inst.x, projectile_inst.y, scale * 4, scale * 4, 0, c_white, 1);
-    }
 }
-
 // ========================================
 // TIER 3 - POWERFUL ELEMENTS
 // ========================================

@@ -13,6 +13,10 @@ function ProjectileBase() constructor {
     sfx_fire = undefined;
     sfx_hit = undefined;
 
+	// Default damage flags (player projectiles hit enemies by default)
+    damage_player  = false;
+    damage_enemies = true;
+
 	on_hit = function(projectile_inst, target) {
 		// Default: do nothing
 	}

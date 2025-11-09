@@ -1,6 +1,6 @@
 event_inherited()
 has_charged = false;
-
+is_charging = false;
 
 is_miniboss = true;
 

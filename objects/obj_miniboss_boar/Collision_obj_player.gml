@@ -1,6 +1,6 @@
 apply_knockback(self, other, 2, 40)  // speed: 2, distance: 40 
 
-if (!pause) {
+if (!pause || is_charging) {
     damage_entity(other, base_damage)
     apply_knockback(other, self, 0.3, 0.3, undefined, 20, true)
 }

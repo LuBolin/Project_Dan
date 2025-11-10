@@ -6,6 +6,7 @@ function damage_entity(_target, _dmg) {
     if (variable_instance_exists(_target, "invuln") && _target.invuln) {
         return; // Target is invulnerable, skip all damage logic
     }
+    
 
     // Apply damage
     _target.hp -= _dmg;
@@ -23,7 +24,7 @@ function damage_entity(_target, _dmg) {
         if (variable_instance_exists(_target, "status_effects_list")) {
             for (var i = 0; i < array_length(_target.status_effects_list); i++) {
                 var eff = _target.status_effects_list[i];
-                if (is_struct(eff) && variable_struct_exists(eff, "get_type") && eff.get_type() == "Invincible") {
+                if (is_struct(eff) && variable_struct_exists(eff, "get_type") && (eff.get_type() == "Invincible" || eff.get_type() == "ElixirInvincibility")) {
                     has_invuln_effect = true;
                     break;
                 }

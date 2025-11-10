@@ -268,7 +268,7 @@ function GourdElixir() : GourdBase() constructor
             
             // Apply 5 seconds of invincibility
             var invuln_duration = 5 * game_get_speed(gamespeed_fps); // 5 seconds in frames
-            add_status_effect(_p, new InvincibilityEffect(invuln_duration));
+            add_status_effect(_p, new ElixirInvincibilityEffect(invuln_duration));
             
             // Visual feedback - golden flash
             if (variable_instance_exists(_p, "image_blend")) {

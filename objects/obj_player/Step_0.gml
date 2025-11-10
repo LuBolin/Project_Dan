@@ -3,12 +3,19 @@ update_status_effects(self);
 
 if (hp <= 0) {
     
-    //if (!is_pause_for_revive && has_elixir) {
-        //init_player_revives(self);
-        //exit;
-    //} else if (is_pause_for_revive) {
-        //player_revive_anim(self);
-    //}
+    if (has_elixir && !has_extra_life) {
+        if (!is_pause_for_revive) {
+            init_player_revives(self);
+            exit;
+        } else if (is_pause_for_revive) {
+            player_revive_anim(self);
+        }
+    }
+    
+    if (is_pause_for_revive) {
+        exit;
+    }
+    
     // Player died - store inventory for death screen
     var death_inventory = [inv[0], inv[1], inv[2]];
     

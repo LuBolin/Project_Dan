@@ -5,6 +5,7 @@ depth = -10;
 
 // Invuln timer for player to escape if they get hit
 invuln = false;                  // default vulnerability
+elixir_invuln = false;           
 invuln_stack = 0;                // optional, for stacking sources
 status_effects_list = [];             // REQUIRED so add_status_effect works
 
@@ -158,4 +159,7 @@ is_hurt_this_level = false;
 death_timer = -1;
 
 has_elixir = false;
+has_extra_life = false;
+
 is_pause_for_revive = false;
+

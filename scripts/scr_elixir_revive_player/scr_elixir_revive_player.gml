@@ -1,16 +1,8 @@
 function init_player_revives(player){
     // List of objects that must remain active
-    var keep_active = [
-        obj_camera,
-        obj_sfx_manager,
-        obj_level_hud,
-        obj_run_timer,
-    ];
-    
-    // Deactivate everything except persistent instances
-    instance_deactivate_all(true);
-    for (var i = 0; i < array_length(keep_active); i++) { 
-        instance_activate_object(keep_active[i]);
+
+    with (obj_enemy_abstract) {
+        pause = true;
     }
     
     player.revive_timer = 20
@@ -25,6 +17,7 @@ function player_revive_anim(player) {
         
     if (player.revive_timer <= 0) {
         // Resume game
+        player.hp = player.max_hp;
         instance_activate_all();
     }
     

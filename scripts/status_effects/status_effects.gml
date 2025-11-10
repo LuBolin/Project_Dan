@@ -413,22 +413,60 @@ function InvincibilityEffect(_duration) : StatusEffect() constructor {
         }
     }
 
-    on_remove = function() {
-        // Remove invulnerability flag
-        if (instance_exists(target) && variable_instance_exists(target, "invuln")) {
-            target.invuln = false;
-        }
-
-        // Restore full opacity
-        if (instance_exists(target) && variable_instance_exists(target, "image_alpha")) {
-            target.image_alpha = 1.0;
-        }
-    }
+    //on_remove = function() {
+        //// Remove invulnerability flag
+        //if (instance_exists(target) && variable_instance_exists(target, "invuln")) {
+            //target.invuln = false;
+        //}
+//
+        //// Restore full opacity
+        //if (instance_exists(target) && variable_instance_exists(target, "image_alpha")) {
+            //target.image_alpha = 1.0;
+        //}
+    //}
 
     get_type = function() {
         return "Invincible";
     }
 }
+
+/// @function InvincibilityEffect(_duration)
+/// @description Makes the target invincible (immune to damage)
+function ElixirInvincibilityEffect(_duration) : InvincibilityEffect() constructor {
+    duration = _duration;
+    stack_behavior = "refresh"; // Refresh duration if invincibility is reapplied
+
+    on_apply = function() {
+        // Set invulnerability flag
+        if (variable_instance_exists(target, "invuln")) {
+            target.invuln = true;
+        }
+        
+        // Set invulnerability flag
+        if (variable_instance_exists(target, "elixir_invuln")) {
+            target.elixir_invuln = true;
+        }
+        
+        // Visual feedback - make player slightly transparent
+        if (variable_instance_exists(target, "image_alpha")) {
+            target.image_alpha = 0.5;
+        }
+    }
+    
+    on_remove = function() {
+        
+        // Set invulnerability flag
+        if (variable_instance_exists(target, "elixir_invuln")) {
+            target.elixir_invuln = false;
+        }
+                
+    }
+
+    get_type = function() {
+        return "ElixirInvincibility";
+    }
+}
+
 
 /// Helper: ensure the target has a status effect storage array
 function _ensure_effect_array(_target) {
@@ -446,7 +484,6 @@ function _ensure_effect_array(_target) {
 /// @description Add a status effect to an entity
 function add_status_effect(_target, _effect) {
     if (!instance_exists(_target)) return;
-    
     _ensure_effect_array(_target);
 
     var effects_arr = _target.status_effects_list;
@@ -454,13 +491,22 @@ function add_status_effect(_target, _effect) {
     // Check for existing effect of same type
     var effect_type = _effect.get_type();
     
-    // If the Player has Elixir equipped, ignore negative status effect
-    // I dont want to do all status effects, because air uses knockback and stuff
-    //if (variable_instance_exists(_target, "has_elixir") && (effect_type == "Burn" || effect_type == "HurricaneDot" || effect_type == "Slow")) return;   
+    if (variable_instance_exists(_target, "elixir_invuln") && _target.elixir_invuln &&
+        (effect_type == "HurricaneDotEffect" || effect_type == "Burn" || effect_type == "Slow" || effect_type == "DamageOverTimeEffect")) {
+        return;
+    }
+    
     var existing_index = -1;
-    for (var i = 0; i < array_length(effects_arr); i++) {
-        if (effects_arr[i].get_type() == effect_type) {
+    for (var i = array_length(effects_arr) - 1; i >= 0; i--) {
+        var t = effects_arr[i].get_type();
+        if (t == effect_type) {
             existing_index = i; break;
+        }
+        
+        // Remove Burn or Slow
+        if (effect_type == "ElixirInvincibility" && (t == "HurricaneDotEffect" || t == "Burn" || t == "Slow" || t == "DamageOverTimeEffect")) {
+            effects_arr[i].remove();
+            array_delete(effects_arr, i, 1);
         }
     }
 
@@ -502,21 +548,42 @@ function update_status_effects(_target) {
     var effects_arr = _target.status_effects_list;
 
     var has_stun_or_knockback = false;
+    var has_invuln = false;
+    
     for (var i = array_length(effects_arr) - 1; i >= 0; i--) {
         var effect = effects_arr[i];
         var still_active = effect.step();
         var t = effect.get_type();        
-        if (!still_active || (variable_instance_exists(_target, "has_elixir") && (t == "Burn" || t == "HurricaneDot" || t == "Slow"))) {  
+        if (!still_active) {  
             effect.remove();
             array_delete(effects_arr, i, 1);
         } else {
             if (t == "Stun" || t == "Knockback" || t == "Charge") has_stun_or_knockback = true;
+            if (t == "Invincible" || t == "ElixirInvincibility") has_invuln = true;
         }
     }
     if (variable_instance_exists(_target, "pause")) {
         _target.pause = has_stun_or_knockback;
     }
+    
+    if (variable_instance_exists(_target, "invuln")) {
+        _target.invuln = has_invuln;
+        _target.image_alpha = has_invuln ? 0.5 : 1.0;
+    }
 }
+
+/// @function clear_certain_status_effects(_target, certain_effects)
+/// @description Remove certain status effects from an entity
+function clear_certain_status_effects(_target, certain_effects) {
+    if (!instance_exists(_target)) return;
+    if (!variable_instance_exists(_target, "status_effects_list")) return;
+    var effects_arr = _target.status_effects_list;
+    for (var i = 0; i < array_length(effects_arr); i++) {
+        effects_arr[i].remove();
+    }
+    _target.status_effects_list = [];
+}
+
 
 /// @function clear_status_effects(_target)
 /// @description Remove all status effects from an entity

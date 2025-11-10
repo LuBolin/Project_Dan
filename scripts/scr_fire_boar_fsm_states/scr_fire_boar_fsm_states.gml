@@ -6,6 +6,7 @@ function FireBoarRoamState(_entity, _duration = 2000, _is_timed = true) : RoamSt
     on_enter = function() {
         create_env_hazard(obj_lava_pool, 6, true, false);
     }
+    
 }
 
 function FireBoarAlertState(_entity, _duration = undefined, _is_timed = false) : AlertState(_entity, _duration, _is_timed) constructor {

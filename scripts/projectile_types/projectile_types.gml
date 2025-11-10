@@ -662,10 +662,11 @@ function ProjectileEruption() : ProjectileBase() constructor {
             center_pool.image_xscale = base_scale * 1.2;
             center_pool.image_yscale = base_scale * 1.2;
             // Set damage flags if created by player
-            if (creator == obj_player) {
+            if (creator == obj_player || creator == obj_clone) {
                 center_pool.damage_enemies = true;
                 center_pool.damage_player = false;
             }
+            center_pool.creator = creator;
         }
         
         // Create eruption controller to spawn secondary pools with delays
@@ -710,10 +711,11 @@ function ProjectileEruption() : ProjectileBase() constructor {
                                 secondary_pool.image_xscale = base_scale * 0.8;
                                 secondary_pool.image_yscale = base_scale * 0.8;
                                 // Set damage flags if created by player
-                                if (self.creator == obj_player) {
+                                if (self.creator == obj_player || self.creator == obj_clone) {
                                     secondary_pool.damage_enemies = true;
                                     secondary_pool.damage_player = false;
                                 }
+                                secondary_pool.creator = self.creator;
                             }
                         }
 
@@ -889,12 +891,16 @@ function ProjectileHurricane() : ProjectileBase() constructor {
 
                 // Refresh slow while overlapping
                 add_status_effect(e, new SlowEffect(slow_dur, slow_pct));
-
+                
                 // Periodic damage each second
                 var key = e.id;
                 var last = ds_map_find_value(projectile_inst.hit_targets, key);
                 if (is_undefined(last) || (now_ms - last >= tick_ms)) {
                     damage_entity(e, damage/2);
+                    // projectile_inst.creator
+                    with (e) {
+                        curr_state.player_interact()
+                    }
                     ds_map_set(projectile_inst.hit_targets, key, now_ms);
                 }
             }
@@ -1157,6 +1163,9 @@ function ProjectileLightningBeam() : ProjectileBase() constructor {
                 var dmg_now = floor(accum);
                 if (dmg_now >= 1) {
                     damage_entity(e, dmg_now);
+                    with(e) {
+                        curr_state.player_interact();
+                    }
                     accum -= dmg_now;
                 }
 

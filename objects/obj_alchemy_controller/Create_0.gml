@@ -359,3 +359,20 @@ tooltip_padding = 10;
 col_tooltip_bg = make_color_rgb(30, 25, 20);
 col_tooltip_border = make_color_rgb(150, 120, 90);
 col_tooltip_text = c_white;
+
+
+tips_array = [
+    "Tip: Drag elements to move them! Inventory -> Alchemy. Alchemy -> Inventory",
+    "Tip: Elements in the same tree height mix well!",
+    "Tip: Must keep synthesizing until I reach the top",
+    "Fact: The monsters can't stop me. Until I get that Elixir, my quest will never end.",
+    "Tip: Elixir. Elixir. Elixir.",
+    "Fact: Death cannot stop me. I will get the Elixir.",
+    "Question: Did you ever have a goal so grand, that you would do literally anything to achieve it? I do"
+]
+
+current_tip = tips_array[0];
+
+if (recently_crafted) {
+    current_tip = tips_array[irandom_range(1, array_length(tips_array))]
+}

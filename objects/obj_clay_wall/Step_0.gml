@@ -16,6 +16,7 @@ if (is_first_frame) {
     with (obj_enemy_abstract) {
         if (place_meeting(x, y, other)) {
             // Apply placement damage
+            curr_state.player_interact()
             damage_entity(id, other.placement_damage);
             apply_knockback(other, id, other.placement_knockback_speed, other.placement_knockback_distance);
             
@@ -56,7 +57,9 @@ if (is_first_frame) {
 // AGGRESSIVE COLLISION ENFORCEMENT - Check every frame
 with (obj_enemy_abstract) {
     if (place_meeting(x, y, other)) {
+        
         // Enemy is overlapping with this clay wall
+        curr_state.player_interact()
         
         // Method 1: Force stop all movement
         if (variable_instance_exists(id, "speed")) {

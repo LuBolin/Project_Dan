@@ -85,11 +85,8 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
         }
         
         if (lava_attack_cd_timer <= 0) {
-            if (lava_spawn_x == -1 and lava_spawn_y == -1) {
-                lava_spawn_x = obj_player.x;
-                lava_spawn_y = obj_player.y;
-            }
-            
+            lava_spawn_x = obj_player.x;
+            lava_spawn_y = obj_player.y;
             var lava_telegraphing = instance_create_layer(lava_spawn_x, lava_spawn_y, "Instances", obj_telegraph_attack);
             
             if (instance_exists(lava_telegraphing)) { 
@@ -153,8 +150,8 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
                     
                     // Lifespan: 8 seconds total
                     boss_plant_pool.life_duration_seconds = 12;
-                    boss_plant_pool.life_duration = life_duration_seconds * game_get_speed(gamespeed_fps);
-                    boss_plant_pool.life_timer = life_duration;
+                    boss_plant_pool.life_duration = boss_plant_pool.life_duration_seconds * game_get_speed(gamespeed_fps);
+                    boss_plant_pool.life_timer = boss_plant_pool.life_duration;
                     boss_plant_pool.heal_enemies = true;
                     has_health_dropped = true
                 }                

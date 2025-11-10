@@ -61,6 +61,7 @@ damage_all_visible_enemies = function() {
             alarm[11] = 20; // Flash duration
             
             enemies_damaged++;
+            curr_state.player_interact()
             
             show_debug_message("Destruction damaged enemy " + string(id) + " (on screen)");
         } else {

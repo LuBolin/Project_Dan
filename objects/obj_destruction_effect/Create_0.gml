@@ -1,5 +1,5 @@
 // Creator (player who used Destruction)
-creator = noone;
+creator = obj_player;
 
 // Get camera bounds for screen coverage
 var cam = view_camera[0];

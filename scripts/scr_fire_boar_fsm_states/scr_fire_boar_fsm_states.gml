@@ -26,7 +26,7 @@ function FireBoarChaseState(_entity, _duration = 5000, _is_timed = true) : Chase
     rock_attack_cd = 0;
     
     on_enter = function() {
-        rock_attack_cd = rock_attack_freq;
+        rock_attack_cd = rock_attack_freq; 
     }
     
     on_step = function() {
@@ -95,7 +95,6 @@ function FireBoarAttackState(_entity, _duration = 700, _is_timed = true) : Attac
     plater_previous_y = 0;
     on_enter = function() {
         obj_sfx_manager.play_sound(snd_boar, true);
-        entity.is_charging = true;
         
         // Safety check: make sure player exists BEFORE accessing coordinates
         if (!instance_exists(obj_player)) {
@@ -128,7 +127,6 @@ function FireBoarAttackState(_entity, _duration = 700, _is_timed = true) : Attac
         // Regular charge attack (wind gust)
         spawn_and_set_projectile(entity, new ProjectilEnemyAir(false, 102, 30), player_previous_x, player_previous_y)
         remaining_time = duration;
-        entity.is_charging = false;
         entity.changeState(STATES.CHASE)
     }
 }

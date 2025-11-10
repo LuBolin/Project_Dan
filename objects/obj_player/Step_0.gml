@@ -2,6 +2,13 @@ update_status_effects(self);
 
 
 if (hp <= 0) {
+    
+    //if (!is_pause_for_revive && has_elixir) {
+        //init_player_revives(self);
+        //exit;
+    //} else if (is_pause_for_revive) {
+        //player_revive_anim(self);
+    //}
     // Player died - store inventory for death screen
     var death_inventory = [inv[0], inv[1], inv[2]];
     

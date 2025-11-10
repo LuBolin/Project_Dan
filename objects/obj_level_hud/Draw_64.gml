@@ -130,7 +130,7 @@ draw_set_color(c_white);
 
 // ======== ENEMY KILL COUNTER ========
 // Check if level manager exists and display kill requirements
-if (instance_exists(obj_level_manager)) {
+if (instance_exists(obj_level_manager) && room != MiniBoss_Boar && room != MiniBoss_Tree) {
     var lm = instance_find(obj_level_manager, 0);
     if (lm.enemy_count_complete) {
         // Position at center-left of screen

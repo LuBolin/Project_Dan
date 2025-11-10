@@ -93,6 +93,9 @@ function advance_level_progress() {
         if (global.level_progress == 5) {
             // Level 5 uses miniboss rooms
             next_level = get_random_miniboss_level();
+            if instance_exists(obj_player) {
+                obj_player.hp = obj_player.max_hp
+            }
             show_debug_message("Advancing to MINIBOSS level " + string(global.level_progress));
         } else {
             // Levels 1-4 use regular level rooms

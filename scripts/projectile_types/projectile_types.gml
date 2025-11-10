@@ -215,7 +215,7 @@ function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_durati
                 }
     
                 // Apply knockback effect to dash player (false = no stun)
-                add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
+                add_status_effect(player, new EnemyChargeEffect(dash_dir, kb_speed, dash_duration, false));
                 
                 // Create particle effect trail behind player
                 var trail_length = 5;  // Number of particles

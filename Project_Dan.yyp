@@ -124,6 +124,7 @@
     {"id":{"name":"scr_crafting_system","path":"scripts/scr_crafting_system/scr_crafting_system.yy",},},
     {"id":{"name":"scr_cutscenes","path":"scripts/scr_cutscenes/scr_cutscenes.yy",},},
     {"id":{"name":"scr_delta_time","path":"scripts/scr_delta_time/scr_delta_time.yy",},},
+    {"id":{"name":"scr_elixir_revive_player","path":"scripts/scr_elixir_revive_player/scr_elixir_revive_player.yy",},},
     {"id":{"name":"scr_enemy_fsm_states","path":"scripts/scr_enemy_fsm_states/scr_enemy_fsm_states.yy",},},
     {"id":{"name":"scr_enemy_pools","path":"scripts/scr_enemy_pools/scr_enemy_pools.yy",},},
     {"id":{"name":"scr_evil_tree_fsm_states","path":"scripts/scr_evil_tree_fsm_states/scr_evil_tree_fsm_states.yy",},},

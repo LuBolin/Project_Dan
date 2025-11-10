@@ -178,6 +178,9 @@ function complete_cutscene(cutscene_manager) {
             instance_destroy();
         }
 
+        if instance_exists(obj_player) {
+            obj_player.hp = obj_player.max_hp
+        }
         goto_level(Level_FinalBoss, 5);
     }
 }

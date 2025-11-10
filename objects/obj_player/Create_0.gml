@@ -155,5 +155,7 @@ attack_animation_speed = 0.5; // frames per game frame
 // For Health HUD
 is_hurt_this_level = false;
 
-
 death_timer = -1;
+
+has_elixir = false;
+is_pause_for_revive = false;

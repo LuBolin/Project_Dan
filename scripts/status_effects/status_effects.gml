@@ -152,7 +152,7 @@ function KnockbackEffect(_direction, _speed, _duration, _apply_stun = true) : St
             target.y += kb_y;
         }
     }
-
+    
     get_type = function() {
         return "Knockback";
     }
@@ -161,40 +161,30 @@ function KnockbackEffect(_direction, _speed, _duration, _apply_stun = true) : St
 /// @function KnockbackEffect(_direction, _speed, _duration, _apply_stun)
 /// @description Applies knockback force with optional stun
 function EnemyChargeEffect(_direction, _speed, _duration, _apply_stun = true) : KnockbackEffect(_direction, _speed, _duration, _apply_stun = true) constructor {
-
-    on_step = function() {
-        // Apply knockback movement at constant speed
-        var kb_x = lengthdir_x(kb_speed, kb_direction);
-        var kb_y = lengthdir_y(kb_speed, kb_direction);
-
-        // Move the target with collision if it has the necessary properties
-        if (variable_instance_exists(target, "colliders")) {
-            with (target) {
-                charge(kb_x, kb_y, colliders);
-            }
-        } else if (variable_instance_exists(target, "x") && variable_instance_exists(target, "y")) {
-            // Fallback: move without collision if no colliders defined
-            target.x += kb_x;
-            target.y += kb_y;
-        }
-    }
-
-    get_type = function() {
-        return "Charge";
-    }
     
-    charge = function(_kb_x, _kb_y, _colliders) {
+    on_apply = function() {
+        // Apply stun if requested
+        if (apply_stun) {
+            var stun_duration = duration; // Match knockback duration
+            add_status_effect(target, new StunEffect(stun_duration));
+        }
+        if (variable_instance_exists(target, "is_charging")) target.is_charging = true;
+    }
+
+    
+    charge = function(_kb_x, _kb_y) {
         with (target) {
-            vel_hori = _kb_x;
-            vel_vert = _kb_y;
+            
+            vel_hori = lengthdir_x(other.kb_speed, other.kb_direction);
+            vel_vert = lengthdir_y(other.kb_speed, other.kb_direction);
             // Horizontal movement
-            if (place_meeting(x + vel_hori, y, _colliders)) {
+            if (place_meeting(x + vel_hori, y, colliders)) {
                 
                 // Allows the players to smoothly slide past corners
-                if (!place_meeting(x + vel_hori, y + move_speed_this_frame, _colliders)) {
-                    y += move_speed_this_frame
-                } else if (!place_meeting(x + vel_hori, y - move_speed_this_frame, _colliders)) {
-                    y -= move_speed_this_frame
+                if (!place_meeting(x + vel_hori, y + vel_vert, colliders)) {
+                    y += vel_vert
+                } else if (!place_meeting(x + vel_hori, y - vel_vert, colliders)) {
+                    y -= vel_vert
                 } else {
                     vel_hori = 0;   
                 }
@@ -204,13 +194,13 @@ function EnemyChargeEffect(_direction, _speed, _duration, _apply_stun = true) : 
             x += vel_hori;
             
             // Vertical movement
-            if (place_meeting(x, y + vel_vert, _colliders)) {
+            if (place_meeting(x, y + vel_vert, colliders)) {
                 
                 // Allows the players to smoothly slide past corners
-                if (!place_meeting(x + move_speed_this_frame, y + vel_vert , _colliders)) {
-                    x += move_speed_this_frame
-                } else if (!place_meeting(x - move_speed_this_frame, y + vel_vert, _colliders)) {
-                    x -= move_speed_this_frame
+                if (!place_meeting(x + vel_hori, y + vel_vert , colliders)) {
+                    x += vel_hori
+                } else if (!place_meeting(x - vel_hori, y + vel_vert, colliders)) {
+                    x -= vel_hori
                 } else {
                     vel_vert = 0;   
                 }
@@ -219,6 +209,32 @@ function EnemyChargeEffect(_direction, _speed, _duration, _apply_stun = true) : 
             y += vel_vert;
         }
     }
+    
+    on_step = function() {
+        // Apply knockback movement at constant speed
+        var kb_x = lengthdir_x(kb_speed, kb_direction);
+        var kb_y = lengthdir_y(kb_speed, kb_direction);
+
+        // Move the target with collision if it has the necessary properties
+        if (variable_instance_exists(target, "colliders")) { 
+            charge();
+
+        } else if (variable_instance_exists(target, "x") && variable_instance_exists(target, "y")) {
+            // Fallback: move without collision if no colliders defined
+            target.x += kb_x;
+            target.y += kb_y;
+        }
+    }
+    
+    on_remove = function() {
+         if (variable_instance_exists(target, "is_charging")) target.is_charging = false;
+    }
+    
+    get_type = function() {
+        return "Charge";
+    }
+    
+
 }
 
 
@@ -430,12 +446,17 @@ function _ensure_effect_array(_target) {
 /// @description Add a status effect to an entity
 function add_status_effect(_target, _effect) {
     if (!instance_exists(_target)) return;
+    
     _ensure_effect_array(_target);
 
     var effects_arr = _target.status_effects_list;
 
     // Check for existing effect of same type
     var effect_type = _effect.get_type();
+    
+    // If the Player has Elixir equipped, ignore negative status effect
+    // I dont want to do all status effects, because air uses knockback and stuff
+    //if (variable_instance_exists(_target, "has_elixir") && (effect_type == "Burn" || effect_type == "HurricaneDot" || effect_type == "Slow")) return;   
     var existing_index = -1;
     for (var i = 0; i < array_length(effects_arr); i++) {
         if (effects_arr[i].get_type() == effect_type) {
@@ -484,13 +505,12 @@ function update_status_effects(_target) {
     for (var i = array_length(effects_arr) - 1; i >= 0; i--) {
         var effect = effects_arr[i];
         var still_active = effect.step();
-
-        if (!still_active) {
+        var t = effect.get_type();        
+        if (!still_active || (variable_instance_exists(_target, "has_elixir") && (t == "Burn" || t == "HurricaneDot" || t == "Slow"))) {  
             effect.remove();
             array_delete(effects_arr, i, 1);
         } else {
-            var t = effect.get_type();
-            if (t == "Stun" || t == "Knockback") has_stun_or_knockback = true;
+            if (t == "Stun" || t == "Knockback" || t == "Charge") has_stun_or_knockback = true;
         }
     }
     if (variable_instance_exists(_target, "pause")) {

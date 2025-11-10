@@ -20,3 +20,10 @@ hp = hp < heal_up ? heal_up : hp;
 is_hurt_this_level = false;
 
 cam_inst.preferred_ratio = 0.12; // Lower = more zoomed out (player takes less of screen)
+
+
+if (check_if_gourdname_equipped(inv, "Elixir") || check_if_gourdname_equipped(inv, "Lightning")) {
+    has_elixir = true;
+} else {
+    has_elixir = false;
+}

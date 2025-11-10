@@ -364,12 +364,20 @@ function BurnEffect(_duration, _damage_per_tick) : StatusEffect() constructor {
     tick_counter = 0;
     stack_behavior = "refresh"; // Refreshes duration instead of stacking
     effect_sprite = spr_effect_fire;
+    effect_anim_speed = 0.4; // frames per step
     
     on_apply = function() {
         target.effect_sprite = effect_sprite;
+        target.effect_sprite_frame = 0;
     }
     
     on_step = function() {
+        // Advance animation
+        if (sprite_exists(effect_sprite)) {
+            var frame_count = max(1, sprite_get_number(effect_sprite));
+            target.effect_sprite_frame = (target.effect_sprite_frame + effect_anim_speed) mod frame_count;
+        }
+
         tick_counter++;
         if (tick_counter >= tick_rate) {
             tick_counter = 0;
@@ -393,6 +401,7 @@ function BurnEffect(_duration, _damage_per_tick) : StatusEffect() constructor {
         if (variable_instance_exists(target, "image_blend")) {
             target.image_blend = c_white;
             target.effect_sprite = undefined;
+            target.effect_sprite_frame = undefined;
         }
     }
 

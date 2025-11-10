@@ -130,6 +130,7 @@
     {"name":"spr_dungeon_exit_door","order":1,"path":"sprites/spr_dungeon_exit_door/spr_dungeon_exit_door.yy",},
     {"name":"spr_dungeon_tileset_2","order":10,"path":"sprites/spr_dungeon_tileset_2/spr_dungeon_tileset_2.yy",},
     {"name":"spr_dungeon_tileset","order":9,"path":"sprites/spr_dungeon_tileset/spr_dungeon_tileset.yy",},
+    {"name":"spr_effect_fire_old","order":8,"path":"sprites/spr_effect_fire_old/spr_effect_fire_old.yy",},
     {"name":"spr_effect_fire","order":3,"path":"sprites/spr_effect_fire/spr_effect_fire.yy",},
     {"name":"spr_enemy_conditional_spawn","order":8,"path":"sprites/spr_enemy_conditional_spawn/spr_enemy_conditional_spawn.yy",},
     {"name":"spr_enemy_notice","order":7,"path":"sprites/spr_enemy_notice/spr_enemy_notice.yy",},

@@ -24,7 +24,8 @@ function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : S
             other.enemy_count += 1
         }
         
-        if (enemy_count <= 4 && instance_exists(obj_player) && (obj_player.hp >= 6 || entity.hp <= 20)) {
+        // TODO: Make the irandom not random and do this on a timer
+        if (enemy_count <= 4 && instance_exists(obj_player) && (obj_player.hp >= 6 || entity.hp <= 20) && irandom(1) == 1) {
             spawn_more_enemies();
         }
         

@@ -74,9 +74,24 @@ function advance_level_progress() {
         global.level_progress = 1;
     }
     
+    // Initializes the level order
     if (global.level_progress == 1) {
         // Ensures that we do not face repeat levels back-to-back
-        global.level_order = array_shuffle([Level1, Level2, Level3, Level4, Level5]);
+        
+        var easy_levels = [Level1, Level2];
+        var medium_levels = [Level3, Level4, Level5];
+        var hard_levels = [Level6, Level7];
+        
+        var selected = []
+        
+        array_push(selected, easy_levels[irandom(1)]);
+        array_shuffle(medium_levels);
+        array_push(selected, medium_levels[0]);
+        array_push(selected, medium_levels[1]);
+        array_push(selected, hard_levels[irandom(1)]);
+
+        
+        global.level_order = selected;
     }
 
     // Increment level progress

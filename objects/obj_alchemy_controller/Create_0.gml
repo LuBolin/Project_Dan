@@ -374,5 +374,5 @@ tips_array = [
 current_tip = tips_array[0];
 
 if (recently_crafted) {
-    current_tip = tips_array[irandom_range(1, array_length(tips_array))]
+    current_tip = tips_array[irandom_range(1, array_length(tips_array) -1)]
 }

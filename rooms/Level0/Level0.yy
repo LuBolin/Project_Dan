@@ -94,7 +94,7 @@
     {"$GMRLayer":"","%Name":"Terrain","depth":300,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[
         {"$GMRTileLayer":"","%Name":"Decoration_Upper","depth":400,"effectEnabled":true,"effectType":"none","gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Decoration_Upper","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":47,"SerialiseWidth":88,"TileCompressedData":[
               -629,0,1,10,-82,0,1,10,-279,0,1,6,-6,0,1,6,-615,0,1,1,-8,0,-2,1,-174,0,-2,12,-74,0,1,1,-10,0,1,1,-92,
-              0,4,6,0,0,6,-248,0,1,1,-101,0,1,25,-87,0,1,25,-1713,0,
+              0,4,6,0,0,6,-248,0,1,1,-1903,0,
             ],"TileDataFormat":1,},"tilesetId":{"name":"dungeon_tileset","path":"tilesets/dungeon_tileset/dungeon_tileset.yy",},"userdefinedDepth":false,"visible":true,"x":-736,"y":-320,},
         {"$GMRTileLayer":"","%Name":"Tile_Collision","depth":500,"effectEnabled":true,"effectType":"_filter_tintfilter","gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Tile_Collision","properties":[
             {"name":"g_TintCol","type":1,"value":"#FFFFFFFF",},

@@ -17,6 +17,14 @@ if (sprite_exists(spr_alchemy_bg_anim)) {
     }
 }
 
+
+// ========== ALCHEMY TREE FADE IN ===================
+if (recently_crafted) {
+    fade_alpha = min(fade_alpha + fade_in_speed, 1);
+} else {
+    fade_alpha = 1
+}
+
 var mx = device_mouse_x_to_gui(0);
 var my = device_mouse_y_to_gui(0);
 
@@ -106,6 +114,9 @@ function try_craft_equation(eq_index) {
         craft_feedback = "success";
         craft_feedback_timer = craft_feedback_duration;
         craft_feedback_equation = eq_index;
+        global.has_crafted_before = true;
+        recently_crafted = (global.has_crafted_before != recently_crafted) ? true : false;
+        fade_alpha = 0;
     } else {
         // Fail
         craft_feedback = "fail";

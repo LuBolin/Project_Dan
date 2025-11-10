@@ -126,7 +126,7 @@ buttons_alpha = 0;
 if (is_first_launch) {
     // First launch: Show "Press Space" prompt, wait for user input
     global.game_launched = true; // Mark as launched
-
+    global.has_crafted_before = false;
     // Fade effect for prompt (slower fade)
     prompt_alpha = 0;
     prompt_fade_direction = 1; // 1 = fading in, -1 = fading out

@@ -2,18 +2,15 @@ update_status_effects(self);
 
 
 if (hp <= 0) {
-    
-    //if (has_elixir && !has_extra_life) {
+    //
+    //if (has_elixir_life) {
         //if (!is_pause_for_revive) {
             //init_player_revives(self);
             //exit;
         //} else if (is_pause_for_revive) {
             //player_revive_anim(self);
+            //exit;
         //}
-    //}
-    //
-    //if (is_pause_for_revive) {
-        //exit;
     //}
     
     // Player died - store inventory for death screen

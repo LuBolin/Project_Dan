@@ -173,6 +173,10 @@ tree_panel_y = 80; // Moved down from 50 to avoid overlap with pause button
 tree_panel_w = 200; // Reduced width from 230
 tree_panel_h = 480; // Reduced height from 520
 
+fade_alpha = 0;        // start invisible
+fade_in_speed = 0.05;  // adjust how fast it fades in
+recently_crafted = global.has_crafted_before;
+
 // Tree node layout
 tree_node_size = 40; // Reduced from 60 to fit narrower panel
 tree_node_spacing_x = 50; // Reduced from 80 for tighter horizontal packing

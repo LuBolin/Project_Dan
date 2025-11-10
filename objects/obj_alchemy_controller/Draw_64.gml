@@ -368,229 +368,233 @@ if (dragging) {
 
 draw_set_alpha(1);
 
-// === DRAW RECIPE TREE (Right side) ===
-// Draw tree panel background
-draw_set_color(make_color_rgb(20, 20, 30));
-draw_rectangle(tree_panel_x, tree_panel_y, tree_panel_x + tree_panel_w, tree_panel_y + tree_panel_h, false);
-
-// Draw panel border
-draw_set_color(col_border);
-draw_rectangle(tree_panel_x, tree_panel_y, tree_panel_x + tree_panel_w, tree_panel_y + tree_panel_h, true);
-
-// Synthesis Record Label
-draw_set_color(c_white);
-draw_text(tree_panel_x + tree_panel_w / 2, tree_panel_y + 10, "Synthesis Record");
-
-// Get all discovered recipes
-var discovered_array = get_discovered_recipes(global.recipe_tree);
-// GML bugs out here and gives warning about discovered_map
-// separate declaration and initialization into 2 lines fixes it, idk why -- Bolin
-var discovered_map = pointer_null;
-discovered_map = {};
-for (var i = 0; i < array_length(discovered_array); i++) {
-    discovered_map[$ discovered_array[i].name] = true;
-}
-
-// Load JSON to get recipe connections
-var json_data = load_recipes_from_json("recipes.json");
-
-// Draw connectors first (so they appear behind nodes)
-for (var i = 0; i < array_length(json_data.recipes); i++) {
-    var recipe = json_data.recipes[i];
-    var result_name = recipe.result;
-    var recipe_id = recipe.id;
-
-    // Look up recipe node by ID (lowercase), not by result name
-    var recipe_node = global.recipe_tree[$ recipe_id];
-
-    // Only draw connectors if result is discovered AND crafted
-    var is_crafted = false;
+if (global.has_crafted_before) {
     
-    // Check if node exists and has crafted property
-    if (!is_undefined(recipe_node) && recipe_node != noone) {
-        if (variable_struct_exists(recipe_node, "crafted")) {
-            is_crafted = recipe_node.crafted;
-        }
+    draw_set_alpha(fade_alpha);
+    // === DRAW RECIPE TREE (Right side) ===
+    // Draw tree panel background
+    draw_set_color(make_color_rgb(20, 20, 30));
+    draw_rectangle(tree_panel_x, tree_panel_y, tree_panel_x + tree_panel_w, tree_panel_y + tree_panel_h, false);
+    
+    // Draw panel border
+    draw_set_color(col_border);
+    draw_rectangle(tree_panel_x, tree_panel_y, tree_panel_x + tree_panel_w, tree_panel_y + tree_panel_h, true);
+    
+    // Synthesis Record Label
+    draw_set_color(c_white);
+    draw_text(tree_panel_x + tree_panel_w / 2, tree_panel_y + 10, "Synthesis Record");
+    
+    // Get all discovered recipes
+    var discovered_array = get_discovered_recipes(global.recipe_tree);
+    // GML bugs out here and gives warning about discovered_map
+    // separate declaration and initialization into 2 lines fixes it, idk why -- Bolin
+    var discovered_map = pointer_null;
+    discovered_map = {};
+    for (var i = 0; i < array_length(discovered_array); i++) {
+        discovered_map[$ discovered_array[i].name] = true;
     }
     
-    if (variable_struct_exists(discovered_map, result_name) && is_crafted) {
-        var result_pos = tree_positions[$ result_name];
-        var result_x = tree_start_x + result_pos.x;
-        var result_y = tree_start_y + result_pos.y;
-
-        // Draw lines to each ingredient
-        for (var j = 0; j < array_length(recipe.ingredients); j++) {
-            var ingredient_name = recipe.ingredients[j];
-
-            // Only draw connector if ingredient is discovered
-            if (variable_struct_exists(discovered_map, ingredient_name)) {
-                var ingredient_pos = tree_positions[$ ingredient_name];
-                var ingredient_x = tree_start_x + ingredient_pos.x;
-                var ingredient_y = tree_start_y + ingredient_pos.y;
-
-                // Draw line from ingredient to result
-                draw_set_color(make_color_rgb(100, 150, 200));
-                draw_line_width(ingredient_x, ingredient_y + tree_node_size / 2,
-                              result_x, result_y + tree_node_size / 2, 2);
+    // Load JSON to get recipe connections
+    var json_data = load_recipes_from_json("recipes.json");
+    
+    // Draw connectors first (so they appear behind nodes)
+    for (var i = 0; i < array_length(json_data.recipes); i++) {
+        var recipe = json_data.recipes[i];
+        var result_name = recipe.result;
+        var recipe_id = recipe.id;
+    
+        // Look up recipe node by ID (lowercase), not by result name
+        var recipe_node = global.recipe_tree[$ recipe_id];
+    
+        // Only draw connectors if result is discovered AND crafted
+        var is_crafted = false;
+        
+        // Check if node exists and has crafted property
+        if (!is_undefined(recipe_node) && recipe_node != noone) {
+            if (variable_struct_exists(recipe_node, "crafted")) {
+                is_crafted = recipe_node.crafted;
+            }
+        }
+        
+        if (variable_struct_exists(discovered_map, result_name) && is_crafted) {
+            var result_pos = tree_positions[$ result_name];
+            var result_x = tree_start_x + result_pos.x;
+            var result_y = tree_start_y + result_pos.y;
+    
+            // Draw lines to each ingredient
+            for (var j = 0; j < array_length(recipe.ingredients); j++) {
+                var ingredient_name = recipe.ingredients[j];
+    
+                // Only draw connector if ingredient is discovered
+                if (variable_struct_exists(discovered_map, ingredient_name)) {
+                    var ingredient_pos = tree_positions[$ ingredient_name];
+                    var ingredient_x = tree_start_x + ingredient_pos.x;
+                    var ingredient_y = tree_start_y + ingredient_pos.y;
+    
+                    // Draw line from ingredient to result
+                    draw_set_color(make_color_rgb(100, 150, 200));
+                    draw_line_width(ingredient_x, ingredient_y + tree_node_size / 2,
+                                  result_x, result_y + tree_node_size / 2, 2);
+                }
             }
         }
     }
-}
-
-// Draw all nodes
-var element_names = variable_struct_get_names(tree_positions);
-for (var i = 0; i < array_length(element_names); i++) {
-    var elem_name = element_names[i];
-    var pos = tree_positions[$ elem_name];
-    var node_x = tree_start_x + pos.x - tree_node_size / 2;
-    var node_y = tree_start_y + pos.y - tree_node_size / 2;
-
-    var is_discovered = variable_struct_exists(discovered_map, elem_name);
-
-    // Get element color (find matching gourd type)
-    var elem_color = c_gray;
-    var gourd_type = get_gourd_type_by_name(elem_name);
-    if (gourd_type != undefined) {
-        var temp_gourd = gourd_create(gourd_type);
-        elem_color = temp_gourd.color;
-    }
-
-    // Check if this is the Elixir (final goal)
-    var is_elixir = (elem_name == "Elixir");
-
-    // Draw node background
-    if (is_discovered) {
-        // Special glow effect for Elixir
+    
+    // Draw all nodes
+    var element_names = variable_struct_get_names(tree_positions);
+    for (var i = 0; i < array_length(element_names); i++) {
+        var elem_name = element_names[i];
+        var pos = tree_positions[$ elem_name];
+        var node_x = tree_start_x + pos.x - tree_node_size / 2;
+        var node_y = tree_start_y + pos.y - tree_node_size / 2;
+    
+        var is_discovered = variable_struct_exists(discovered_map, elem_name);
+    
+        // Get element color (find matching gourd type)
+        var elem_color = c_gray;
+        var gourd_type = get_gourd_type_by_name(elem_name);
+        if (gourd_type != undefined) {
+            var temp_gourd = gourd_create(gourd_type);
+            elem_color = temp_gourd.color;
+        }
+    
+        // Check if this is the Elixir (final goal)
+        var is_elixir = (elem_name == "Elixir");
+    
+        // Draw node background
+        if (is_discovered) {
+            // Special glow effect for Elixir
+            if (is_elixir) {
+                var glow_alpha = 0.3 + sin(elixir_glow_timer * 0.1) * 0.2;
+                draw_set_alpha(glow_alpha);
+                draw_set_color(c_yellow);
+                draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size * 0.7, false);
+                draw_set_alpha(1);
+    
+                // Draw gourd sprite for Elixir
+                var gourd_scale = tree_node_size / sprite_get_width(spr_gourd);
+                draw_sprite_ext(spr_gourd, 0,
+                              node_x + tree_node_size / 2,
+                              node_y + tree_node_size / 2,
+                              gourd_scale, gourd_scale, 0, c_black, 1);
+            } else {
+                // Draw circle for other elements
+                draw_set_color(elem_color);
+                draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, false);
+            }
+        } else {
+            // Greyed out for undiscovered
+            if (is_elixir) {
+                // Draw gourd sprite brighter for undiscovered Elixir (make it more visible)
+                var gourd_scale = tree_node_size / sprite_get_width(spr_gourd);
+                draw_sprite_ext(spr_gourd, 0,
+                              node_x + tree_node_size / 2,
+                              node_y + tree_node_size / 2,
+                              gourd_scale, gourd_scale, 0, make_color_rgb(180, 180, 200), 1);
+            } else {
+                // Draw circle in grey for undiscovered other elements
+                draw_set_color(make_color_rgb(40, 40, 50));
+                draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, false);
+            }
+        }
+    
+        // Draw yellow border for Elixir (always visible)
         if (is_elixir) {
-            var glow_alpha = 0.3 + sin(elixir_glow_timer * 0.1) * 0.2;
-            draw_set_alpha(glow_alpha);
             draw_set_color(c_yellow);
-            draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size * 0.7, false);
-            draw_set_alpha(1);
-
-            // Draw gourd sprite for Elixir
-            var gourd_scale = tree_node_size / sprite_get_width(spr_gourd);
-            draw_sprite_ext(spr_gourd, 0,
-                          node_x + tree_node_size / 2,
-                          node_y + tree_node_size / 2,
-                          gourd_scale, gourd_scale, 0, c_black, 1);
-        } else {
-            // Draw circle for other elements
-            draw_set_color(elem_color);
-            draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, false);
+            var border_radius = tree_node_size * 0.6;
+            draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, border_radius, true);
+            // Draw thicker border by drawing multiple circles
+            draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, border_radius + 1, true);
+            draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, border_radius + 2, true);
         }
-    } else {
-        // Greyed out for undiscovered
-        if (is_elixir) {
-            // Draw gourd sprite brighter for undiscovered Elixir (make it more visible)
-            var gourd_scale = tree_node_size / sprite_get_width(spr_gourd);
-            draw_sprite_ext(spr_gourd, 0,
-                          node_x + tree_node_size / 2,
-                          node_y + tree_node_size / 2,
-                          gourd_scale, gourd_scale, 0, make_color_rgb(180, 180, 200), 1);
+    
+        // Draw node border (only for non-Elixir nodes)
+        if (!is_elixir) {
+            draw_set_color(is_discovered ? col_border : make_color_rgb(60, 60, 70));
+            draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, true);
+        }
+    
+        // Draw element name with outline (for discovered elements) or grey (for undiscovered)
+        draw_set_halign(fa_center);
+        draw_set_valign(fa_middle);
+        if (is_discovered) {
+            draw_text_outlined(node_x + tree_node_size / 2, node_y + tree_node_size / 2, elem_name);
         } else {
-            // Draw circle in grey for undiscovered other elements
-            draw_set_color(make_color_rgb(40, 40, 50));
-            draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, false);
+            draw_set_color(make_color_rgb(80, 80, 90));
+            draw_text(node_x + tree_node_size / 2, node_y + tree_node_size / 2, "?");
         }
     }
-
-    // Draw yellow border for Elixir (always visible)
-    if (is_elixir) {
-        draw_set_color(c_yellow);
-        var border_radius = tree_node_size * 0.6;
-        draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, border_radius, true);
-        // Draw thicker border by drawing multiple circles
-        draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, border_radius + 1, true);
-        draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, border_radius + 2, true);
-    }
-
-    // Draw node border (only for non-Elixir nodes)
-    if (!is_elixir) {
-        draw_set_color(is_discovered ? col_border : make_color_rgb(60, 60, 70));
-        draw_circle(node_x + tree_node_size / 2, node_y + tree_node_size / 2, tree_node_size / 2, true);
-    }
-
-    // Draw element name with outline (for discovered elements) or grey (for undiscovered)
-    draw_set_halign(fa_center);
-    draw_set_valign(fa_middle);
-    if (is_discovered) {
-        draw_text_outlined(node_x + tree_node_size / 2, node_y + tree_node_size / 2, elem_name);
-    } else {
-        draw_set_color(make_color_rgb(80, 80, 90));
-        draw_text(node_x + tree_node_size / 2, node_y + tree_node_size / 2, "?");
-    }
-}
-
-// === DRAW TOOLTIP ===
-if (tooltip_hovered_element != noone) {
-    // Check if element is discovered
-    var is_discovered = variable_struct_exists(discovered_map, tooltip_hovered_element);
-    var is_elixir = (tooltip_hovered_element == "Elixir");
     
-    // Get description text
-    var description_text = "";
-    var title_text = "";
-    
-    if (is_discovered) {
-        title_text = tooltip_hovered_element;
-        description_text = get_element_description(tooltip_hovered_element);
-    } else {
-        // For undiscovered elements
-        if (is_elixir) {
-            // Elixir shows name even when undiscovered
+    // === DRAW TOOLTIP ===
+    if (tooltip_hovered_element != noone) {
+        // Check if element is discovered
+        var is_discovered = variable_struct_exists(discovered_map, tooltip_hovered_element);
+        var is_elixir = (tooltip_hovered_element == "Elixir");
+        
+        // Get description text
+        var description_text = "";
+        var title_text = "";
+        
+        if (is_discovered) {
             title_text = tooltip_hovered_element;
+            description_text = get_element_description(tooltip_hovered_element);
         } else {
-            // Other elements show "???" instead of name
-            title_text = "???";
+            // For undiscovered elements
+            if (is_elixir) {
+                // Elixir shows name even when undiscovered
+                title_text = tooltip_hovered_element;
+            } else {
+                // Other elements show "???" instead of name
+                title_text = "???";
+            }
+            description_text = "Element not discovered yet";
         }
-        description_text = "Element not discovered yet";
-    }
-    
-    // Calculate tooltip dimensions
-    draw_set_font(-1);
-    draw_set_halign(fa_left);
-    draw_set_valign(fa_top);
-    
-    var text_height = string_height_ext(description_text, -1, tooltip_width - tooltip_padding * 2);
-    var tooltip_height = text_height + tooltip_padding * 2 + 30; // Extra space for title
-    
-    // Adjust tooltip position if it goes off-screen
-    var adjusted_x = tooltip_x;
-    var adjusted_y = tooltip_y;
-    
-    if (adjusted_x + tooltip_width > gui_width) {
-        adjusted_x = gui_width - tooltip_width - 10;
-    }
-    if (adjusted_y + tooltip_height > gui_height) {
-        adjusted_y = gui_height - tooltip_height - 10;
-    }
-    
-    // Draw tooltip background
-    draw_set_alpha(0.95);
-    draw_set_color(col_tooltip_bg);
-    draw_rectangle(adjusted_x, adjusted_y, 
-                   adjusted_x + tooltip_width, adjusted_y + tooltip_height, false);
-    draw_set_alpha(1);
-    
-    // Draw tooltip border
-    draw_set_color(col_tooltip_border);
-    draw_rectangle(adjusted_x, adjusted_y, 
-                   adjusted_x + tooltip_width, adjusted_y + tooltip_height, true);
-    
-    // Draw element name/title (now uses title_text instead of tooltip_hovered_element)
-    draw_set_color(col_title);
-    draw_set_halign(fa_center);
-    draw_text(adjusted_x + tooltip_width / 2, adjusted_y + tooltip_padding, title_text);
-    
-    // Draw description text
-    draw_set_color(col_tooltip_text);
-    draw_set_halign(fa_left);
-    draw_set_valign(fa_top);
-    draw_text_ext(adjusted_x + tooltip_padding, adjusted_y + tooltip_padding + 20, 
-                  description_text, -1, tooltip_width - tooltip_padding * 2);
+        
+        // Calculate tooltip dimensions
+        draw_set_font(-1);
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+        
+        var text_height = string_height_ext(description_text, -1, tooltip_width - tooltip_padding * 2);
+        var tooltip_height = text_height + tooltip_padding * 2 + 30; // Extra space for title
+        
+        // Adjust tooltip position if it goes off-screen
+        var adjusted_x = tooltip_x;
+        var adjusted_y = tooltip_y;
+        
+        if (adjusted_x + tooltip_width > gui_width) {
+            adjusted_x = gui_width - tooltip_width - 10;
+        }
+        if (adjusted_y + tooltip_height > gui_height) {
+            adjusted_y = gui_height - tooltip_height - 10;
+        }
+        
+        // Draw tooltip background
+        draw_set_alpha(0.95);
+        draw_set_color(col_tooltip_bg);
+        draw_rectangle(adjusted_x, adjusted_y, 
+                       adjusted_x + tooltip_width, adjusted_y + tooltip_height, false);
+        draw_set_alpha(1);
+        
+        // Draw tooltip border
+        draw_set_color(col_tooltip_border);
+        draw_rectangle(adjusted_x, adjusted_y, 
+                       adjusted_x + tooltip_width, adjusted_y + tooltip_height, true);
+        
+        // Draw element name/title (now uses title_text instead of tooltip_hovered_element)
+        draw_set_color(col_title);
+        draw_set_halign(fa_center);
+        draw_text(adjusted_x + tooltip_width / 2, adjusted_y + tooltip_padding, title_text);
+        
+        // Draw description text
+        draw_set_color(col_tooltip_text);
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+        draw_text_ext(adjusted_x + tooltip_padding, adjusted_y + tooltip_padding + 20, 
+                      description_text, -1, tooltip_width - tooltip_padding * 2);
+    }    
 }
-
+draw_set_alpha(1);
 // === DRAW CONTINUE BUTTON ===
 // Only show if popup is not displayed
 if (!show_confirmation_popup) {

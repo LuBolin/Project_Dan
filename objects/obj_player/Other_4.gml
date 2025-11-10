@@ -23,7 +23,5 @@ cam_inst.preferred_ratio = 0.12; // Lower = more zoomed out (player takes less o
 
 
 if (check_if_gourdname_equipped(inv, "Elixir") || check_if_gourdname_equipped(inv, "Lightning")) {
-    has_elixir = true;
-} else {
-    has_elixir = false;
+    has_elixir_life = true;
 }

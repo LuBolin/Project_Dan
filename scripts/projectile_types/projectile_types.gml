@@ -32,7 +32,7 @@ function ProjectileRock() : ProjectileBase() constructor {
 	name = "Rock";
 	speed       = 5.0;  // units per second (1200 / 64)
 	damage      = 2;
-	life_steps  = game_get_speed(gamespeed_fps) * 0.5;
+	life_steps  = game_get_speed(gamespeed_fps) * 1.0;
 	kb_speed = 0;
 	kb_distance = 0;
 	sprite_index = spr_rock;

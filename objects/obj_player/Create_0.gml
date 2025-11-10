@@ -158,8 +158,7 @@ is_hurt_this_level = false;
 
 death_timer = -1;
 
-has_elixir = false;
-has_extra_life = false;
+has_elixir_life = false;
 
 is_pause_for_revive = false;
 

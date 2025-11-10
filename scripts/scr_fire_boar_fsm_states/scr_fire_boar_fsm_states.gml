@@ -70,7 +70,7 @@ function FireBoarChaseState(_entity, _duration = 5000, _is_timed = true) : Chase
 
                 // Play projectile sound (using air projectile sound as placeholder for fireball)
                 // TODO: Replace with snd_fireball when available
-                obj_sfx_manager.play_sound(snd_air_projectile, true);
+                sfx_play(snd_air_projectile, true);
             }
         }
         show_debug_message(remaining_time)
@@ -94,7 +94,7 @@ function FireBoarAttackState(_entity, _duration = 700, _is_timed = true) : Attac
     player_previous_x = 0 ;
     plater_previous_y = 0;
     on_enter = function() {
-        obj_sfx_manager.play_sound(snd_boar, true);
+        sfx_play(snd_boar, true);
         
         // Safety check: make sure player exists BEFORE accessing coordinates
         if (!instance_exists(obj_player)) {

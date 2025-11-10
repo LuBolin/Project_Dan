@@ -63,13 +63,12 @@ function spawn_and_set_projectile_angled(_entity, projectile, angle, projectile_
                 inst.damage_enemies = default_damage_enemies;
             }
 
-            // SFX (guard against missing SFX manager)
-            if (is_struct(projectile) && !is_undefined(projectile.sfx_fire)) {
-                if (instance_exists(obj_sfx_manager)) with (obj_sfx_manager) play_sound(projectile.sfx_fire, false);
-                else audio_play_sound(projectile.sfx_fire, 0, false);
+            // SFX
+            if (!is_undefined(projectile.sfx_fire)) {
+                sfx_play(projectile.sfx_fire, false);
             }
 
-            if (!is_undefined(projectile.sfx_fire)) obj_sfx_manager.play_sound(projectile.sfx_fire, false);
+            if (!is_undefined(projectile.sfx_fire)) sfx_play(projectile.sfx_fire, false);
         }
         
         inst.creator = _entity;

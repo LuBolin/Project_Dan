@@ -134,6 +134,7 @@
     {"id":{"name":"scr_ghost_fsm_states","path":"scripts/scr_ghost_fsm_states/scr_ghost_fsm_states.yy",},},
     {"id":{"name":"scr_level_transitions","path":"scripts/scr_level_transitions/scr_level_transitions.yy",},},
     {"id":{"name":"scr_miniboss_tree_fsm_states","path":"scripts/scr_miniboss_tree_fsm_states/scr_miniboss_tree_fsm_states.yy",},},
+    {"id":{"name":"scr_sfx_play","path":"scripts/scr_sfx_play/scr_sfx_play.yy",},},
     {"id":{"name":"shoot_projectile","path":"scripts/shoot_projectile/shoot_projectile.yy",},},
     {"id":{"name":"status_effects","path":"scripts/status_effects/status_effects.yy",},},
     {"id":{"name":"shd_desaturate","path":"shaders/shd_desaturate/shd_desaturate.yy",},},

@@ -87,7 +87,7 @@ function BoarChaseState(_entity, _duration = 3000, _is_timed = true) : ChaseStat
 
 function BoarAttackState(_entity, _duration = 700, _is_timed = true) : AttackState(_entity, _duration, _is_timed) constructor {
     on_enter = function() {
-        obj_sfx_manager.play_sound(snd_boar, true);
+        sfx_play(snd_boar, true);
     }
 
     on_timeout = function() {

@@ -139,7 +139,7 @@ if (mouse_check_button_pressed(mb_left) && !dragging) {
         var slot_y = equipped_start_y + i * (equipped_slot_size + equipped_slot_spacing);
 
         if (point_in_rectangle(mx, my, slot_x, slot_y, slot_x + equipped_slot_size, slot_y + equipped_slot_size)) {
-            obj_sfx_manager.play_sound(snd_alchemy, true)
+            sfx_play(snd_alchemy, true)
             dragging = true;
             drag_source_type = "equipped";
             drag_source_index = i;
@@ -156,7 +156,7 @@ if (mouse_check_button_pressed(mb_left) && !dragging) {
         var new_slot_y = new_ele_separator_y + 40;
         
         if (point_in_rectangle(mx, my, new_slot_x, new_slot_y, new_slot_x + equipped_slot_size, new_slot_y + equipped_slot_size)) {
-            obj_sfx_manager.play_sound(snd_alchemy, true)
+            sfx_play(snd_alchemy, true)
             dragging = true;
             drag_source_type = "new";
             drag_source_index = 0;
@@ -176,7 +176,7 @@ if (mouse_check_button_pressed(mb_left) && !dragging) {
             var result_y = base_y;
 
             if (point_in_rectangle(mx, my, result_x, result_y, result_x + equation_slot_size, result_y + equation_slot_size)) {
-                obj_sfx_manager.play_sound(snd_alchemy, true)
+                sfx_play(snd_alchemy, true)
                 dragging = true;
                 drag_source_type = "crafted";
                 drag_source_index = i;

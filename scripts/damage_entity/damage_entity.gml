@@ -10,6 +10,7 @@ function damage_entity(_target, _dmg) {
 
     // Apply damage
     _target.hp -= _dmg;
+    _target.alarm[11] = 30; // Brief 0.5s invuln between hits
     
     if (variable_instance_exists(_target, "is_hurt_this_level")) 
         _target.is_hurt_this_level = true;
@@ -33,8 +34,7 @@ function damage_entity(_target, _dmg) {
 
         // Only set brief invuln if no InvincibilityEffect is active
         if (!has_invuln_effect) {
-            _target.invuln = true;
-            _target.alarm[11] = 30; // Brief 0.5s invuln between hits
+            add_status_effect(other, new InvincibilityEffect(10))
         }
     }
 }

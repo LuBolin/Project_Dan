@@ -6,6 +6,7 @@ function init_player_revives(player){
     }
     
     player.revive_timer = 20
+    is_pause_for_revive = true;
 }
     
     //var frames = spr_character_lightning_survive;
@@ -18,7 +19,7 @@ function player_revive_anim(player) {
     if (player.revive_timer <= 0) {
         // Resume game
         player.hp = player.max_hp;
-        instance_activate_all();
+        is_pause_for_revive = false;
     }
     
     player.revive_timer -= 1;

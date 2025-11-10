@@ -211,19 +211,25 @@ function EnemyChargeEffect(_direction, _speed, _duration, _apply_stun = true) : 
     }
     
     on_step = function() {
-        // Apply knockback movement at constant speed
-        var kb_x = lengthdir_x(kb_speed, kb_direction);
-        var kb_y = lengthdir_y(kb_speed, kb_direction);
-
-        // Move the target with collision if it has the necessary properties
-        if (variable_instance_exists(target, "colliders")) { 
-            charge();
-
-        } else if (variable_instance_exists(target, "x") && variable_instance_exists(target, "y")) {
-            // Fallback: move without collision if no colliders defined
-            target.x += kb_x;
-            target.y += kb_y;
+        
+        if (variable_instance_exists(target, "is_charging") && target.is_charging) {
+            // Apply knockback movement at constant speed
+            var kb_x = lengthdir_x(kb_speed, kb_direction);
+            var kb_y = lengthdir_y(kb_speed, kb_direction);
+    
+            // Move the target with collision if it has the necessary properties
+            if (variable_instance_exists(target, "colliders")) { 
+                charge();
+    
+            } else if (variable_instance_exists(target, "x") && variable_instance_exists(target, "y")) {
+                // Fallback: move without collision if no colliders defined
+                target.x += kb_x;
+                target.y += kb_y;
+            }            
+        } else {
+            return false;
         }
+
     }
     
     on_remove = function() {
@@ -395,6 +401,8 @@ function BurnEffect(_duration, _damage_per_tick) : StatusEffect() constructor {
     }
 }
 
+
+// NOTE: PLEASE CHECK THE add_status function, I needed to make changes for elixir invincibility
 /// @function InvincibilityEffect(_duration)
 /// @description Makes the target invincible (immune to damage)
 function InvincibilityEffect(_duration) : StatusEffect() constructor {

@@ -10,8 +10,6 @@ function FireBoarRoamState(_entity, _duration = 2000, _is_timed = true) : RoamSt
 
 function FireBoarAlertState(_entity, _duration = undefined, _is_timed = false) : AlertState(_entity, _duration, _is_timed) constructor {
     on_enter = function() {
-        charge = false;
-        
         with (entity) {
             // Creates the '!' pop up to indicate the enemy has detected the player
             instance_create_layer(x, y - sprite_height / 2 - 10, "Effects", obj_enemy_alert_popup);

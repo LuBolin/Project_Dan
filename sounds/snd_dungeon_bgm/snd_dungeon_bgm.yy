@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":68.91102,
   "exportDir":"",
   "name":"snd_dungeon_bgm",
   "parent":{

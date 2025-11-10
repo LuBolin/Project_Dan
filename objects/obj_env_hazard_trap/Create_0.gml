@@ -18,10 +18,14 @@ function lava_attack() {
 function spawn_hazard() {
     var telegraphing = instance_create_layer(x, y, "Instances", obj_telegraph_attack); 
     if (instance_exists(telegraphing)) { 
-        telegraphing.init_telegraph_attack(lava_attack, c_yellow, 6);
+        telegraphing.init_telegraph_attack(lava_attack, c_yellow, num_telegraph_blinks);
     } else {
         show_debug_message("ERROR: Telegraphing failed due to invalid spawn coordinates!") 
     }
 }
 
-spawn_cd = 0;
+if (is_timer_offset_randomized) {
+    spawn_cd = irandom(spawn_freq);
+} else {
+    spawn_cd = 0;
+}

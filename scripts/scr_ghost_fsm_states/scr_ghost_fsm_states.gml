@@ -4,8 +4,12 @@
 function GhostAlertState(_entity, _duration = undefined, _is_timed = false) : AlertState(_entity, _duration, _is_timed) constructor {
     id = STATES.ALERT;
 
-    on_timeout = function() {
-        entity.changeState(STATES.CHASE);
+    on_enter = function() {
+        with (entity) { 
+            instance_create_layer(x, y - sprite_height / 2 - 10, "Effects", obj_enemy_alert_popup);
+            changeState(STATES.CHASE);
+        }
+
     }
 }
 
@@ -16,8 +20,11 @@ function GhostChaseState(_entity, _duration = 3000, _is_timed = true) : ChaseSta
     _range_units = (variable_instance_exists(entity, "attack_range_units") && is_real(entity.attack_range_units))
         ? entity.attack_range_units : 4; // default 4 units
     _shoot_range_px = _range_units * global.UNIT_LENGTH;
-
-
+    
+    on_enter = function() {
+        remaining_time = duration;
+    }
+    
     on_step = function() {
         // Safety check: ensure entity still exists
         if (!instance_exists(entity)) {
@@ -46,8 +53,6 @@ function GhostChaseState(_entity, _duration = 3000, _is_timed = true) : ChaseSta
 
     }
 
-	
-    
 	on_timeout = function() {
         entity.changeState(STATES.ROAM);
     }
@@ -60,7 +65,7 @@ function GhostChaseState(_entity, _duration = 3000, _is_timed = true) : ChaseSta
 
 /// Stands still (no movement here), after a brief wind-up (duration frames), 
 /// fires once at player_last_known_ then returns to CHASE
-function GhostAttackState(_entity, _duration = 800, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
+function GhostAttackState(_entity, _duration = 100, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.ATTACK;
 
     _tx = undefined;

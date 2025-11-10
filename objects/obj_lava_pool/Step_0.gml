@@ -56,12 +56,15 @@ if (do_damage) {
     for (var j = 0; j < array_length(entities_to_check); j++) {
         var ent = entities_to_check[j];
         if (!instance_exists(ent)) continue;
-
-        if (object_is_ancestor(ent.object_index, obj_enemy_abstract) && (creator.object_index == obj_player || creator.object_index == obj_clone)) {
-            with (ent) {
-                curr_state.player_interact()
-            }
+        
+        if (!is_undefined(creator)) {
+            if (object_is_ancestor(ent.object_index, obj_enemy_abstract) && (creator.object_index == obj_player || creator.object_index == obj_clone)) {
+                with (ent) {
+                    curr_state.player_interact()
+                }
+            }            
         }
+
         damage_entity(ent, damage_per_tick);
         add_status_effect(ent, new BurnEffect(burn_duration, burn_damage));
     }

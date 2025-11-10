@@ -305,10 +305,11 @@ function ProjectileLava() : ProjectileBase() constructor {
                 // Spawn lava pool at target location
                 projectile_inst.spawned_pool = true;
                 var lava = instance_create_layer(projectile_inst.target_x, projectile_inst.target_y, "Instances", obj_lava_pool);
-                if (instance_exists(lava) && projectile_inst.creator == obj_player) {
+                if (instance_exists(lava) && (projectile_inst.creator == obj_player || projectile_inst.creator == obj_clone)) {
                     lava.damage_enemies = true;
                     lava.damage_player = false;
                 }
+                lava.creator = projectile_inst.creator;
                 instance_destroy(projectile_inst);
             } else {
                 // Adjust direction towards target with smooth homing
@@ -340,10 +341,11 @@ function ProjectileLava() : ProjectileBase() constructor {
 
         // Spawn lava pool at impact location
         var lava = instance_create_layer(projectile_inst.x, projectile_inst.y, "Instances", obj_lava_pool);
-        if (instance_exists(lava) && projectile_inst.creator == obj_player) {
+        if (instance_exists(lava) && (projectile_inst.creator == obj_player || projectile_inst.creator == obj_clone)) {
             lava.damage_enemies = true;
             lava.damage_player = false;
         }
+        lava.creator = projectile_inst.creator;
         instance_destroy(projectile_inst);
     }
 

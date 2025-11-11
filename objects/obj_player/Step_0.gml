@@ -34,10 +34,19 @@ if (hp <= 0) {
     }
     
     global.player_death_inventory = death_inventory;
-    
-    // Create death screen (persistent so it stays across room transitions)
-    if (!instance_exists(obj_death_screen)) {
-        instance_create_depth(0, 0, -9999, obj_death_screen);
+    global.player_death_sel_slot = sel_slot; // Store selected slot for boss retry
+
+    // Check if player died in final boss room - show retry screen instead
+    if (room == Level_FinalBoss) {
+        // Create boss retry screen instead of normal death screen
+        if (!instance_exists(obj_boss_retry_screen)) {
+            instance_create_depth(0, 0, -9999, obj_boss_retry_screen);
+        }
+    } else {
+        // Create death screen (persistent so it stays across room transitions)
+        if (!instance_exists(obj_death_screen)) {
+            instance_create_depth(0, 0, -9999, obj_death_screen);
+        }
     }
 
     // Make player non-persistent and destroy

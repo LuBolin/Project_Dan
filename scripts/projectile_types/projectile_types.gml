@@ -974,9 +974,8 @@ function ProjectileCreation() : ProjectileBase() constructor {
     life_steps = 1;  // Destroy immediately after dash
     kb_speed = 12;  // Dash speed (pixels per frame) - same as Air
     kb_distance = global.UNIT_LENGTH * 3.5;  // Total dash distance (2 units) - same as Air
-    dash_duration = 10;
     dash_duration_seconds = 0.16;  // Dash duration in seconds
-    //dash_duration = dash_duration_seconds * game_get_speed(gamespeed_fps);  // Convert to frames
+    dash_duration = dash_duration_seconds * game_get_speed(gamespeed_fps);  // Convert to frames
     sprite_index = spr_wind_gust; // Reuse wind gust sprite for dash effect
     scale = 0.8;  // Small visual effect during dash
     sfx_fire = undefined;

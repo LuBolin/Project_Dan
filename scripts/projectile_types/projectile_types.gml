@@ -876,6 +876,12 @@ function ProjectileHurricane() : ProjectileBase() constructor {
         projectile_inst.aoe_radius = (base_diam * projectile_inst.visual_scale) * 0.5;
     }
 
+    on_wall_hit = function(projectile_inst) {
+        // Stop in place instead of being destroyed
+        projectile_inst.speed = 0;
+        projectile_inst.direction = 0;
+    }
+
     on_step = function(projectile_inst) {
         // If scale changes dynamically, recompute (else comment out)
         var bw = sprite_get_bbox_right(sprite_index) - sprite_get_bbox_left(sprite_index);

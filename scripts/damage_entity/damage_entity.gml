@@ -34,7 +34,7 @@ function damage_entity(_target, _dmg) {
 
         // Only set brief invuln if no InvincibilityEffect is active
         if (!has_invuln_effect) {
-            add_status_effect(other, new InvincibilityEffect(10))
+            add_status_effect(other, new InvincibilityEffect(20)) // 20 frames (~0.33 seconds at 60 FPS)
         }
     }
 }

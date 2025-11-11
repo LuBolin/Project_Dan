@@ -285,18 +285,64 @@ for (var t = 0; t < array_length(tier_elements); t++) {
     }
 }
 show_debug_message(available_elements)
+
+// Helper function to check if an element can create valid crafts with equipped elements
+function can_create_valid_craft(_element_name, _equipped_gourds) {
+    // Check all 3 combinations of new element + each equipped element
+    for (var i = 0; i < array_length(_equipped_gourds); i++) {
+        var equipped_name = _equipped_gourds[i].name;
+        var recipe = find_recipe_by_ingredients(global.recipe_tree, _element_name, equipped_name);
+        if (recipe != noone) {
+            return true; // Found at least one valid craft
+        }
+    }
+    return false; // No valid crafts found
+}
+
 // Pick random element from available (non-equipped) elements
 if (array_length(available_elements) > 0) {
-    var random_index = irandom(array_length(available_elements) - 1);
-    show_debug_message(random_index);
-    new_element = get_gourd_constructor_by_name(available_elements[random_index]);
-    show_debug_message("Selected new element: " + available_elements[random_index]);
+    var selected_element_name = "";
+    var max_attempts = 10; // Prevent infinite loop
+    var attempt = 0;
+    var found_element = false;
+
+    show_debug_message("=== ELEMENT SELECTION START ===");
+    show_debug_message("Available elements pool: " + string(available_elements));
+    show_debug_message("Equipped elements: [" + equipped_gourds[0].name + ", " + equipped_gourds[1].name + ", " + equipped_gourds[2].name + "]");
+
+    // Step 1: Filter available_elements to only those that can craft with equipped elements
+    var craftable_elements = [];
+    for (var i = 0; i < array_length(available_elements); i++) {
+        var elem_name = available_elements[i];
+        if (can_create_valid_craft(elem_name, equipped_gourds)) {
+            array_push(craftable_elements, elem_name);
+        }
+    }
+
+    show_debug_message("Craftable elements (can make recipes with equipped): " + string(craftable_elements));
+
+    // Step 2: Pick element based on whether we have craftable options
+    if (array_length(craftable_elements) > 0) {
+        // We have elements that can craft - pick randomly from craftable elements
+        var random_index = irandom(array_length(craftable_elements) - 1);
+        selected_element_name = craftable_elements[random_index];
+        show_debug_message(">>> SELECTED FROM CRAFTABLE: " + selected_element_name + " <<<");
+    } else {
+        // No craftable elements available - pick randomly from all available
+        var random_index = irandom(array_length(available_elements) - 1);
+        selected_element_name = available_elements[random_index];
+        show_debug_message(">>> NO CRAFTABLE ELEMENTS - SELECTED RANDOM: " + selected_element_name + " <<<");
+    }
+
+    show_debug_message("=== FINAL ELEMENT: " + selected_element_name + " ===");
+
+    new_element = get_gourd_constructor_by_name(selected_element_name);
     array_push(global.prev_received_elements, new_element.name);
-    
+
     // Find recipe ID for this element
     var recipe_id = undefined;
     for (var i = 0; i < array_length(json_data.recipes); i++) {
-        if (json_data.recipes[i].result == available_elements[random_index]) {
+        if (json_data.recipes[i].result == selected_element_name) {
             recipe_id = json_data.recipes[i].id;
             break;
         }

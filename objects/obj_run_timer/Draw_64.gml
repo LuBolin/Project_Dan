@@ -21,8 +21,11 @@ var time_string = minutes_str + ":" + seconds_str;
 var font_scale = 0.85;
 
 // Calculate position (left of pause button)
-var text_w = string_width(time_string) * font_scale;
-var text_h = string_height(time_string) * font_scale;
+// Get base text dimensions then scale them
+var base_text_w = string_width(time_string);
+var base_text_h = string_height(time_string);
+var text_w = base_text_w * font_scale;
+var text_h = base_text_h * font_scale;
 var box_w = text_w + padding * 2;
 var box_h = text_h + padding * 2;
 

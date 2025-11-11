@@ -19,4 +19,4 @@ col_border = make_color_rgb(150, 120, 90);
 col_text = c_white;
 
 // Padding
-padding = 8;
+padding = 6;

@@ -102,9 +102,9 @@ draw_set_alpha(1);
 // TODO: Comment out before distribution
 var shortcuts_padding = 10;
 var shortcuts_x = gui_width - 220 - shortcuts_padding;
-var shortcuts_y = gui_height - 120 - shortcuts_padding;
+var shortcuts_y = gui_height - 150 - shortcuts_padding;
 var shortcuts_width = 220;
-var shortcuts_height = 120;
+var shortcuts_height = 150;
 
 // Draw shortcuts box background
 draw_set_color(make_color_rgb(20, 20, 30));
@@ -134,6 +134,8 @@ text_y += line_height;
 draw_text(text_x, text_y, "O - Boar Miniboss");
 text_y += line_height;
 draw_text(text_x, text_y, "B - Tree Miniboss");
+text_y += line_height;
+draw_text(text_x, text_y, "T - Test Uncraftable");
 text_y += line_height + 4;
 draw_text(text_x, text_y, "H - Toggle Hitboxes");
 text_y += line_height;

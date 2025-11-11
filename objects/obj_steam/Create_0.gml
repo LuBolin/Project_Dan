@@ -13,7 +13,7 @@ image_xscale = 2.6;  // increased by 30%
 image_yscale = 2.6;  // increased by 30%
 
 // Collision radius for damage (matches the actual sprite visual size, not oversized)
-collision_radius = 83; // pixels - increased by 30% (was 64)
+collision_radius = 110; // pixels - increased by 30% (was 64). Now increased from 83 to 110
 
 // Lifespan: 5 seconds total
 life_duration = game_get_speed(gamespeed_fps) * 5;

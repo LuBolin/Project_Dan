@@ -363,12 +363,12 @@ col_tooltip_text = c_white;
 
 tips_array = [
     "Tip: Drag elements to move them! Inventory -> Alchemy. Alchemy -> Inventory",
-    "Tip: Elements in the same tree height mix well!",
+    "Tip: Elements at the same tree height mix well!",
     "Tip: Must keep synthesizing until I reach the top",
-    "Fact: The monsters can't stop me. Until I get that Elixir, my quest will never end.",
+    "Fact: Until I get that Elixir, my quest will never end.",
     "Tip: Elixir. Elixir. Elixir.",
     "Fact: Death cannot stop me. I will get the Elixir.",
-    "Question: Did you ever have a goal so grand, that you would do literally anything to achieve it? I do"
+    "Tip: Successful synthesis tends to only occur for Elements at the same tree height"
 ]
 
 current_tip = tips_array[0];

@@ -182,6 +182,7 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
             var steam = instance_create_layer(entity.x, entity.y, "Instances", obj_steam);
             steam.owner = entity;
             steam.damage_enemies = false;
+            steam.collision_radius = 83;
             steam_attack_cd_timer = steam_attack_freq;
         }
         

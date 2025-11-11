@@ -78,16 +78,56 @@ function advance_level_progress() {
     if (global.level_progress == 1) {
         // Ensures that we do not face repeat levels back-to-back
         
+        
         var easy_levels = [Level1, Level2];
         var medium_levels = [Level3, Level4, Level5];
         var hard_levels = [Level6, Level7];
         
+        /// @function weighted_pick(arr)
+       /// Picks a value from an array of {level, weight} pairs.
+       function weighted_pick(arr)
+       {
+           var total = 0;
+           for (var i = 0; i < array_length(arr); i++) {
+               total += arr[i][1];
+           }
+       
+           var roll = random(total);
+           var running = 0;
+       
+           for (var i = 0; i < array_length(arr); i++) {
+               running += arr[i][1];
+               if (roll <= running) return arr[i][0];
+           }
+        }
+        
+        function build_weighted_list(group) {
+            var result = [];
+
+            for (var i = 0; i < array_length(group); i++) {
+                var lvl = group[i];
+                var used_prev = false;
+                for (var j = 0; j < array_length(global.level_order); j +=1 ) {
+                    if (global.level_order[j] == lvl) {
+                        used_prev = true;
+                        break;
+                    }
+                }
+                var weight = used_prev ? 1 : 3;
+                array_push(result, [lvl, weight]);
+            }
+            return result;
+        }
+            
+        easy_levels = build_weighted_list(easy_levels);
+        medium_levels = build_weighted_list(medium_levels);
+        hard_levels = build_weighted_list(hard_levels);
+        
         var selected = []
         
-        array_push(selected, easy_levels[irandom(array_length(easy_levels) - 1)]);
-        array_push(selected, medium_levels[irandom(array_length(medium_levels) - 1)])
-        array_push(selected, hard_levels[irandom(array_length(hard_levels) - 1)]);
-
+        array_push(selected, weighted_pick(easy_levels));
+        array_push(selected, weighted_pick(medium_levels));
+        array_push(selected, weighted_pick(hard_levels));
         
         global.level_order = selected;
     }

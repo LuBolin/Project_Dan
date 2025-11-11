@@ -131,8 +131,8 @@ function ProjectileAir(_is_invuln = true, _dash_speed = 12, _dash_duration = 10)
             add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
 
             if (is_invuln) { 
-                // Make player invincible during dash + 0.2 seconds after
-                var invuln_time = 0.2; // seconds
+                // Make player invincible during dash + 0.6 seconds after
+                var invuln_time = 0.6; // seconds
                 var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
                 add_status_effect(player, new InvincibilityEffect(invuln_duration));
             }
@@ -209,8 +209,8 @@ function ProjectilEnemyAir(_is_invuln = true, _dash_distance = 128, _dash_durati
             
 
                 if (is_invuln) { 
-                    // Make player invincible during dash + 0.2 seconds after
-                    var invuln_time = 0.2; // seconds
+                    // Make player invincible during dash + 0.6 seconds after
+                    var invuln_time = 0.6; // seconds
                     var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
                     add_status_effect(player, new InvincibilityEffect(invuln_duration));
                 }
@@ -486,7 +486,7 @@ function ProjectileCurrent() : ProjectileBase() constructor {
             add_status_effect(player, new KnockbackEffect(dash_dir, kb_speed, dash_duration, false));
 
             // Make player invincible during dash + 0.2 seconds after
-            var invuln_time = 0.2; // seconds
+            var invuln_time = 0.6; // seconds
             var invuln_duration = dash_duration + (invuln_time * game_get_speed(gamespeed_fps));
             add_status_effect(player, new InvincibilityEffect(invuln_duration));
 
@@ -798,7 +798,7 @@ function ProjectilePlant() : ProjectileBase() constructor {
 
         // Short invuln only for player
         if (user.object_index == obj_player) {
-            var invuln_time_seconds = 0.15;
+            var invuln_time_seconds = 0.2;
             var invuln_duration = (dash_duration_seconds + invuln_time_seconds) * game_get_speed(gamespeed_fps);
             add_status_effect(user, new InvincibilityEffect(invuln_duration));
         }

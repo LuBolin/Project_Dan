@@ -1,5 +1,6 @@
 function MiniBossTreeRoamState(_entity, _duration = undefined, _is_timed = false) : RoamState(_entity, _duration, _is_timed) constructor {
-
+    
+        
     on_enter = function() {
         create_env_hazard(obj_mud_pool, 5, true, false);
         entity.changeState(STATES.ATTACK);
@@ -8,13 +9,23 @@ function MiniBossTreeRoamState(_entity, _duration = undefined, _is_timed = false
 
 function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : State(_entity, _duration, _is_timed) constructor {
     id = STATES.CHASE;
+    is_alternating_enemy_spawn = false;
+    
+    is_healing = false;
+    heal_pulse_time = 0;
+    heal_pulse_speed = 0.05; // smaller = slower pulse
+    heal_blend = c_white;
     
     on_enter = function() {
         enemy_count = 0;
         
         remaining_time = duration;
+        
+        is_alternating_enemy_spawn = !is_alternating_enemy_spawn
+        
         // Create a new list
         enemies = ds_list_create();
+        is_healing = false;
         
         // Loop through all instances of obj_enemy (example)
         with (obj_enemy_abstract) {
@@ -24,8 +35,7 @@ function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : S
             other.enemy_count += 1
         }
         
-        // TODO: Make the irandom not random and do this on a timer
-        if (enemy_count <= 4 && instance_exists(obj_player) && (obj_player.hp >= 6 || entity.hp <= 20) && irandom(1) == 1) {
+        if (enemy_count <= 4 && instance_exists(obj_player) && (obj_player.hp >= 6 || entity.hp <= 20) && is_alternating_enemy_spawn) {
             spawn_more_enemies();
         }
         
@@ -35,18 +45,42 @@ function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : S
             if (instance_exists(boss_plant_pool)) {
                 boss_plant_pool.heal_enemies = true;
                 boss_plant_pool.life_duration_seconds = 16;
+                is_healing = true;
             }
-            ds_list_destroy(enemies)           
+            ds_list_destroy(enemies)
+
+                       
         } else {
             ds_list_destroy(enemies)
             entity.changeState(STATES.ATTACK);
         }
         
-        
-        
+    }
+    
+    on_step = function() {
+        if (is_healing) {
+            heal_pulse_time += heal_pulse_speed;
+            
+            // Make value oscillate between 0 and 1
+            var t = (sin(heal_pulse_time) + 1) * 0.5;
+            
+            // Blend between normal and green
+            heal_blend = merge_color(c_white, c_lime, t);
+        }
     }
 
+    draw = function() {
+        if (is_healing) {
+            with (entity) { 
+                image_blend = other.heal_blend;
+                draw_self();
+            }
+        }
+    }
+    
     on_timeout = function() {
+        is_healing = false;
+        heal_blend = c_white;
         entity.changeState(STATES.ATTACK);
     }
 }

@@ -17,16 +17,20 @@ seconds_str = string_replace_all(seconds_str, " ", "0");
 
 var time_string = minutes_str + ":" + seconds_str;
 
+// Use smaller font scale for timer
+var font_scale = 0.85;
+
 // Calculate position (left of pause button)
-var text_w = string_width(time_string);
-var text_h = string_height(time_string);
+var text_w = string_width(time_string) * font_scale;
+var text_h = string_height(time_string) * font_scale;
 var box_w = text_w + padding * 2;
 var box_h = text_h + padding * 2;
 
 // Position: top-right, with gap before pause button
+// Align top edge with pause button (Y=16)
 var pause_button_left = gui_w - 120 - 16; // Pause button is 120px wide + 16px margin
 display_x = pause_button_left - box_w - 10; // 10px gap between timer and pause button
-display_y = 16; // Same Y as pause button
+display_y = 16; // Same Y as pause button (top edge aligned)
 
 // Draw background
 draw_set_alpha(0.8);
@@ -38,11 +42,11 @@ draw_set_alpha(1);
 draw_set_color(col_border);
 draw_rectangle(display_x, display_y, display_x + box_w, display_y + box_h, true);
 
-// Draw time text
+// Draw time text with reduced font size
 draw_set_color(col_text);
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
-draw_text(display_x + box_w / 2, display_y + box_h / 2, time_string);
+draw_text_transformed(display_x + box_w / 2, display_y + box_h / 2, time_string, font_scale, font_scale, 0);
 
 // Reset draw settings
 draw_set_halign(fa_left);

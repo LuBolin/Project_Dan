@@ -147,8 +147,8 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
             if (!has_health_dropped) {
                 var boss_plant_pool = instance_create_layer(entity.x, entity.y, "Instances", obj_plant);
                 if (instance_exists(boss_plant_pool)) {
-                    
-                    // Lifespan: 8 seconds total
+
+                    // Lifespan: 12 seconds total
                     boss_plant_pool.life_duration_seconds = 12;
                     boss_plant_pool.life_duration = boss_plant_pool.life_duration_seconds * game_get_speed(gamespeed_fps);
                     boss_plant_pool.life_timer = boss_plant_pool.life_duration;

@@ -9,7 +9,7 @@ if (!audio_is_playing(snd_dungeon_bgm)) {
 }
 
 // Debug settings
-global.debug_draw_collisions = true;
+global.debug_draw_collisions = false; // Toggle with H key during gameplay
 
 // Create run timer if it doesn't exist
 if (!instance_exists(obj_run_timer)) {

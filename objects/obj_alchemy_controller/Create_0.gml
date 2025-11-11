@@ -302,12 +302,15 @@ if (array_length(available_elements) > 0) {
         }
     }
     
-    // Mark as discovered (but not crafted) using recipe ID
+    // Mark as discovered using recipe ID (keep crafted status if already crafted)
     if (recipe_id != undefined) {
         var recipe_node = global.recipe_tree[$ recipe_id];
         if (!is_undefined(recipe_node) && recipe_node != noone) {
             recipe_node.discovered = true;
-            recipe_node.crafted = false;
+            // Only set crafted to false if it wasn't already true (preserve previously crafted recipes)
+            if (!recipe_node.crafted) {
+                recipe_node.crafted = false;
+            }
         }
     }
 } else {
@@ -326,12 +329,15 @@ if (array_length(available_elements) > 0) {
             }
         }
         
-        // Mark as discovered (but not crafted) using recipe ID
+        // Mark as discovered using recipe ID (keep crafted status if already crafted)
         if (recipe_id != undefined) {
             var recipe_node = global.recipe_tree[$ recipe_id];
             if (!is_undefined(recipe_node) && recipe_node != noone) {
                 recipe_node.discovered = true;
-                recipe_node.crafted = false;
+                // Only set crafted to false if it wasn't already true (preserve previously crafted recipes)
+                if (!recipe_node.crafted) {
+                    recipe_node.crafted = false;
+                }
             }
         }
     }

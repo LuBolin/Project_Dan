@@ -97,3 +97,50 @@ if (show_buttons || transitioning) {
 
 // Reset draw settings
 draw_set_alpha(1);
+
+// DEBUG: Draw shortcuts textbox in bottom right corner
+// TODO: Comment out before distribution
+var shortcuts_padding = 10;
+var shortcuts_x = gui_width - 220 - shortcuts_padding;
+var shortcuts_y = gui_height - 120 - shortcuts_padding;
+var shortcuts_width = 220;
+var shortcuts_height = 120;
+
+// Draw shortcuts box background
+draw_set_color(make_color_rgb(20, 20, 30));
+draw_set_alpha(0.9);
+draw_rectangle(shortcuts_x, shortcuts_y, shortcuts_x + shortcuts_width, shortcuts_y + shortcuts_height, false);
+
+// Draw shortcuts box border
+draw_set_color(make_color_rgb(100, 100, 120));
+draw_set_alpha(1);
+draw_rectangle(shortcuts_x, shortcuts_y, shortcuts_x + shortcuts_width, shortcuts_y + shortcuts_height, true);
+
+// Draw shortcuts text
+draw_set_color(c_white);
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);
+draw_set_font(-1);
+
+var text_x = shortcuts_x + 8;
+var text_y = shortcuts_y + 8;
+var line_height = 14;
+
+draw_text(text_x, text_y, "Shortcuts (Debug):");
+text_y += line_height + 4;
+draw_set_color(make_color_rgb(200, 200, 200));
+draw_text(text_x, text_y, "P - Final Boss");
+text_y += line_height;
+draw_text(text_x, text_y, "O - Boar Miniboss");
+text_y += line_height;
+draw_text(text_x, text_y, "B - Tree Miniboss");
+text_y += line_height + 4;
+draw_text(text_x, text_y, "H - Toggle Hitboxes");
+text_y += line_height;
+draw_text(text_x, text_y, "    (in-game)");
+
+// Reset draw settings
+draw_set_color(c_white);
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);
+draw_set_alpha(1);

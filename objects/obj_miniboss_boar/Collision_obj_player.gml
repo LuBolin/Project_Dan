@@ -4,7 +4,10 @@ if (variable_instance_exists(other, "invuln") && other.invuln) {
     exit;
 }
 
-apply_knockback(self, other, 2, 40); // Knockback player
+if (!check_status_effects(self, "Knockback")) {
+    apply_knockback(self, other, 2, 40); // Knockback player
+}
+
 
 if (!pause || is_charging) {
 

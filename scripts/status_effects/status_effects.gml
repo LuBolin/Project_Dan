@@ -619,3 +619,16 @@ function clear_status_effects(_target) {
     _target.status_effects_list = [];
 }
 
+/// @function check_status_effect(_target)
+/// @description Check if entity has certain status effects
+function check_status_effects(_target, status_name) {
+    if (!instance_exists(_target)) return;
+    if (!variable_instance_exists(_target, "status_effects_list")) return;
+    var effects_arr = _target.status_effects_list;
+    for (var i = 0; i < array_length(effects_arr); i++) {
+        if (effects_arr[i].get_type() == status_name) {
+            return true;
+        }
+    }
+    return false;
+}

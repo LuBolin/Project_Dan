@@ -54,6 +54,7 @@
     {"id":{"name":"obj_aim_arrow","path":"objects/obj_aim_arrow/obj_aim_arrow.yy",},},
     {"id":{"name":"obj_alchemy_controller","path":"objects/obj_alchemy_controller/obj_alchemy_controller.yy",},},
     {"id":{"name":"obj_boar","path":"objects/obj_boar/obj_boar.yy",},},
+    {"id":{"name":"obj_boss_retry_screen","path":"objects/obj_boss_retry_screen/obj_boss_retry_screen.yy",},},
     {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},},
     {"id":{"name":"obj_chi","path":"objects/obj_chi/obj_chi.yy",},},
     {"id":{"name":"obj_clay_wall","path":"objects/obj_clay_wall/obj_clay_wall.yy",},},

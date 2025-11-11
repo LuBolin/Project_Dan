@@ -107,10 +107,11 @@ if (variable_global_exists("next_room_inv_names") && is_array(global.next_room_i
 
     global.next_room_inv_names = undefined;
     global.next_room_sel_slot = undefined;
+} else {
+    // Default selection if no override
+    self.sel_slot = 0;
+    self.equipped_element = inv[sel_slot];
 }
-
-self.sel_slot = 0;
-self.equipped_element = inv[sel_slot]
 
 alarm[0] = 10
 //var aim_arrow = instance_create_layer(x, y, layer, obj_aim_arrow);

@@ -1,3 +1,33 @@
+// Check if player is retrying the final boss fight
+if (room == Level_FinalBoss && variable_global_exists("boss_retry_inventory") && global.boss_retry_inventory != undefined) {
+    // Restore the inventory from the retry
+    inv = global.boss_retry_inventory;
+
+    // Convert Elixir back to Lightning for final boss (it was reverted on death)
+    for (var i = 0; i < array_length(inv); i++) {
+        var elem = inv[i];
+        if (is_struct(elem) && variable_struct_exists(elem, "name") && elem.name == "Elixir") {
+            inv[i] = gourd_create(GourdLightning);
+            show_debug_message("Boss retry: Converted Elixir back to Lightning at slot " + string(i));
+        }
+    }
+
+    // Restore the selected slot
+    if (variable_global_exists("boss_retry_sel_slot")) {
+        sel_slot = global.boss_retry_sel_slot;
+        equipped_element = inv[sel_slot];
+        global.boss_retry_sel_slot = undefined;
+    }
+
+    // Restore full HP for retry
+    hp = max_hp;
+
+    // Clear the retry inventory flag
+    global.boss_retry_inventory = undefined;
+
+    show_debug_message("Boss retry: Inventory restored with " + string(array_length(inv)) + " elements, slot " + string(sel_slot));
+}
+
 // Reinitialize collision layer for this room (important for persistent player)
 colliders = [layer_tilemap_get_id("Tile_Collision"), obj_clay_wall];
 

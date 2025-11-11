@@ -31,6 +31,7 @@
   "ResourceOrderSettings":[
     {"name":"obj_alchemy_controller","order":1,"path":"objects/obj_alchemy_controller/obj_alchemy_controller.yy",},
     {"name":"obj_boar","order":2,"path":"objects/obj_boar/obj_boar.yy",},
+    {"name":"obj_boss_retry_screen","order":14,"path":"objects/obj_boss_retry_screen/obj_boss_retry_screen.yy",},
     {"name":"obj_chi","order":12,"path":"objects/obj_chi/obj_chi.yy",},
     {"name":"obj_clay_wall","order":4,"path":"objects/obj_clay_wall/obj_clay_wall.yy",},
     {"name":"obj_clone","order":5,"path":"objects/obj_clone/obj_clone.yy",},

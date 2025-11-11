@@ -1,4 +1,4 @@
-life_timer = game_get_speed(gamespeed_fps) * 6; // Same as cooldown (6 seconds)
+life_timer = game_get_speed(gamespeed_fps) * 5.4; // 10% reduction from 6 seconds
 
 // Initial placement damage (only when wall spawns)
 placement_damage = 2;

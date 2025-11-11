@@ -24,16 +24,27 @@ if (hp < max_hp) {
 
 // NO STATUS EFFECTS - Skip drawing status texts
 
-// Debug: Draw detection radius if enabled
-if (global.debug_draw_collisions) {
-    draw_set_color(make_color_rgb(255, 215, 0));
-    draw_set_alpha(0.2);
-    draw_circle(x, y, detection_radius, false);
-    draw_set_alpha(1);
-    draw_circle(x, y, detection_radius, true);
+// Always draw detection radius
+draw_set_color(make_color_rgb(255, 215, 0));
+draw_set_alpha(0.2);
+draw_circle(x, y, detection_radius, false);
+draw_set_alpha(1);
+draw_circle(x, y, detection_radius, true);
+draw_set_color(c_white);
+
+// Draw "ZZZ" if no enemy in radius
+if (!instance_exists(target_enemy)) {
     draw_set_color(c_white);
-    
-    // Draw target line
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_bottom);
+    var zzz_y = y - sprite_height / 2 - 12;
+    draw_text(x, zzz_y, "ZZZ");
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+}
+
+// Debug: Draw target line if enabled
+if (global.debug_draw_collisions) {
     if (instance_exists(target_enemy)) {
         draw_set_color(c_yellow);
         draw_line(x, y, target_enemy.x, target_enemy.y);

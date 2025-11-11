@@ -75,13 +75,14 @@ function ProjectileWaterBall() : ProjectileBase() constructor {
 	}
 }
 
-function ProjectileAir(_is_invuln = true, _dash_distance = 128, _dash_duration = 8) : ProjectileBase() constructor {
+// Note: Dash distance doesnt do anything. Whoops
+function ProjectileAir(_is_invuln = true, _dash_speed = 12, _dash_duration = 10) : ProjectileBase() constructor {
     name = "Air";
     speed = 0;  // Doesn't move
     damage = 0;
     life_steps = 1;  // Destroy immediately after dash
-    kb_speed = 12;  // Dash speed (pixels per frame) - slower for smoother dash
-    kb_distance = _dash_distance;  // Total dash distance (2 units)
+    kb_speed = _dash_speed;  // Dash speed (pixels per frame) - slower for smoother dash
+    //kb_distance = _dash_distance;  // Total dash distance (2 units)
     dash_duration = _dash_duration;  // 0.133 seconds at 60 FPS (96 / 12 = 8 frames)
     sprite_index = spr_wind_gust;
     scale = 0.8;  // Small visual effect
@@ -429,8 +430,8 @@ function ProjectileCurrent() : ProjectileBase() constructor {
     damage = 0;
     life_steps = 1;  // Destroy immediately after dash
     kb_speed = 12;  // Dash speed (pixels per frame)
-    kb_distance = 128;  // Total dash distance (2 units)
-    dash_duration = 8;  // Frames for dash
+    kb_distance = global.UNIT_LENGTH * 3.5;  // Total dash distance (2 units)
+    dash_duration = 10;  // Frames for dash
     sprite_index = spr_wind_gust; // this doesnt affect anything
     scale = 8;  // Small visual effect during dash
     sfx_fire = undefined;
@@ -748,10 +749,16 @@ function ProjectilePlant() : ProjectileBase() constructor {
     speed = 0;  // Doesn't move (player dashes instead)
     damage = 0;
     life_steps = 1;  // Destroy immediately after dash
-    kb_speed = 10;  // Dash speed (pixels per frame) - slightly slower than Air/Current
-    kb_distance = 96;  // Total dash distance (1.5 units) - shorter than Air/Current
-    dash_duration_seconds = 0.16;  // Dash duration in seconds (slightly longer for nature feel)
-    dash_duration = dash_duration_seconds * game_get_speed(gamespeed_fps);  // Convert to frames
+    kb_speed = 12; // I suggest we keep it the same throughout for consistency
+    //kb_speed = 10;  // Dash speed (pixels per frame) - slightly slower than Air/Current
+    
+    kb_distance = global.UNIT_LENGTH * 3.5;
+    dash_duration_seconds = 0.16;
+    dash_duration = 10;
+    
+    //kb_distance = 96;  // Total dash distance (1.5 units) - shorter than Air/Current
+    //dash_duration_seconds = 0.16;  // Dash duration in seconds (slightly longer for nature feel)
+    //dash_duration = dash_duration_seconds * game_get_speed(gamespeed_fps);  // Convert to frames
     sprite_index = spr_wind_gust; // Reuse wind gust sprite or create spr_plant_dash
     scale = 0.2;  // Small visual effect during dash
     sfx_fire = undefined;
@@ -966,9 +973,10 @@ function ProjectileCreation() : ProjectileBase() constructor {
     damage = 0;
     life_steps = 1;  // Destroy immediately after dash
     kb_speed = 12;  // Dash speed (pixels per frame) - same as Air
-    kb_distance = 128;  // Total dash distance (2 units) - same as Air
-    dash_duration_seconds = 0.16;  // Dash duration in seconds
-    dash_duration = dash_duration_seconds * game_get_speed(gamespeed_fps);  // Convert to frames
+    kb_distance = global.UNIT_LENGTH * 3.5;  // Total dash distance (2 units) - same as Air
+    dash_duration = 10;
+    //dash_duration_seconds = 0.16;  // Dash duration in seconds
+    //dash_duration = dash_duration_seconds * game_get_speed(gamespeed_fps);  // Convert to frames
     sprite_index = spr_wind_gust; // Reuse wind gust sprite for dash effect
     scale = 0.8;  // Small visual effect during dash
     sfx_fire = undefined;

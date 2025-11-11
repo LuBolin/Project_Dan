@@ -50,7 +50,7 @@ function get_random_level() {
     //var random_index = irandom(array_length(levels) - 1);
     
     // Levels are shuffled
-    var level = global.level_order[(global.level_progress - 1) % array_length(global.level_order)];
+    var level = global.level_order[(global.level_progress - 2) % array_length(global.level_order)];
     return level;
 }
 
@@ -84,11 +84,9 @@ function advance_level_progress() {
         
         var selected = []
         
-        array_push(selected, easy_levels[irandom(1)]);
-        array_shuffle(medium_levels);
-        array_push(selected, medium_levels[0]);
-        array_push(selected, medium_levels[1]);
-        array_push(selected, hard_levels[irandom(1)]);
+        array_push(selected, easy_levels[irandom(array_length(easy_levels) - 1)]);
+        array_push(selected, medium_levels[irandom(array_length(medium_levels) - 1)])
+        array_push(selected, hard_levels[irandom(array_length(hard_levels) - 1)]);
 
         
         global.level_order = selected;

@@ -58,6 +58,8 @@ if (do_damage) {
         if (!instance_exists(ent)) continue;
         
         if (!is_undefined(creator)) {
+            if (!instance_exists(obj_player)) continue;
+            if (!instance_exists(obj_clone)) continue;    
             if (object_is_ancestor(ent.object_index, obj_enemy_abstract) && (creator.object_index == obj_player || creator.object_index == obj_clone)) {
                 with (ent) {
                     curr_state.player_interact()

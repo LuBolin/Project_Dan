@@ -25,7 +25,10 @@ function if_death() {
     // Check for death
     if (hp <= 0) {
         instance_destroy();
-        instance_create_depth(x, y, 0, obj_chi);
+        
+        if (room != MiniBoss_Boar && room != MiniBoss_Tree && room != Level_FinalBoss) { 
+            instance_create_depth(x, y, 0, obj_chi);       
+        }
         exit;
     }
 }

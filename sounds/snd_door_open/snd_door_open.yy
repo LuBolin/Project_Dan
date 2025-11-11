@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":4.272018,
+  "duration":1.7520181,
   "exportDir":"",
   "name":"snd_door_open",
   "parent":{

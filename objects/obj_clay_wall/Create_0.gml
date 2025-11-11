@@ -38,3 +38,5 @@ with (obj_enemy_abstract) {
 // Visual scale (for center pieces)
 if (!variable_instance_exists(self, "image_xscale")) image_xscale = 1;
 if (!variable_instance_exists(self, "image_yscale")) image_yscale = 1;
+
+sfx_play(snd_clay, false);    

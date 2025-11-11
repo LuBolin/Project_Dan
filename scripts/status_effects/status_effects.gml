@@ -383,10 +383,15 @@ function BurnEffect(_duration, _damage_per_tick) : StatusEffect() constructor {
             tick_counter = 0;
             if (variable_instance_exists(target, "hp")) {
                 target.hp -= damage_per_tick;
+                if (instance_exists(obj_player) && target.object_index == obj_player){
+                    sfx_play(snd_burn, true);
+                } else {
+                    sfx_play(snd_burn, true);
+                }
                 // Visual feedback - orange/red flash for burn
                 if (variable_instance_exists(target, "image_blend")) {
                     target.image_blend = make_color_rgb(255, 100, 0); // Orange
-                }
+                } 
             }
         }
 
@@ -613,3 +618,4 @@ function clear_status_effects(_target) {
     }
     _target.status_effects_list = [];
 }
+

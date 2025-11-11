@@ -47,6 +47,7 @@ if (tick_counter >= tick_rate) {
                             // Visual feedback - green flash for healing
                             if (variable_instance_exists(self, "image_blend")) {
                                 image_blend = make_color_rgb(100, 255, 100); // Light green
+                                sfx_play(snd_heal, false, entity.object_index == obj_player ? 1 : 0.5);
                                 alarm[11] = 10; // Short flash duration
                             }
                             

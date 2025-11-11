@@ -1108,6 +1108,7 @@ function ProjectileLightningBeam() : ProjectileBase() constructor {
     end_y = 0;
 
     on_launch = function(projectile_inst) {
+        sfx_play(snd_lightning, false);
         projectile_inst.x = projectile_inst.creator.x;
         projectile_inst.y = projectile_inst.creator.y;
 

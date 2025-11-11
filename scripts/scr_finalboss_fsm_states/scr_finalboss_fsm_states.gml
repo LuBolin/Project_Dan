@@ -91,6 +91,7 @@ function FinalBossPhase_1(_entity, _duration = -1, _is_timed = false) : State(_e
             
             if (instance_exists(lava_telegraphing)) { 
                 lava_telegraphing.init_telegraph_attack(lava_attack_init);
+                sfx_play(snd_trap_activate, false);
             } else {
                 show_debug_message("ERROR: Telegraphing failed due to invalid spawn coordinates!")
             }

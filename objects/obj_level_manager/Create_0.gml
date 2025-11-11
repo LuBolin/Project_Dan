@@ -3,7 +3,7 @@ total_enemies = 0;
 current_kills = 0;
 required_kills = 0;
 kill_percentage = 0.6; // 10% requirement
-fox_spawn_prob = 0.5; 
+fox_spawn_prob = 0.4; 
 pathfinding_grid = mp_grid_create(0, 0, room_width/32, room_height/32, 32, 32);
 
 mp_grid_add_instances(pathfinding_grid, obj_pathfinding_coll, true)
@@ -68,13 +68,30 @@ function spawn_enemies_from_points() {
     var total_ratio = ratio.easy + ratio.medium + ratio.hard;
     var easy_count = round((enemy_count * ratio.easy) / total_ratio);
     
-    var is_fox_spawned = false;
-    if (random(100) / 100 < fox_spawn_prob) {
-        show_debug_message("FOX SPAWNED")
-        array_push(enemy_list, obj_fox);
-        is_fox_spawned = true;
+    
+    // =============== FOX SPAWNING ====================
+    var fox_spawn_points = []
+    
+    with (obj_fox_spawn) {
+        array_push(fox_spawn_points, id);
     }
     
+    for (var i = 0; i < array_length(fox_spawn_points); i += 1) {
+        if ((random(100) / 100) < fox_spawn_prob) {
+                    // Spawn enemy at spawn point
+            var fox = instance_create_depth(fox_spawn_points[i].x, fox_spawn_points[i].y, 0, obj_fox);
+
+            // Apply difficulty multipliers
+            if (instance_exists(fox)) {
+                fox.max_hp *= stat_multipliers.hp_multiplier;
+                fox.hp = fox.max_hp;
+                fox.move_speed_ups *= stat_multipliers.speed_multiplier;
+            }
+            show_debug_message("Fox Spawned!")
+            break;
+        }
+    }
+        
     var medium_count = round((enemy_count * ratio.medium) / total_ratio) //- (is_fox_spawned ? 1 : 0);
     var hard_count = enemy_count - easy_count - medium_count; // Remainder goes to hard
 

@@ -6,9 +6,9 @@ global.SFX_VOL = 1;
 
 sfxs_queue = []
 
-function play_sound(_snd, _play_if_alrdy_playing) {
+function play_sound(_snd, _play_if_alrdy_playing, _base_pitch = 1) {
     if (!array_contains(sfxs_queue, _snd)) {
-        array_push(sfxs_queue, [_snd, random_range(0.9, 1.1), _play_if_alrdy_playing])
+        array_push(sfxs_queue, [_snd, _base_pitch + random_range(-0.1, 0.1), _play_if_alrdy_playing])
     }
 }
 

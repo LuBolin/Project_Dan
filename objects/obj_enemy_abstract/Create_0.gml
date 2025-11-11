@@ -26,7 +26,7 @@ function if_death() {
     if (hp <= 0) {
         instance_destroy();
         
-        if (room != MiniBoss_Boar && room != MiniBoss_Tree && room != Level_FinalBoss) { 
+        if (instance_exists(obj_exit_dungeon_door) && obj_exit_dungeon_door.to_kill > 0) { 
             instance_create_depth(x, y, 0, obj_chi);       
         }
         exit;

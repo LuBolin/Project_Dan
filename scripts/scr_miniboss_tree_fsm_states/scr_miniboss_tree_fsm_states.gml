@@ -46,6 +46,7 @@ function MiniBossTreeChaseState(_entity, _duration = 8000, _is_timed = true) : S
                 boss_plant_pool.heal_enemies = true;
                 boss_plant_pool.life_duration_seconds = 16;
                 is_healing = true;
+                sfx_play(snd_miniboss_tree_heal, false);
             }
             ds_list_destroy(enemies)
 

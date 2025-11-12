@@ -61,15 +61,23 @@ function GourdSteam() : GourdBase() constructor
     
     use = function(_p) {
         if (can_use()) {
-            // Check if steam cloud already exists
-            if (!instance_exists(obj_steam)) {
+            // Check if steam cloud already exists for this player
+            var player_steam = noone;
+            with (obj_steam) {
+                if (owner == _p) {
+                    player_steam = id;
+                    break;
+                }
+            }
+
+            if (player_steam == noone) {
                 // Create steam cloud at player position
                 var steam = instance_create_layer(_p.x, _p.y, "Instances", obj_steam);
                 steam.owner = _p;
                 trigger_cd();
             } else {
-                // Refresh existing steam cloud duration
-                with (obj_steam) {
+                // Refresh existing steam cloud duration for this player
+                with (player_steam) {
                     life_timer = life_duration;
                 }
                 trigger_cd();

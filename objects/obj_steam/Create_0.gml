@@ -29,6 +29,7 @@ hit_cooldown_map = ds_map_create(); // enemy_id -> last_hit_time
 
 // Damage target configuration (like lava_pool)
 damage_enemies = true;  // Default: damage enemies (when created by player)
+damage_player = false;  // Default: don't damage player
 
 // Set depth so it renders above ground but below player/enemies
 depth = 100;

@@ -216,10 +216,10 @@ function EnemyChargeEffect(_direction, _speed, _duration, _apply_stun = true) : 
             // Apply knockback movement at constant speed
             var kb_x = lengthdir_x(kb_speed, kb_direction);
             var kb_y = lengthdir_y(kb_speed, kb_direction);
-    
+
             // Move the target with collision if it has the necessary properties
-            if (variable_instance_exists(target, "colliders")) { 
-                charge();
+            if (variable_instance_exists(target, "colliders")) {
+                charge(kb_x, kb_y);
     
             } else if (variable_instance_exists(target, "x") && variable_instance_exists(target, "y")) {
                 // Fallback: move without collision if no colliders defined
@@ -454,7 +454,7 @@ function InvincibilityEffect(_duration) : StatusEffect() constructor {
 
 /// @function InvincibilityEffect(_duration)
 /// @description Makes the target invincible (immune to damage)
-function ElixirInvincibilityEffect(_duration) : InvincibilityEffect() constructor {
+function ElixirInvincibilityEffect(_duration) : InvincibilityEffect(_duration) constructor {
     duration = _duration;
     stack_behavior = "refresh"; // Refresh duration if invincibility is reapplied
 

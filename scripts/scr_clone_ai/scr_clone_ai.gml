@@ -126,9 +126,8 @@ function clone_ai_attack_target(clone_instance) {
                         var steam = instance_create_layer(clone_instance.x, clone_instance.y, "Instances", obj_steam);
                         if (instance_exists(steam)) {
                             steam.owner = clone_instance;
-                            steam.damage_enemies = false; // Steam from clone should damage player/allies.
-                            //steam.damage_player = true;  // I disagree lol
-                            steam.damage_player = false;
+                            steam.damage_enemies = true; // Clone's steam should damage enemies (it's an ally)
+                            steam.damage_player = false; // Don't damage the player
                         }
                     } else {
                         // Refresh existing steam duration

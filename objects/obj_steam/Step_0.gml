@@ -34,40 +34,65 @@ if (tick_counter >= tick_rate) {
 
     var curr_time = current_time;
 
-    // Determine which entities to damage based on configuration
-    var target_object = damage_enemies ? obj_enemy_abstract : obj_player;
+    // Damage enemies if enabled
+    if (damage_enemies) {
+        var enemy_list = ds_list_create();
+        var num_enemies = collision_circle_list(x, y, collision_radius, obj_enemy_abstract, false, true, enemy_list, false);
 
-    // Use collision_circle_list for proper circular area detection
-    var enemy_list = ds_list_create();
-    var num_enemies = collision_circle_list(x, y, collision_radius, target_object, false, true, enemy_list, false);
+        // Process each enemy in the collision area
+        for (var i = 0; i < num_enemies; i++) {
+            var enemy = enemy_list[| i];
+            if (!instance_exists(enemy)) continue;
 
-    // Process each enemy in the collision area
-    for (var i = 0; i < num_enemies; i++) {
-        var enemy = enemy_list[| i];
-        if (!instance_exists(enemy)) continue;
-        
-        var enemy_id = enemy.id;
-        var last_hit_time = ds_map_find_value(hit_cooldown_map, enemy_id);
+            var enemy_id = enemy.id;
+            var last_hit_time = ds_map_find_value(hit_cooldown_map, enemy_id);
 
-        // If never hit or cooldown expired (0.5 seconds)
-        if (is_undefined(last_hit_time) || (curr_time - last_hit_time >= 500)) {
-            // Apply damage
-            damage_entity(enemy, damage_per_tick);
+            // If never hit or cooldown expired (0.5 seconds)
+            if (is_undefined(last_hit_time) || (curr_time - last_hit_time >= 500)) {
+                // Apply damage
+                damage_entity(enemy, damage_per_tick);
 
-            // Record hit time
-            ds_map_set(hit_cooldown_map, enemy_id, curr_time);
+                // Record hit time
+                ds_map_set(hit_cooldown_map, enemy_id, curr_time);
 
-            // Apply burn effect for 1 second
-            add_status_effect(enemy, new BurnEffect(game_get_speed(gamespeed_fps) * 1, damage_per_tick));
+                // Apply burn effect for 1 second
+                add_status_effect(enemy, new BurnEffect(game_get_speed(gamespeed_fps) * 1, damage_per_tick));
 
-            // Apply 20% slow effect for 1 second
-            add_status_effect(enemy, new SlowEffect(game_get_speed(gamespeed_fps) * 1, 0.2));
-            
-            show_debug_message("Steam damaged enemy " + string(enemy_id) + " at distance " + string(point_distance(x, y, enemy.x, enemy.y)));
+                // Apply 20% slow effect for 1 second
+                add_status_effect(enemy, new SlowEffect(game_get_speed(gamespeed_fps) * 1, 0.2));
+
+                show_debug_message("Steam damaged enemy " + string(enemy_id) + " at distance " + string(point_distance(x, y, enemy.x, enemy.y)));
+            }
         }
+
+        ds_list_destroy(enemy_list);
     }
 
-    ds_list_destroy(enemy_list);
+    // Damage player if enabled (e.g., when created by clone/enemy)
+    if (damage_player && instance_exists(obj_player)) {
+        var player_dist = point_distance(x, y, obj_player.x, obj_player.y);
+        if (player_dist <= collision_radius) {
+            var player_id = obj_player.id;
+            var last_hit_time = ds_map_find_value(hit_cooldown_map, player_id);
+
+            // If never hit or cooldown expired (0.5 seconds)
+            if (is_undefined(last_hit_time) || (curr_time - last_hit_time >= 500)) {
+                // Apply damage
+                damage_entity(obj_player, damage_per_tick);
+
+                // Record hit time
+                ds_map_set(hit_cooldown_map, player_id, curr_time);
+
+                // Apply burn effect for 1 second
+                add_status_effect(obj_player, new BurnEffect(game_get_speed(gamespeed_fps) * 1, damage_per_tick));
+
+                // Apply 20% slow effect for 1 second
+                add_status_effect(obj_player, new SlowEffect(game_get_speed(gamespeed_fps) * 1, 0.2));
+
+                show_debug_message("Steam damaged player at distance " + string(player_dist));
+            }
+        }
+    }
 
     // Clean up cooldown entries for dead enemies (only on damage ticks to avoid excessive checking)
     var keys_to_delete = ds_list_create();

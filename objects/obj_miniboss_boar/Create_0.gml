@@ -7,6 +7,7 @@ is_miniboss = true;
 // Scale up the sprite to 1.5x size
 image_xscale = 1.5;
 image_yscale = 1.5;
+sprite_face_dir = -1; // miniboss boar sprite faces left by default
 
 // Use custom Fire Boar states
 states_array[STATES.ROAM] = new FireBoarRoamState(self)

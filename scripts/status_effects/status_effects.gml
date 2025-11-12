@@ -137,6 +137,9 @@ function KnockbackEffect(_direction, _speed, _duration, _apply_stun = true) : St
     }
 
     on_step = function() {
+        // Mark this frame as forced motion (don’t flip on End Step)
+        target.moved_by_knockback = true;
+
         // Apply knockback movement at constant speed
         var kb_x = lengthdir_x(kb_speed, kb_direction);
         var kb_y = lengthdir_y(kb_speed, kb_direction);
@@ -200,7 +203,7 @@ function EnemyChargeEffect(_direction, _speed, _duration, _apply_stun = true) : 
                 if (!place_meeting(x + vel_hori, y + vel_vert , colliders)) {
                     x += vel_hori
                 } else if (!place_meeting(x - vel_hori, y + vel_vert, colliders)) {
-                    x -= vel_hori
+                    x -= vel_hori;
                 } else {
                     vel_vert = 0;   
                 }
@@ -211,6 +214,8 @@ function EnemyChargeEffect(_direction, _speed, _duration, _apply_stun = true) : 
     }
     
     on_step = function() {
+        // Mark this frame as forced motion (don’t flip on End Step)
+        target.moved_by_knockback = true;
         
         if (variable_instance_exists(target, "is_charging") && target.is_charging) {
             // Apply knockback movement at constant speed

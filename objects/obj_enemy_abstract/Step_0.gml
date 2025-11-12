@@ -3,6 +3,9 @@ update_status_effects(self);
 
 if_death();
 
+// Reset per-step knockback flag so only effects can set it this frame
+moved_by_knockback = false;
+
 if (!pause && !is_undefined(curr_state)) {
     curr_state.step();
 } else {

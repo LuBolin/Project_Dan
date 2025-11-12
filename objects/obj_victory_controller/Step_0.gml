@@ -127,8 +127,11 @@ switch (state) {
             // Clear mouse button state
             io_clear();
 
-            // Go to main menu
-            room_goto(MainMenu);
+            // Destroy this victory controller
+            instance_destroy();
+
+            // Create credits controller to show Star Wars-style credits
+            instance_create_depth(0, 0, -9999, obj_victory_credits);
         }
         break;
 }

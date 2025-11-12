@@ -72,8 +72,8 @@ if (tick_counter >= tick_rate) {
     if (damage_player && instance_exists(obj_player)) {
         var player_dist = point_distance(x, y, obj_player.x, obj_player.y);
         if (player_dist <= collision_radius) {
-            var player_id = obj_player.id;
-            var last_hit_time = ds_map_find_value(hit_cooldown_map, player_id);
+            var player_inst_id = obj_player.id;
+            var last_hit_time = ds_map_find_value(hit_cooldown_map, player_inst_id);
 
             // If never hit or cooldown expired (0.5 seconds)
             if (is_undefined(last_hit_time) || (curr_time - last_hit_time >= 500)) {
@@ -81,7 +81,7 @@ if (tick_counter >= tick_rate) {
                 damage_entity(obj_player, damage_per_tick);
 
                 // Record hit time
-                ds_map_set(hit_cooldown_map, player_id, curr_time);
+                ds_map_set(hit_cooldown_map, player_inst_id, curr_time);
 
                 // Apply burn effect for 1 second
                 add_status_effect(obj_player, new BurnEffect(game_get_speed(gamespeed_fps) * 1, damage_per_tick));

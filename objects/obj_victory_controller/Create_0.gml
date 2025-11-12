@@ -53,6 +53,11 @@ if (instance_exists(obj_player)) {
     player = obj_player;
 }
 
+// Stop the run timer when victory sequence starts
+if (instance_exists(obj_run_timer)) {
+    obj_run_timer.is_active = false;
+}
+
 // Animation control
 player_original_sprite = noone;
 player_original_blend = c_white;

@@ -1,6 +1,9 @@
 // Don't draw in main menu
 if (room == MainMenu) exit;
 
+// Don't draw during victory credits
+if (instance_exists(obj_victory_credits)) exit;
+
 var gui_w = display_get_gui_width();
 
 // Format time as MM:SS.DD (minutes, seconds with 2 decimals)

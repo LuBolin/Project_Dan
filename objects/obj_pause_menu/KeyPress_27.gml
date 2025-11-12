@@ -3,6 +3,9 @@
 // Don't pause in main menu
 if (room == MainMenu) exit;
 
+// Don't pause during victory credits
+if (instance_exists(obj_victory_credits)) exit;
+
 // Toggle pause state
 is_paused = !is_paused;
 

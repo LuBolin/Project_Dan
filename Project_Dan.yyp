@@ -101,6 +101,7 @@
     {"id":{"name":"obj_steam","path":"objects/obj_steam/obj_steam.yy",},},
     {"id":{"name":"obj_telegraph_attack","path":"objects/obj_telegraph_attack/obj_telegraph_attack.yy",},},
     {"id":{"name":"obj_victory_controller","path":"objects/obj_victory_controller/obj_victory_controller.yy",},},
+    {"id":{"name":"obj_victory_credits","path":"objects/obj_victory_credits/obj_victory_credits.yy",},},
     {"id":{"name":"obj_zombie","path":"objects/obj_zombie/obj_zombie.yy",},},
     {"id":{"name":"AlchemyRoom","path":"rooms/AlchemyRoom/AlchemyRoom.yy",},},
     {"id":{"name":"Level_FinalBoss","path":"rooms/Level_FinalBoss/Level_FinalBoss.yy",},},

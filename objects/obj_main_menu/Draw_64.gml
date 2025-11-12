@@ -10,7 +10,13 @@ draw_set_color(col_title);
 draw_set_alpha(title_alpha);
 
 // Use animated title position
-draw_text_transformed(center_x, title_y_current, "Dan 丹", 2, 2, 0);
+// draw_text_transformed(center_x, title_y_current, "Dan 丹", 2, 2, 0);
+// Draw logo sprite centered, scaled to GUI width
+var gw = display_get_gui_width();
+var sw = sprite_get_width(spr_title_logo);
+var target_w = clamp(gw * 0.5, 360, 800); // tune width as needed
+var logo_scale = target_w / max(1, sw) * 0.5;
+draw_sprite_ext(spr_title_logo, 0, center_x, title_y_current, logo_scale, logo_scale, 0, c_white, 1);
 
 // Reset alpha
 draw_set_alpha(1);

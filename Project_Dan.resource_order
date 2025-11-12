@@ -198,6 +198,7 @@
     {"name":"spr_steam","order":2,"path":"sprites/spr_steam/spr_steam.yy",},
     {"name":"spr_swap_instructions","order":4,"path":"sprites/spr_swap_instructions/spr_swap_instructions.yy",},
     {"name":"spr_taoist","order":7,"path":"sprites/spr_taoist/spr_taoist.yy",},
+    {"name":"spr_title_logo","order":11,"path":"sprites/spr_title_logo/spr_title_logo.yy",},
     {"name":"spr_tree_miniboss","order":15,"path":"sprites/spr_tree_miniboss/spr_tree_miniboss.yy",},
     {"name":"spr_water_ball_2","order":6,"path":"sprites/spr_water_ball_2/spr_water_ball_2.yy",},
     {"name":"spr_water_ball_old","order":27,"path":"sprites/spr_water_ball_old/spr_water_ball_old.yy",},

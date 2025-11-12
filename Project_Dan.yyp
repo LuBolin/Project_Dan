@@ -250,6 +250,7 @@
     {"id":{"name":"spr_swap_instructions","path":"sprites/spr_swap_instructions/spr_swap_instructions.yy",},},
     {"id":{"name":"spr_taoist","path":"sprites/spr_taoist/spr_taoist.yy",},},
     {"id":{"name":"spr_tileset_dungeon_new","path":"sprites/spr_tileset_dungeon_new/spr_tileset_dungeon_new.yy",},},
+    {"id":{"name":"spr_title_logo","path":"sprites/spr_title_logo/spr_title_logo.yy",},},
     {"id":{"name":"spr_tree_miniboss","path":"sprites/spr_tree_miniboss/spr_tree_miniboss.yy",},},
     {"id":{"name":"spr_water_ball_2","path":"sprites/spr_water_ball_2/spr_water_ball_2.yy",},},
     {"id":{"name":"spr_water_ball_old","path":"sprites/spr_water_ball_old/spr_water_ball_old.yy",},},

@@ -67,34 +67,6 @@ function spawn_enemies_from_points() {
     // Build distribution based on ratios
     var total_ratio = ratio.easy + ratio.medium + ratio.hard;
     var easy_count = round((enemy_count * ratio.easy) / total_ratio);
-    
-    
-    // =============== FOX SPAWNING ====================
-    var fox_spawn_points = []
-    
-    with (obj_fox_spawn) {
-        show_debug_message("I'm here!");
-        array_push(fox_spawn_points, id);
-    }
-    
-    for (var i = 0; i < array_length(fox_spawn_points); i += 1) {
-        var prob_roll = random(100) / 100;
-        if (prob_roll < fox_spawn_prob) {
-                    // Spawn enemy at spawn point
-            var spawn = fox_spawn_points[i];
-            var fox = instance_create_depth(spawn.x, spawn.y, 0, obj_fox);
-
-            // Apply difficulty multipliers
-            if (instance_exists(fox)) {
-                fox.max_hp *= stat_multipliers.hp_multiplier;
-                fox.hp = fox.max_hp;
-                fox.move_speed_ups *= stat_multipliers.speed_multiplier;
-            }
-            show_debug_message("Fox Spawned!")
-            break;
-        }
-    }
-        
     var medium_count = round((enemy_count * ratio.medium) / total_ratio) //- (is_fox_spawned ? 1 : 0);
     var hard_count = enemy_count - easy_count - medium_count; // Remainder goes to hard
 

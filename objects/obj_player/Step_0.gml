@@ -110,6 +110,9 @@ if (place_meeting(x, y + vel_vert, colliders)) {
 y += vel_vert;
 
 
+// Check if player is moving
+is_moving = (input_dirn_x != 0 || input_dirn_y != 0);
+
 // Update facing direction based on movement input (only when not attacking)
 // When attacking, facing_direction is set by Mouse_50.gml based on mouse position
 if (!is_attacking) {
@@ -154,8 +157,27 @@ if (is_attacking) {
         is_attacking = false;
         attack_frame = 0;
     }
+} else if (is_moving) {
+    // Walking animation
+    image_speed = walk_animation_speed;
+
+    if (facing_direction == "up") {
+        sprite_index = spr_walk_up;
+        image_xscale = abs(image_xscale); // Face forward
+    } else if (facing_direction == "down") {
+        sprite_index = spr_walk_down;
+        image_xscale = abs(image_xscale); // Face forward
+    } else if (facing_direction == "left") {
+        sprite_index = spr_walk_left;
+        image_xscale = abs(image_xscale); // Use dedicated left sprite
+    } else {
+        sprite_index = spr_walk_right;
+        image_xscale = abs(image_xscale); // Face right
+    }
 } else {
     // Idle animation
+    image_speed = 0; // Stop animation for idle
+
     if (facing_direction == "up") {
         sprite_index = spr_idle_up;
         image_xscale = abs(image_xscale); // Face forward

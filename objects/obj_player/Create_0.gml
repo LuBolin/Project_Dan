@@ -141,6 +141,12 @@ spr_idle_right = spr_character_still;
 spr_idle_up = spr_character_still_up;
 spr_idle_down = spr_character_still_down;
 
+// Character sprites - walking
+spr_walk_right = spr_character_walking_right;
+spr_walk_left = spr_character_walking_left;
+spr_walk_up = spr_character_walking_up;
+spr_walk_down = spr_character_walking_down;
+
 // Character sprites - attack
 spr_attack_right = spr_character_attack_right;
 spr_attack_left = spr_character_attack_left;
@@ -150,8 +156,10 @@ spr_attack_down = spr_character_attack_down;
 // Animation state
 facing_direction = "right"; // "up", "down", "left", "right"
 is_attacking = false;
+is_moving = false;
 attack_frame = 0;
 attack_animation_speed = 0.5; // frames per game frame
+walk_animation_speed = 0.2; // frames per game frame for walking
 // ==========================================================
 
 // For Health HUD

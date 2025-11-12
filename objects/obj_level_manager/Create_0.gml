@@ -73,13 +73,16 @@ function spawn_enemies_from_points() {
     var fox_spawn_points = []
     
     with (obj_fox_spawn) {
+        show_debug_message("I'm here!");
         array_push(fox_spawn_points, id);
     }
     
     for (var i = 0; i < array_length(fox_spawn_points); i += 1) {
-        if ((random(100) / 100) < fox_spawn_prob) {
+        var prob_roll = random(100) / 100;
+        if (prob_roll < fox_spawn_prob) {
                     // Spawn enemy at spawn point
-            var fox = instance_create_depth(fox_spawn_points[i].x, fox_spawn_points[i].y, 0, obj_fox);
+            var spawn = fox_spawn_points[i];
+            var fox = instance_create_depth(spawn.x, spawn.y, 0, obj_fox);
 
             // Apply difficulty multipliers
             if (instance_exists(fox)) {

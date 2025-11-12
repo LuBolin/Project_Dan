@@ -70,7 +70,7 @@ current_line = clamp(current_line, 0, max(0, array_length(dialog_lines) - 1));
 // Tune so whole anim lasts about desired_seconds
 var desired_seconds = 2.0;
 var frames = sprite_exists(player_cutscene_sprite) ? sprite_get_number(player_cutscene_sprite) : 1;
-player_cutscene_speed = frames > 0 ? (frames / (desired_seconds * room_speed)) : 0.1;
+player_cutscene_speed = frames > 0 ? (frames / (desired_seconds * game_get_speed(gamespeed_fps))) : 0.1;
 // manual override per sprite
 if (player_cutscene_sprite == spr_character_lightning_death)  player_cutscene_speed = 0.10;
 if (player_cutscene_sprite == spr_character_lightning_survive) player_cutscene_speed = 0.12;

@@ -11,7 +11,7 @@ function init_player_revives(player){
     
     //var frames = spr_character_lightning_survive;
     //player.sprite
-    //player.player_cutscene_speed = frames > 0 ? (frames / (desired_seconds * room_speed)) : 0.1;
+    //player.player_cutscene_speed = frames > 0 ? (frames / (desired_seconds * game_get_speed(gamespeed_fps))) : 0.1;
 
 function player_revive_anim(player) {
     // Step

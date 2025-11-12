@@ -1,6 +1,8 @@
-/// Enemy Spawn Point - Create Event
-// This object marks where enemies can spawn
-// The level manager will use these to spawn enemies based on difficulty
+fox_spawn_prob = 0.1;
+var prob_roll = random(100) / 100;
+if (prob_roll < fox_spawn_prob) {
+            // Spawn enemy at spawn point
+    var fox = instance_create_depth(x, y, 0, obj_fox);
+    show_debug_message("Fox Spawned!")
 
-// Mark as inactive after spawning
-is_used = false;
+}

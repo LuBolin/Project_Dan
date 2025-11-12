@@ -1,5 +1,9 @@
 update_status_effects(self);
 
+// If victory controller exists, skip all player input and actions
+if (instance_exists(obj_victory_controller)) {
+    exit;
+}
 
 if (hp <= 0) {
     //

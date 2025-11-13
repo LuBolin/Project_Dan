@@ -192,7 +192,7 @@ function clone_spawn_clay_wall(clone_instance, direction) {
     // Wall properties (same as player)
     var wall_segments = 6; // Same as player
     var segment_spacing = 45; // Same as player spacing
-    var wall_scale = 2.0; // Same as player scale
+    var wall_scale = 1.0; // Same as player scale
     var initial_offset = 16; // Same offset as player to prevent clipping
     
     // Update collision arrays for new walls
@@ -233,7 +233,8 @@ function clone_spawn_clay_wall(clone_instance, direction) {
         if (can_place) {
             var wall_segment = instance_create_layer(segment_x, segment_y, "Instances", obj_clay_wall);
             if (instance_exists(wall_segment)) {
-                wall_segment.image_angle = direction;
+                // Orient wall segment perpendicular to the direction (same as player)
+                wall_segment.image_angle = direction - 90;
                 wall_segment.image_xscale = wall_scale;
                 wall_segment.image_yscale = wall_scale;
                 wall_segment.life_timer = game_get_speed(gamespeed_fps) * 5; // Slightly shorter for clone

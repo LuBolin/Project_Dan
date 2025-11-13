@@ -118,8 +118,8 @@ function FinalBossPhase_2(_entity, _duration = undefined, _is_timed = false) : S
     air_lunge_cd_timer = 0;
     
     nearby_centre_radius = 20;
-    runaway_speed = 3;
-    chase_speed = 2.7;
+    runaway_speed = 2.7; // Reduced by 10% (was 3)
+    chase_speed = 2.43; // Reduced by 10% (was 2.7)
     
     has_health_dropped = false;
     

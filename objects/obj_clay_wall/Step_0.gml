@@ -40,7 +40,7 @@ if (is_first_frame) {
                 var tilemap = layer_tilemap_get_id("Tile_Collision");
                 var tile = tilemap_get_at_pixel(tilemap, new_x, new_y);
                 //if (!place_meeting(new_x, new_y, layer_tilemap_get_id("Tile_Collision"))) {
-                if (tile != 0 && !place_meeting(new_x, new_y, obj_clay_wall)) {
+                if (tile == 0 && !place_meeting(new_x, new_y, obj_clay_wall)) {
                     // Move enemy to this position
                     x = new_x;
                     y = new_y;
@@ -50,6 +50,37 @@ if (is_first_frame) {
             }
             
             show_debug_message("Clay wall placement damaged enemy " + string(id));
+        }
+    }
+
+    // Find player overlapping when wall is first created
+    if (instance_exists(obj_player) && place_meeting(obj_player.x, obj_player.y, id)) {
+        with (obj_player) {
+            // PUSH PLAYER OUT OF WALL - Find nearest non-colliding position
+            // Calculate push distance based on half of player's size
+            var player_width = sprite_get_width(sprite_index);
+            var player_height = sprite_get_height(sprite_index);
+            var player_size = max(player_width, player_height);
+            var push_distance = player_size * 0.5; // Half of player's size
+            var push_attempts = 8; // Try 8 directions
+            var pushed = false;
+
+            for (var attempt = 0; attempt < push_attempts && !pushed; attempt++) {
+                var push_angle = (360 / push_attempts) * attempt;
+                var new_x = x + lengthdir_x(push_distance, push_angle);
+                var new_y = y + lengthdir_y(push_distance, push_angle);
+
+                // Check if this position is free of walls (both terrain and clay walls)
+                var tilemap = layer_tilemap_get_id("Tile_Collision");
+                var tile = tilemap_get_at_pixel(tilemap, new_x, new_y);
+                if (tile == 0 && !place_meeting(new_x, new_y, obj_clay_wall)) {
+                    // Move player to this position
+                    x = new_x;
+                    y = new_y;
+                    pushed = true;
+                    show_debug_message("Pushed player out of clay wall");
+                }
+            }
         }
     }
 }
@@ -93,7 +124,7 @@ with (obj_enemy_abstract) {
             // Check if this position is free
             var tilemap = layer_tilemap_get_id("Tile_Collision");
             var tile = tilemap_get_at_pixel(tilemap, new_x, new_y);
-            if (tile != 0 && !place_meeting(new_x, new_y, obj_clay_wall)) {
+            if (tile == 0 && !place_meeting(new_x, new_y, obj_clay_wall)) {
                 // Move enemy to this position
                 x = new_x;
                 y = new_y;
@@ -108,6 +139,37 @@ with (obj_enemy_abstract) {
             // Only unpause if they were paused by clay wall (not by other systems)
             pause = false;
         }
+    }
+}
+
+// AGGRESSIVE COLLISION ENFORCEMENT FOR PLAYER - Check every frame
+if (instance_exists(obj_player) && place_meeting(obj_player.x, obj_player.y, id)) {
+    with (obj_player) {
+        // Try to push player out of wall
+        var push_attempts = 4;
+        // Calculate push distance based on a quarter of player's size (smaller incremental pushes)
+        var player_width = sprite_get_width(sprite_index);
+        var player_height = sprite_get_height(sprite_index);
+        var player_size = max(player_width, player_height);
+        var push_distance = player_size * 0.25; // Quarter of player's size for gentle pushes
+
+        for (var attempt = 0; attempt < push_attempts; attempt++) {
+            var push_angle = 90 * attempt; // Try cardinal directions
+            var new_x = x + lengthdir_x(push_distance, push_angle);
+            var new_y = y + lengthdir_y(push_distance, push_angle);
+
+            // Check if this position is free
+            var tilemap = layer_tilemap_get_id("Tile_Collision");
+            var tile = tilemap_get_at_pixel(tilemap, new_x, new_y);
+            if (tile == 0 && !place_meeting(new_x, new_y, obj_clay_wall)) {
+                // Move player to this position
+                x = new_x;
+                y = new_y;
+                break;
+            }
+        }
+
+        show_debug_message("Player blocked by clay wall");
     }
 }
 

@@ -1,7 +1,7 @@
 global.level_progress = 1
 
 // Set up player inventory with the three elements using the existing inventory override system
-global.next_room_inv_names = ["Destruction", "Eruption", "Current"];
+global.next_room_inv_names = ["Elixir", "Current", "Hurricane"];
 global.next_room_sel_slot = 0;
 
 

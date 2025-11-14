@@ -282,12 +282,14 @@
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRLayer":"","%Name":"Terrain","depth":200,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[
         {"$GMRTileLayer":"","%Name":"Upper_Decoration","depth":300,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Upper_Decoration","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":65,"SerialiseWidth":79,"TileCompressedData":[
-              -1107,-2147483648,-5,12,-77,-2147483648,1,1,-77,-2147483648,1,1,-76,-2147483648,1,1,-19,-2147483648,
-              6,12,-2147483648,-2147483648,1,-2147483648,12,-55,-2147483648,-2,1,-15,-2147483648,1,12,-6,-2147483648,
-              1,12,-73,-2147483648,2,0,1,-77,-2147483648,1,0,-78,-2147483648,4,1,-2147483648,0,0,-57,-2147483648,-2,
-              1,-16,-2147483648,-2,0,1,1,-74,-2147483648,1,12,-6,-2147483648,1,12,-18,-2147483648,1,0,-53,-2147483648,
-              1,12,-4,0,1,12,-19,-2147483648,1,1,-54,-2147483648,-4,12,-18,-2147483648,-2,1,-80,-2147483648,1,1,-76,
-              -2147483648,1,1,-76,-2147483648,-6,12,-2874,-2147483648,
+              -189,-2147483648,-2,0,-80,-2147483648,3,1,-2147483648,1,-75,-2147483648,4,1,-2147483648,1,0,-65,-2147483648,
+              1,1,-156,-2147483648,-4,1,-77,-2147483648,-2,1,-449,-2147483648,-5,12,-77,-2147483648,1,1,-77,-2147483648,
+              1,1,-76,-2147483648,1,1,-19,-2147483648,6,12,-2147483648,-2147483648,0,-2147483648,12,-55,-2147483648,
+              -2,1,-15,-2147483648,1,12,-6,-2147483648,1,12,-73,-2147483648,2,0,1,-77,-2147483648,1,0,-78,-2147483648,
+              4,1,-2147483648,0,0,-57,-2147483648,-2,1,-16,-2147483648,-2,0,1,1,-74,-2147483648,1,12,-6,-2147483648,
+              1,12,-18,-2147483648,1,0,-53,-2147483648,1,12,-4,0,1,12,-19,-2147483648,1,1,-54,-2147483648,-4,12,-18,
+              -2147483648,-2,1,-80,-2147483648,1,1,-76,-2147483648,1,1,-76,-2147483648,-6,12,-365,-2147483648,-3,1,
+              -75,-2147483648,3,1,-2147483648,1,-77,-2147483648,1,1,-2350,-2147483648,
             ],"TileDataFormat":1,},"tilesetId":{"name":"dungeon_tileset","path":"tilesets/dungeon_tileset/dungeon_tileset.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
         {"$GMRTileLayer":"","%Name":"Tile_Collision","depth":400,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Tile_Collision","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":65,"SerialiseWidth":79,"TileCompressedData":[
               1,10,-34,536870916,-15,10,-29,-2147483648,1,11,-34,0,1,805306373,-14,10,-29,-2147483648,1,11,-35,0,2,

@@ -61,4 +61,8 @@ https://pixabay.com/music/china-china-asian-china-chinese-music-390969/
 Special Thanks:
 Everyone who played and supported this game!
 
+Assets:
+Steam Effect Designed by Freepik
+https://www.freepik.com/free-vector/cartoon-smoke-element-animation-frames_13763535.htm
+
 © 2025"; // Uses default font

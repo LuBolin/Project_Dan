@@ -490,7 +490,7 @@ function ElixirInvincibilityEffect(_duration) : InvincibilityEffect(_duration) c
     }
 
     get_type = function() {
-        return "ElixirInvincibility";
+        return "Invincible";
     }
 }
 
@@ -531,7 +531,7 @@ function add_status_effect(_target, _effect) {
         }
         
         // Remove Burn or Slow
-        if (effect_type == "ElixirInvincibility" && (t == "HurricaneDotEffect" || t == "Burn" || t == "Slow" || t == "DamageOverTimeEffect")) {
+        if (effect_type == "Invincible" && (t == "HurricaneDotEffect" || t == "Burn" || t == "Slow" || t == "DamageOverTimeEffect")) {
             effects_arr[i].remove();
             array_delete(effects_arr, i, 1);
         }
@@ -586,7 +586,7 @@ function update_status_effects(_target) {
             array_delete(effects_arr, i, 1);
         } else {
             if (t == "Stun" || t == "Knockback" || t == "Charge") has_stun_or_knockback = true;
-            if (t == "Invincible" || t == "ElixirInvincibility") has_invuln = true;
+            if (t == "Invincible") has_invuln = true;
         }
     }
     if (variable_instance_exists(_target, "pause")) {

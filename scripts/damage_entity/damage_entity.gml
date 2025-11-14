@@ -25,7 +25,7 @@ function damage_entity(_target, _dmg) {
         if (variable_instance_exists(_target, "status_effects_list")) {
             for (var i = 0; i < array_length(_target.status_effects_list); i++) {
                 var eff = _target.status_effects_list[i];
-                if (is_struct(eff) && variable_struct_exists(eff, "get_type") && (eff.get_type() == "Invincible" || eff.get_type() == "ElixirInvincibility")) {
+                if (is_struct(eff) && variable_struct_exists(eff, "get_type") && eff.get_type() == "Invincible") {
                     has_invuln_effect = true;
                     break;
                 }

@@ -105,7 +105,8 @@ if (show_buttons || transitioning) {
 draw_set_alpha(1);
 
 // DEBUG: Draw shortcuts textbox in bottom right corner
-// TODO: Comment out before distribution
+// Commented out for release build
+/*
 var shortcuts_padding = 10;
 var shortcuts_x = gui_width - 220 - shortcuts_padding;
 var shortcuts_y = gui_height - 150 - shortcuts_padding;
@@ -152,3 +153,4 @@ draw_set_color(c_white);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 draw_set_alpha(1);
+*/

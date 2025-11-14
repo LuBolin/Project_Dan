@@ -63,18 +63,19 @@ var json_data = load_recipes_from_json("recipes.json");
 for (var i = 0; i < array_length(json_data.recipes); i++) {
     var recipe = json_data.recipes[i];
     var result_name = recipe.result;
+    var recipe_id = recipe.id;
 
-    // Only draw connectors if result is discovered AND crafted
-    var recipe_node = global.recipe_tree[$ result_name];
+    // Look up by ID
+    var recipe_node = global.recipe_tree[$ recipe_id];
+
     var is_crafted = false;
-    
-    // Check if node exists and has crafted property
     if (!is_undefined(recipe_node) && recipe_node != noone) {
         if (variable_struct_exists(recipe_node, "crafted")) {
             is_crafted = recipe_node.crafted;
         }
     }
-    
+
+    // Only draw connectors if result is discovered AND crafted
     if (variable_struct_exists(discovered_map, result_name) && is_crafted) {
         var result_pos = tree_positions[$ result_name];
         var result_x = tree_start_x + result_pos.x;
@@ -89,8 +90,7 @@ for (var i = 0; i < array_length(json_data.recipes); i++) {
                 var ingredient_y = tree_start_y + ingredient_pos.y;
 
                 draw_set_color(make_color_rgb(100, 150, 200));
-                draw_line_width(ingredient_x, ingredient_y + tree_node_size / 2,
-                              result_x, result_y + tree_node_size / 2, 3);
+                draw_line_width(ingredient_x, ingredient_y, result_x, result_y, 3);
             }
         }
     }
